@@ -1,0 +1,37 @@
+{
+	"tags":
+	{
+		"allowUnknownTags" : true
+	},
+	"plugins":[
+		 "plugins/markdown"
+		,"/trabajo/infinity-core-sdk/node_modules/tsdoc/template/plugins/TSDoc.js"
+	],
+	"opts":
+	{
+		"template"	:"/trabajo/infinity-core-sdk/node_modules/tsdoc/template",
+		"recurse"	:"true"
+	},
+	"templates" : {
+		"cleverLinks"     : false,
+		"monospaceLinks"  : false
+	},
+	"source":
+	{
+		"includePattern": "(\\.d)?\\.ts$"
+	},
+	"markdown"  : {
+		"parser"   : "gfm",
+		"hardwrap" : true
+	},
+	"tsdoc":{
+		"source"		:"/trabajo/infinity-core-sdk/src/",
+		"destination"	:"/trabajo/infinity-core-sdk/docs",
+		"tutorials"		:"",
+		"systemName"	: "infinity-core-sdk",
+		"footer"		: "",
+		"copyright"		: "infinity-core-sdk Copyright © 2024 Haru.",
+		"outputSourceFiles" : true,
+		"commentsOnly": true
+	}
+}

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "outDir": "./lib/commonjs",
+    "declaration": true,
+    "rootDir": "./src",
+    "types": [
+      "node"
+    ],
+    "allowJs": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+      "src/**/*.ts", 
+      "src/**/*.js",
+      "src/**/*.json"
+  ],
+  "exclude": [
+      "**/*.test.ts",
+      "node_modules/**/*"
+  ]
+}
