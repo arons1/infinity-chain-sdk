@@ -1,19 +1,21 @@
 import { SendTransactionParams } from "./types"
+import {signLegacyTransaction, signEIP1559Transaction} from '@infinity-core-sdk'
 
-export const sendTransaction = ({web3,transaction,privateKey}:SendTransactionParams) => {
+export const sendTransaction = ({web3,transaction,privateKey,chain}:SendTransactionParams) => {
     return new Promise((resolve,reject)=>{
-        web3.eth.accounts.signTransaction(transaction, privateKey).then((signed:any) => {
-            web3.eth.sendSignedTransaction(signed.rawTransaction)
-            .once('transactionHash',(txid:string) => {
-                resolve(txid)
-            })
-            .on('error', (e:any) => {
-                reject(e)
-            })
-            .catch((e:any) => {
-                reject(e)
-            })
+        const sign = chain != 1 && chain != 137 ? signLegacyTransaction : signEIP1559Transaction
+        const rawTransaction = sign({transaction,privateKey})
+        web3.eth.sendSignedTransaction(rawTransaction)
+        .once('transactionHash',(txid:string) => {
+            resolve(txid)
         })
+        .on('error', (e:any) => {
+            reject(e)
+        })
+        .catch((e:any) => {
+            reject(e)
+        })
+    
     })
     
 }
