@@ -1,24 +1,22 @@
+import { Transaction } from '../../../../types';
 import { GeneralTransactionEncode } from './types';
+import BigNumber from 'bignumber.js';
 
 export const encode = ({
     transaction,
 }: {
     transaction: GeneralTransactionEncode;
-}) => {
+}):Transaction => {
     return {
         blockNumber: transaction.blockNumber,
-        timeStamp: transaction.timeStamp,
-        hash: transaction.hash,
-        nonce: transaction.nonce,
-        blockHash: transaction.blockHash,
+        timeStamp: new Date(transaction.timeStamp ?? transaction.time).toISOString(),
+        hash: (transaction.hash ?? transaction.transactionHash) as string,
         from: transaction.from,
         to: transaction.to,
         value: transaction.value,
-        gasLimit: transaction.gas,
-        gasPrice: transaction.gasPrice,
-        isError: transaction.isError,
+        fee: new BigNumber(transaction.gasUsed ?? transaction.gas).multipliedBy(transaction.gasPrice).shiftedBy(-18).toString(10),
+        isError: transaction.isError == "1",
         contractAddress: transaction.contractAddress,
-        gasUsed: transaction.gasUsed,
         confirmations: transaction.confirmations,
     };
 };
