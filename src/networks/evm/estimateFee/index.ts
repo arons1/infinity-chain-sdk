@@ -16,13 +16,13 @@ import { TransactionEVM } from '../general/types';
 import BigNumber from 'bignumber.js';
 import {
     CannotGetNonce,
-    InvalidAddress,
     InvalidAmount,
     InvalidChainError,
     InvalidContractAddress,
     InvalidTokenContract,
     PriorityFeeError,
 } from '../../../errors/networks';
+import { InvalidAddress } from '@infinity/core-sdk'
 import { isValidNumber } from '../../../utils';
 import { SupportedChains } from '../general/contants';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';

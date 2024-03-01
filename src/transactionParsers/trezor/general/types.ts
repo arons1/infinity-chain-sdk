@@ -32,9 +32,9 @@ type vOut = {
 type TokenTransfer = {
     to:string,
     from:string,
-    contract:string,
+    contract?:string,
     value:string,
-    token:string,
+    token?:string,
     name:string,
     symbol:string,
     decimals:number

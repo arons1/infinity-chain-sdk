@@ -30,7 +30,7 @@ export const encode = ({
     if(transaction.tokenTransfers != undefined){
         transaction.tokenTransfers.map(a => tokenTransfers.push({
             value:a.value,
-            contractAddress:a.contract,
+            contractAddress:a.token ?? a.contract,
             tokenName:a.name,
             tokenSymbol:a.symbol,
             tokenDecimal:a.decimals,

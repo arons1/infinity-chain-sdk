@@ -1,5 +1,5 @@
 import { SendTransactionParams } from "./types"
-import {signLegacyTransaction, signEIP1559Transaction} from '@infinity-core-sdk'
+import {signLegacyTransaction, signEIP1559Transaction} from '@infinity/core-sdk'
 
 export const sendTransaction = ({web3,transaction,privateKey,chain}:SendTransactionParams) => {
     return new Promise((resolve,reject)=>{
