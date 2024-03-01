@@ -1,9 +1,11 @@
-import { InvalidAddress, InvalidChainError } from '../../../errors/networks';
+import { InvalidChainError } from '../../../errors/networks';
 import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee';
 import { SupportedChains } from '../general/contants';
 import { TransactionEVM } from '../general/types';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
 import { BuildTransaction } from './types';
+import { InvalidAddress } from '@infinity/core-sdk'
+
 /* 
 buildTransaction
     Returns a transaction formatted to be sign and send
