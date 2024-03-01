@@ -1,5 +1,5 @@
 import { TokenTransactionEncode } from './types';
-import {Transaction} from '../../../../types'
+import { Transaction } from '../../../networks/types';
 import {encode as encodeEtherscan} from '../../etherscan/token/encode'
 
 export const encode = ({

@@ -4,14 +4,39 @@ export type Transaction = {
     hash: string,
     from: string,
     to: string,
-    value: string,
+    value?: string,
     isError: boolean,
-    contractAddress: string,
     fee?: string,
     confirmations: string,
+    tokenTransfers?:TokenTransfer[],
+    gasUsed?:string
+    extraId?:string,
+    vIn?:vIn[],
+    vOut?:vOut[],
+    type:string
+}
+export type TokenTransfer = {
+    contractAddress?: string,
     tokenName?:string,
     tokenSymbol?:string,
     tokenDecimal?:number,
-    gasUsed?:string
-    extraId?:string
+    value:string,
+    from:string,
+    to:string
+}
+export type vIn = {
+    txid:string,
+    n:number,
+    vout:number,
+    value:string,
+    address:string,
+    sequence?:string,
+    hex?:string
+}
+export type vOut = {
+    n:number,
+    value:string,
+    address:string,
+    spent:boolean,
+    hex?:string
 }

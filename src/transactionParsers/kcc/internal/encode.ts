@@ -1,4 +1,4 @@
-import { Transaction } from '../../../../types';
+import { Transaction } from '../../../networks/types';
 import { InternalTransactionEncode } from './types';
 import {encode as encodeEtherscan} from '../../etherscan/internal/encode'
 

@@ -1,4 +1,4 @@
-import { Transaction } from '../../../../types';
+import { Transaction } from '../../../networks/types';
 import { InternalTransactionEncode } from './types';
 
 export const encode = ({
@@ -13,10 +13,10 @@ export const encode = ({
         from: transaction.from,
         to: transaction.to,
         value: transaction.value,
-        contractAddress: transaction.contractAddress,
         gasUsed: transaction.gasUsed,
         extraId: transaction.traceId ?? transaction.index,
         isError: transaction.isError == "1",
-        confirmations:"6"
+        confirmations:"6",
+        type:"evm"
     };
 };

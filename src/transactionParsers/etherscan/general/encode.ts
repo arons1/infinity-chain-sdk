@@ -1,4 +1,4 @@
-import { Transaction } from '../../../../types';
+import { Transaction } from '../../../networks/types';
 import { GeneralTransactionEncode } from './types';
 import BigNumber from 'bignumber.js';
 
@@ -16,7 +16,7 @@ export const encode = ({
         value: transaction.value,
         fee: new BigNumber(transaction.gasUsed ?? transaction.gas).multipliedBy(transaction.gasPrice).shiftedBy(-18).toString(10),
         isError: transaction.isError == "1",
-        contractAddress: transaction.contractAddress,
         confirmations: transaction.confirmations,
+        type:"evm"
     };
 };
