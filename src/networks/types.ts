@@ -22,7 +22,9 @@ export type TokenTransfer = {
     tokenDecimal?:number,
     value:string,
     from:string,
-    to:string
+    to:string,
+    id?:string,
+    type?:string
 }
 export type vIn = {
     txid:string,
