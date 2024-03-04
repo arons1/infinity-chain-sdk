@@ -1,35 +1,13 @@
 import { PROVIDER_TREZOR } from '../../../constants';
-import { EstimateFeeParams,EstimateFeeResult,GetUTXOParams, UTXOResult } from './types';
+import { EstimateFeeParams,EstimateFeeResult } from './types';
 import { CannotGetUTXO, CoinNotIntegrated, InvalidAmount,CannotGetFeePerByte } from '../../../errors/networks';
 import { MissingExtendedKey } from '../../../errors/transactionParsers';
 import BigNumber from 'bignumber.js';
 import { DUST } from '../constant';
+import { UTXOResult } from '../getUTXO/types';
+import { getUTXO } from '../getUTXO';
 
-export const getUTXO = ({
-    extendedPublicKey,
-    trezorWebsocket
-}:GetUTXOParams):Promise<UTXOResult[]> => {
-    return new Promise((resolve,reject) => {
-        trezorWebsocket.send("getAccountUtxo",{
-            "descriptor":extendedPublicKey,
-            page:1,
-            from:1,
-            to:1
-         })
-        .then((data: UTXOResult[]) => {
-            resolve(data.map(b => {
-                return {
-                    ...b,
-                    segwit:!extendedPublicKey.startsWith('xpub')
-                }
-            }))
-        })
-        .catch((e: any) => {
-            console.error(e)
-            reject(e)
-        })
-    })
-}
+
 export const getFeePerByte = ({
     trezorWebsocket
 }:{
