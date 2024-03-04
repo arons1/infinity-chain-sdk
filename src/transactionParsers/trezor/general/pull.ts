@@ -1,6 +1,7 @@
-import { PROVIDER } from '../constants';
+import { PROVIDER_TREZOR } from '../../../constants';
 import { GeneralApiParams } from '../../types';
 import { MissingAddress, MissingCoinId, MissingExtendedKey } from '../../../errors/transactionParsers';
+import { CoinNotIntegrated } from '../../../errors/networks';
 
 export const pull = ({
     coinId,
@@ -15,8 +16,8 @@ export const pull = ({
     else{
         if(!address) throw new Error(MissingAddress)
     }
-    const selected = PROVIDER[coinId as string] as string;
-    if (!selected) throw new Error('Not integrated coin');
+    const selected = PROVIDER_TREZOR[coinId as string] as string;
+    if (!selected) throw new Error(CoinNotIntegrated);
     if(coinId == "eth"){
         return selected + "/api/v2/address/" + address + "?details=txs&page=" + page+"&pageSize="+limit
     }
