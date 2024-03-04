@@ -16,8 +16,8 @@ export const getUTXO = ({
             from:1,
             to:1
          })
-        .then((a: { data: UTXOResult[]; }) => {
-            resolve((a.data as UTXOResult[]).map(b => {
+        .then((data: UTXOResult[]) => {
+            resolve(data.map(b => {
                 return {
                     ...b,
                     segwit:!extendedPublicKey.startsWith('xpub')
@@ -42,7 +42,7 @@ export const getFeePerByte = ({
         trezorWebsocket.send("estimateFee",{
             "blocks":[1,2,3,4]
           })
-        .then((result: any[]) => {
+        .then((result: {feePerUnit:string}[]) => {
             if(result && result.length == 4 && result[0].feePerUnit != undefined){
                 const finalResult = result.reduce((l,n) =>{
                   var feeUsed = new BigNumber(n.feePerUnit)
