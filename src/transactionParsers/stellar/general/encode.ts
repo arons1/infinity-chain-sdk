@@ -14,9 +14,7 @@ export const encode = ({
     const operations = transaction.operations
     const tr = transaction.transaction
     const fee = tr.fee_charged
-    const baseFee = new BigNumber(fee).dividedBy(Object.keys(operations).length)
     const from = tr.source_account
-    var value_stellar = new BigNumber(0)
     var to = tr.source_account
     const tokenTransfers:TokenTransfer[] = []
     for(let op_id in operations){
@@ -30,16 +28,12 @@ export const encode = ({
                 var _value = new BigNumber(op.starting_balance).shiftedBy(7)
                 if(out == 1 && tr.source_account == account){
                     to = op.account
-                    value_stellar = value_stellar.plus(_value)
                     _value = new BigNumber(0)
                 }
                 tokenTransfers.push({
                     id:op.id,
                     from:op.source_account,
                     to:op.account,
-                    tokenDecimal:7,
-                    tokenName:"Stellar",
-                    tokenSymbol:"XLM",
                     value:_value.toString(10)
                 })
                 break;
