@@ -6,3 +6,4 @@ export const InvalidAmount = 'invalid amount';
 export const InvalidChainError = 'invalid chain';
 export const CannotGetUTXO = 'Cannot get utxo'
 export const CoinNotIntegrated = 'Coin not integrated'
+export const CannotGetFeePerByte = "Cannot get fee per byte"
