@@ -3,9 +3,10 @@ export type GetUTXOParams = {
     trezorWebsocket:any
 }
 export type UTXOResult = {
+    protocol: number,
     address:string,
     vout:string,
     value:string,
     path:string,
-    segwit:boolean
+    txid:string
 }

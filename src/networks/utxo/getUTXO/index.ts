@@ -15,7 +15,7 @@ export const getUTXO = ({
             resolve(data.map(b => {
                 return {
                     ...b,
-                    segwit:!extendedPublicKey.startsWith('xpub')
+                    protocol:extendedPublicKey.startsWith('zpub') ? 84 : extendedPublicKey.startsWith('ypub') ? 49 : 44
                 }
             }))
         })

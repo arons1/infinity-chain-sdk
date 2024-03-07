@@ -77,7 +77,7 @@ export const estimateFee = async ({
     }
     // 3º Get the fee of inputs
     const feeInput = utxosUsed.reduce((v,p) => {
-        if(v.segwit)
+        if(v.protocol == 84)
             return new BigNumber(68).plus(p)
         return new BigNumber(148).plus(p)
     },new BigNumber(0))
