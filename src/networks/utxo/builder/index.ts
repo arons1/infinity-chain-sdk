@@ -1,5 +1,5 @@
 import { PROVIDER_TREZOR } from '../../../constants';
-import { CannotGetFeePerByte, CannotGetUTXO, CoinNotIntegrated, InvalidAmount } from '../../../errors/networks';
+import { CannotGetFeePerByte, CannotGetUTXO, CoinNotIntegrated, ErrorBuildingUTXOTransaction, InvalidAmount } from '../../../errors/networks';
 import { DUST } from '../constant';
 import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
@@ -43,7 +43,8 @@ export const buildTransaction = async ({
     amount,
     trezorWebsocket,
     privateAccountNode,
-    destination
+    destination,
+    memo = ''
 }:BuildParameters) => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     const network = networks[coinId as string];
@@ -66,6 +67,8 @@ export const buildTransaction = async ({
     // 2º Select all UTXO necesary to fill the amount
     const utxosUsed:UTXOResult[] = []
     var feeAcc = new BigNumber(78)
+    if(memo.length > 0)
+        feeAcc = feeAcc.plus(memo.length)
     let feePerByte
     // 5º Get fee per byte
     try{
@@ -136,6 +139,14 @@ export const buildTransaction = async ({
             tx.addOutput(addressChange,changeAmount.toString(10));
         }
     }
+    if(memo.length > 0){
+        feeOutput = feeOutput.plus(memo.length)
+        tx.addOutput(bitcoinjs.script.compile(
+            [
+              bitcoinjs.opcodes.OP_RETURN,
+              Buffer.from(memo)
+            ]), 0)
+    }
 
     for(var k = 0;k < utxosUsed.length;k++){
         const unspent = utxosUsed[k]
@@ -163,9 +174,18 @@ export const buildTransaction = async ({
             tx.sign(k, keyPair);
         }
     }
+    let hex
+    try{
+        hex = tx.build().toHex();
+    }
+    catch(e){
+        console.error(e)
+        throw new Error(ErrorBuildingUTXOTransaction)
+    }
     return {
         feePerByte,
         utxos,
+        hex,
         utxosUsed,
         transactionSize:feeInput.plus(feeOutput).toString(10)
     }

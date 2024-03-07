@@ -6,7 +6,8 @@ export type BuildParameters = {
     amount:string;
     trezorWebsocket:any,
     privateAccountNode:BIP32Interface,
-    destination:string
+    destination:string,
+    memo:string
 }
 
 export type LastChangeIndexParameters = {
