@@ -5,38 +5,13 @@ import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
 import BigNumber from 'bignumber.js';
-import { BuildParameters, ChangeIndexResult, LastChangeIndexParameters } from './types';
+import { BuildParameters } from './types';
 import { networks,utils,getRedeemP2WPKH,getPublicAddressP2WPKHP2S,getPublicAddressP2PKH,getPublicAddressSegwit } from '@infinity/core-sdk'
 import bitcoinjs from 'bitcoinjs-lib'
+import { getLastChangeIndex } from '../getLastChangeIndex';
 
 
-export const getLastChangeIndex = async ({
-    extendedPublicKey,
-    trezorWebsocket
-}:LastChangeIndexParameters) => {
-    return new Promise((resolve) => {
-        trezorWebsocket.send("getAccountInfo",{
-            "descriptor":extendedPublicKey,
-            details:"tokens"
-         })
-        .then((data: ChangeIndexResult[]) => {
-            var changeIndex = 0;
-            for(let d of data){
-                if(d.transfers > 0){
-                    const [index] = d.path.split('/').slice(5)
-                    if(changeIndex < parseInt(index)){
-                        changeIndex = parseInt(index)
-                    }
-                }
-            }
-            resolve(changeIndex)
-        })
-        .catch((e: any) => {
-            console.error(e)
-            resolve(0)
-        })
-    })
-}
+
 export const buildTransaction = async ({
     extendedPublicKeys,
     coinId, 
@@ -44,7 +19,9 @@ export const buildTransaction = async ({
     trezorWebsocket,
     privateAccountNode,
     destination,
-    memo = ''
+    memo = '',
+    changeIndex = -1,
+    utxos = []
 }:BuildParameters) => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     const network = networks[coinId as string];
@@ -52,16 +29,18 @@ export const buildTransaction = async ({
     if (!selected) throw new Error(CoinNotIntegrated);
     if(amount.includes('.')) throw new Error(InvalidAmount)
     // 1º Get UTXOs
-    var utxos:UTXOResult[] = []
-    for(let extendedPublicKey of extendedPublicKeys)
-    try{
-        const utxos_address = await getUTXO({extendedPublicKey,trezorWebsocket})
-        utxos = [...utxos_address,...utxos]
+    if(utxos.length == 0){
+        for(let extendedPublicKey of extendedPublicKeys)
+        try{
+            const utxos_address = await getUTXO({extendedPublicKey,trezorWebsocket})
+            utxos = [...utxos_address,...utxos]
+        }
+        catch(e){
+            console.error(e)
+            throw new Error(CannotGetUTXO)
+        }
     }
-    catch(e){
-        console.error(e)
-        throw new Error(CannotGetUTXO)
-    }
+
     utxos = utxos.sort((a,b)=>a.path > b.path ? -1 : 1)
     var amountLeft = new BigNumber(amount)
     // 2º Select all UTXO necesary to fill the amount
@@ -107,10 +86,12 @@ export const buildTransaction = async ({
         const changeAmount = amountLeft.plus(feeAcc.multipliedBy(feePerByte)).multipliedBy(-1)
         if(changeAmount.isGreaterThan(DUST[coinId])){
             feeOutput = feeOutput.plus(34)
-            const lastChangeIndex = await getLastChangeIndex({
-                extendedPublicKey:extendedPublicKeys[0],
-                trezorWebsocket
-            })
+            var lastChangeIndex = changeIndex
+            if(lastChangeIndex == -1)
+                lastChangeIndex = await getLastChangeIndex({
+                    extendedPublicKey:extendedPublicKeys[0],
+                    trezorWebsocket
+                })
             let addressChange
             if(extendedPublicKeys[0].startsWith('ypub')){
                 addressChange = getPublicAddressP2WPKHP2S({

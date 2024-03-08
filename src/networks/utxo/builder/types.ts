@@ -1,4 +1,5 @@
 import { BIP32Interface } from '@infinity/core/bip32';
+import { UTXOResult } from '../getUTXO/types';
 
 export type BuildParameters = {
     extendedPublicKeys:string;
@@ -7,17 +8,8 @@ export type BuildParameters = {
     trezorWebsocket:any,
     privateAccountNode:BIP32Interface,
     destination:string,
-    memo:string
+    memo:string,
+    changeIndex?:number,
+    utxos?:UTXOResult[]
 }
 
-export type LastChangeIndexParameters = {
-    extendedPublicKey:string,
-    trezorWebsocket:any
-}
-
-export type ChangeIndexResult = {
-    name:string;
-    path:string;
-    transfers:number;
-    decimals:number;
-}
