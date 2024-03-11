@@ -4,7 +4,7 @@ import { SupportedChains } from '../general/contants';
 import { TransactionEVM } from '../general/types';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
 import { BuildTransaction } from './types';
-import { InvalidAddress } from '@infinity/core-sdk'
+import { InvalidAddress } from '@infinity/core-sdk';
 
 /* 
 buildTransaction

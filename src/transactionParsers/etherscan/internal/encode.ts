@@ -5,18 +5,22 @@ export const encode = ({
     transaction,
 }: {
     transaction: InternalTransactionEncode;
-}):Transaction => {
+}): Transaction => {
     return {
         blockNumber: transaction.blockNumber,
-        timeStamp: new Date(transaction.timeStamp ?? transaction.time).toISOString(),
-        hash: (transaction.hash ?? transaction.transactionHash ?? transaction.txid) as string,
+        timeStamp: new Date(
+            transaction.timeStamp ?? transaction.time,
+        ).toISOString(),
+        hash: (transaction.hash ??
+            transaction.transactionHash ??
+            transaction.txid) as string,
         from: transaction.from,
         to: transaction.to,
         value: transaction.value,
         gasUsed: transaction.gasUsed,
         extraId: transaction.traceId ?? transaction.index,
-        isError: transaction.isError == "1",
-        confirmations:"6",
-        type:"evm"
+        isError: transaction.isError == '1',
+        confirmations: '6',
+        type: 'evm',
     };
 };

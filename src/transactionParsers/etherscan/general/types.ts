@@ -1,9 +1,9 @@
 export type GeneralTransactionEncode = {
     blockNumber: string;
     timeStamp?: string;
-    time:string;
+    time: string;
     hash?: string;
-    transactionHash?:string;
+    transactionHash?: string;
     nonce: string;
     blockHash: string;
     transactionIndex: string;

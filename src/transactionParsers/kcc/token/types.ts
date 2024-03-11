@@ -1,9 +1,9 @@
 export type TokenTransactionEncode = {
     blockNumber: string;
     timeStamp?: string;
-    time:string;
+    time: string;
     hash: string;
-    transactionHash?:string;
+    transactionHash?: string;
     blockHash: string;
     from: string;
     contractAddress: string;

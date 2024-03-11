@@ -1,11 +1,11 @@
 import { Transaction } from '../../../networks/types';
 import { InternalTransactionEncode } from './types';
-import {encode as encodeEtherscan} from '../../etherscan/internal/encode'
+import { encode as encodeEtherscan } from '../../etherscan/internal/encode';
 
 export const encode = ({
     transaction,
 }: {
     transaction: InternalTransactionEncode;
-}):Transaction => {
-    return encodeEtherscan({transaction})
+}): Transaction => {
+    return encodeEtherscan({ transaction });
 };

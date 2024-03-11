@@ -22,7 +22,7 @@ import {
     InvalidTokenContract,
     PriorityFeeError,
 } from '../../../errors/networks';
-import { InvalidAddress } from '@infinity/core-sdk'
+import { InvalidAddress } from '@infinity/core-sdk';
 import { isValidNumber } from '../../../utils';
 import { SupportedChains } from '../general/contants';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';

@@ -2,13 +2,13 @@ export type InternalTransactionEncode = {
     blockNumber: string;
     timeStamp?: string;
     hash?: string;
-    txid?:string;
-    time:string;
-    transactionHash?:string;
+    txid?: string;
+    time: string;
+    transactionHash?: string;
     from: string;
     to: string;
     value: string;
-    index?:string;
+    index?: string;
     contractAddress: string;
     input: string;
     type: string;

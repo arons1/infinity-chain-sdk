@@ -1,53 +1,53 @@
 export type GeneralTransactionEncode = {
-    details:Details;
+    details: Details;
 };
 
 type Details = {
-    transaction:Transaction;
-    meta:Meta
-    slot:string;
-    blockTime:number;
-}
+    transaction: Transaction;
+    meta: Meta;
+    slot: string;
+    blockTime: number;
+};
 type Meta = {
-    preBalances:string[]
-    postBalances:string[]
-    preTokenBalances:TokenBalances[]
-    postTokenBalances:TokenBalances[]
-    fee:string;
-    status:Record<string,string>
-}
+    preBalances: string[];
+    postBalances: string[];
+    preTokenBalances: TokenBalances[];
+    postTokenBalances: TokenBalances[];
+    fee: string;
+    status: Record<string, string>;
+};
 type TokenBalances = {
-    owner:string;
-    mint:string;
-    uiTokenAmount:TokenAmount
-}
+    owner: string;
+    mint: string;
+    uiTokenAmount: TokenAmount;
+};
 type TokenAmount = {
-    amount:string
-    uiAmount:number
-    uiAmountString:string
-}
+    amount: string;
+    uiAmount: number;
+    uiAmountString: string;
+};
 type Transaction = {
-    message: Message
-}
+    message: Message;
+};
 
 type Message = {
-    accountKeys:AccountKeys[]
-    instructions:Instruction[]
-}
+    accountKeys: AccountKeys[];
+    instructions: Instruction[];
+};
 type AccountKeys = {
-    pubkey:string;
-    signer:string;
-    writable:boolean
-}
+    pubkey: string;
+    signer: string;
+    writable: boolean;
+};
 type Instruction = {
-    program:string;
-    parsed:IntructionParsed
-}
+    program: string;
+    parsed: IntructionParsed;
+};
 type IntructionParsed = {
-    type:string;
-    info:InfoInstruction
-}
+    type: string;
+    info: InfoInstruction;
+};
 type InfoInstruction = {
-    destination:string;
-    source:string
-}
+    destination: string;
+    source: string;
+};

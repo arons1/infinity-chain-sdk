@@ -3,5 +3,5 @@ import { encode } from './encode';
 
 export default {
     pull,
-    encode
+    encode,
 };
