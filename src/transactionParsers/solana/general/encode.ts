@@ -63,7 +63,6 @@ export const encode = ({
         const from = outToken == 0 && otherSender ? otherSender.owner : account
         const to = outToken == 0 || otherSender == undefined ? account : otherSender.owner
         const mint = preBalance.mint
-        var confirm = 6;
         const tokenTransfer = {
             from,
             to,
