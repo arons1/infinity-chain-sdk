@@ -50,6 +50,6 @@ export const encode = ({
         vOut:vOuts,
         confirmations:transaction.confirmations,
         isError:transaction.isError != 0,
-        type:"utxo"
+        type:transaction.tokenTransfers != undefined ? "evm" : "utxo"
     };
 };

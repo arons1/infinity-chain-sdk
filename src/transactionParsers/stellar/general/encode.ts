@@ -162,7 +162,7 @@ export const encode = ({
         fee,
         confirmations:"6",
         isError:false,
-        type:"utxo",
+        type:"stellar",
         tokenTransfers
     };
 };
