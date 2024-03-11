@@ -10,8 +10,9 @@ export const pull = ({
 }: GeneralApiParams) => {
     const selected = PROVIDER[chainId as number] as string;
     if (!selected) throw new Error('Not integrated chain');
-    return (
-        PROVIDER[chainId as number] +
+    return {
+        method:"GET",
+        url:PROVIDER[chainId as number] +
         '/api?module=account&apikey=' +
         apiKey +
         '&action=txlist&address=' +
@@ -20,5 +21,5 @@ export const pull = ({
         page +
         '&offset=' +
         limit
-    );
+    }
 };

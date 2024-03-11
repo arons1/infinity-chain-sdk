@@ -5,6 +5,16 @@ export const pull = ({
     limit,
     cursor
 }: GeneralApiParams) => {
-    return `https://horizon.stellar.org/accounts/${address}/operations?join=transactions&limit=${limit}&order=desc${cursor != undefined ? "&cursor="+cursor : ""}`;
+    return {
+        url:`https://s1.ripple.com:51234`,
+        method:"POST",
+        body:{
+            market:cursor,
+            "command": "account_tx",
+            "account": address,
+            "limit": limit,
+            "forward": false
+        }
+    };
 };
 

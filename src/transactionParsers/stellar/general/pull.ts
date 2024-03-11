@@ -5,7 +5,10 @@ export const pull = ({
     limit,
     cursor
 }: GeneralApiParams) => {
-    return `https://horizon.stellar.org/accounts/${address}/operations?join=transactions&limit=${limit}&order=desc${cursor != undefined ? "&cursor="+cursor : ""}`;
+    return {
+        method:"GET",
+        url:`https://horizon.stellar.org/accounts/${address}/operations?join=transactions&limit=${limit}&order=desc${cursor != undefined ? "&cursor="+cursor : ""}`
+    };
 };
 
 export const pullEffects = ({
@@ -13,5 +16,8 @@ export const pullEffects = ({
     limit,
     cursor
 }: GeneralApiParams) => {
-    return `https://horizon.stellar.org/accounts/${address}/effects?limit=${limit}&order=desc${cursor != undefined ? "&cursor="+cursor : ""}`
+    return {
+        method:"GET",
+        url:`https://horizon.stellar.org/accounts/${address}/effects?limit=${limit}&order=desc${cursor != undefined ? "&cursor="+cursor : ""}`
+    }
 }

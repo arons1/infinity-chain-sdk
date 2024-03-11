@@ -19,7 +19,13 @@ export const pull = ({
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     if (!selected) throw new Error(CoinNotIntegrated);
     if(coinId == "eth"){
-        return selected + "/api/v2/address/" + address + "?details=txs&page=" + page+"&pageSize="+limit
+        return {
+            url:selected + "/api/v2/address/" + address + "?details=txs&page=" + page+"&pageSize="+limit,
+            method:"GET"
+        }
     }
-    return selected + "/api/xpub/" + address + "?details=txs&page=" + page+"&pageSize="+limit;
+    return {
+        url:selected + "/api/xpub/" + address + "?details=txs&page=" + page+"&pageSize="+limit,
+        method:"GET"
+    }
 };

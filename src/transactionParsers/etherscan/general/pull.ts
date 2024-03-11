@@ -1,5 +1,5 @@
+import { GeneralApiParams } from '../../types';
 import { PROVIDER } from '../constants';
-import { GeneralApiParams } from '../../../types';
 
 export const pull = ({
     chainId,
@@ -8,10 +8,10 @@ export const pull = ({
     page,
     limit,
 }: GeneralApiParams) => {
-    const selected = PROVIDER[chainId] as string;
+    const selected = PROVIDER[chainId as number] as string;
     if (!selected) throw new Error('Not integrated chain');
-    return (
-        PROVIDER[chainId] +
+    return {
+        url:selected +
         '/api?module=account&apikey=' +
         apiKey +
         '&action=txlist&address=' +
@@ -19,6 +19,7 @@ export const pull = ({
         '&startblock=1&endblock=99999999999999999999999&sort=desc&page=' +
         page +
         '&offset=' +
-        limit
-    );
+        limit,
+        method:"GET"
+    }
 };
