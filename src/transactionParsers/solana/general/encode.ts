@@ -61,16 +61,15 @@ export const encode = ({
             a => a.owner == account && a.mint == preBalance.mint,
         )[0];
         if (postBalance == undefined) continue;
-        var value = new BigNumber(postBalance.uiTokenAmount.amount)
-            .minus(preBalance.uiTokenAmount.amount)
-            .toNumber();
+        var value = new BigNumber(postBalance.uiTokenAmount.amount).minus(
+            preBalance.uiTokenAmount.amount,
+        );
         var outToken = 0;
-        if (value < 0) {
+        if (!value.isGreaterThanOrEqualTo(0)) {
             outToken = 1;
-            value *= -1;
+            value = value.multipliedBy(-1);
         }
 
-        value = new BigNumber(value).toString(10);
         var otherSender = transaction.details.meta.postTokenBalances.filter(
             a => a.owner != account && a.mint == preBalance.mint,
         )[0];
@@ -80,18 +79,18 @@ export const encode = ({
                 ? account
                 : otherSender.owner;
         const mint = preBalance.mint;
-        const tokenTransfer = {
+        const tokenTransfer: TokenTransfer = {
             from,
             to,
-            value,
+            value: value.toString(10),
             contractAddress: mint,
-        } as TokenTransfer;
+        };
 
         tokenTransfers.push(tokenTransfer);
     }
 
     var value = new BigNumber(balanceBefore).minus(balanceAfter);
-    if (value < 0) {
+    if (!value.isGreaterThanOrEqualTo(0)) {
         value = value.multipliedBy(-1);
         if (out == 1) {
             out = 0;
@@ -134,7 +133,7 @@ export const encode = ({
         hash,
         from,
         to,
-        value,
+        value: value.toString(10),
         fee,
         confirmations,
         tokenTransfers,
