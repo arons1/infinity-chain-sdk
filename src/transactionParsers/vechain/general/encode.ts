@@ -5,17 +5,24 @@ import BigNumber from 'bignumber.js';
 
 export const encode = ({
     transaction,
-    account
+    account,
+    tokens
 }: {
     transaction: GeneralTransactionEncode;
     account:string;
+    tokens:Record<string,string>
 }): Transaction => {
     const valueSum =  transaction.clauses.reduce((last,current) => current.to == account.toLowerCase() ? new BigNumber(last).plus(current.value) :  new BigNumber(last).minus(current.value), new BigNumber(0))
+    let contractAddress
+    if(transaction.symbol){
+        contractAddress = tokens[transaction.symbol]
+    }
     return {
         blockNumber: transaction.blockRef,
         timeStamp: new Date(
             transaction.meta.blockTimestamp,
         ).toISOString(),
+        contractAddress,
         hash: transaction.txID,
         from: transaction.origin,
         to: transaction.clauses.find(a => transaction.origin == account.toLowerCase() ? a.to != account.toLowerCase() : a.to != undefined)?.to ?? account.toLowerCase(),

@@ -5,6 +5,7 @@ export type GeneralTransactionEncode = {
     meta:Meta;
     clauses:Clauses[]
     receipt:Receipt;
+    symbol?:string;
     transfers:{
         meta:Meta;
         recipient:Receipt

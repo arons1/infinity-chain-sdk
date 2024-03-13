@@ -14,6 +14,7 @@ export type Transaction = {
     vIn?: vIn[];
     vOut?: vOut[];
     type: string;
+    contractAddress?:string
 };
 export type TokenTransfer = {
     contractAddress?: string;
