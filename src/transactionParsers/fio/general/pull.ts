@@ -6,8 +6,8 @@ export const pull = ({ address, page, limit }: GeneralApiParams) => {
         method: 'POST',
         body:{
             "account_name":address,
-            "pos":page,
-            "offset":(page as number)+(limit as number)
+            "pos":(page as number)-(limit as number),
+            "offset":page
         }
     };
 };
