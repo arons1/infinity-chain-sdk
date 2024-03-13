@@ -19,7 +19,7 @@ export const encode = ({
         hash: transaction.txID,
         from: transaction.origin,
         to: transaction.clauses.find(a => transaction.origin == account.toLowerCase() ? a.to != account.toLowerCase() : a.to != undefined)?.to ?? account.toLowerCase(),
-        value: transaction.receipt.reverted ? "0" : valueSum.isGreaterThanOrEqualTo(0) ? valueSum.toString(10) : valueSum.multipliedBy(-1).toString(10),
+        value: valueSum.toString(10),
         fee:transaction.receipt.gasPayer != account.toLowerCase() ? new BigNumber(0).toString(10) : new BigNumber(transaction.receipt.paid).toString(10),
         isError:transaction.receipt.reverted,
         confirmations: transaction.receipt.reverted ? "-1" : transaction?.meta?.blockID != undefined ? "6" : "0",
