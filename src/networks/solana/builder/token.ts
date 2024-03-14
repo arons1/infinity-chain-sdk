@@ -1,10 +1,8 @@
 import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction } from "@solana/spl-token";
-import { checkIfAccountExists } from "../accountExists";
 import { AddAssociatedCreationParams, TokenTransactionParams } from "./types"
 import { PublicKey } from "@solana/web3.js";
-import { getMinimumBalanceForRent } from "../estimateFee";
 import BigNumber from "bignumber.js";
-import { memoInstruction } from ".";
+import { checkIfAccountExists, getMinimumBalanceForRent, memoInstruction } from "../utils";
 
 export const addAssociatedCreation = async ({
     instructions,
