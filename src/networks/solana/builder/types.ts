@@ -17,10 +17,7 @@ export type TransactionBuilderParams = {
     web3:any
 }
 
-export type ResultBlockHash = {
-    blockhash:string;
-    lastValidBlockHeight:string;
-}
+
 export type CurrencyTransactionParams = {
     memo:string
     keyPair:any
