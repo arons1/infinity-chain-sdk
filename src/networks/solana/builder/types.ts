@@ -13,11 +13,19 @@ export type TransactionBuilderParams = {
     keyPair: any;
     mintToken?: string;
     destination: string;
-    publicKey: PublicKey;
     decimalsToken?: number;
     amount: string;
     web3: any;
 };
+export type RawTransactionParams = {
+    memo: string;
+    publicKey: PublicKey;
+    mintToken?: string;
+    destination: string;
+    decimalsToken?: number;
+    amount: string;
+    web3: any;
+}
 
 export type CurrencyTransactionParams = {
     memo: string;

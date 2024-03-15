@@ -1,11 +1,11 @@
-import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
-import { TransactionBuilderParams } from './types';
+import { TransactionMessage, VersionedTransaction, PublicKey } from '@solana/web3.js';
+import { RawTransactionParams, TransactionBuilderParams } from './types';
 import { tokenTransaction } from './token';
 import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 
 export const buildTransaction = async (props: TransactionBuilderParams) => {
-    const transactionPay = await rawTransaction(props);
+    const transactionPay = await rawTransaction({...props,publicKey:props.keyPair.publicKey});
     transactionPay.sign([props.keyPair]);
     return transactionPay.serialize();
 };
@@ -18,7 +18,7 @@ export const rawTransaction = async ({
     publicKey,
     amount,
     web3,
-}: TransactionBuilderParams) => {
+}: RawTransactionParams) => {
     var instructions: any[] = [];
     const { blockhash } = await getLastBlockhash(web3);
     if (mintToken != undefined) {
