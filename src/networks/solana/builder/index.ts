@@ -1,4 +1,4 @@
-import { TransactionMessage, VersionedTransaction, PublicKey } from '@solana/web3.js';
+import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
 import { RawTransactionParams, TransactionBuilderParams } from './types';
 import { tokenTransaction } from './token';
 import { currencyTransaction } from './currency';
