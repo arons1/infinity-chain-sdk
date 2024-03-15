@@ -5,3 +5,4 @@ export const PROVIDER_TREZOR: Record<string, string> = {
     groestlcoin: 'https://blockbook.groestlcoin.org',
     ltc: 'https://ltc1.trezor.io',
 };
+export const SLEEP_BETWEEN_CALLS = 500
