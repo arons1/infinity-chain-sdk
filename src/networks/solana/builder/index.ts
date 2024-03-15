@@ -1,20 +1,21 @@
-import {
-    PublicKey,
-    TransactionMessage,
-    VersionedTransaction,
-} from '@solana/web3.js';
+import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
 import { TransactionBuilderParams } from './types';
 import { tokenTransaction } from './token';
 import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 
-export const buildTransaction = async ({
+export const buildTransaction = async (props: TransactionBuilderParams) => {
+    const transactionPay = await rawTransaction(props);
+    transactionPay.sign([props.keyPair]);
+    return transactionPay.serialize();
+};
+
+export const rawTransaction = async ({
     memo = '',
-    keyPair,
     mintToken,
     decimalsToken,
     destination,
-    account,
+    publicKey,
     amount,
     web3,
 }: TransactionBuilderParams) => {
@@ -23,11 +24,10 @@ export const buildTransaction = async ({
     if (mintToken != undefined) {
         instructions = await tokenTransaction({
             memo,
-            keyPair,
             mintToken,
             decimalsToken: decimalsToken as number,
             destination,
-            account,
+            publicKey,
             amount,
             web3,
         });
@@ -35,16 +35,14 @@ export const buildTransaction = async ({
         instructions = await currencyTransaction({
             memo,
             amount,
-            keyPair,
+            publicKey,
             destination,
         });
     }
     const messageV0 = new TransactionMessage({
-        payerKey: new PublicKey(account),
+        payerKey: publicKey,
         recentBlockhash: blockhash,
         instructions: instructions,
     }).compileToV0Message();
-    const transactionPay = new VersionedTransaction(messageV0);
-    transactionPay.sign([keyPair]);
-    return transactionPay.serialize();
+    return new VersionedTransaction(messageV0);
 };

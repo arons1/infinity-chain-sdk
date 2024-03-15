@@ -17,21 +17,21 @@ export const addAssociatedCreation = async ({
     instructions,
     mintToken,
     destination,
-    account,
+    publicKey,
     web3,
 }: AddAssociatedCreationParams) => {
     const [checkSender, associatedTokenSender] = await checkIfAccountExists({
         mintToken,
-        account,
+        publicKey,
         web3,
     });
     var extraFee = 0;
     var iterations = 0;
     if (!checkSender) {
         const inst = createAssociatedTokenAccountInstruction(
-            new PublicKey(account),
+            publicKey,
             associatedTokenSender,
-            new PublicKey(account),
+            publicKey,
             new PublicKey(mintToken),
             TOKEN_PROGRAM_ID,
             ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -43,13 +43,13 @@ export const addAssociatedCreation = async ({
     const [checkReceiver, associatedTokenReceiver] = await checkIfAccountExists(
         {
             mintToken,
-            account,
+            publicKey,
             web3,
         },
     );
     if (!checkReceiver) {
         const inst = createAssociatedTokenAccountInstruction(
-            new PublicKey(account),
+            publicKey,
             associatedTokenReceiver,
             new PublicKey(destination),
             new PublicKey(mintToken),
@@ -71,10 +71,9 @@ export const addAssociatedCreation = async ({
 };
 export const tokenTransaction = async ({
     memo = '',
-    keyPair,
     mintToken,
     destination,
-    account,
+    publicKey,
     decimalsToken,
     amount,
     web3,
@@ -85,14 +84,14 @@ export const tokenTransaction = async ({
             instructions,
             mintToken,
             destination,
-            account,
+            publicKey,
             web3,
         });
     const transactionSpl = createTransferCheckedInstruction(
         senderTokenAccount, // from
         new PublicKey(mintToken), // mint
         receiverTokenAccount, // to
-        keyPair.publicKey, // from's owner
+        publicKey, // from's owner
         new BigNumber(amount).toNumber(), // amount
         decimalsToken, // decimals
     );

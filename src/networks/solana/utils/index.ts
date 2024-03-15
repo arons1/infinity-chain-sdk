@@ -13,16 +13,16 @@ export const getLastBlockhash = async (web3: any): Promise<ResultBlockHash> => {
 };
 export const checkIfAccountExists = async ({
     mintToken,
-    account,
+    publicKey,
     web3,
 }: {
     mintToken: string;
-    account: string;
+    publicKey: PublicKey;
     web3: any;
 }): Promise<[boolean, PublicKey]> => {
     const associatedToken = await getAssociatedTokenAddress(
         new PublicKey(mintToken),
-        new PublicKey(account),
+        publicKey,
         false,
         TOKEN_PROGRAM_ID,
         ASSOCIATED_TOKEN_PROGRAM_ID,

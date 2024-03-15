@@ -5,13 +5,13 @@ import { memoInstruction } from '../utils';
 
 export const currencyTransaction = async ({
     memo = '',
-    keyPair,
+    publicKey,
     destination,
     amount,
 }: CurrencyTransactionParams) => {
     const instructions: any = [
         SystemProgram.transfer({
-            fromPubkey: keyPair.publicKey,
+            fromPubkey: publicKey,
             toPubkey: new PublicKey(destination),
             lamports: new BigNumber(amount).toNumber(),
         }),

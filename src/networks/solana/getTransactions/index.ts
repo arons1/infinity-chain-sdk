@@ -11,7 +11,6 @@ import {
     HashesDetails,
     HashesResult,
     PaginationData,
-    ResultBatch,
     ResultSignature,
 } from './types';
 import { create } from 'superstruct';
