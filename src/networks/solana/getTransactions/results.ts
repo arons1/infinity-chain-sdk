@@ -11,10 +11,10 @@ import {
     create,
     unknown,
     any,
-    Struct
+    Struct,
 } from 'superstruct';
 
-function createRpcResult < T, U > (result: Struct < T, U > ) {
+function createRpcResult<T, U>(result: Struct<T, U>) {
     return union([
         pick({
             jsonrpc: literal('2.0'),
@@ -35,7 +35,7 @@ function createRpcResult < T, U > (result: Struct < T, U > ) {
 const TransactionErrorResult = nullable(union([pick({}), string()]));
 const UnknownRpcResult = createRpcResult(unknown());
 
-function jsonRpcResult < T, U > (schema: Struct < T, U > ) {
+function jsonRpcResult<T, U>(schema: Struct<T, U>) {
     return coerce(createRpcResult(schema), UnknownRpcResult, value => {
         if ('error' in value) {
             return value;

@@ -1,4 +1,4 @@
 export type ResultBlockHash = {
-    blockhash:string;
-    lastValidBlockHeight:string;
-}
+    blockhash: string;
+    lastValidBlockHeight: string;
+};
