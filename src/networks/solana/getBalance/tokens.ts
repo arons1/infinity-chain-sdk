@@ -24,8 +24,8 @@ export const getAccountBalances = ({web3,address}:GetAccountsParams) : Promise<T
       try{
         const accounts = await getAccounts({web3,address})
         const result:Record<string,number> = {}
-        accounts.map((account:any, i:number) => {
-            const parsedAccountInfo:any = account.account.data;
+        accounts.map((account) => {
+            const parsedAccountInfo = account.account.data;
             const mintAddress:string = parsedAccountInfo["parsed"]["info"]["mint"];
             const tokenBalance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
             result[mintAddress] = tokenBalance
