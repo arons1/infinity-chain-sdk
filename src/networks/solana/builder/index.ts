@@ -5,7 +5,10 @@ import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 
 export const buildTransaction = async (props: TransactionBuilderParams) => {
-    const transactionPay = await rawTransaction({...props,publicKey:props.keyPair.publicKey});
+    const transactionPay = await rawTransaction({
+        ...props,
+        publicKey: props.keyPair.publicKey,
+    });
     transactionPay.sign([props.keyPair]);
     return transactionPay.serialize();
 };

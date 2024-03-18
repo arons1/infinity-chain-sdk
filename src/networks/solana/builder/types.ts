@@ -25,7 +25,7 @@ export type RawTransactionParams = {
     decimalsToken?: number;
     amount: string;
     web3: any;
-}
+};
 
 export type CurrencyTransactionParams = {
     memo: string;
