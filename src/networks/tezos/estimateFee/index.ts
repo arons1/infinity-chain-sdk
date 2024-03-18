@@ -28,15 +28,15 @@ export const estimateFee = async ({
 }:EstimateFeeParams) : Promise<string> => {
   let transferFees
   if(mintToken){
-           const operation = await buildOperations({
-              source:from,
-              destination:to,
-              value:amount,
-              mintToken,
-              idToken,
-              web3
-          })
-          transferFees = await web3.estimate.transfer(operation.toTransferParams())
+      const operation = await buildOperations({
+        source:from,
+        destination:to,
+        value:amount,
+        mintToken,
+        idToken,
+        web3
+      })
+      transferFees = await web3.estimate.transfer(operation.toTransferParams())
   }
   else{
       transferFees = await web3.estimate.transfer({ to, amount })
