@@ -4,7 +4,7 @@ import StellarSdk from 'stellar-sdk';
 
 export const assetExists = async (code:string,account:string) => {
     return new Promise((resolve) => {
-        axios(`https://horizon.stellar.org/assets?asset_issuer=${account.toUpperCase()}`)
+        axios.get(`https://horizon.stellar.org/assets?asset_issuer=${account.toUpperCase()}`)
         .then((a:AxiosResponse<AssetExistsRequest>) => {
           if(a.data && a.data._embedded && a.data._embedded.records){
             resolve(a.data._embedded.records.find(b => b.asset_code.toLowerCase() == code.toLowerCase()) != undefined)
@@ -14,6 +14,7 @@ export const assetExists = async (code:string,account:string) => {
           }
         })
         .catch(e => {
+          console.error(e)
           resolve(false)
         })
       })
