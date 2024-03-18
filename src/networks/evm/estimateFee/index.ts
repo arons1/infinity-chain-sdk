@@ -9,6 +9,7 @@ import {
     ReturnEstimate,
 } from './types';
 // @ts-ignore
+import feeAbi from '../../../core/abi/fee';
 import ERC20Abi from '../../../core/abi/erc20';
 import { getDataBSC, getGasLimitBSC } from './sendBridge';
 import { tokenHubContractAddress } from './abi_bsc';
@@ -395,3 +396,8 @@ export const estimateFeeTransfer = async ({
         }
     }
 };
+
+export const estimateL1Cost = async (web3:any,tx:TransactionEVM) => {
+    const gpo = new web3.eth.Contract(feeAbi, "0x420000000000000000000000000000000000000F");
+    return await gpo.methods.getL1Fee(tx).call();
+}

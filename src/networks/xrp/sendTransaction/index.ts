@@ -5,7 +5,6 @@ export const sendTransaction = ({
     rawTransaction,
     api
 }:SendTransactionParams):Promise<string> => {
-
       return new Promise((resolve,reject) => {
         api.send({
             command: 'submit',
