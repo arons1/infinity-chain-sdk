@@ -2,6 +2,7 @@ import { getFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import StellarSdk from 'stellar-sdk';
+import {signTransaction} from '@infinity/core/ed25519'
 
 export const preparePayment = async ({
     value,
@@ -49,7 +50,10 @@ export const preparePayment = async ({
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {
-    const payment = await preparePayment(props);
-    payment.sign(props.keyPair);
-    return payment.toEnvelope().toXDR().toString('base64');
+    const transaction = await preparePayment(props);
+    return signTransaction({
+        transaction,
+        keyPair:props.keyPair,
+        coinId:'stellar'
+    })
 };
