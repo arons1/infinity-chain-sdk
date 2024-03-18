@@ -8,3 +8,4 @@ export const CannotGetUTXO = 'Cannot get utxo';
 export const CoinNotIntegrated = 'Coin not integrated';
 export const CannotGetFeePerByte = 'Cannot get fee per byte';
 export const ErrorBuildingUTXOTransaction = 'Error building utxo transaction';
+export const InvalidAddress = 'invalid address'

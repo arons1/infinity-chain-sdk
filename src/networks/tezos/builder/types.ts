@@ -8,3 +8,12 @@ export type BuildTransactionParams = {
     idToken?:number;
     feeRatio?:number
 }
+
+export type BuildOperationsParams = {
+    source:string,
+    destination:string,
+    value:string,
+    mintToken:string,
+    idToken:number,
+    web3:any,
+}
