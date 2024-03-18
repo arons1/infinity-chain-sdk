@@ -1,14 +1,14 @@
 export type AssetExistsRequest = {
-    _embedded:{
-        records:Asset[]
-    }
-}
+    _embedded: {
+        records: Asset[];
+    };
+};
 
 export type Asset = {
-    asset_code:string;
-}
+    asset_code: string;
+};
 
 export type AccountExists = {
-    account:string
-    api:any
-}
+    account: string;
+    api: any;
+};

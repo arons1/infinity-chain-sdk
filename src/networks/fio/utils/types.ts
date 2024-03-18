@@ -1,14 +1,14 @@
 export type FIOBalance = {
-    permissions:FIOBalanceOwner[]
-}
+    permissions: FIOBalanceOwner[];
+};
 
 type FIOBalanceOwner = {
-    perm_name:string;
-    required_auth:KeyOwned
-}
+    perm_name: string;
+    required_auth: KeyOwned;
+};
 type KeyOwned = {
-    keys:Key[]
-}
+    keys: Key[];
+};
 type Key = {
-    key:string
-}
+    key: string;
+};

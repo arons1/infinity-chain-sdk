@@ -1,5 +1,5 @@
 export type FeeResult = {
-    max_fee:{
-        mode:number
-    }
-}
+    max_fee: {
+        mode: number;
+    };
+};

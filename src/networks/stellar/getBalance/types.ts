@@ -1,10 +1,10 @@
 export type ResultBalance = {
-    asset_type:string;
-    asset_issuer:string;
-    asset_code:string;
-}
+    asset_type: string;
+    asset_issuer: string;
+    asset_code: string;
+};
 
 export type GetBalanceParams = {
-    account:string;
-    api:any
-}
+    account: string;
+    api: any;
+};

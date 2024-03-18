@@ -1,4 +1,4 @@
 export type SendTransactionResult = {
-    successful:boolean;
-    hash:string
-}
+    successful: boolean;
+    hash: string;
+};
