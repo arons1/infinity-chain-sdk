@@ -67,6 +67,7 @@
     "@fioprotocol/fiosdk": "^1.8.0",
     "@solana/spl-token": "^0.4.1",
     "@solana/web3.js": "^1.91.1",
+    "@taquito/signer": "^19.1.0",
     "bignumber.js": "^9.1.2",
     "stellar-sdk": "^11.2.2"
   }
