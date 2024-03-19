@@ -1,7 +1,7 @@
 import { calculateGasPrice, getGasPrice } from '../estimateFee';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
 import { BuildTransaction } from './types';
-import { InvalidAddress,TransactionEVM } from '@infinity/core-sdk';
+import { InvalidAddress, TransactionEVM } from '@infinity/core-sdk';
 
 /* 
 buildTransaction

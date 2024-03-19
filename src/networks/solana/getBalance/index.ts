@@ -7,9 +7,9 @@ export const getBalance = async ({
 }: {
     web3: any;
     address: string;
-})  : Promise<CurrencyBalanceResult> => {
+}): Promise<CurrencyBalanceResult> => {
     return {
-        balance:await web3.getBalance(new PublicKey(address))
-    } as CurrencyBalanceResult
+        balance: await web3.getBalance(new PublicKey(address)),
+    } as CurrencyBalanceResult;
 };
 export * from './tokens';

@@ -17,16 +17,16 @@ export type Transaction = {
     contractAddress?: string;
 };
 export type BalanceResult = {
-    address?:string;
-    value:string;
-    code?:string;
-    id?:number;
-    freeze?:string;
-}
+    address?: string;
+    value: string;
+    code?: string;
+    id?: number;
+    freeze?: string;
+};
 export type CurrencyBalanceResult = {
-    balance:string;
-    available?:string;
-}
+    balance: string;
+    available?: string;
+};
 export type TokenTransfer = {
     contractAddress?: string;
     tokenName?: string;

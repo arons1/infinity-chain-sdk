@@ -31,15 +31,15 @@ const getAccountInfo = ({
 export const getAccountBalances = async ({
     trezorWebsocket,
     extendedPublicKeys,
-}: GetAccountBalancesParams): Promise<Record<string,BalanceResult[]>> => {
-    const result:Record<string,BalanceResult[]> = {}
+}: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> => {
+    const result: Record<string, BalanceResult[]> = {};
     for (let address of extendedPublicKeys) {
         const balances = await getAccountInfo({ address, trezorWebsocket });
         result[address] = [
             {
-                value:balances
-            }
-        ]
+                value: balances,
+            },
+        ];
     }
     return result;
 };
@@ -47,13 +47,13 @@ export const getAccountBalances = async ({
 export const getBalance = async ({
     trezorWebsocket,
     extendedPublicKeys,
-}: GetAccountBalancesParams) : Promise<CurrencyBalanceResult> => {
-    var balance = new BigNumber(0)
+}: GetAccountBalancesParams): Promise<CurrencyBalanceResult> => {
+    var balance = new BigNumber(0);
     for (let address of extendedPublicKeys) {
         const balances = await getAccountInfo({ address, trezorWebsocket });
-        balance = balance.plus(balances)
+        balance = balance.plus(balances);
     }
     return {
-        balance:balance.toString(10)
+        balance: balance.toString(10),
     };
 };

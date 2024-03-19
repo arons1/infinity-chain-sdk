@@ -77,7 +77,7 @@ const estimateTokenFee = async ({
 export const calculateGasPrice = async ({
     transaction,
     gasPrice,
-    web3
+    web3,
 }: CalculateGasPrice): Promise<TransactionEVM> => {
     transaction.gasPrice = web3.utils.toHex(gasPrice);
     return transaction;
@@ -169,9 +169,7 @@ export const getGasLimit = async ({
         if (!isValidAddress(tokenContract as string))
             throw new Error(InvalidContractAddress);
         if (!contract) throw new Error(InvalidTokenContract);
-        const data = contract.methods
-            .transfer(destination, amount)
-            .encodeABI();
+        const data = contract.methods.transfer(destination, amount).encodeABI();
         const estimateGas = await web3.eth.estimateGas({
             from: source,
             to: tokenContract,
@@ -193,7 +191,6 @@ export const getGasLimit = async ({
             data: '',
         };
     }
-
 };
 
 /* 
@@ -239,5 +236,4 @@ export const estimateFeeTransfer = async ({
             priorityFee,
         });
     }
-
 };

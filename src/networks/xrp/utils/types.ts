@@ -1,4 +1,4 @@
-import { XrplClient } from "xrpl-client";
+import { XrplClient } from 'xrpl-client';
 
 export type AccountExists = {
     account: string;

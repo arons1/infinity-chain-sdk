@@ -2,7 +2,7 @@ import { getFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import StellarSdk from 'stellar-sdk';
-import {signTransaction} from '@infinity/core/ed25519'
+import { signTransaction } from '@infinity/core/ed25519';
 
 export const preparePayment = async ({
     value,
@@ -53,7 +53,7 @@ export const buildTransaction = async (
     const transaction = await preparePayment(props);
     return signTransaction({
         transaction,
-        keyPair:props.keyPair,
-        coinId:'stellar'
-    })
+        keyPair: props.keyPair,
+        coinId: 'stellar',
+    });
 };

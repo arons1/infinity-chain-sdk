@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { FeeResult } from './types';
 
-export const estimateFee = () : Promise<number> => {
+export const estimateFee = (): Promise<number> => {
     return new Promise((resolve, reject) => {
         axios
             .get('https://horizon.stellar.org/fee_stats')
