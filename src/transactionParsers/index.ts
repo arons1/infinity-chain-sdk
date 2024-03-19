@@ -1,15 +1,8 @@
-import etherscanProvider from './etherscan';
-import kccProvider from './kcc';
-
-export enum PROVIDERS {
-    ETHERSCAN,
-    KCC,
-}
-export const transactionParser = ({ type }: { type: PROVIDERS }) => {
-    if (type == PROVIDERS.ETHERSCAN) {
-        return etherscanProvider;
-    } else if (type == PROVIDERS.KCC) {
-        return kccProvider;
-    }
-    return;
-};
+export * as etherscan from './etherscan';
+export * as kcc from './kcc';
+export * as fio from './fio';
+export * as solana from './solana';
+export * as stellar from './stellar';
+export * as xrp from './xrp';
+export * as trezor from './trezor';
+export * as vechain from './vechain';
