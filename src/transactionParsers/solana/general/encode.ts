@@ -138,6 +138,6 @@ export const encode = ({
         confirmations,
         tokenTransfers,
         isError: transaction.details.meta.status.Err != undefined,
-        type: 'xrp',
+        type: 'solana',
     };
 };
