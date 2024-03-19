@@ -1,3 +1,5 @@
+import { TransactionEVM } from '@infinity/core-sdk';
+import { UTXOResult } from './utxo/getUTXO/types';
 export type Transaction = {
     blockNumber: string;
     timeStamp: string;
@@ -16,6 +18,17 @@ export type Transaction = {
     type: string;
     contractAddress?: string;
 };
+export type EstimateFeeResult = {
+    fee:string;
+    transaction?:TransactionEVM;
+    feePerByte?: {
+        low: string;
+        high: string;
+    };
+    utxos?: UTXOResult[];
+    utxosUsed?: UTXOResult[];
+    transactionSize?: string;
+}
 export type BalanceResult = {
     address?: string;
     value: string;

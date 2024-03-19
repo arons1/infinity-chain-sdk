@@ -1,5 +1,5 @@
 import { PROVIDER_TREZOR } from '../../../constants';
-import { EstimateFeeParams, EstimateFeeResult } from './types';
+import { EstimateFeeParams } from './types';
 import {
     CannotGetUTXO,
     CoinNotIntegrated,
@@ -11,6 +11,7 @@ import BigNumber from 'bignumber.js';
 import { DUST } from '../constant';
 import { UTXOResult } from '../getUTXO/types';
 import { getUTXO } from '../getUTXO';
+import { EstimateFeeResult } from '../../types';
 
 export const getFeePerByte = ({
     trezorWebsocket,
@@ -63,6 +64,7 @@ export const estimateFee = async ({
     coinId,
     amount,
     trezorWebsocket,
+    feeRatio = 0.5
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if (extendedPublicKeys == undefined || extendedPublicKeys.length == 0)
         throw new Error(MissingExtendedKey);
@@ -94,7 +96,7 @@ export const estimateFee = async ({
         }
     }
     // 3º Get the fee of inputs
-    const feeInput = utxosUsed.reduce((v, p) => {
+    const feeInput = utxosUsed.reduce((p, v) => {
         if (v.protocol == 84) return new BigNumber(68).plus(p);
         return new BigNumber(148).plus(p);
     }, new BigNumber(0));
@@ -114,10 +116,13 @@ export const estimateFee = async ({
         console.error(e);
         throw new Error(CannotGetFeePerByte);
     }
+    const selectedFeePerByteLow = new BigNumber(feePerByte.low).plus(feePerByte.high).multipliedBy(feeRatio)
+
     return {
         feePerByte,
         utxos,
         utxosUsed,
         transactionSize: feeInput.plus(feeOutput).toString(10),
+        fee:feeInput.plus(feeOutput).multipliedBy(selectedFeePerByteLow).toString(10)
     };
 };

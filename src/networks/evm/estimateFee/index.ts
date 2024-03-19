@@ -27,6 +27,7 @@ import { InvalidAddress } from '@infinity/core-sdk';
 import { isValidNumber } from '../../../utils';
 import { SupportedChains } from '../general/contants';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
+import { EstimateFeeResult } from '../../types';
 /* 
 estimateBridgeFee
     Returns BSC bridge to BC estimate cost
@@ -354,13 +355,14 @@ export const estimateFeeTransfer = async ({
     chainId,
     feeRatio = 0.5,
     priorityFee,
-}: EstimateGasParams): Promise<ReturnEstimate> => {
+}: EstimateGasParams): Promise<EstimateFeeResult> => {
     const isBridge = destination.startsWith('bnb');
     if (!isValidAddress(source)) throw new Error(InvalidAddress);
     if (!SupportedChains.includes(chainId)) throw new Error(InvalidChainError);
+    let resultEstimate;
     if (isBridge) {
         if (chainId != 56 && chainId != 96) throw new Error(InvalidChainError);
-        return await estimateBridgeFee({
+        resultEstimate = await estimateBridgeFee({
             amount,
             web3,
             source,
@@ -373,7 +375,7 @@ export const estimateFeeTransfer = async ({
         if (tokenContract.length > 0) {
             if (!isValidAddress(tokenContract))
                 throw new Error(InvalidContractAddress);
-            return await estimateTokenFee({
+                resultEstimate = await estimateTokenFee({
                 web3,
                 source,
                 tokenContract,
@@ -384,7 +386,7 @@ export const estimateFeeTransfer = async ({
                 priorityFee,
             });
         } else {
-            return await estimateCurrencyFee({
+            resultEstimate = await estimateCurrencyFee({
                 web3,
                 source,
                 destination,
@@ -394,6 +396,13 @@ export const estimateFeeTransfer = async ({
                 priorityFee,
             });
         }
+    }
+    var fee = new BigNumber(resultEstimate.estimateGas).multipliedBy(resultEstimate.gasPrice as string).toString(10)
+    if(chainId == 10)
+        fee = new BigNumber(await estimateL1Cost(web3,resultEstimate.transaction)).plus(fee).toString(10)
+    return {
+        fee,
+        transaction:resultEstimate.transaction
     }
 };
 

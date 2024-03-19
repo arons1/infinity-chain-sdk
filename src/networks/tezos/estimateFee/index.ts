@@ -3,6 +3,7 @@ import { EstimateFeeParams } from './types';
 import { DEFAULT_FEE } from '@taquito/taquito';
 import { hasManager } from '../utils';
 import { buildOperations } from '../builder';
+import { EstimateFeeResult } from '../../types';
 
 const ADDITIONAL_FEE = 100;
 
@@ -27,7 +28,7 @@ export const estimateFee = async ({
     mintToken,
     web3,
     feeRatio,
-}: EstimateFeeParams): Promise<string> => {
+}: EstimateFeeParams):Promise<EstimateFeeResult> => {
     let transferFees;
     if (mintToken) {
         const operation = await buildOperations({
@@ -48,5 +49,7 @@ export const estimateFee = async ({
         transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
     );
     estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
-    return estimatedBaseFee.plus(await feeReveal(from, web3)).toString(10);
+    return {
+        fee:estimatedBaseFee.plus(await feeReveal(from, web3)).toString(10)
+    };
 };

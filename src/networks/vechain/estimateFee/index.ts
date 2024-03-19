@@ -17,6 +17,8 @@ import {
 import { InvalidAddress } from '@infinity/core-sdk';
 import { isValidNumber } from '../../../utils';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
+import BigNumber from 'bignumber.js';
+import { EstimateFeeResult } from '../../types';
 
 /* 
 estimateTokenFee
@@ -212,12 +214,13 @@ export const estimateFeeTransfer = async ({
     amount = '0',
     feeRatio = 0.5,
     priorityFee,
-}: EstimateGasParams): Promise<ReturnEstimate> => {
+}: EstimateGasParams): Promise<EstimateFeeResult> => {
     if (!isValidAddress(destination)) throw new Error(InvalidAddress);
+    let resultEstimate
     if (tokenContract.length > 0) {
         if (!isValidAddress(tokenContract))
             throw new Error(InvalidContractAddress);
-        return await estimateTokenFee({
+        resultEstimate =  await estimateTokenFee({
             web3,
             source,
             tokenContract,
@@ -227,7 +230,7 @@ export const estimateFeeTransfer = async ({
             priorityFee,
         });
     } else {
-        return await estimateCurrencyFee({
+        resultEstimate = await estimateCurrencyFee({
             web3,
             source,
             destination,
@@ -235,5 +238,9 @@ export const estimateFeeTransfer = async ({
             feeRatio,
             priorityFee,
         });
+    }
+    return {
+        fee:new BigNumber(resultEstimate.estimateGas).multipliedBy(resultEstimate.gasPrice as string).toString(10),
+        transaction:resultEstimate.transaction
     }
 };
