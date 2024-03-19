@@ -11,4 +11,5 @@ export type BuildParameters = {
     memo: string;
     changeIndex?: number;
     utxos?: UTXOResult[];
+    feeRatio: number;
 };

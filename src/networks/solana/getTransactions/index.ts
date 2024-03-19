@@ -56,10 +56,10 @@ export const getTransactions = async ({
         for (let i = 0; i < pendingTransactions.length; i += LIMIT_BATCH) {
             const hashesPending = pendingTransactions.slice(i, i + LIMIT_BATCH);
             const detailsTransactions: ParsedTransactionWithMeta[] =
-                await web3.getParsedTransactions(hashesPending, {
+                (await web3.getParsedTransactions(hashesPending, {
                     maxSupportedTransactionVersion: 0,
                     commitment: 'confirmed',
-                });
+                })) as ParsedTransactionWithMeta[];
             transactionsRes = [
                 ...transactionsRes,
                 ...detailsTransactions.filter(a => a != undefined),

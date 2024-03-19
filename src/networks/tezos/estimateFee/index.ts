@@ -44,7 +44,10 @@ export const estimateFee = async ({
             operation.toTransferParams(),
         );
     } else {
-        transferFees = await web3.estimate.transfer({ to, amount });
+        transferFees = await web3.estimate.transfer({
+            to,
+            amount: new BigNumber(amount).toNumber(),
+        });
     }
     var estimatedBaseFee = new BigNumber(
         transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,

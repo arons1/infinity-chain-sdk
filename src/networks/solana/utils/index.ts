@@ -8,7 +8,9 @@ import {
 } from '@solana/spl-token';
 import { MEMO_PROGRAM_ID } from '../constants';
 
-export const getLastBlockhash = async (web3: Connection): Promise<ResultBlockHash> => {
+export const getLastBlockhash = async (
+    web3: Connection,
+): Promise<ResultBlockHash> => {
     return (await web3.getLatestBlockhash()) as ResultBlockHash;
 };
 export const checkIfAccountExists = async ({
@@ -34,7 +36,10 @@ export const checkIfAccountExists = async ({
         return [false, associatedToken];
     }
 };
-export const getMinimumBalanceForRent = async (web3: Connection, isToken: boolean) => {
+export const getMinimumBalanceForRent = async (
+    web3: Connection,
+    isToken: boolean,
+) => {
     try {
         return await web3.getMinimumBalanceForRentExemption(isToken ? 165 : 0);
     } catch (e) {

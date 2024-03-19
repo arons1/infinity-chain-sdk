@@ -1,8 +1,9 @@
 import { GeneralApiParams } from '../../types';
+import { PROVIDER } from '../constants';
 
 export const pull = ({ address, limit, cursor }: GeneralApiParams) => {
     return {
-        url: `https://s1.ripple.com:51234`,
+        url: PROVIDER,
         method: 'POST',
         body: {
             market: cursor,

@@ -1,4 +1,9 @@
-import { AccountInfo, Connection, ParsedAccountData, PublicKey } from '@solana/web3.js';
+import {
+    AccountInfo,
+    Connection,
+    ParsedAccountData,
+    PublicKey,
+} from '@solana/web3.js';
 
 export type GetAccountsParams = {
     web3: Connection;

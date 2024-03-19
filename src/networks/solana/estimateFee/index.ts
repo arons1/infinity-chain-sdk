@@ -14,7 +14,7 @@ export const estimateFee = async ({
                     (transaction as VersionedTransaction).message,
                     'confirmed',
                 )
-            ).value,
+            ).value?.toString(10),
         };
     else
         return {

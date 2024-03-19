@@ -1,12 +1,11 @@
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import { PROVIDER_INTERNAL } from '../constants';
 
-export const pull = ({ chainId, address, page, limit }: GeneralApiParams) => {
-    const selected = PROVIDER[chainId as number] as string;
-    if (!selected) throw new Error('Not integrated chain');
+export const pull = ({ address, page, limit }: GeneralApiParams) => {
     return {
         url:
-            'https://explorer.kcc.io/api/kcs/address/calltrans/' +
+            PROVIDER_INTERNAL +
+            '/api/kcs/address/calltrans/' +
             address +
             '/' +
             page +

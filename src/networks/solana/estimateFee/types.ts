@@ -1,4 +1,4 @@
-import { Transaction, VersionedTransaction,Connection } from '@solana/web3.js';
+import { Transaction, VersionedTransaction, Connection } from '@solana/web3.js';
 
 export type EstimateFeeParams = {
     transaction: VersionedTransaction | Transaction;

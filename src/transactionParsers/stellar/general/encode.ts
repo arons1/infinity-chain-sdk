@@ -24,7 +24,9 @@ export const encode = ({
                 const from = op.source_account;
                 const out = op.account == account ? 0 : 1;
                 if (from != account && op.account != account) continue;
-                var _value = new BigNumber(op.starting_balance).shiftedBy(7);
+                var _value = new BigNumber(
+                    op.starting_balance as string,
+                ).shiftedBy(7);
                 if (out == 1 && tr.source_account == account) {
                     to = op.account;
                     _value = new BigNumber(0);
@@ -45,7 +47,7 @@ export const encode = ({
                     tokenSymbol: op.selling_asset_code,
                     contractAddress: op.selling_asset_issuer,
                     value: new BigNumber(op.amount)
-                        .multipliedBy(op.price)
+                        .multipliedBy(op.price as string)
                         .shiftedBy(7)
                         .toString(10),
                     type: op.type,
@@ -73,7 +75,7 @@ export const encode = ({
                     tokenName: op.source_asset_code,
                     tokenSymbol: op.source_asset_code,
                     contractAddress: op.source_asset_issuer,
-                    value: new BigNumber(op.source_amount)
+                    value: new BigNumber(op.source_amount as string)
                         .shiftedBy(7)
                         .toString(10),
                     type: op.type,

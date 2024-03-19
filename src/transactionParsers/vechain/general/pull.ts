@@ -1,11 +1,12 @@
 import { GeneralApiParams } from '../../types';
+import { PROVIDER } from '../constants';
 
 export const pull = ({ address, page, limit }: GeneralApiParams) => {
     return {
         method: 'GET',
-        url: `https://explore.vechain.org/api/accounts/${address.toLowerCase()}/transactions?limit=${limit}${'&offset=' + (page ?? 0)}`,
+        url: `${PROVIDER}/api/accounts/${address.toLowerCase()}/transactions?limit=${limit}${'&offset=' + (page ?? 0)}`,
     };
 };
 
 export const pullTransactionInfo = (transactionHash: string) =>
-    'https://explore.vechain.org/api/transactions/' + transactionHash;
+    `${PROVIDER}/api/transactions/${transactionHash}`;

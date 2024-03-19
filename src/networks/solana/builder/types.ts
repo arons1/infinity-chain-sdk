@@ -1,4 +1,4 @@
-import { PublicKey,Connection } from '@solana/web3.js';
+import { PublicKey, Connection } from '@solana/web3.js';
 
 export type AddAssociatedCreationParams = {
     instructions: any[];

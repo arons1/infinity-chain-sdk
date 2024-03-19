@@ -19,7 +19,7 @@ export type Transaction = {
     contractAddress?: string;
 };
 export type EstimateFeeResult = {
-    fee: string;
+    fee?: string;
     transaction?: TransactionEVM;
     feePerByte?: {
         low: string;

@@ -1,26 +1,6 @@
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import { pull as pullEtherscan } from '../../etherscan/token/pull';
 
-export const pull = ({
-    chainId,
-    apiKey,
-    address,
-    page,
-    limit,
-}: GeneralApiParams) => {
-    const selected = PROVIDER[chainId as number] as string;
-    if (!selected) throw new Error('Not integrated chain');
-    return {
-        method: 'GET',
-        url:
-            selected +
-            '/api?module=account&apikey=' +
-            apiKey +
-            '&action=tokentx&address=' +
-            address +
-            '&startblock=1&endblock=99999999999999999999999&sort=desc&page=' +
-            page +
-            '&offset=' +
-            limit,
-    };
+export const pull = (props: GeneralApiParams) => {
+    return pullEtherscan({ ...props, chainId: 321 });
 };

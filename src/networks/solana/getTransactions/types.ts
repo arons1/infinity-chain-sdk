@@ -11,7 +11,7 @@ export type GetAccountsTransactionsParams = {
 export type GetAccountsHashesParams = GetAccountsTransactionsParams;
 export type GetAccountsTransactionsHashesParams = GetAccountsTransactionsParams;
 export type GetBatchAddressesWithPaginationParams = {
-    web3: Connection;
+    web3: any;
     addresses: AddressesFormat[];
     signatures: Record<string, string>;
     pagination: Record<string, string>;

@@ -1,4 +1,4 @@
-import { getFee } from '../estimateFee';
+import { estimateFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import StellarSdk from 'stellar-sdk';
@@ -15,7 +15,7 @@ export const preparePayment = async ({
 }: BuildTransactionParams) => {
     const account = await api.loadAccount(source);
     var transaction = new StellarSdk.TransactionBuilder(account, {
-        fee: await getFee(),
+        fee: await estimateFee(),
         networkPassphrase: StellarSdk.Networks.PUBLIC,
     });
 

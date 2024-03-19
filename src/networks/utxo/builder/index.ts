@@ -33,6 +33,7 @@ export const buildTransaction = async ({
     memo = '',
     changeIndex = -1,
     utxos = [],
+    feeRatio = 0.5,
 }: BuildParameters) => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     const network = networks[coinId as string];
@@ -69,6 +70,9 @@ export const buildTransaction = async ({
         throw new Error(CannotGetFeePerByte);
     }
     var tx = new bitcoinjs.TransactionBuilder(network);
+    const feeByte = new BigNumber(feePerByte.low)
+        .plus(feePerByte.high)
+        .multipliedBy(feeRatio);
 
     for (let utxo of utxos) {
         amountLeft = amountLeft.minus(utxo.value);
@@ -81,14 +85,12 @@ export const buildTransaction = async ({
             utxo.vout,
             new BigNumber('0xfffffffd').toNumber(),
         );
-        if (
-            !amountLeft.plus(feeAcc.multipliedBy(feePerByte)).isGreaterThan(0)
-        ) {
+        if (!amountLeft.plus(feeAcc.multipliedBy(feeByte)).isGreaterThan(0)) {
             break;
         }
     }
     // 3º Get the fee of inputs
-    const feeInput = utxosUsed.reduce((v, p) => {
+    const feeInput = utxosUsed.reduce((p, v) => {
         if (v.protocol) return new BigNumber(68).plus(p);
         return new BigNumber(148).plus(p);
     }, new BigNumber(0));
@@ -97,12 +99,10 @@ export const buildTransaction = async ({
     tx.addOutput(destination, amount);
     // 4º Add input if it needs a change address
     if (
-        !amountLeft
-            .plus(feeAcc.multipliedBy(feePerByte))
-            .isGreaterThanOrEqualTo(0)
+        !amountLeft.plus(feeAcc.multipliedBy(feeByte)).isGreaterThanOrEqualTo(0)
     ) {
         const changeAmount = amountLeft
-            .plus(feeAcc.multipliedBy(feePerByte))
+            .plus(feeAcc.multipliedBy(feeByte))
             .multipliedBy(-1);
         if (changeAmount.isGreaterThan(DUST[coinId])) {
             feeOutput = feeOutput.plus(34);

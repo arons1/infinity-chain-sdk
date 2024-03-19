@@ -106,7 +106,7 @@ export const getGasLimit = async ({
         });
         return {
             data,
-            estimateGas:estimateGas.toString(10),
+            estimateGas: estimateGas.toString(10),
         };
     } else {
         const tx: TransactionEVM = {
@@ -121,7 +121,7 @@ export const getGasLimit = async ({
         }
         const estimateGas = await web3.eth.estimateGas(tx);
         return {
-            estimateGas:estimateGas.toString(10),
+            estimateGas: estimateGas.toString(10),
             data: '',
         };
     }

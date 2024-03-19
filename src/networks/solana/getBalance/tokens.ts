@@ -20,9 +20,9 @@ export const getAccounts = async ({
             },
         },
     ];
-    return await web3.getParsedProgramAccounts(TOKEN_PROGRAM_ID, {
+    return (await web3.getParsedProgramAccounts(TOKEN_PROGRAM_ID, {
         filters: filters,
-    });
+    })) as GetAccountsResult[];
 };
 export const getAccountBalances = ({
     web3,
