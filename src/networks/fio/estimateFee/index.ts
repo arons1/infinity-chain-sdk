@@ -6,7 +6,11 @@ import BigNumber from 'bignumber.js';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
 
-export const estimateFee = ({source}:{source: string}):Promise<EstimateFeeResult> => {
+export const estimateFee = ({
+    source,
+}: {
+    source: string;
+}): Promise<EstimateFeeResult> => {
     return new Promise(resolve => {
         axios
             .post('https://fio.blockpane.com/v1/chain/get_fee', {
@@ -15,13 +19,13 @@ export const estimateFee = ({source}:{source: string}):Promise<EstimateFeeResult
             })
             .then((a: AxiosResponse<FeeResult>) => {
                 if (a.data && a.data.fee) {
-                    resolve({fee:new BigNumber(a.data.fee).toString(10)});
+                    resolve({ fee: new BigNumber(a.data.fee).toString(10) });
                 } else {
-                    resolve({fee:DEFAULT_FEE+''});
+                    resolve({ fee: DEFAULT_FEE + '' });
                 }
             })
             .catch(() => {
-                resolve({fee:DEFAULT_FEE+''});
+                resolve({ fee: DEFAULT_FEE + '' });
             });
     });
 };

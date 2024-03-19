@@ -4,6 +4,6 @@ import { EstimateFeeResult } from '../../types';
 
 export const estimateFee = ({ api }: EstimateFeeParams): EstimateFeeResult => {
     return {
-        fee:new BigNumber(api.getState().fee.last as number).toString(10)
+        fee: new BigNumber(api.getState().fee.last as number).toString(10),
     };
 };

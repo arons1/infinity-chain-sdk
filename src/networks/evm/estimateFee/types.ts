@@ -1,4 +1,4 @@
-import { TransactionEVM } from '../general/types';
+import { TransactionEVM } from '@infinity/core-sdk';
 export type ReturnEstimate = {
     transaction: TransactionEVM;
     estimateGas: string;
@@ -24,14 +24,7 @@ export type EstimateGasTokenParams = {
     feeRatio: number;
     priorityFee: string;
 };
-export type EstimateGasBridgeParams = {
-    web3: any;
-    source: string;
-    destination?: string;
-    amount?: string;
-    feeRatio: number;
-    chainId: number;
-};
+
 
 export type NonceParams = {
     address: string;

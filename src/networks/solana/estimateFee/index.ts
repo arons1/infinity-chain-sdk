@@ -6,17 +6,20 @@ import BigNumber from 'bignumber.js';
 export const estimateFee = async ({
     web3,
     transaction,
-}: EstimateFeeParams):Promise<EstimateFeeResult> => {
+}: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if ('message' in transaction)
         return {
-            fee:(
+            fee: (
                 await web3.getFeeForMessage(
                     (transaction as VersionedTransaction).message,
                     'confirmed',
                 )
-            ).value
-        }
-    else return {
-        fee:new BigNumber((await transaction.getEstimatedFee(web3)) as number).toString(10)
-    };
+            ).value,
+        };
+    else
+        return {
+            fee: new BigNumber(
+                (await transaction.getEstimatedFee(web3)) as number,
+            ).toString(10),
+        };
 };

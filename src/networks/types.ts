@@ -19,8 +19,8 @@ export type Transaction = {
     contractAddress?: string;
 };
 export type EstimateFeeResult = {
-    fee:string;
-    transaction?:TransactionEVM;
+    fee: string;
+    transaction?: TransactionEVM;
     feePerByte?: {
         low: string;
         high: string;
@@ -28,7 +28,7 @@ export type EstimateFeeResult = {
     utxos?: UTXOResult[];
     utxosUsed?: UTXOResult[];
     transactionSize?: string;
-}
+};
 export type BalanceResult = {
     address?: string;
     value: string;

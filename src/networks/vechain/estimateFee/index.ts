@@ -216,11 +216,11 @@ export const estimateFeeTransfer = async ({
     priorityFee,
 }: EstimateGasParams): Promise<EstimateFeeResult> => {
     if (!isValidAddress(destination)) throw new Error(InvalidAddress);
-    let resultEstimate
+    let resultEstimate;
     if (tokenContract.length > 0) {
         if (!isValidAddress(tokenContract))
             throw new Error(InvalidContractAddress);
-        resultEstimate =  await estimateTokenFee({
+        resultEstimate = await estimateTokenFee({
             web3,
             source,
             tokenContract,
@@ -240,7 +240,9 @@ export const estimateFeeTransfer = async ({
         });
     }
     return {
-        fee:new BigNumber(resultEstimate.estimateGas).multipliedBy(resultEstimate.gasPrice as string).toString(10),
-        transaction:resultEstimate.transaction
-    }
+        fee: new BigNumber(resultEstimate.estimateGas)
+            .multipliedBy(resultEstimate.gasPrice as string)
+            .toString(10),
+        transaction: resultEstimate.transaction,
+    };
 };

@@ -28,7 +28,7 @@ export const estimateFee = async ({
     mintToken,
     web3,
     feeRatio,
-}: EstimateFeeParams):Promise<EstimateFeeResult> => {
+}: EstimateFeeParams): Promise<EstimateFeeResult> => {
     let transferFees;
     if (mintToken) {
         const operation = await buildOperations({
@@ -50,6 +50,6 @@ export const estimateFee = async ({
     );
     estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
     return {
-        fee:estimatedBaseFee.plus(await feeReveal(from, web3)).toString(10)
+        fee: estimatedBaseFee.plus(await feeReveal(from, web3)).toString(10),
     };
 };

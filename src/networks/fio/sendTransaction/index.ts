@@ -3,7 +3,7 @@ import { SendTransactionParams, SendTransactionResult } from './types';
 
 export const sendTransaction = async ({
     rawTransaction,
-}: SendTransactionParams) => {
+}: SendTransactionParams) : Promise<string> => {
     return new Promise((resolve, reject) => {
         axios
             .post(
@@ -11,8 +11,8 @@ export const sendTransaction = async ({
                 rawTransaction,
             )
             .then((result: AxiosResponse<SendTransactionResult>) => {
-                if (result.data.transaction_id) {
-                    resolve(result.data);
+                if (result.data) {
+                    resolve(result.data.transaction_id);
                 } else {
                     console.error(result);
                     reject();

@@ -64,7 +64,7 @@ export const estimateFee = async ({
     coinId,
     amount,
     trezorWebsocket,
-    feeRatio = 0.5
+    feeRatio = 0.5,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if (extendedPublicKeys == undefined || extendedPublicKeys.length == 0)
         throw new Error(MissingExtendedKey);
@@ -116,13 +116,18 @@ export const estimateFee = async ({
         console.error(e);
         throw new Error(CannotGetFeePerByte);
     }
-    const selectedFeePerByteLow = new BigNumber(feePerByte.low).plus(feePerByte.high).multipliedBy(feeRatio)
+    const selectedFeePerByteLow = new BigNumber(feePerByte.low)
+        .plus(feePerByte.high)
+        .multipliedBy(feeRatio);
 
     return {
         feePerByte,
         utxos,
         utxosUsed,
         transactionSize: feeInput.plus(feeOutput).toString(10),
-        fee:feeInput.plus(feeOutput).multipliedBy(selectedFeePerByteLow).toString(10)
+        fee: feeInput
+            .plus(feeOutput)
+            .multipliedBy(selectedFeePerByteLow)
+            .toString(10),
     };
 };
