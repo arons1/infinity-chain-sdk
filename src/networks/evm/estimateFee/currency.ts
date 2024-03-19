@@ -1,5 +1,6 @@
-import { EstimateGasParams, ReturnEstimate } from "./types";
-import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from "./utils";
+import { CannotGetNonce } from '../../../errors/networks';
+import { EstimateGasParams, ReturnEstimate } from './types';
+import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 import { TransactionEVM } from '@infinity/core-sdk';
 
 /* 
@@ -27,19 +28,22 @@ export const estimateCurrencyFee = async ({
         destination,
         amount,
         web3,
+        chainId,
         isToken: false,
     });
     var gasPrice = await getGasPrice({ web3 });
-    const nonce = await getNonce({
-        address: source,
-        web3,
-    });
-    var transaction:TransactionEVM = {
+    var transaction: TransactionEVM = {
         from: source,
-        nonce: nonce,
         to: destination,
         value: amount,
     };
+    if (chainId != 100009) {
+        transaction.nonce = await getNonce({
+            address: source,
+            web3,
+        });
+        if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
+    }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,

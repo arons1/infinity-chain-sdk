@@ -25,7 +25,6 @@ export type EstimateGasTokenParams = {
     priorityFee: string;
 };
 
-
 export type NonceParams = {
     address: string;
     web3: any;
@@ -40,6 +39,7 @@ export type GasLimitParams = {
     destination: string;
     tokenContract?: string;
     amount: string;
+    chainId: number;
     contract?: any;
     isToken: boolean;
 };

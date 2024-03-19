@@ -1,7 +1,8 @@
-import { EstimateGasTokenParams, ReturnEstimate } from "./types";
-import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from "./utils";
+import { EstimateGasTokenParams, ReturnEstimate } from './types';
+import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 import ERC20Abi from '@infinity/core-sdk/core/abi/erc20';
 import { TransactionEVM } from '@infinity/core-sdk';
+import { CannotGetNonce } from '../../../errors/networks';
 
 /* 
 estimateTokenFee
@@ -34,23 +35,27 @@ export const estimateTokenFee = async ({
         tokenContract,
         amount,
         contract,
+        chainId,
         web3,
         isToken: true,
     });
     var gasPrice = await getGasPrice({
         web3,
     });
-    const nonce = await getNonce({
-        address: source,
-        web3,
-    });
-    var transaction:TransactionEVM = {
+
+    var transaction: TransactionEVM = {
         from: source,
-        nonce: nonce,
         to: tokenContract,
         data,
         value: amount,
     };
+    if (chainId != 100009) {
+        transaction.nonce = await getNonce({
+            address: source,
+            web3,
+        });
+        if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
+    }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,

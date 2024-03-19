@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-export const sendTransaction = (
-    rawTransaction: string,
-) : Promise<string> => {
+export const sendTransaction = (rawTransaction: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         axios
             .post('https://horizon.stellar.org/transactions', {
@@ -12,10 +10,8 @@ export const sendTransaction = (
                 },
             })
             .then(a => {
-                if(a.data.successful)
-                    resolve(a.data.hash);
-                else
-                    reject()
+                if (a.data.successful) resolve(a.data.hash);
+                else reject();
             })
             .catch(e => {
                 reject(e);

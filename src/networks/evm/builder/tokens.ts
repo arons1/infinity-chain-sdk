@@ -1,10 +1,10 @@
-import { InvalidAddress, InvalidChainError } from '../../../errors/networks';
-import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee';
+import { CannotGetNonce, InvalidAddress, InvalidChainError } from '../../../errors/networks';
 import { SupportedChains } from '../general/contants';
 import { TransactionEVM } from '../general/types';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
 import { BuildTokenTransaction, DataTransferType } from './types';
 import ERC20Abi from '../../../core/abi/erc20';
+import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
 
 /* 
 buildTokenTransaction
@@ -37,10 +37,7 @@ export const buildTokenTransaction = async ({
         gasPrice = await getGasPrice({
             web3,
         });
-    const nonce = await getNonce({
-        address: source,
-        web3,
-    });
+
     const data = await getDataTransfer({
         source,
         destination,
@@ -50,10 +47,17 @@ export const buildTokenTransaction = async ({
     });
     var transaction = {
         from: source,
-        nonce: nonce,
         to: tokenContract,
         data,
     } as TransactionEVM;
+    if (chainId != 100009) {
+        transaction.nonce = await getNonce({
+            address: source,
+            web3,
+        });
+        if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
+
+    }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,
@@ -121,10 +125,7 @@ export const buildTokenApproveTransaction = async ({
         gasPrice = await getGasPrice({
             web3,
         });
-    const nonce = await getNonce({
-        address: source,
-        web3,
-    });
+
     const data = await getDataApprove({
         source,
         destination,
@@ -134,10 +135,15 @@ export const buildTokenApproveTransaction = async ({
     });
     var transaction = {
         from: source,
-        nonce: nonce,
         to: tokenContract,
         data,
     } as TransactionEVM;
+    if (chainId != 100009) {
+        transaction.nonce = await getNonce({
+            address: source,
+            web3,
+        });
+    }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,

@@ -1,6 +1,4 @@
-import {
-    EstimateGasParams
-} from './types';
+import { EstimateGasParams } from './types';
 // @ts-ignore
 import feeAbi from '../../../core/abi/fee';
 import BigNumber from 'bignumber.js';
@@ -9,17 +7,14 @@ import {
     InvalidChainError,
     InvalidContractAddress,
 } from '../../../errors/networks';
-import { SupportedChains,isValidAddress } from '@infinity/core-sdk';
+import { SupportedChains, isValidAddress } from '@infinity/core-sdk';
 import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateGas';
 
-
-
-
 /* 
-estimateFeeTransfer
+estimateFee
     Returns estimate fee transfer
     @param web3: web3 connector
     @param source: source account to send from
@@ -29,7 +24,7 @@ estimateFeeTransfer
     @param priorityFee: account index derivation
     @param tokenContract: token contract
 */
-export const estimateFeeTransfer = async ({
+export const estimateFee = async ({
     web3,
     source,
     tokenContract = '',
@@ -83,3 +78,7 @@ export const estimateFeeTransfer = async ({
     };
 };
 
+export * from './currency'
+export * from './tokens'
+export * from './utils'
+export * from './types'

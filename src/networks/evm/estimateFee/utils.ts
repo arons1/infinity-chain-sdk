@@ -1,7 +1,23 @@
-import { CalculateGasPrice, GasLimitParams, GasPriceParams, NonceParams } from "./types";
-import { CannotGetNonce, InvalidAddress, InvalidAmount, InvalidContractAddress, InvalidTokenContract, PriorityFeeError } from "../../../errors/networks";
-import { isValidAddress,isValidNumber,TransactionEVM } from '@infinity/core-sdk';
-import BigNumber from "bignumber.js";
+import {
+    CalculateGasPrice,
+    GasLimitParams,
+    GasPriceParams,
+    NonceParams,
+} from './types';
+import {
+    CannotGetNonce,
+    InvalidAddress,
+    InvalidAmount,
+    InvalidContractAddress,
+    InvalidTokenContract,
+    PriorityFeeError,
+} from '../../../errors/networks';
+import {
+    isValidAddress,
+    isValidNumber,
+    TransactionEVM,
+} from '@infinity/core-sdk';
+import BigNumber from 'bignumber.js';
 
 export const calculateGasPrice = async ({
     transaction,
@@ -64,6 +80,7 @@ export const getGasLimit = async ({
     amount,
     source,
     contract,
+    chainId,
     web3,
     isToken = false,
 }: GasLimitParams): Promise<{
@@ -79,9 +96,7 @@ export const getGasLimit = async ({
         if (!contract) throw new Error(InvalidTokenContract);
         const nonce = await getNonce({ address: source, web3 });
         if (!nonce) throw new Error(CannotGetNonce);
-        const data = contract.methods
-            .transfer(destination, amount)
-            .encodeABI();
+        const data = contract.methods.transfer(destination, amount).encodeABI();
         const estimateGas = await web3.eth.estimateGas({
             from: source,
             nonce: nonce,
@@ -94,20 +109,22 @@ export const getGasLimit = async ({
             estimateGas,
         };
     } else {
-        const nonce = await getNonce({ address: source, web3 });
-        if (nonce == undefined) throw new Error(CannotGetNonce);
-        const estimateGas = await web3.eth.estimateGas({
+        const tx: TransactionEVM = {
             from: source,
-            nonce: nonce,
             to: destination,
             value: amount,
-        });
+        };
+        if (chainId != 100009) {
+            const nonce = await getNonce({ address: source, web3 });
+            if (nonce == undefined) throw new Error(CannotGetNonce);
+            tx.nonce = nonce;
+        }
+        const estimateGas = await web3.eth.estimateGas(tx);
         return {
             estimateGas,
             data: '',
         };
     }
- 
 };
 /* 
 getNonce

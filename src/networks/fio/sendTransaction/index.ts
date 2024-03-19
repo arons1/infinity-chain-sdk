@@ -3,7 +3,7 @@ import { SendTransactionParams, SendTransactionResult } from './types';
 
 export const sendTransaction = async ({
     rawTransaction,
-}: SendTransactionParams) : Promise<string> => {
+}: SendTransactionParams): Promise<string> => {
     return new Promise((resolve, reject) => {
         axios
             .post(

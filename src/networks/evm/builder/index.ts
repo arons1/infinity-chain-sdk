@@ -1,5 +1,5 @@
-import { InvalidChainError } from '../../../errors/networks';
-import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee';
+import { CannotGetNonce, InvalidChainError } from '../../../errors/networks';
+import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
 import { SupportedChains } from '../general/contants';
 import { TransactionEVM } from '../general/types';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
@@ -36,17 +36,20 @@ export const buildTransaction = async ({
         gasPrice = await getGasPrice({
             web3,
         });
-    const nonce = await getNonce({
-        address: source,
-        web3,
-    });
     var transaction = {
         from: source,
-        nonce: nonce,
         to: destination,
         data,
         value,
     } as TransactionEVM;
+    if (chainId != 100009) {
+        transaction.nonce = await getNonce({
+            address: source,
+            web3,
+        });
+        if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
+
+    }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,

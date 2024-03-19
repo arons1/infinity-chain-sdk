@@ -3,8 +3,8 @@ import { SendTransactionParams } from './types';
 export const sendTransaction = ({
     web3,
     transaction,
-    privateKey
-}: SendTransactionParams) : Promise<string> => {
+    privateKey,
+}: SendTransactionParams): Promise<string> => {
     return new Promise(async (resolve, reject) => {
         const rawTransaction = await web3.eth.accounts.signTransaction(
             transaction,
