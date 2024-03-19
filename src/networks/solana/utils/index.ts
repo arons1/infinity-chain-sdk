@@ -1,4 +1,4 @@
-import { PublicKey, TransactionInstruction } from '@solana/web3.js';
+import { Connection, PublicKey, TransactionInstruction } from '@solana/web3.js';
 import { ResultBlockHash } from './types';
 import {
     ASSOCIATED_TOKEN_PROGRAM_ID,
@@ -8,8 +8,8 @@ import {
 } from '@solana/spl-token';
 import { MEMO_PROGRAM_ID } from '../constants';
 
-export const getLastBlockhash = async (web3: any): Promise<ResultBlockHash> => {
-    return await web3.getLatestBlockhash();
+export const getLastBlockhash = async (web3: Connection): Promise<ResultBlockHash> => {
+    return (await web3.getLatestBlockhash()) as ResultBlockHash;
 };
 export const checkIfAccountExists = async ({
     mintToken,
@@ -18,7 +18,7 @@ export const checkIfAccountExists = async ({
 }: {
     mintToken: string;
     publicKey: PublicKey;
-    web3: any;
+    web3: Connection;
 }): Promise<[boolean, PublicKey]> => {
     const associatedToken = await getAssociatedTokenAddress(
         new PublicKey(mintToken),
@@ -34,7 +34,7 @@ export const checkIfAccountExists = async ({
         return [false, associatedToken];
     }
 };
-export const getMinimumBalanceForRent = async (web3: any, isToken: boolean) => {
+export const getMinimumBalanceForRent = async (web3: Connection, isToken: boolean) => {
     try {
         return await web3.getMinimumBalanceForRentExemption(isToken ? 165 : 0);
     } catch (e) {
@@ -47,4 +47,8 @@ export const memoInstruction = (memo: string) => {
         keys: [],
         data: Buffer.from(memo, 'utf8'),
     });
+};
+
+export const sleep = (ms: number): Promise<void> => {
+    return new Promise(resolve => setTimeout(resolve, ms));
 };

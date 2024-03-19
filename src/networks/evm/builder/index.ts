@@ -48,7 +48,6 @@ export const buildTransaction = async ({
             web3,
         });
         if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
-
     }
     transaction = await calculateGasPrice({
         transaction,

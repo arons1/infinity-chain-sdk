@@ -4,6 +4,7 @@ import { DEFAULT_FEE } from '@taquito/taquito';
 import { hasManager } from '../utils';
 import { buildOperations } from '../builder';
 import { EstimateFeeResult } from '../../types';
+import { TezosToolkit } from '@taquito/taquito';
 
 const ADDITIONAL_FEE = 100;
 
@@ -13,7 +14,7 @@ export const getAditionalFee = (fee: number) => {
     );
     return new BigNumber(nm.split('.')[0]);
 };
-export const feeReveal = async (account: string, web3: any) => {
+export const feeReveal = async (account: string, web3: TezosToolkit) => {
     const manager = await web3.rpc.getManagerKey(account);
     if (!hasManager(manager)) {
         return DEFAULT_FEE.REVEAL;

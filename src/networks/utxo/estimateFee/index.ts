@@ -8,7 +8,7 @@ import {
 } from '../../../errors/networks';
 import { MissingExtendedKey } from '../../../errors/transactionParsers';
 import BigNumber from 'bignumber.js';
-import { DUST } from '../constant';
+import { DUST } from '../constants';
 import { UTXOResult } from '../getUTXO/types';
 import { getUTXO } from '../getUTXO';
 import { EstimateFeeResult } from '../../types';

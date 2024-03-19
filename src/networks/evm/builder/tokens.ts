@@ -1,4 +1,8 @@
-import { CannotGetNonce, InvalidAddress, InvalidChainError } from '../../../errors/networks';
+import {
+    CannotGetNonce,
+    InvalidAddress,
+    InvalidChainError,
+} from '../../../errors/networks';
 import { SupportedChains } from '../general/contants';
 import { TransactionEVM } from '../general/types';
 import { isValidAddress } from '../sdk/ethereumjs-util/account';
@@ -56,7 +60,6 @@ export const buildTokenTransaction = async ({
             web3,
         });
         if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
-
     }
     transaction = await calculateGasPrice({
         transaction,

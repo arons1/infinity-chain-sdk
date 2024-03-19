@@ -1,8 +1,8 @@
-import { ParsedTransactionWithMeta } from '@solana/web3.js';
+import { Connection, ParsedTransactionWithMeta } from '@solana/web3.js';
 import { GetAccountsResult } from '../getBalance/types';
 
 export type GetAccountsTransactionsParams = {
-    web3: any;
+    web3: Connection;
     address: string;
     accounts: GetAccountsResult[];
     signatures?: Record<string, string>;
@@ -11,7 +11,7 @@ export type GetAccountsTransactionsParams = {
 export type GetAccountsHashesParams = GetAccountsTransactionsParams;
 export type GetAccountsTransactionsHashesParams = GetAccountsTransactionsParams;
 export type GetBatchAddressesWithPaginationParams = {
-    web3: any;
+    web3: Connection;
     addresses: AddressesFormat[];
     signatures: Record<string, string>;
     pagination: Record<string, string>;
@@ -49,5 +49,5 @@ export type HashesDetails = {
 };
 export type GetTransactionsParams = {
     pendingTransactions: string[];
-    web3: any;
+    web3: Connection;
 };

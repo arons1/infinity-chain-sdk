@@ -1,7 +1,7 @@
-import { WEBSOCKETS } from '../constant';
+import { WEBSOCKETS } from '../constants';
 import WebSocket from 'ws';
 const no_op = () => {};
-class TrezorWebsocket {
+export class TrezorWebsocket {
     messageID: number;
     url: string;
     connected: boolean;
@@ -243,4 +243,3 @@ class TrezorWebsocket {
         };
     }
 }
-export default TrezorWebsocket;

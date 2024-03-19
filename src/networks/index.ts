@@ -1,7 +1,9 @@
 export * as evm from './evm';
 export * as fio from './fio';
-export * as xrp from './xrp';
-export * as utxo from './utxo';
-export * as tezos from './tezos';
-export * as stellar from './stellar';
+export * as op from './op';
 export * as solana from './solana';
+export * as stellar from './stellar';
+export * as tezos from './tezos';
+export * as utxo from './utxo';
+export * as xrp from './xrp';
+export * as types from './types';

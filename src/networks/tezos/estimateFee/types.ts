@@ -1,3 +1,5 @@
+import { TezosToolkit } from '@taquito/taquito';
+
 export type EstimateFeeParams = {
     address: string;
     amount: string;
@@ -5,6 +7,6 @@ export type EstimateFeeParams = {
     to: string;
     idToken?: number;
     mintToken?: string;
-    web3: any;
+    web3: TezosToolkit;
     feeRatio: number;
 };

@@ -1,11 +1,11 @@
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey,Connection } from '@solana/web3.js';
 
 export type AddAssociatedCreationParams = {
     instructions: any[];
     mintToken: string;
     destination: string;
     publicKey: PublicKey;
-    web3: any;
+    web3: Connection;
 };
 
 export type TransactionBuilderParams = {
@@ -15,7 +15,7 @@ export type TransactionBuilderParams = {
     destination: string;
     decimalsToken?: number;
     amount: string;
-    web3: any;
+    web3: Connection;
 };
 export type RawTransactionParams = {
     memo: string;
@@ -24,7 +24,7 @@ export type RawTransactionParams = {
     destination: string;
     decimalsToken?: number;
     amount: string;
-    web3: any;
+    web3: Connection;
 };
 
 export type CurrencyTransactionParams = {
@@ -40,5 +40,5 @@ export type TokenTransactionParams = {
     publicKey: PublicKey;
     decimalsToken: number;
     amount: string;
-    web3: any;
+    web3: Connection;
 };

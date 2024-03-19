@@ -1,5 +1,4 @@
 import { ParsedTransactionWithMeta, SolanaJSONRPCError } from '@solana/web3.js';
-import { sleep } from '../../..';
 import { SLEEP_BETWEEN_CALLS } from '../../../constants';
 import {
     AddressesFormat,
@@ -15,6 +14,7 @@ import {
 } from './types';
 import { create } from 'superstruct';
 import { GetSignaturesForAddressRpcResult } from './results';
+import { sleep } from '../utils';
 const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
 

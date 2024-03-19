@@ -78,7 +78,7 @@ export const estimateFee = async ({
     };
 };
 
-export * from './currency'
-export * from './tokens'
-export * from './utils'
-export * from './types'
+export * from './currency';
+export * from './tokens';
+export * from './utils';
+export * from './types';

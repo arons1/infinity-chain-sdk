@@ -6,7 +6,7 @@ import {
     ErrorBuildingUTXOTransaction,
     InvalidAmount,
 } from '../../../errors/networks';
-import { DUST } from '../constant';
+import { DUST } from '../constants';
 import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
