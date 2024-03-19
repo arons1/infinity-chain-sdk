@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
+import { BalanceResult, CurrencyBalanceResult } from '../../types';
 const getAccountInfo = ({
     trezorWebsocket,
     address,
@@ -30,11 +31,29 @@ const getAccountInfo = ({
 export const getAccountBalances = async ({
     trezorWebsocket,
     extendedPublicKeys,
-}: GetAccountBalancesParams) => {
-    var balance = new BigNumber(0);
+}: GetAccountBalancesParams): Promise<Record<string,BalanceResult[]>> => {
+    const result:Record<string,BalanceResult[]> = {}
     for (let address of extendedPublicKeys) {
         const balances = await getAccountInfo({ address, trezorWebsocket });
-        balance = balance.plus(balances);
+        result[address] = [
+            {
+                value:balances
+            }
+        ]
     }
-    return balance;
+    return result;
+};
+
+export const getBalance = async ({
+    trezorWebsocket,
+    extendedPublicKeys,
+}: GetAccountBalancesParams) : Promise<CurrencyBalanceResult> => {
+    var balance = new BigNumber(0)
+    for (let address of extendedPublicKeys) {
+        const balances = await getAccountInfo({ address, trezorWebsocket });
+        balance = balance.plus(balances)
+    }
+    return {
+        balance:balance.toString(10)
+    };
 };

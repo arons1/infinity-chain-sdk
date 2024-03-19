@@ -3,6 +3,7 @@ import retry from "async-retry";
 
 import { Tezos, loadContract, isFA2Token } from "./tez";
 import { toAsset } from "./helpers";
+import { BalanceResult, CurrencyBalanceResult } from "../../types";
 
 
 export const getAccountBalances = async ({
@@ -11,22 +12,24 @@ export const getAccountBalances = async ({
   }: {
     account: string;
     assetSlugs: string[];
-  }) => {
-    var result = []
+  }): Promise<Record<string,BalanceResult[]>> => {
+    var result:Record<string,BalanceResult[]> = {
+      [account]:[]
+    }
     for(let assetSlug of assetSlugs){
-      const bal_res = await getBalance({account,assetSlug})
-      result.push(bal_res)
+      const bal_res = await getAssetBalance({account,assetSlug})
+      result[account].push(bal_res)
     }
     return result;
   }
 
-export const getBalance= async ({
+export const getAssetBalance= async ({
     account,
     assetSlug,
   }: {
     account: string;
     assetSlug: string;
-  }) => {
+  }): Promise<BalanceResult> => {
     const asset = await toAsset(assetSlug);
   
     var nat = new BigNumber(0)
@@ -59,6 +62,25 @@ export const getBalance= async ({
         nat = new BigNumber(0);
       }
     }
-  
-    return nat.toFixed();
+    if(assetSlug == "tez")
+      return {
+        value:nat.toString(10),
+        address:"native"
+      }
+    const [tokenContractAddress, tokenIdStr = "0"] = assetSlug.split("_");
+    return {
+      value:nat.toString(10),
+      id:parseInt(tokenIdStr),
+      address:tokenContractAddress
+    };
   }
+
+export const getBalance = async ({
+    address,
+}: {
+    address: string;
+})  : Promise<CurrencyBalanceResult> => {
+    return {
+        balance:(await getAssetBalance({account:address,assetSlug:"tez"})).value
+    } as CurrencyBalanceResult
+};

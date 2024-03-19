@@ -1,4 +1,7 @@
+import BigNumber from 'bignumber.js';
 import { RPCBalancesParams, BatchBalance, RPCBalanceResult } from './types';
+import { BalanceResult } from '../../types';
+import { getBalance } from '.';
 
 const minABI = [
     {
@@ -13,7 +16,7 @@ export const getAccountBalances = async ({
     web3,
     addresses,
     contracts,
-}: RPCBalancesParams) => {
+}: RPCBalancesParams): Promise<Record<string,BalanceResult[]>> => {
     const contract = new web3.eth.Contract(minABI);
     const map: RPCBalanceResult = {};
     const batchList: BatchBalance[] = [];
@@ -24,11 +27,8 @@ export const getAccountBalances = async ({
         });
     });
     for (let { contractAddress, address } of batchList) {
-        if (contractAddress == '0x0000000000000000000000000000000000000000') {
-            map[address][contractAddress] = await web3.eth.getBalance(
-                address,
-                'latest',
-            );
+        if (contractAddress == 'native') {
+            map[address][contractAddress] = (await getBalance({ web3, address })).balance;
         } else {
             contract.options.address = contractAddress;
             map[address][contractAddress] = await contract.methods
@@ -36,5 +36,19 @@ export const getAccountBalances = async ({
                 .call();
         }
     }
-    return map;
+    const formattedResult:Record<string,BalanceResult[]> = {}
+    for(let address in map){
+        for(let key in map[address]){
+            const balResult:BalanceResult = {
+                address:key,
+                value:new BigNumber(map[address][key]).toString(10)
+            }
+            if(!formattedResult[address]){
+                formattedResult[address] = []
+            }
+            formattedResult[address].push(balResult)
+        }
+    }
+    
+    return formattedResult;
 };

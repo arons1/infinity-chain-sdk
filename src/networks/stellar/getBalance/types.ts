@@ -1,4 +1,4 @@
-export type ResultBalance = {
+export type ResultBalanceRPC = {
     asset_type: string;
     asset_issuer: string;
     asset_code: string;

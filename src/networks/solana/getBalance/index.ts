@@ -1,4 +1,5 @@
 import { PublicKey } from '@solana/web3.js';
+import { CurrencyBalanceResult } from '../../types';
 
 export const getBalance = async ({
     web3,
@@ -6,7 +7,9 @@ export const getBalance = async ({
 }: {
     web3: any;
     address: string;
-}) : Promise<number | string | null> => {
-    return await web3.getBalance(new PublicKey(address));
+})  : Promise<CurrencyBalanceResult> => {
+    return {
+        balance:await web3.getBalance(new PublicKey(address))
+    } as CurrencyBalanceResult
 };
 export * from './tokens';
