@@ -1,1 +1,1 @@
-export const PROVIDER: string = "https://explore.vechain.org"
+export const PROVIDER: string = 'https://explore.vechain.org';

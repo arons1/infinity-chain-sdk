@@ -1,1 +1,1 @@
-export const PROVIDER:string = "https://fio.blockpane.com"
+export const PROVIDER: string = 'https://fio.blockpane.com';
