@@ -1,4 +1,4 @@
-import { TransactionEVM } from '@infinity/core-sdk';
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UTXOResult } from './utxo/getUTXO/types';
 export type Transaction = {
     blockNumber: string;

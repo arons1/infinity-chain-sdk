@@ -1,5 +1,5 @@
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import Web3 from 'web3';
-import { TransactionEVM } from '../general/types';
 
 export type SendTransactionParams = {
     web3: Web3;

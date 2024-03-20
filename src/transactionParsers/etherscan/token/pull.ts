@@ -22,3 +22,4 @@ export const pull = ({
         limit,
         method:"GET"
     }
+}
