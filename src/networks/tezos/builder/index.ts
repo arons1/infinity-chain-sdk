@@ -1,6 +1,6 @@
 import { InMemorySigner } from '@taquito/signer';
 import { BuildOperationsParams, BuildTransactionParams } from './types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getAditionalFee } from '../estimateFee';
 
 export const buildOperations = async ({

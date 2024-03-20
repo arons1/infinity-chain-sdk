@@ -1,7 +1,7 @@
 import { VersionedTransaction } from '@solana/web3.js';
 import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const estimateFee = async ({
     web3,

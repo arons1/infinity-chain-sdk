@@ -3,7 +3,7 @@ import { GetProgramAccountsFilter } from '@solana/web3.js';
 import { GetAccountsParams, GetAccountsResult } from './types';
 import { getBalance } from '../getBalance';
 import { BalanceResult } from '../../types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const getAccounts = async ({
     web3,

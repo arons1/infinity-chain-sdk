@@ -17,7 +17,7 @@ import {
     isValidNumber,
     TransactionEVM,
 } from '@infinity/core-sdk';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const calculateGasPrice = async ({
     transaction,

@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import retry from 'async-retry';
 
 import { Tezos, loadContract, isFA2Token } from './tez';

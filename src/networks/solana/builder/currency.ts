@@ -1,6 +1,6 @@
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { CurrencyTransactionParams } from './types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { memoInstruction } from '../utils';
 
 export const currencyTransaction = async ({

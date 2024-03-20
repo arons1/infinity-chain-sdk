@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { EstimateFeeParams } from './types';
 import { DEFAULT_FEE } from '@taquito/taquito';
 import { hasManager } from '../utils';

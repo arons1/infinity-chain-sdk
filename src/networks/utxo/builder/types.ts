@@ -1,4 +1,4 @@
-import { BIP32Interface } from '@infinity/core/bip32';
+import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 import { UTXOResult } from '../getUTXO/types';
 
 export type BuildParameters = {

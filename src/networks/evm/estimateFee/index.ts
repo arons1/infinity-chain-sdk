@@ -1,7 +1,7 @@
 import { EstimateGasParams } from './types';
 // @ts-ignore
 import feeAbi from '../../../core/abi/fee';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import {
     InvalidAddress,
     InvalidChainError,

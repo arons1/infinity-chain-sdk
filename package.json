@@ -65,6 +65,7 @@
   "homepage": "https://github.com/InfinityWallet/infinity-core-sdk#readme",
   "dependencies": {
     "@fioprotocol/fiosdk": "^1.8.0",
+    "@infinity/core-sdk": "D:/trabajo/infinity-core-sdk",
     "@solana/spl-token": "^0.4.1",
     "@solana/web3.js": "^1.91.1",
     "@taquito/signer": "^19.1.0",

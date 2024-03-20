@@ -1,5 +1,5 @@
+import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Payment, BuildTransactionParams, PreparePaymentParams } from './types';
-import { signTransaction } from '@infinity/core/ed25519';
 
 const LEDGER_OFFSET = 20;
 

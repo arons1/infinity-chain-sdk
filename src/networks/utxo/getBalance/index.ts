@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
 const getAccountInfo = ({

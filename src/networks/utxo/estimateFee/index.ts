@@ -7,7 +7,7 @@ import {
     CannotGetFeePerByte,
 } from '../../../errors/networks';
 import { MissingExtendedKey } from '../../../errors/transactionParsers';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { DUST } from '../constants';
 import { UTXOResult } from '../getUTXO/types';
 import { getUTXO } from '../getUTXO';

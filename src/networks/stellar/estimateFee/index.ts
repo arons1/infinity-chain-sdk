@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { FeeResult } from './types';
 import { EstimateFeeResult } from '../../types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const estimateFee = (): Promise<EstimateFeeResult> => {
     return new Promise((resolve, reject) => {

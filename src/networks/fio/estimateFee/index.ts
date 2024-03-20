@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { FeeResult } from './types';
 import { FIOSDK } from '@fioprotocol/fiosdk';
 import { EstimateFeeResult } from '../../types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
 

@@ -1,6 +1,6 @@
 import { Transaction } from '../../../networks/types';
 import { GeneralTransactionEncode } from './types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const encode = ({
     transaction,

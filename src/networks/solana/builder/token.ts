@@ -6,7 +6,7 @@ import {
 } from '@solana/spl-token';
 import { AddAssociatedCreationParams, TokenTransactionParams } from './types';
 import { PublicKey } from '@solana/web3.js';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import {
     checkIfAccountExists,
     getMinimumBalanceForRent,

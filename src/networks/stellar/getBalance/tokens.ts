@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetBalanceParams, ResultBalanceRPC } from './types';
 import { BalanceResult } from '../../types';
 

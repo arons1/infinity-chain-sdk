@@ -10,18 +10,14 @@ import { DUST } from '../constants';
 import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { BuildParameters } from './types';
 import {
     networks,
-    utils,
-    getRedeemP2WPKH,
-    getPublicAddressP2WPKHP2S,
-    getPublicAddressP2PKH,
-    getPublicAddressSegwit,
+    core
 } from '@infinity/core-sdk';
-import bitcoinjs from 'bitcoinjs-lib';
 import { getLastChangeIndex } from '../getLastChangeIndex';
+import { bitcoinjs } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const buildTransaction = async ({
     extendedPublicKeys,
@@ -36,7 +32,7 @@ export const buildTransaction = async ({
     feeRatio = 0.5,
 }: BuildParameters) => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
-    const network = networks[coinId as string];
+    const network = networks.networks.default[coinId as string];
 
     if (!selected) throw new Error(CoinNotIntegrated);
     if (amount.includes('.')) throw new Error(InvalidAmount);
@@ -69,7 +65,8 @@ export const buildTransaction = async ({
         console.error(e);
         throw new Error(CannotGetFeePerByte);
     }
-    var tx = new bitcoinjs.TransactionBuilder(network);
+    
+    var tx = new core.bitcoinjs.TransactionBuilder(network as bitcoinjs.Network);
     const feeByte = new BigNumber(feePerByte.low)
         .plus(feePerByte.high)
         .multipliedBy(feeRatio);
@@ -82,7 +79,7 @@ export const buildTransaction = async ({
         utxosUsed.push(utxo);
         tx.addInput(
             utxo.txid,
-            utxo.vout,
+            new BigNumber(utxo.vout).toNumber(),
             new BigNumber('0xfffffffd').toNumber(),
         );
         if (!amountLeft.plus(feeAcc.multipliedBy(feeByte)).isGreaterThan(0)) {
@@ -96,7 +93,7 @@ export const buildTransaction = async ({
     }, new BigNumber(0));
     var feeOutput = new BigNumber(34);
 
-    tx.addOutput(destination, amount);
+    tx.addOutput(destination, new BigNumber(amount).toNumber());
     // 4º Add input if it needs a change address
     if (
         !amountLeft.plus(feeAcc.multipliedBy(feeByte)).isGreaterThanOrEqualTo(0)
@@ -114,35 +111,35 @@ export const buildTransaction = async ({
                 });
             let addressChange;
             if (extendedPublicKeys[0].startsWith('ypub')) {
-                addressChange = getPublicAddressP2WPKHP2S({
+                addressChange = networks.utxo.getPublicAddressP2WPKHP2S({
                     publicAccountNode: privateAccountNode,
                     change: 1,
                     index: lastChangeIndex,
                     network,
                 });
             } else if (extendedPublicKeys[0].startsWith('xpub')) {
-                addressChange = getPublicAddressP2PKH({
+                addressChange = networks.utxo.getPublicAddressP2PKH({
                     publicAccountNode: privateAccountNode,
                     change: 1,
                     index: lastChangeIndex,
                     network,
                 });
             } else {
-                addressChange = getPublicAddressSegwit({
+                addressChange = networks.utxo.getPublicAddressSegwit({
                     publicAccountNode: privateAccountNode,
                     change: 1,
                     index: lastChangeIndex,
                     network,
                 });
             }
-            tx.addOutput(addressChange, changeAmount.toString(10));
+            tx.addOutput(addressChange as string, changeAmount.toNumber());
         }
     }
     if (memo.length > 0) {
         feeOutput = feeOutput.plus(memo.length);
         tx.addOutput(
-            bitcoinjs.script.compile([
-                bitcoinjs.opcodes.OP_RETURN,
+            core.bitcoinjs.script.compile([
+                core.bitcoinjs.opcodes.OP_RETURN,
                 Buffer.from(memo),
             ]),
             0,
@@ -152,20 +149,20 @@ export const buildTransaction = async ({
     for (var k = 0; k < utxosUsed.length; k++) {
         const unspent = utxosUsed[k];
         const [change, index] = unspent.path.split('/').slice(4);
-        const keyPair = utils.getPrivateKey({
+        const keyPair = networks.utils.getPrivateKey({
             privateAccountNode,
-            change,
-            index,
+            change:parseInt(change),
+            index:parseInt(index),
         });
         if (unspent.protocol == 84) {
             tx.sign({
                 prevOutScriptType: 'p2wpkh',
                 vin: k,
                 keyPair: keyPair,
-                witnessValue: unspent.value,
+                witnessValue: new BigNumber(unspent.value).toNumber(),
             });
         } else if (unspent.protocol == 49) {
-            const redem = getRedeemP2WPKH({
+            const redem = networks.utxo.getRedeemP2WPKH({
                 publicKey: keyPair.publicKey,
                 network,
             });
@@ -174,7 +171,7 @@ export const buildTransaction = async ({
                 vin: k,
                 keyPair: keyPair,
                 redeemScript: redem,
-                witnessValue: unspent.value,
+                witnessValue: new BigNumber(unspent.value).toNumber(),
             });
         } else {
             tx.sign(k, keyPair);
