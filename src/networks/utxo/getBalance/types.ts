@@ -1,9 +1,11 @@
+import { TrezorWebsocket } from "../trezorWebsocket";
+
 export type GetAccountInfoParams = {
-    trezorWebsocket: any;
+    trezorWebsocket: TrezorWebsocket;
     address: string;
 };
 
 export type GetAccountBalancesParams = {
-    trezorWebsocket: any;
+    trezorWebsocket: TrezorWebsocket;
     extendedPublicKeys: string[];
 };

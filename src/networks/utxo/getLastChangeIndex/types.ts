@@ -1,6 +1,8 @@
+import { TrezorWebsocket } from "../trezorWebsocket";
+
 export type LastChangeIndexParameters = {
     extendedPublicKey: string;
-    trezorWebsocket: any;
+    trezorWebsocket: TrezorWebsocket;
 };
 
 export type ChangeIndexResult = {

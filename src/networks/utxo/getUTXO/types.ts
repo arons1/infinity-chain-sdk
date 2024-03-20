@@ -1,6 +1,8 @@
+import { TrezorWebsocket } from "../trezorWebsocket";
+
 export type GetUTXOParams = {
     extendedPublicKey: string;
-    trezorWebsocket: any;
+    trezorWebsocket: TrezorWebsocket;
 };
 export type UTXOResult = {
     protocol: number;

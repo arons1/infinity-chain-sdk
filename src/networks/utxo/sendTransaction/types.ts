@@ -1,4 +1,6 @@
+import { TrezorWebsocket } from "../trezorWebsocket";
+
 export type SendTransactionParams = {
-    trezorWebsocket: any;
+    trezorWebsocket: TrezorWebsocket;
     rawTransaction: string;
 };
