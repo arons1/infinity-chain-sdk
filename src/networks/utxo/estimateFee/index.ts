@@ -25,8 +25,7 @@ export const getFeePerByte = ({
         trezorWebsocket
             .send('estimateFee', {
                 blocks: [1, 2, 3, 4],
-            })
-            .then((result: { feePerUnit: string }[]) => {
+            },(result: { feePerUnit: string }[]) => {
                 if (
                     result &&
                     result.length == 4 &&
@@ -52,10 +51,7 @@ export const getFeePerByte = ({
                     });
                 } else reject();
             })
-            .catch((e: any) => {
-                console.error(e);
-                reject(e);
-            });
+            
     });
 };
 

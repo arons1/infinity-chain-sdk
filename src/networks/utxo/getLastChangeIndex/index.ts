@@ -4,13 +4,16 @@ export const getLastChangeIndex = async ({
     extendedPublicKey,
     trezorWebsocket,
 }: LastChangeIndexParameters): Promise<number> => {
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
         trezorWebsocket
             .send('getAccountInfo', {
                 descriptor: extendedPublicKey,
                 details: 'tokens',
-            })
-            .then((data: ChangeIndexResult[]) => {
+            },(data: ChangeIndexResult[]) => {
+                if(!data){
+                    reject()
+                    return
+                }
                 var changeIndex = 0;
                 for (let d of data) {
                     if (d.transfers > 0) {
@@ -22,9 +25,5 @@ export const getLastChangeIndex = async ({
                 }
                 resolve(changeIndex);
             })
-            .catch((e: any) => {
-                console.error(e);
-                resolve(0);
-            });
     });
 };

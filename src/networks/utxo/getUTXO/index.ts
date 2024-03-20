@@ -11,8 +11,11 @@ export const getUTXO = ({
                 page: 1,
                 from: 1,
                 to: 1,
-            })
-            .then((data: UTXOResult[]) => {
+            },(data: UTXOResult[]) => {
+                if(!data){
+                    reject()
+                    return
+                }
                 resolve(
                     data.map(b => {
                         return {
@@ -26,9 +29,5 @@ export const getUTXO = ({
                     }),
                 );
             })
-            .catch((e: any) => {
-                console.error(e);
-                reject(e);
-            });
     });
 };

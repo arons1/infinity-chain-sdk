@@ -13,18 +13,17 @@ const getAccountInfo = ({
                 page: 1,
                 from: 1,
                 to: 1,
-            })
-            .then((data: { balance: string; unconfirmedBalance: string }) => {
+            },(data: { balance: string; unconfirmedBalance: string }) => {
+                if(!data || !data.balance){
+                    reject()
+                    return
+                }
                 const balance = new BigNumber(data.balance);
                 const unconfirmed_balance = new BigNumber(
                     data.unconfirmedBalance,
                 );
                 resolve(balance.plus(unconfirmed_balance).toString(10));
             })
-            .catch((e: any) => {
-                console.error(e);
-                reject(e);
-            });
     });
 };
 
