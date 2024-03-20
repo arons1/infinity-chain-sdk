@@ -11,8 +11,7 @@
         "../types"
       ],
       "types": [
-        "node",
-        "mocha"
+        "node"
       ],
       "allowJs": true,
       "strict": true,

@@ -62,9 +62,10 @@ export class TrezorWebsocket {
         params: Record<string, any>,
         callback: (rs?: any) => void,
     ) {
+        var ts = this;
+
         try {
             if (!this.connected) {
-                var ts = this;
                 this.connect();
                 return;
             }
@@ -77,7 +78,6 @@ export class TrezorWebsocket {
                 params,
             };
             if (this.ws == undefined) {
-                var ts = this;
                 setTimeout(function () {
                     ts.subscribe(method, params, callback);
                 }, 5000);
@@ -105,6 +105,8 @@ export class TrezorWebsocket {
         params: Record<string, any>,
         callback: (rs?: any) => void,
     ) {
+        var ts = this;
+
         try {
             delete this.subscriptions[id];
             this.pendingMessages[id] = callback;
@@ -114,7 +116,6 @@ export class TrezorWebsocket {
                 params,
             };
             if (this.ws == undefined) {
-                var ts = this;
                 setTimeout(function () {
                     ts.unsubscribe(method, id, params, callback);
                 }, 5000);

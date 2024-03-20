@@ -5,16 +5,18 @@ export const getUTXO = ({
     trezorWebsocket,
 }: GetUTXOParams): Promise<UTXOResult[]> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket
-            .send('getAccountUtxo', {
+        trezorWebsocket.send(
+            'getAccountUtxo',
+            {
                 descriptor: extendedPublicKey,
                 page: 1,
                 from: 1,
                 to: 1,
-            },(data: UTXOResult[]) => {
-                if(!data){
-                    reject()
-                    return
+            },
+            (data: UTXOResult[]) => {
+                if (!data) {
+                    reject();
+                    return;
                 }
                 resolve(
                     data.map(b => {
@@ -28,6 +30,7 @@ export const getUTXO = ({
                         };
                     }),
                 );
-            })
+            },
+        );
     });
 };

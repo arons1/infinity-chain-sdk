@@ -6,7 +6,7 @@ import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 /* 
 estimateCurrencyFee
     Returns currency transfer estimate cost
-    @param amount: Amount to bridge in wei
+    @param value: Amount to bridge in wei
     @param web3: web3 connector
     @param source: source account to send from
     @param destination: destination account to receive
@@ -15,7 +15,7 @@ estimateCurrencyFee
     @param priorityFee: account index derivation
 */
 export const estimateCurrencyFee = async ({
-    amount = '0',
+    value = '0',
     web3,
     source,
     destination = '',
@@ -26,7 +26,7 @@ export const estimateCurrencyFee = async ({
     const { estimateGas } = await getGasLimit({
         source,
         destination,
-        amount,
+        value,
         web3,
         chainId,
         isToken: false,
@@ -35,7 +35,7 @@ export const estimateCurrencyFee = async ({
     var transaction: TransactionEVM = {
         from: source,
         to: destination,
-        value: amount,
+        value: value,
     };
     if (chainId != 100009) {
         transaction.nonce = await getNonce({

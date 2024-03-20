@@ -62,13 +62,13 @@ export const buildTransaction = async ({
             to: destination,
             amount,
         });
-        var estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
-        estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
+        var estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
+        estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
         return () =>
             web3.contract.transfer({
                 to: destination,
                 amount,
-                fee: estimatedBaseFee.toNumber(),
+                fee: estimatedBaseFeeb.toNumber(),
             });
     }
 };

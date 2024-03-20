@@ -162,24 +162,21 @@ const getBatchAddressesWithPagination = async ({
         limit,
     });
     await sleep(SLEEP_BETWEEN_CALLS);
-    const resultBatchs = batchResults.map((a, i) => {
+    const resultBatchs = batchResults.map((a, index) => {
         return {
-            ...addresses[i],
+            ...addresses[index],
             result: a.map(b => b.signature),
         };
     });
     var needRecall = false;
-    for (var i = 0; i < resultBatchs.length; i++) {
-        if (resultBatchs[i].result.length == LIMIT_CALLS) {
-            pagination[resultBatchs[i].address] =
-                resultBatchs[i].result[LIMIT_CALLS - 1];
+    for (var p = 0; p < resultBatchs.length; p++) {
+        const address = resultBatchs[p].address;
+        if (resultBatchs[p].result.length == LIMIT_CALLS) {
+            pagination[address] = resultBatchs[p].result[LIMIT_CALLS - 1];
             needRecall = true;
         } else {
-            if (pagination[resultBatchs[i].address] != undefined)
-                delete pagination[resultBatchs[i].address];
-            addresses = addresses.filter(
-                a => resultBatchs[i].address != a.address,
-            );
+            if (pagination[address] != undefined) delete pagination[address];
+            addresses = addresses.filter(a => address != a.address);
         }
     }
     if (needRecall) {

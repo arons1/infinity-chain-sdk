@@ -6,24 +6,27 @@ const getAccountInfo = ({
     address,
 }: GetAccountInfoParams): Promise<string> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket
-            .send('getAccountInfo', {
+        trezorWebsocket.send(
+            'getAccountInfo',
+            {
                 descriptor: address,
                 details: 'basic',
                 page: 1,
                 from: 1,
                 to: 1,
-            },(data: { balance: string; unconfirmedBalance: string }) => {
-                if(!data || !data.balance){
-                    reject()
-                    return
+            },
+            (data: { balance: string; unconfirmedBalance: string }) => {
+                if (!data || !data.balance) {
+                    reject();
+                    return;
                 }
                 const balance = new BigNumber(data.balance);
                 const unconfirmed_balance = new BigNumber(
                     data.unconfirmedBalance,
                 );
                 resolve(balance.plus(unconfirmed_balance).toString(10));
-            })
+            },
+        );
     });
 };
 

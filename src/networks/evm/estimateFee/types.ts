@@ -10,7 +10,7 @@ export type EstimateGasParams = {
     source: string;
     tokenContract?: string;
     destination?: string;
-    amount?: string;
+    value?: string;
     chainId: number;
     feeRatio: number;
     priorityFee: string;
@@ -20,7 +20,7 @@ export type EstimateGasTokenParams = {
     source: string;
     tokenContract: string;
     destination: string;
-    amount?: string;
+    value?: string;
     chainId: number;
     feeRatio: number;
     priorityFee: string;
@@ -39,7 +39,7 @@ export type GasLimitParams = {
     source: string;
     destination: string;
     tokenContract?: string;
-    amount: string;
+    value: string;
     chainId: number;
     contract?: any;
     isToken: boolean;

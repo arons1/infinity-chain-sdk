@@ -11,15 +11,16 @@ export const pull = ({
     const selected = PROVIDER[chainId as number] as string;
     if (!selected) throw new Error('Not integrated chain');
     return {
-        url:selected +
-        '/api?module=account&apikey=' +
-        apiKey +
-        '&action=tokentx&address=' +
-        address +
-        '&startblock=1&endblock=99999999999999999999999&sort=desc&page=' +
-        page +
-        '&offset=' +
-        limit,
-        method:"GET"
-    }
-}
+        url:
+            selected +
+            '/api?module=account&apikey=' +
+            apiKey +
+            '&action=tokentx&address=' +
+            address +
+            '&startblock=1&endblock=99999999999999999999999&sort=desc&page=' +
+            page +
+            '&offset=' +
+            limit,
+        method: 'GET',
+    };
+};

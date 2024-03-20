@@ -61,13 +61,13 @@ export const encode = ({
             a => a.owner == account && a.mint == preBalance.mint,
         )[0];
         if (postBalance == undefined) continue;
-        var value = new BigNumber(postBalance.uiTokenAmount.amount).minus(
+        var valueToken = new BigNumber(postBalance.uiTokenAmount.amount).minus(
             preBalance.uiTokenAmount.amount,
         );
         var outToken = 0;
-        if (!value.isGreaterThanOrEqualTo(0)) {
+        if (!valueToken.isGreaterThanOrEqualTo(0)) {
             outToken = 1;
-            value = value.multipliedBy(-1);
+            valueToken = valueToken.multipliedBy(-1);
         }
 
         var otherSender = transaction.details.meta.postTokenBalances.filter(
@@ -82,7 +82,7 @@ export const encode = ({
         const tokenTransfer: TokenTransfer = {
             from,
             to,
-            value: value.toString(10),
+            value: valueToken.toString(10),
             contractAddress: mint,
         };
 

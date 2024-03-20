@@ -64,7 +64,7 @@ export const getGasPrice = async ({
 /* 
 getGasLimit
     Returns gas limit estimate cost
-    @param amount: Amount to bridge in wei
+    @param value: Amount to bridge in wei
     @param web3: web3 connector
     @param source: source account to send from
     @param destination: destination account to receive
@@ -79,7 +79,7 @@ getGasLimit
 export const getGasLimit = async ({
     destination,
     tokenContract,
-    amount,
+    value,
     source,
     contract,
     chainId,
@@ -90,7 +90,7 @@ export const getGasLimit = async ({
     estimateGas: string;
 }> => {
     if (!isValidAddress(source)) throw new Error(InvalidAddress);
-    if (!isValidNumber(amount)) throw new Error(InvalidAmount);
+    if (!isValidNumber(value)) throw new Error(InvalidAmount);
     if (!isValidAddress(destination)) throw new Error(InvalidAddress);
     if (isToken) {
         if (!isValidAddress(tokenContract as string))
@@ -98,13 +98,13 @@ export const getGasLimit = async ({
         if (!contract) throw new Error(InvalidTokenContract);
         const nonce = await getNonce({ address: source, web3 });
         if (!nonce) throw new Error(CannotGetNonce);
-        const data = contract.methods.transfer(destination, amount).encodeABI();
+        const data = contract.methods.transfer(destination, value).encodeABI();
         const estimateGas = await web3.eth.estimateGas({
             from: source,
             nonce: nonce,
             to: tokenContract,
             data,
-            value: amount,
+            value: value,
         });
         return {
             data,
@@ -114,7 +114,7 @@ export const getGasLimit = async ({
         const tx: TransactionEVM = {
             from: source,
             to: destination,
-            value: amount,
+            value: value,
         };
         if (chainId != 100009) {
             const nonce = await getNonce({ address: source, web3 });

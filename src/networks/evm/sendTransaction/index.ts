@@ -1,15 +1,15 @@
 import { SendTransactionParams } from './types';
 
-export const sendTransaction = ({
+export const sendTransaction = async ({
     web3,
     transaction,
     privateKey,
 }: SendTransactionParams): Promise<string> => {
-    return new Promise(async (resolve, reject) => {
-        const { rawTransaction } = await web3.eth.accounts.signTransaction(
-            transaction,
-            privateKey,
-        );
+    const { rawTransaction } = await web3.eth.accounts.signTransaction(
+        transaction,
+        privateKey,
+    );
+    return new Promise((resolve, reject) => {
         web3.eth
             .sendSignedTransaction(rawTransaction)
             .once('transactionHash', (txid: string) => {

@@ -6,15 +6,15 @@ export const encode = ({
 }: {
     transaction: TokenTransactionEncode;
 }): Transaction => {
-    const tokenTransfers:TokenTransfer[] = [
+    const tokenTransfers: TokenTransfer[] = [
         {
             contractAddress: transaction.contractAddress,
             tokenName: transaction.tokenName,
             tokenSymbol: transaction.tokenSymbol,
             tokenDecimal: transaction.tokenDecimal,
             value: transaction.value,
-            from:transaction.from,
-            to:transaction.to
+            from: transaction.from,
+            to: transaction.to,
         },
     ];
     return {

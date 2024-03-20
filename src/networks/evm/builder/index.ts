@@ -44,9 +44,11 @@ export const buildTransaction = async ({
     var transaction = {
         from: source,
         to: destination,
-        data,
         value,
     } as TransactionEVM;
+    if (data != undefined) {
+        transaction.data = data;
+    }
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,

@@ -22,10 +22,12 @@ export const getFeePerByte = ({
     high: string;
 }> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket
-            .send('estimateFee', {
+        trezorWebsocket.send(
+            'estimateFee',
+            {
                 blocks: [1, 2, 3, 4],
-            },(result: { feePerUnit: string }[]) => {
+            },
+            (result: { feePerUnit: string }[]) => {
                 if (
                     result &&
                     result.length == 4 &&
@@ -50,8 +52,8 @@ export const getFeePerByte = ({
                             .split('.')[0],
                     });
                 } else reject();
-            })
-            
+            },
+        );
     });
 };
 
