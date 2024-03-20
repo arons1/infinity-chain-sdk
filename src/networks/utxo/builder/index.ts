@@ -148,7 +148,7 @@ export const buildTransaction = async ({
     for (var k = 0; k < utxosUsed.length; k++) {
         const unspent = utxosUsed[k];
         const [change, index] = unspent.path.split('/').slice(4);
-        const keyPair = networks.utils.getPrivateKey({
+        const keyPair = networks.utils.secp256k1.getPrivateKey({
             privateAccountNode,
             change: parseInt(change),
             index: parseInt(index),
