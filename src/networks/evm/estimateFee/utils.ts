@@ -20,6 +20,7 @@ import {
 
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
+import Web3 from 'web3';
 
 export const calculateGasPrice = async ({
     transaction,
@@ -60,7 +61,14 @@ export const getGasPrice = async ({
 }: GasPriceParams): Promise<string> => {
     return '0x' + (await web3.eth.getGasPrice()).toString(16);
 };
-
+const estimateGas = async (web3: Web3, chainId: number, tx: TransactionEVM) => {
+    if (chainId == 100009) {
+        const auxCalc = { ...tx };
+        delete auxCalc.nonce;
+        return web3.eth.estimateGas(auxCalc);
+    }
+    return web3.eth.estimateGas(tx);
+};
 /* 
 getGasLimit
     Returns gas limit estimate cost
@@ -99,16 +107,15 @@ export const getGasLimit = async ({
         const nonce = await getNonce({ address: source, web3 });
         if (!nonce) throw new Error(CannotGetNonce);
         const data = contract.methods.transfer(destination, value).encodeABI();
-        const estimateGas = await web3.eth.estimateGas({
+        const estimateGasNormal = await estimateGas(web3, chainId, {
             from: source,
             nonce: nonce,
-            to: tokenContract,
+            to: tokenContract as string,
             data,
-            value: value,
         });
         return {
             data,
-            estimateGas: estimateGas.toString(10),
+            estimateGas: estimateGasNormal.toString(10),
         };
     } else {
         const tx: TransactionEVM = {
@@ -121,9 +128,9 @@ export const getGasLimit = async ({
             if (nonce == undefined) throw new Error(CannotGetNonce);
             tx.nonce = nonce;
         }
-        const estimateGas = await web3.eth.estimateGas(tx);
+        const estimateGasNormal = await estimateGas(web3, chainId, tx);
         return {
-            estimateGas: estimateGas.toString(10),
+            estimateGas: estimateGasNormal.toString(10),
             data: '',
         };
     }
