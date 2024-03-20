@@ -12,12 +12,14 @@ import {
     InvalidTokenContract,
     PriorityFeeError,
 } from '../../../errors/networks';
+
 import {
-    isValidAddress,
-    isValidNumber,
     TransactionEVM,
-} from '@infinity/core-sdk';
+    isValidAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 
 export const calculateGasPrice = async ({
     transaction,
@@ -56,7 +58,7 @@ getGasPrice
 export const getGasPrice = async ({
     web3,
 }: GasPriceParams): Promise<string> => {
-    return await web3.eth.getGasPrice();
+    return '0x' + (await web3.eth.getGasPrice()).toString(16);
 };
 
 /* 
@@ -136,5 +138,8 @@ export const getNonce = async ({
     address,
     web3,
 }: NonceParams): Promise<string> => {
-    return await web3.eth.getTransactionCount(address, 'pending');
+    return (
+        '0x' +
+        (await web3.eth.getTransactionCount(address, 'pending')).toString(16)
+    );
 };

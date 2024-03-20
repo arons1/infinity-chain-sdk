@@ -7,11 +7,14 @@ import {
     InvalidChainError,
     InvalidContractAddress,
 } from '../../../errors/networks';
-import { SupportedChains, isValidAddress } from '@infinity/core-sdk';
 import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateGas';
+import {
+    SupportedChains,
+    isValidAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 /* 
 estimateFee

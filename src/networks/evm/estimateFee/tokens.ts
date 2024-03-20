@@ -1,8 +1,8 @@
 import { EstimateGasTokenParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
-import ERC20Abi from '@infinity/core-sdk/core/abi/erc20';
-import { TransactionEVM } from '@infinity/core-sdk';
+import ERC20Abi from '@infinity/core-sdk/lib/commonjs/core/abi/erc20';
 import { CannotGetNonce } from '../../../errors/networks';
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 /* 
 estimateTokenFee

@@ -1,10 +1,15 @@
-import { CannotGetNonce, InvalidChainError } from '../../../errors/networks';
+import {
+    SupportedChains,
+    TransactionEVM,
+    isValidAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import {
+    CannotGetNonce,
+    InvalidAddress,
+    InvalidChainError,
+} from '../../../errors/networks';
 import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
-import { SupportedChains } from '../general/contants';
-import { TransactionEVM } from '../general/types';
-import { isValidAddress } from '../sdk/ethereumjs-util/account';
 import { BuildTransaction } from './types';
-import { InvalidAddress } from '@infinity/core-sdk';
 
 /* 
 buildTransaction

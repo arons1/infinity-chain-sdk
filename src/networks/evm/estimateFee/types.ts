@@ -1,4 +1,4 @@
-import { TransactionEVM } from '@infinity/core-sdk';
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import Web3 from 'web3';
 export type ReturnEstimate = {
     transaction: TransactionEVM;

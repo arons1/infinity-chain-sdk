@@ -1,7 +1,7 @@
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { CannotGetNonce } from '../../../errors/networks';
 import { EstimateGasParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
-import { TransactionEVM } from '@infinity/core-sdk';
 
 /* 
 estimateCurrencyFee

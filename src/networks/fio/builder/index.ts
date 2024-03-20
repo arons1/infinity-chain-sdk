@@ -27,7 +27,7 @@ export const buildTransaction = async ({
         data: {
             payee_public_key: address,
             amount: value,
-            max_fee: await estimateFee(source),
+            max_fee: await estimateFee({ source }),
             tpid: '',
             actor: FIOSDK.accountHash(source).accountnm,
         },

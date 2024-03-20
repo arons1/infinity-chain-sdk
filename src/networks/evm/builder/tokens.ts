@@ -3,13 +3,15 @@ import {
     InvalidAddress,
     InvalidChainError,
 } from '../../../errors/networks';
-import { SupportedChains } from '../general/contants';
-import { TransactionEVM } from '../general/types';
-import { isValidAddress } from '../sdk/ethereumjs-util/account';
-import { BuildTokenTransaction, DataTransferType } from './types';
-import ERC20Abi from '../../../core/abi/erc20';
-import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
 
+import { BuildTokenTransaction, DataTransferType } from './types';
+import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
+import {
+    SupportedChains,
+    TransactionEVM,
+    isValidAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import ERC20Abi from '@infinity/core-sdk/lib/commonjs/core/abi/erc20';
 /* 
 buildTokenTransaction
     Returns a transfer token transaction formatted to be sign and send

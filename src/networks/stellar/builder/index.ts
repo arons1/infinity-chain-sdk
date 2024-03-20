@@ -1,8 +1,8 @@
+import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { estimateFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import StellarSdk from 'stellar-sdk';
-import { signTransaction } from '@infinity/core/ed25519';
 
 export const preparePayment = async ({
     value,

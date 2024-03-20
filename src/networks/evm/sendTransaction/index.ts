@@ -6,7 +6,7 @@ export const sendTransaction = ({
     privateKey,
 }: SendTransactionParams): Promise<string> => {
     return new Promise(async (resolve, reject) => {
-        const rawTransaction = await web3.eth.accounts.signTransaction(
+        const { rawTransaction } = await web3.eth.accounts.signTransaction(
             transaction,
             privateKey,
         );

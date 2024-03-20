@@ -6,7 +6,7 @@ export const getBalance = async ({
     web3,
 }: BalanceParams): Promise<CurrencyBalanceResult> => {
     return {
-        balance: await web3.eth.getBalance(address, 'latest'),
+        balance: (await web3.eth.getBalance(address, 'latest')).toString(10),
     } as CurrencyBalanceResult;
 };
 export * from './tokens';

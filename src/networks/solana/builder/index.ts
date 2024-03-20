@@ -3,7 +3,7 @@ import { RawTransactionParams, TransactionBuilderParams } from './types';
 import { tokenTransaction } from './token';
 import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
-import { signTransaction } from '@infinity/core/ed25519';
+import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 
 export const buildTransaction = async (props: TransactionBuilderParams) => {
     const transactionPay = await rawTransaction({

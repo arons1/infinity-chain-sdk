@@ -12,10 +12,7 @@ import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { BuildParameters } from './types';
-import {
-    networks,
-    core
-} from '@infinity/core-sdk';
+import { networks, core } from '@infinity/core-sdk';
 import { getLastChangeIndex } from '../getLastChangeIndex';
 import { bitcoinjs } from '@infinity/core-sdk/lib/commonjs/core';
 
@@ -65,8 +62,10 @@ export const buildTransaction = async ({
         console.error(e);
         throw new Error(CannotGetFeePerByte);
     }
-    
-    var tx = new core.bitcoinjs.TransactionBuilder(network as bitcoinjs.Network);
+
+    var tx = new core.bitcoinjs.TransactionBuilder(
+        network as bitcoinjs.Network,
+    );
     const feeByte = new BigNumber(feePerByte.low)
         .plus(feePerByte.high)
         .multipliedBy(feeRatio);
@@ -151,8 +150,8 @@ export const buildTransaction = async ({
         const [change, index] = unspent.path.split('/').slice(4);
         const keyPair = networks.utils.getPrivateKey({
             privateAccountNode,
-            change:parseInt(change),
-            index:parseInt(index),
+            change: parseInt(change),
+            index: parseInt(index),
         });
         if (unspent.protocol == 84) {
             tx.sign({
