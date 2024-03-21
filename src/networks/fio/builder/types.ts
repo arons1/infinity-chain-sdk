@@ -4,3 +4,9 @@ export type BuildTransactionParams = {
     destination: string;
     privateKey: string;
 };
+export type BuildTransactionFIOResult = {
+    signatures: string[];
+    compression: number;
+    packed_context_free_data: string;
+    packed_trx: string;
+};

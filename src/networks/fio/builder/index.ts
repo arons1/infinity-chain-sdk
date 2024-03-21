@@ -1,8 +1,9 @@
 import { convertPubKeyToAccount } from '../utils';
-import { BuildTransactionParams } from './types';
+import { BuildTransactionFIOResult, BuildTransactionParams } from './types';
 import { FIOSDK } from '@fioprotocol/fiosdk';
 import { estimateFee } from '../estimateFee';
 import { getFIOAccount } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 const fetchJson = async (uri: string, opts = {}) => {
     return fetch(uri, opts);
@@ -12,7 +13,7 @@ export const buildTransaction = async ({
     source,
     destination,
     privateKey,
-}: BuildTransactionParams) => {
+}: BuildTransactionParams): Promise<BuildTransactionFIOResult> => {
     const address = await convertPubKeyToAccount(destination);
     var user = new FIOSDK(
         privateKey,
@@ -27,7 +28,9 @@ export const buildTransaction = async ({
         data: {
             payee_public_key: address,
             amount: value,
-            max_fee: await estimateFee({ source }),
+            max_fee: new BigNumber(
+                (await estimateFee({ source })).fee as string,
+            ).toNumber(),
             tpid: '',
             actor: getFIOAccount(source),
         },

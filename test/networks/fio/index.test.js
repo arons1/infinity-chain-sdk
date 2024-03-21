@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("@jest/globals");
 const builder_1 = require("../../../lib/commonjs/networks/fio/builder");
+const estimateFee_1 = require("../../../lib/commonjs/networks/fio/estimateFee");
+const getBalance_1 = require("../../../lib/commonjs/networks/fio/getBalance");
 const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1");
 const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -22,16 +24,17 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             destination: 'FIO5Y3irLYwTmCA8LZiG25QvXN7g2sRz9RdHVR6RnNNb8Tr7KVXQp',
             privateKey: privateAddress,
         });
-        console.log(built);
-        (0, globals_1.expect)(true).toBe(true);
+        (0, globals_1.expect)(built.signatures.length).toBe(1);
     });
     (0, globals_1.test)('estimateFee', async () => {
-        (0, globals_1.expect)(true).toBe(true);
+        const fee = await (0, estimateFee_1.estimateFee)({
+            source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
+        });
+        (0, globals_1.expect)(fee.fee).toBe('2342371843');
     });
     (0, globals_1.test)('getBalance', async () => {
-        (0, globals_1.expect)(true).toBe(true);
-    });
-    (0, globals_1.test)('sendTransaction', async () => {
-        (0, globals_1.expect)(true).toBe(true);
+        const bal = await (0, getBalance_1.getBalance)('FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR');
+        (0, globals_1.expect)(bal.balance + '').toBe('3684876260');
+        (0, globals_1.expect)(bal.available + '').toBe('3684876260');
     });
 });

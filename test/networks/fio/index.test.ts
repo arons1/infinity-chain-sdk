@@ -1,5 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/fio/builder';
+import { estimateFee } from '../../../lib/commonjs/networks/fio/estimateFee';
+import { getBalance } from '../../../lib/commonjs/networks/fio/getBalance';
+
 import {
     getPrivateMasterKey,
     getRootNode,
@@ -26,16 +29,19 @@ describe('networksFIO', () => {
                 'FIO5Y3irLYwTmCA8LZiG25QvXN7g2sRz9RdHVR6RnNNb8Tr7KVXQp',
             privateKey: privateAddress,
         });
-        console.log(built);
-        expect(true).toBe(true);
+        expect(built.signatures.length).toBe(1);
     });
     test('estimateFee', async () => {
-        expect(true).toBe(true);
+        const fee = await estimateFee({
+            source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
+        });
+        expect(fee.fee).toBe('2342371843');
     });
     test('getBalance', async () => {
-        expect(true).toBe(true);
-    });
-    test('sendTransaction', async () => {
-        expect(true).toBe(true);
+        const bal = await getBalance(
+            'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
+        );
+        expect(bal.balance + '').toBe('3684876260');
+        expect(bal.available + '').toBe('3684876260');
     });
 });
