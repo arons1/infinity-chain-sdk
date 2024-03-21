@@ -37,18 +37,18 @@ const PRIORITY_FEES = {
     });
     (0, globals_1.test)('getBalance', async () => {
         const bal = await (0, getBalance_1.getBalance)({
-            address: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
+            address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             web3: utils_1.web3Matic,
         });
-        (0, globals_1.expect)(bal.balance).toBe('8564240984748543196');
+        (0, globals_1.expect)(bal.balance).toBe('100366941538263892');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const bal = await (0, getBalance_1.getAccountBalances)({
-            addresses: ['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'],
+            addresses: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
             web3: utils_1.web3Matic,
-            contracts: ['0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 'native'],
+            contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });
-        (0, globals_1.expect)(bal['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'].find((a) => a.address == '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063')?.value).toBe('799957442555703636');
-        (0, globals_1.expect)(bal['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'].find((a) => a.address == 'native')?.value).toBe('8564240984748543196');
+        (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == '0x5fe2b58c013d7601147dcdd68c143a77499f5531')?.value).toBe('255945616675368817');
+        (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == 'native')?.value).toBe('100366941538263892');
     });
 });

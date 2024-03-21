@@ -41,27 +41,27 @@ describe('networksEVM', () => {
     });
     test('getBalance', async () => {
         const bal = await getBalance({
-            address: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
+            address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             web3: web3Matic,
         });
-        expect(bal.balance).toBe('8564240984748543196');
+        expect(bal.balance).toBe('100366941538263892');
     });
     test('getAccountBalances', async () => {
         const bal = await getAccountBalances({
-            addresses: ['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'],
+            addresses: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
             web3: web3Matic,
-            contracts: ['0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 'native'],
+            contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });
         expect(
-            bal['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'].find(
+            bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find(
                 (a: any) =>
-                    a.address == '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+                    a.address == '0x5fe2b58c013d7601147dcdd68c143a77499f5531',
             )?.value,
-        ).toBe('799957442555703636');
+        ).toBe('255945616675368817');
         expect(
-            bal['0xfF8996c5961D138bd01a75c2DDa2d6944658F685'].find(
+            bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find(
                 (a: any) => a.address == 'native',
             )?.value,
-        ).toBe('8564240984748543196');
+        ).toBe('100366941538263892');
     });
 });

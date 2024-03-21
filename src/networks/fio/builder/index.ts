@@ -1,11 +1,11 @@
-import axios from 'axios';
 import { convertPubKeyToAccount } from '../utils';
 import { BuildTransactionParams } from './types';
 import { FIOSDK } from '@fioprotocol/fiosdk';
 import { estimateFee } from '../estimateFee';
+import { getFIOAccount } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 const fetchJson = async (uri: string, opts = {}) => {
-    return axios(uri, opts);
+    return fetch(uri, opts);
 };
 export const buildTransaction = async ({
     value,
@@ -13,11 +13,11 @@ export const buildTransaction = async ({
     destination,
     privateKey,
 }: BuildTransactionParams) => {
-    const address = await convertPubKeyToAccount(source);
+    const address = await convertPubKeyToAccount(destination);
     var user = new FIOSDK(
         privateKey,
-        destination,
-        'https://fio.blockpane.com/v1',
+        source,
+        'https://fio.blockpane.com/v1/',
         fetchJson,
     );
     user.setSignedTrxReturnOption(true);
@@ -29,7 +29,7 @@ export const buildTransaction = async ({
             amount: value,
             max_fee: await estimateFee({ source }),
             tpid: '',
-            actor: FIOSDK.accountHash(source).accountnm,
+            actor: getFIOAccount(source),
         },
     });
 };
