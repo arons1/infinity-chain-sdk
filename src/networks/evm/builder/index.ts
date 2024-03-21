@@ -7,6 +7,7 @@ import {
     CannotGetNonce,
     InvalidAddress,
     InvalidChainError,
+    MissingPriorityFee,
 } from '../../../errors/networks';
 import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
 import { BuildTransaction } from './types';
@@ -37,6 +38,8 @@ export const buildTransaction = async ({
     if (!isValidAddress(source)) throw new Error(InvalidAddress);
     if (!SupportedChains.includes(chainId)) throw new Error(InvalidChainError);
     if (!isValidAddress(destination)) throw new Error(InvalidAddress);
+    if (!priorityFee && (chainId == 1 || chainId == 137))
+        throw new Error(MissingPriorityFee);
     if (!gasPrice)
         gasPrice = await getGasPrice({
             web3,

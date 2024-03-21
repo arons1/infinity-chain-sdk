@@ -9,3 +9,4 @@ export const CoinNotIntegrated = 'Coin not integrated';
 export const CannotGetFeePerByte = 'Cannot get fee per byte';
 export const ErrorBuildingUTXOTransaction = 'Error building utxo transaction';
 export const InvalidAddress = 'invalid address';
+export const MissingPriorityFee = 'missing priority fee';

@@ -8,7 +8,7 @@ export type BuildTransaction = {
     web3: Web3;
     chainId: number;
     feeRatio: number;
-    priorityFee: string;
+    priorityFee?: string;
     gasPrice?: string;
 };
 export type BuildTokenTransaction = {
@@ -19,7 +19,7 @@ export type BuildTokenTransaction = {
     web3: Web3;
     chainId: number;
     feeRatio: number;
-    priorityFee: string;
+    priorityFee?: string;
     gasPrice?: string;
 };
 export type DataTransferType = {

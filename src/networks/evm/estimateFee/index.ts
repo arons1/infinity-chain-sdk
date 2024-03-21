@@ -10,7 +10,7 @@ import {
 import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
-import { estimateL1Cost } from '../../op/estimateGas';
+import { estimateL1Cost } from '../../op/estimateFee';
 import {
     SupportedChains,
     isValidAddress,

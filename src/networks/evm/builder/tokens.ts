@@ -2,6 +2,7 @@ import {
     CannotGetNonce,
     InvalidAddress,
     InvalidChainError,
+    MissingPriorityFee,
 } from '../../../errors/networks';
 
 import { BuildTokenTransaction, DataTransferType } from './types';
@@ -39,6 +40,8 @@ export const buildTokenTransaction = async ({
     if (!SupportedChains.includes(chainId)) throw new Error(InvalidChainError);
     if (!isValidAddress(destination)) throw new Error(InvalidAddress);
     if (!isValidAddress(tokenContract)) throw new Error(InvalidAddress);
+    if (!priorityFee && (chainId == 1 || chainId == 137))
+        throw new Error(MissingPriorityFee);
     if (!gasPrice)
         gasPrice = await getGasPrice({
             web3,
