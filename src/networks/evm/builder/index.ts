@@ -1,16 +1,7 @@
-import {
-    SupportedChains,
-    TransactionEVM,
-    isValidAddress,
-} from '@infinity/core-sdk/lib/commonjs/networks/evm';
-import {
-    CannotGetNonce,
-    InvalidAddress,
-    InvalidChainError,
-    MissingPriorityFee,
-} from '../../../errors/networks';
-import { calculateGasPrice, getGasPrice, getNonce } from '../estimateFee/utils';
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+
 import { BuildTransaction } from './types';
+import { estimateFee } from '../estimateFee';
 
 /* 
 buildTransaction
@@ -24,50 +15,11 @@ buildTransaction
     @param priorityFee: Just for chainId, 1 or 137, it's used for calculating the fee
     @param gasPrice: It's the gas price to use (optional). Place it just when you require a fixed gasPrice.
 */
-export const buildTransaction = async ({
-    value,
-    source,
-    destination,
-    data,
-    web3,
-    chainId,
-    feeRatio = 0.5,
-    priorityFee,
-    gasPrice,
-}: BuildTransaction): Promise<TransactionEVM> => {
-    if (!isValidAddress(source)) throw new Error(InvalidAddress);
-    if (!SupportedChains.includes(chainId)) throw new Error(InvalidChainError);
-    if (!isValidAddress(destination)) throw new Error(InvalidAddress);
-    if (!priorityFee && (chainId == 1 || chainId == 137))
-        throw new Error(MissingPriorityFee);
-    if (!gasPrice)
-        gasPrice = await getGasPrice({
-            web3,
-        });
-    var transaction = {
-        from: source,
-        to: destination,
-        value,
-    } as TransactionEVM;
-    if (data != undefined) {
-        transaction.data = data;
-    }
-    if (chainId != 100009) {
-        transaction.nonce = await getNonce({
-            address: source,
-            web3,
-        });
-        if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
-    }
-    transaction = await calculateGasPrice({
-        transaction,
-        gasPrice,
-        web3,
-        chainId,
-        feeRatio,
-        priorityFee,
-    });
-    return transaction;
+export const buildTransaction = async (
+    props: BuildTransaction,
+): Promise<TransactionEVM | undefined> => {
+    const gaslimit = await estimateFee(props);
+    return gaslimit.transaction;
 };
 
 export * from './tokens';

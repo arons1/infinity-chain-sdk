@@ -49,6 +49,10 @@ export const calculateGasPrice = async ({
     } else {
         transaction.gasPrice = web3.utils.toHex(gasPrice);
     }
+
+    if (transaction.value)
+        transaction.value =
+            '0x' + new BigNumber(transaction.value as string).toString(16);
     return transaction;
 };
 /* 
@@ -62,12 +66,12 @@ export const getGasPrice = async ({
     return '0x' + (await web3.eth.getGasPrice()).toString(16);
 };
 const estimateGas = async (web3: Web3, chainId: number, tx: TransactionEVM) => {
+    const auxCalc = { ...tx };
     if (chainId == 100009) {
-        const auxCalc = { ...tx };
         delete auxCalc.nonce;
-        return web3.eth.estimateGas(auxCalc);
     }
-    return web3.eth.estimateGas(tx);
+    tx.gasLimit = '0x' + (await web3.eth.estimateGas(auxCalc)).toString(16);
+    return tx.gasLimit;
 };
 /* 
 getGasLimit
@@ -115,13 +119,13 @@ export const getGasLimit = async ({
         });
         return {
             data,
-            estimateGas: estimateGasNormal.toString(10),
+            estimateGas: estimateGasNormal,
         };
     } else {
         const tx: TransactionEVM = {
             from: source,
             to: destination,
-            value: value,
+            value: '0x' + new BigNumber(value).toString(16),
         };
         if (chainId != 100009) {
             const nonce = await getNonce({ address: source, web3 });
@@ -130,7 +134,7 @@ export const getGasLimit = async ({
         }
         const estimateGasNormal = await estimateGas(web3, chainId, tx);
         return {
-            estimateGas: estimateGasNormal.toString(10),
+            estimateGas: estimateGasNormal,
             data: '',
         };
     }

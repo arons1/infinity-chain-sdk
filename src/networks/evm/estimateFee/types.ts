@@ -12,8 +12,9 @@ export type EstimateGasParams = {
     destination?: string;
     value?: string;
     chainId: number;
+    gasPrice?: string;
     feeRatio: number;
-    priorityFee: string;
+    priorityFee?: string;
 };
 export type EstimateGasTokenParams = {
     web3: Web3;
@@ -21,9 +22,10 @@ export type EstimateGasTokenParams = {
     tokenContract: string;
     destination: string;
     value?: string;
+    gasPrice?: string;
     chainId: number;
     feeRatio: number;
-    priorityFee: string;
+    priorityFee?: string;
 };
 
 export type NonceParams = {

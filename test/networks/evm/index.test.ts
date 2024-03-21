@@ -22,7 +22,7 @@ describe('networksEVM', () => {
             priorityFee: PRIORITY_FEES[137],
             value: '1000000000000',
         });
-        expect(built.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
+        expect(built?.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
     });
     test('estimateFee', async () => {
         const built = await estimateFee({

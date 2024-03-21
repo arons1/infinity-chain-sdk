@@ -1,6 +1,10 @@
-import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
-import feeAbi from './feeAbi';
+import {
+    Transaction,
+    TransactionEVM,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import feeAbi from '@infinity/core-sdk/lib/commonjs/core/abi/fee';
 import Web3 from 'web3';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const estimateL1Cost = async (
     web3: Web3,
@@ -10,5 +14,8 @@ export const estimateL1Cost = async (
         feeAbi,
         '0x420000000000000000000000000000000000000F',
     );
-    return await gpo.methods.getL1Fee(tx).call();
+    const txBuilder = new Transaction(tx).serialize();
+    return new BigNumber(await gpo.methods.getL1Fee(txBuilder).call()).toString(
+        10,
+    );
 };

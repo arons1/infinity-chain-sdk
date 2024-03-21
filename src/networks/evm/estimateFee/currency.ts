@@ -22,7 +22,11 @@ export const estimateCurrencyFee = async ({
     chainId,
     feeRatio,
     priorityFee,
+    gasPrice,
 }: EstimateGasParams): Promise<ReturnEstimate> => {
+    if (chainId == 10) {
+        console.log('estimateCurrencyFee');
+    }
     const { estimateGas } = await getGasLimit({
         source,
         destination,
@@ -31,12 +35,15 @@ export const estimateCurrencyFee = async ({
         chainId,
         isToken: false,
     });
-    var gasPrice = await getGasPrice({ web3 });
+    gasPrice = gasPrice ?? (await getGasPrice({ web3 }));
     var transaction: TransactionEVM = {
         from: source,
         to: destination,
         value: value,
+        gasLimit: estimateGas,
     };
+    if (chainId == 10) console.log(transaction);
+
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,

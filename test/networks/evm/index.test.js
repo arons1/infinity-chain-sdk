@@ -20,7 +20,7 @@ const PRIORITY_FEES = {
             priorityFee: PRIORITY_FEES[137],
             value: '1000000000000',
         });
-        (0, globals_1.expect)(built.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
+        (0, globals_1.expect)(built?.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
     });
     (0, globals_1.test)('estimateFee', async () => {
         const built = await (0, estimateFee_1.estimateFee)({

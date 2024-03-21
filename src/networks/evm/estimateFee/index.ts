@@ -34,6 +34,7 @@ export const estimateFee = async ({
     destination = '',
     value = '0',
     chainId,
+    gasPrice,
     feeRatio = 0.5,
     priorityFee,
 }: EstimateGasParams): Promise<EstimateFeeResult> => {
@@ -49,6 +50,7 @@ export const estimateFee = async ({
             source,
             tokenContract,
             destination,
+            gasPrice,
             value,
             chainId,
             feeRatio,
@@ -61,6 +63,7 @@ export const estimateFee = async ({
             destination,
             value,
             chainId,
+            gasPrice,
             feeRatio,
             priorityFee,
         });

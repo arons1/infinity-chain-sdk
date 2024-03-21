@@ -21,6 +21,7 @@ export const estimateTokenFee = async ({
     web3,
     source,
     destination,
+    gasPrice,
     tokenContract,
     chainId,
     feeRatio = 0.5,
@@ -39,14 +40,17 @@ export const estimateTokenFee = async ({
         web3,
         isToken: true,
     });
-    var gasPrice = await getGasPrice({
-        web3,
-    });
+    gasPrice =
+        gasPrice ??
+        (await getGasPrice({
+            web3,
+        }));
 
     var transaction: TransactionEVM = {
         from: source,
         to: tokenContract,
         data,
+        gasLimit: estimateGas,
         value: value,
     };
     if (chainId != 100009) {
