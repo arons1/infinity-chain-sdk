@@ -43,7 +43,7 @@ export const addAssociatedCreation = async ({
     const [checkReceiver, associatedTokenReceiver] = await checkIfAccountExists(
         {
             mintToken,
-            publicKey,
+            publicKey: new PublicKey(destination),
             web3,
         },
     );

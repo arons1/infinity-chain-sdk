@@ -4,3 +4,4 @@ export * from './sendTransaction';
 export * from './getBalance';
 export * from './utils';
 export * from './getTransactions';
+export * from './getBalanceAfter';

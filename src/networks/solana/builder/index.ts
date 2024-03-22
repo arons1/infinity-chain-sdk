@@ -1,18 +1,24 @@
-import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
+import {
+    PublicKey,
+    TransactionMessage,
+    VersionedTransaction,
+} from '@solana/web3.js';
 import { RawTransactionParams, TransactionBuilderParams } from './types';
 import { tokenTransaction } from './token';
 import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
+import * as Web3 from '@solana/web3.js';
 
 export const buildTransaction = async (props: TransactionBuilderParams) => {
     const transactionPay = await rawTransaction({
         ...props,
-        publicKey: props.keyPair.publicKey,
+        publicKey: new PublicKey(props.keyPair.publicKey),
     });
+
     return signTransaction({
         transaction: transactionPay,
-        keyPair: props.keyPair,
+        keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
         coinId: 'solana',
     });
 };

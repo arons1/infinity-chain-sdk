@@ -1,5 +1,5 @@
 import { Connection, ParsedTransactionWithMeta } from '@solana/web3.js';
-import { GetAccountsResult } from '../getBalance/types';
+import { GetAccountsResult } from '../utils/types';
 
 export type GetAccountsTransactionsParams = {
     web3: Connection;
@@ -23,7 +23,8 @@ export type AddressesFormat = {
 };
 export type HashesResult = {
     address: string;
-    hashes: string[];
+    result: string[];
+    mint: string;
 };
 export type PaginationData = {
     limit: number;

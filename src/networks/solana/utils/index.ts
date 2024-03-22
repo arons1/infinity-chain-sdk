@@ -1,5 +1,10 @@
-import { Connection, PublicKey, TransactionInstruction } from '@solana/web3.js';
-import { ResultBlockHash } from './types';
+import {
+    Connection,
+    GetProgramAccountsFilter,
+    PublicKey,
+    TransactionInstruction,
+} from '@solana/web3.js';
+import { GetAccountsParams, GetAccountsResult, ResultBlockHash } from './types';
 import {
     ASSOCIATED_TOKEN_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
@@ -56,4 +61,23 @@ export const memoInstruction = (memo: string) => {
 
 export const sleep = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
+};
+export const getAccounts = async ({
+    web3,
+    address,
+}: GetAccountsParams): Promise<GetAccountsResult[]> => {
+    const filters: GetProgramAccountsFilter[] = [
+        {
+            dataSize: 165,
+        },
+        {
+            memcmp: {
+                offset: 32,
+                bytes: address,
+            },
+        },
+    ];
+    return (await web3.getParsedProgramAccounts(TOKEN_PROGRAM_ID, {
+        filters: filters,
+    })) as GetAccountsResult[];
 };

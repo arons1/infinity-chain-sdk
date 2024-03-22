@@ -24,9 +24,6 @@ export const estimateCurrencyFee = async ({
     priorityFee,
     gasPrice,
 }: EstimateGasParams): Promise<ReturnEstimate> => {
-    if (chainId == 10) {
-        console.log('estimateCurrencyFee');
-    }
     const { estimateGas } = await getGasLimit({
         source,
         destination,
@@ -42,8 +39,6 @@ export const estimateCurrencyFee = async ({
         value: value,
         gasLimit: estimateGas,
     };
-    if (chainId == 10) console.log(transaction);
-
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,

@@ -37,7 +37,7 @@ export const getAccountsHashes = async ({
         });
         await sleep(SLEEP_BETWEEN_CALLS);
         const numberOfHashes = transactionHashes.reduce(
-            (p: number, v: HashesResult) => p + v.hashes.length,
+            (p: number, v: HashesResult) => p + v.result.length,
             0,
         );
         if (numberOfHashes == numberLast) break;
@@ -93,14 +93,17 @@ export const getAccountsTransactions = async ({
     });
 
     var pendingTransactions: string[] = [];
-    transactionHashes.map(a => [...pendingTransactions, ...a.hashes]);
+    transactionHashes.map(
+        a => (pendingTransactions = [...pendingTransactions, ...a.result]),
+    );
+    pendingTransactions = Array.from(new Set(pendingTransactions));
     const detailsTransactions = await getTransactions({
         pendingTransactions,
         web3,
     });
     var hashes: Record<string, HashesDetails> = {};
     transactionHashes.map(accountHashes => {
-        accountHashes.hashes.map(hash => {
+        accountHashes.result.map(hash => {
             hashes[hash] = {
                 mint: accountHashes.address,
             };
@@ -128,7 +131,7 @@ export const getAccountsTransactionsHashes = async ({
         };
     });
     acc_array.push({
-        mint: 'solana',
+        mint: 'native',
         address: address,
     });
     const pagination = {};
