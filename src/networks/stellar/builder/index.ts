@@ -1,8 +1,15 @@
-import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
+import {
+    Keypair,
+    Memo,
+    Networks,
+    Operation,
+    Transaction,
+    TransactionBuilder,
+} from 'stellar-sdk';
 import { estimateFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
-import StellarSdk from 'stellar-sdk';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const preparePayment = async ({
     value,
@@ -12,48 +19,46 @@ export const preparePayment = async ({
     code,
     issuer,
     memo,
-}: BuildTransactionParams) => {
+}: BuildTransactionParams): Promise<Transaction> => {
     const account = await api.loadAccount(source);
-    var transaction = new StellarSdk.TransactionBuilder(account, {
-        fee: await estimateFee(),
-        networkPassphrase: StellarSdk.Networks.PUBLIC,
+    var transaction: TransactionBuilder = new TransactionBuilder(account, {
+        fee: new BigNumber((await estimateFee()).fee as string).toString(10),
+        networkPassphrase: Networks.PUBLIC,
     });
-
-    const destinationNoExists = await accountExists({
+    const destinationExists = await accountExists({
         api,
         account: destination,
     });
-    if (destinationNoExists) {
-        transaction = transaction.addOperation(
-            StellarSdk.Operation.createAccount({
-                destination: destination,
-                startingBalance: value,
+    if (!destinationExists) {
+        transaction.addOperation(
+            Operation.createAccount({
+                destination,
+                startingBalance: new BigNumber(value)
+                    .shiftedBy(-7)
+                    .toString(10),
             }),
         );
     } else {
-        transaction = transaction.addOperation(
-            StellarSdk.Operation.payment({
-                destination: destination,
+        transaction.addOperation(
+            Operation.payment({
+                destination,
                 asset: makeAsset(code, issuer),
-                amount: value,
+                amount: new BigNumber(value).shiftedBy(-7).toString(10),
             }),
         );
     }
 
     if (memo) {
-        transaction = transaction.addMemo(StellarSdk.Memo.text(memo));
+        transaction.addMemo(Memo.text(memo));
     }
-    transaction = transaction.setTimeout(30).build();
-    return transaction;
+    return transaction.setTimeout(30).build();
 };
 
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {
-    const transaction = await preparePayment(props);
-    return signTransaction({
-        transaction,
-        keyPair: props.keyPair,
-        coinId: 'stellar',
-    });
+    const key_pair = Keypair.fromSecret(props.keyPair.secret());
+    const transaction: Transaction = await preparePayment(props);
+    transaction.sign(key_pair);
+    return transaction.toEnvelope().toXDR('base64');
 };

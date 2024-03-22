@@ -1,3 +1,5 @@
+import { Server } from 'stellar-sdk';
+
 export type AssetExistsRequest = {
     _embedded: {
         records: Asset[];
@@ -10,5 +12,5 @@ export type Asset = {
 
 export type AccountExists = {
     account: string;
-    api: any;
+    api: Server;
 };

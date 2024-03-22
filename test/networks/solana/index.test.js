@@ -21,7 +21,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             memo: 'test',
             keyPair,
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
-            amount: '1000000',
+            value: '1000000',
             web3: utils_1.web3Solana,
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
@@ -35,7 +35,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             mintToken: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
-            amount: '1000',
+            value: '1000',
             web3: utils_1.web3Solana,
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
@@ -47,7 +47,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             memo: 'test',
             publicKey: new web3_js_1.PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
-            amount: '1000000',
+            value: '1000000',
             web3: utils_1.web3Solana,
         });
         const fee = await (0, estimateFee_1.estimateFee)({
@@ -65,7 +65,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             mintToken: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
-            amount: '1000',
+            value: '1000',
             web3: utils_1.web3Solana,
         });
         const balancesAfter = await (0, getBalanceAfter_1.getBalanceAfter)({
@@ -110,8 +110,5 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(transactions.hashes['54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29'].details?.blockTime).toBe(1711053522);
         (0, globals_1.expect)(transactions.hashes['5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m'].details?.blockTime).toBe(1711053273);
-    });
-    (0, globals_1.test)('sendTransaction', async () => {
-        (0, globals_1.expect)(true).toBe(true);
     });
 });

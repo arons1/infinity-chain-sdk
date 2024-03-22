@@ -29,7 +29,7 @@ export const rawTransaction = async ({
     decimalsToken,
     destination,
     publicKey,
-    amount,
+    value,
     web3,
 }: RawTransactionParams) => {
     var instructions: any[] = [];
@@ -41,13 +41,13 @@ export const rawTransaction = async ({
             decimalsToken: decimalsToken as number,
             destination,
             publicKey,
-            amount,
+            value,
             web3,
         });
     } else {
         instructions = await currencyTransaction({
             memo,
-            amount,
+            value,
             publicKey,
             destination,
         });

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { AccountExists, AssetExistsRequest } from './types';
-import StellarSdk from 'stellar-sdk';
+import StellarSdk, { Asset } from 'stellar-sdk';
 
 export const assetExists = async (code: string, account: string) => {
     return new Promise(resolve => {
@@ -37,7 +37,7 @@ export const accountExists = async ({ api, account }: AccountExists) => {
     }
 };
 
-export const makeAsset = (code?: string, issuer?: string) => {
+export const makeAsset = (code?: string, issuer?: string): Asset => {
     if (!code || !issuer) return StellarSdk.Asset.native();
     return new StellarSdk.Asset(code.toUpperCase(), issuer.toUpperCase());
 };

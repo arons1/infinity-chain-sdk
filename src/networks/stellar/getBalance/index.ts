@@ -1,16 +1,16 @@
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { GetBalanceParams, ResultBalanceRPC } from './types';
+import { GetBalanceParams } from './types';
 import { CurrencyBalanceResult } from '../../types';
+import { AccountResponse } from 'stellar-sdk';
 
 export const getBalance = async ({
     account,
     api,
 }: GetBalanceParams): Promise<CurrencyBalanceResult> => {
-    const accountBalances = await api.loadAccount(account);
+    const accountBalances: AccountResponse = await api.loadAccount(account);
     const balanceCurrency = new BigNumber(
-        accountBalances.balances.find(
-            (a: ResultBalanceRPC) => a.asset_type == 'native',
-        ).balance,
+        accountBalances?.balances?.find(a => a.asset_type == 'native')
+            ?.balance as string,
     )
         .shiftedBy(7)
         .toString(10);

@@ -7,13 +7,13 @@ export const currencyTransaction = async ({
     memo = '',
     publicKey,
     destination,
-    amount,
+    value,
 }: CurrencyTransactionParams) => {
     const instructions: any = [
         SystemProgram.transfer({
             fromPubkey: publicKey,
             toPubkey: new PublicKey(destination),
-            lamports: new BigNumber(amount).toNumber(),
+            lamports: new BigNumber(value).toNumber(),
         }),
     ];
     if (memo && memo.length > 0) {

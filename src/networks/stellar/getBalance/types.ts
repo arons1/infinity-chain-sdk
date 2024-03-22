@@ -1,3 +1,5 @@
+import { Server } from 'stellar-sdk';
+
 export type ResultBalanceRPC = {
     asset_type: string;
     asset_issuer: string;
@@ -7,5 +9,5 @@ export type ResultBalanceRPC = {
 
 export type GetBalanceParams = {
     account: string;
-    api: any;
+    api: Server;
 };

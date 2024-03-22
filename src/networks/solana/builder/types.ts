@@ -14,7 +14,7 @@ export type TransactionBuilderParams = {
     mintToken?: string;
     destination: string;
     decimalsToken?: number;
-    amount: string;
+    value: string;
     web3: Connection;
 };
 export type RawTransactionParams = {
@@ -23,7 +23,7 @@ export type RawTransactionParams = {
     mintToken?: string;
     destination: string;
     decimalsToken?: number;
-    amount: string;
+    value: string;
     web3: Connection;
 };
 
@@ -31,7 +31,7 @@ export type CurrencyTransactionParams = {
     memo: string;
     publicKey: PublicKey;
     destination: string;
-    amount: string;
+    value: string;
 };
 export type TokenTransactionParams = {
     memo: string;
@@ -39,6 +39,6 @@ export type TokenTransactionParams = {
     destination: string;
     publicKey: PublicKey;
     decimalsToken: number;
-    amount: string;
+    value: string;
     web3: Connection;
 };

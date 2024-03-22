@@ -15,6 +15,7 @@ export const estimateFee = (): Promise<EstimateFeeResult> => {
                 else reject();
             })
             .catch(e => {
+                console.error(e);
                 reject(e);
             });
     });

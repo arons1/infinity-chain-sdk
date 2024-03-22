@@ -75,7 +75,7 @@ export const tokenTransaction = async ({
     destination,
     publicKey,
     decimalsToken,
-    amount,
+    value,
     web3,
 }: TokenTransactionParams) => {
     const instructions: any = [];
@@ -92,7 +92,7 @@ export const tokenTransaction = async ({
         new PublicKey(mintToken), // mint
         receiverTokenAccount, // to
         publicKey, // from's owner
-        new BigNumber(amount).toNumber(), // amount
+        new BigNumber(value).toNumber(), // amount
         decimalsToken, // decimals
     );
     instructions.push(transactionSpl);

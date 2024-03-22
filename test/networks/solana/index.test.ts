@@ -29,7 +29,7 @@ describe('networksSolana', () => {
             memo: 'test',
             keyPair,
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
-            amount: '1000000',
+            value: '1000000',
             web3: web3Solana,
         });
         expect(built.length).toBeGreaterThan(0);
@@ -43,7 +43,7 @@ describe('networksSolana', () => {
             mintToken: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
-            amount: '1000',
+            value: '1000',
             web3: web3Solana,
         });
         expect(built.length).toBeGreaterThan(0);
@@ -55,7 +55,7 @@ describe('networksSolana', () => {
             memo: 'test',
             publicKey: new PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
-            amount: '1000000',
+            value: '1000000',
             web3: web3Solana,
         });
         const fee = await estimateFee({
@@ -73,7 +73,7 @@ describe('networksSolana', () => {
             mintToken: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
-            amount: '1000',
+            value: '1000',
             web3: web3Solana,
         });
         const balancesAfter = await getBalanceAfter({
