@@ -14,8 +14,8 @@ export const getAditionalFee = (fee: number) => {
     );
     return new BigNumber(nm.split('.')[0]);
 };
-export const feeReveal = async (account: string, web3: TezosToolkit) => {
-    const manager = await web3.rpc.getManagerKey(account);
+export const feeReveal = async (account: string, connector: TezosToolkit) => {
+    const manager = await connector.rpc.getManagerKey(account);
     if (!hasManager(manager)) {
         return DEFAULT_FEE.REVEAL;
     }
@@ -40,11 +40,11 @@ export const estimateFee = async ({
             idToken,
             connector,
         });
-        transferFees = await web3.estimate.transfer(
+        transferFees = await connector.estimate.transfer(
             operation.toTransferParams(),
         );
     } else {
-        transferFees = await web3.estimate.transfer({
+        transferFees = await connector.estimate.transfer({
             to,
             amount: new BigNumber(amount).toNumber(),
         });
@@ -54,6 +54,8 @@ export const estimateFee = async ({
     );
     estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
     return {
-        fee: estimatedBaseFee.plus(await feeReveal(from, web3)).toString(10),
+        fee: estimatedBaseFee
+            .plus(await feeReveal(from, connector))
+            .toString(10),
     };
 };

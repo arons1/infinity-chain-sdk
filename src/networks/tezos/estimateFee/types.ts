@@ -7,6 +7,6 @@ export type EstimateFeeParams = {
     to: string;
     idToken?: number;
     mintToken?: string;
-    web3: TezosToolkit;
+    connector: TezosToolkit;
     feeRatio: number;
 };

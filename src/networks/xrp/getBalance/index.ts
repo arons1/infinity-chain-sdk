@@ -3,7 +3,7 @@ import { CurrencyBalanceResult } from '../../types';
 import { GetBalanceParams } from './types';
 
 export const getBalance = async ({
-    api,
+    connector,
     address,
 }: GetBalanceParams): Promise<CurrencyBalanceResult> => {
     const request = {
@@ -12,7 +12,7 @@ export const getBalance = async ({
         ledger_index: 'current',
     };
     try {
-        const data = await api.send(request, {
+        const data = await connector.send(request, {
             timeoutSeconds: 5,
         });
         const result =
@@ -21,8 +21,8 @@ export const getBalance = async ({
                 : data.error
                   ? 0
                   : data.account_data['Balance'];
-        const base = api.getState().reserve.base as number;
-        const owner = api.getState().reserve.owner as number;
+        const base = connector.getState().reserve.base as number;
+        const owner = connector.getState().reserve.owner as number;
         const reserve = new BigNumber(base + owner).shiftedBy(6).toNumber();
         return {
             balance: result,

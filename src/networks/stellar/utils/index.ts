@@ -28,9 +28,9 @@ export const assetExists = async (code: string, account: string) => {
     });
 };
 
-export const accountExists = async ({ api, account }: AccountExists) => {
+export const accountExists = async ({ connector, account }: AccountExists) => {
     try {
-        await api.loadAccount(account);
+        await connector.loadAccount(account);
         return true;
     } catch (e) {
         return false;

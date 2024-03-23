@@ -9,12 +9,13 @@ export const getAccountBalances = async ({
     accounts,
 }: GetAccountsTransactionsParams): Promise<Record<string, BalanceResult[]>> => {
     const formattedResult: Record<string, BalanceResult[]> = {};
-    for(let address of accounts){
+    for (let address of accounts) {
         const accounts_balances = await getAccounts({ connector, address });
         const result: Record<string, number> = {};
         accounts_balances.map(account => {
             const parsedAccountInfo = account.account.data;
-            const mintAddress: string = parsedAccountInfo['parsed']['info']['mint'];
+            const mintAddress: string =
+                parsedAccountInfo['parsed']['info']['mint'];
             const tokenBalance: number =
                 parsedAccountInfo['parsed']['info']['tokenAmount']['amount'];
             result[mintAddress] = tokenBalance;

@@ -6,7 +6,7 @@ export type BuildTransactionParams = {
     value: string;
     mintToken?: string;
     privateKey: string;
-    web3: TezosToolkit;
+    connector: TezosToolkit;
     idToken?: number;
     feeRatio?: number;
 };
@@ -17,5 +17,5 @@ export type BuildOperationsParams = {
     value: string;
     mintToken: string;
     idToken: number;
-    web3: TezosToolkit;
+    connector: TezosToolkit;
 };

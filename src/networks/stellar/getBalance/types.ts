@@ -9,5 +9,5 @@ export type ResultBalanceRPC = {
 
 export type GetBalanceParams = {
     accounts: string[];
-    api: Server;
+    connector: Server;
 };

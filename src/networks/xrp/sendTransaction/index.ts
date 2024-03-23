@@ -3,18 +3,19 @@ import { SendTransactionParams, TransactionResult, TxJson } from './types';
 
 export const sendTransaction = ({
     rawTransaction,
-    api,
+    connector,
 }: SendTransactionParams): Promise<string> => {
     return new Promise((resolve, reject) => {
-        api.send(
-            {
-                command: 'submit',
-                tx_blob: rawTransaction,
-            },
-            {
-                timeoutSeconds: 5,
-            },
-        )
+        connector
+            .send(
+                {
+                    command: 'submit',
+                    tx_blob: rawTransaction,
+                },
+                {
+                    timeoutSeconds: 5,
+                },
+            )
             .then((result: AnyJson) => {
                 const transactionResult = result as TransactionResult;
                 if (

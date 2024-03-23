@@ -5,7 +5,7 @@ import { AccountResponse } from 'stellar-sdk';
 
 export const getBalance = async ({
     account,
-    api,
+    connector,
 }: GetBalanceParams): Promise<CurrencyBalanceResult> => {
     const accountBalances: AccountResponse = await api.loadAccount(account);
     const balanceCurrency = new BigNumber(

@@ -3,23 +3,27 @@ import { Payment, BuildTransactionParams, PreparePaymentParams } from './types';
 
 const LEDGER_OFFSET = 20;
 
-export const preparePayment = async ({ tx, api }: PreparePaymentParams) => {
+export const preparePayment = async ({
+    tx,
+    connector,
+}: PreparePaymentParams) => {
     if (tx.Sequence == undefined) {
         const request = {
             command: 'account_info',
             account: tx.Account,
             ledger_index: 'current',
         };
-        const data = await api.send(request, {
+        const data = await connector.send(request, {
             timeoutSeconds: 5,
         });
         tx.Sequence = data.account_data.Sequence;
     }
     if (tx.LastLedgerSequence == undefined) {
-        tx.LastLedgerSequence = api.getState().ledger.last + LEDGER_OFFSET;
+        tx.LastLedgerSequence =
+            connector.getState().ledger.last + LEDGER_OFFSET;
     }
     if (tx.Fee == undefined) {
-        tx.Fee = api.getState().fee.last + '';
+        tx.Fee = connector.getState().fee.last + '';
     }
     return JSON.stringify(tx);
 };
@@ -28,7 +32,7 @@ export const buildTransaction = async ({
     from,
     to,
     keyPair,
-    api,
+    connector,
     memo = '',
 }: BuildTransactionParams) => {
     const tx = {
@@ -38,7 +42,7 @@ export const buildTransaction = async ({
         Account: from,
     } as Payment;
     if (memo.length > 0) tx.DestinationTag = memo;
-    const txPrepared = await preparePayment({ api, tx });
+    const txPrepared = await preparePayment({ connector, tx });
     return signTransaction({
         transaction: txPrepared,
         keyPair,

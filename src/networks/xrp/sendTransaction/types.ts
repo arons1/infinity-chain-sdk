@@ -2,7 +2,7 @@ import { XrplClient } from 'xrpl-client';
 
 export type SendTransactionParams = {
     rawTransaction: string;
-    api: XrplClient;
+    connector: XrplClient;
 };
 
 export type TransactionResult = {

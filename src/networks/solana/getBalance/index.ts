@@ -9,7 +9,9 @@ export const getBalance = async ({
     address: string;
 }): Promise<CurrencyBalanceResult> => {
     return {
-        balance: (await connector.getBalance(new PublicKey(address))).toString(10),
+        balance: (await connector.getBalance(new PublicKey(address))).toString(
+            10,
+        ),
     } as CurrencyBalanceResult;
 };
 export * from './tokens';

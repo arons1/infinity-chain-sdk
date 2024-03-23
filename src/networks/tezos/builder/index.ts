@@ -11,7 +11,7 @@ export const buildOperations = async ({
     idToken,
     connector,
 }: BuildOperationsParams) => {
-    const contract = await web3.contract.at(mintToken);
+    const contract = await connector.contract.at(mintToken);
     var isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
     if (isFA2) {
         return contract.methods.transfer([
@@ -40,7 +40,7 @@ export const buildTransaction = async ({
     connector,
     feeRatio = 0.5,
 }: BuildTransactionParams) => {
-    web3.setSignerProvider(await InMemorySigner.fromSecretKey(privateKey));
+    connector.setSignerProvider(await InMemorySigner.fromSecretKey(privateKey));
     if (mintToken) {
         const operation = await buildOperations({
             source,
@@ -50,7 +50,7 @@ export const buildTransaction = async ({
             idToken,
             connector,
         });
-        const transferFees = await web3.estimate.transfer(
+        const transferFees = await connector.estimate.transfer(
             operation.toTransferParams(),
         );
         var estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
@@ -58,14 +58,14 @@ export const buildTransaction = async ({
         return () => operation.send({ fee: estimatedBaseFee.toNumber() });
     } else {
         const amount = new BigNumber(value).toNumber();
-        const transferFees = await web3.estimate.transfer({
+        const transferFees = await connector.estimate.transfer({
             to: destination,
             amount,
         });
         var estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
         estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
         return () =>
-            web3.contract.transfer({
+            connector.contract.transfer({
                 to: destination,
                 amount,
                 fee: estimatedBaseFeeb.toNumber(),

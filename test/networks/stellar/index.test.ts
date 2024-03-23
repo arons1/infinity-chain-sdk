@@ -81,7 +81,11 @@ describe('networksStellar', () => {
             accounts: [publicAddress],
             api: apiStellar,
         });
-        expect(balance[publicAddress].find((a:BalanceResult) => a.address == 'native').value).toBe('39999900');
+        expect(
+            balance[publicAddress].find(
+                (a: BalanceResult) => a.address == 'native',
+            ).value,
+        ).toBe('39999900');
     });
     test('sendTransaction', async () => {
         expect(true).toBe(true);

@@ -15,18 +15,18 @@ export const preparePayment = async ({
     value,
     source,
     destination,
-    api,
+    connector,
     code,
     issuer,
     memo,
 }: BuildTransactionParams): Promise<Transaction> => {
-    const account = await api.loadAccount(source);
+    const account = await connector.loadAccount(source);
     var transaction: TransactionBuilder = new TransactionBuilder(account, {
         fee: new BigNumber((await estimateFee()).fee as string).toString(10),
         networkPassphrase: Networks.PUBLIC,
     });
     const destinationExists = await accountExists({
-        api,
+        connector,
         account: destination,
     });
     if (!destinationExists) {

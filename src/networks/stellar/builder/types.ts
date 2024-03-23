@@ -4,7 +4,7 @@ export type BuildTransactionParams = {
     value: string;
     source: string;
     destination: string;
-    api: Server;
+    connector: Server;
     keyPair: Keypair;
     memo?: string;
     code?: string;

@@ -16,10 +16,10 @@ export type BuildTransactionParams = {
     from: string;
     to: string;
     memo?: string;
-    api: XrplClient;
+    connector: XrplClient;
     keyPair: any;
 };
 export type PreparePaymentParams = {
-    api: XrplClient;
+    connector: XrplClient;
     tx: Payment;
 };

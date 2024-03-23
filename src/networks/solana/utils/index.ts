@@ -35,7 +35,12 @@ export const checkIfAccountExists = async ({
         ASSOCIATED_TOKEN_PROGRAM_ID,
     );
     try {
-        await getAccount(connector, associatedToken, undefined, TOKEN_PROGRAM_ID);
+        await getAccount(
+            connector,
+            associatedToken,
+            undefined,
+            TOKEN_PROGRAM_ID,
+        );
         return [true, associatedToken];
     } catch (e) {
         return [false, associatedToken];
@@ -46,7 +51,9 @@ export const getMinimumBalanceForRent = async (
     isToken: boolean,
 ) => {
     try {
-        return await connector.getMinimumBalanceForRentExemption(isToken ? 165 : 0);
+        return await connector.getMinimumBalanceForRentExemption(
+            isToken ? 165 : 0,
+        );
     } catch (e) {
         return isToken ? 2039280 : 890880;
     }

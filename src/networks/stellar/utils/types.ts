@@ -12,5 +12,5 @@ export type Asset = {
 
 export type AccountExists = {
     account: string;
-    api: Server;
+    connector: Server;
 };
