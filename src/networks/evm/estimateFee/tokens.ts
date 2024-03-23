@@ -27,7 +27,7 @@ export const estimateTokenFee = async ({
     feeRatio = 0.5,
     priorityFee,
 }: EstimateGasTokenParams): Promise<ReturnEstimate> => {
-    var contract = new web3.eth.Contract(ERC20Abi, tokenContract, {
+    var contract = new connector.eth.Contract(ERC20Abi, tokenContract, {
         from: source,
     });
     const { estimateGas, data } = await getGasLimit({

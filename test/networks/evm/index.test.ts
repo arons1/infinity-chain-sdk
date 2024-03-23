@@ -14,7 +14,7 @@ const PRIORITY_FEES = {
 describe('networksEVM', () => {
     test('builder', async () => {
         const built = await buildTransaction({
-            connector: web3Solana,
+            connector: web3Matic,
             chainId: 137,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
@@ -26,7 +26,7 @@ describe('networksEVM', () => {
     });
     test('estimateFee', async () => {
         const built = await estimateFee({
-            connector: web3Solana,
+            connector: web3Matic,
             chainId: 137,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
@@ -42,14 +42,14 @@ describe('networksEVM', () => {
     test('getBalance', async () => {
         const bal = await getBalance({
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
-            connector: web3Solana,
+            connector: web3Matic,
         });
         expect(bal.balance).toBe('100366941538263892');
     });
     test('getAccountBalances', async () => {
         const bal = await getAccountBalances({
             addresses: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
-            connector: web3Solana,
+            connector: web3Matic,
             contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });
         expect(

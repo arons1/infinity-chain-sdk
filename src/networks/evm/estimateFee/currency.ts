@@ -32,7 +32,7 @@ export const estimateCurrencyFee = async ({
         chainId,
         isToken: false,
     });
-    gasPrice = gasPrice ?? (await getGasPrice({ web3 }));
+    gasPrice = gasPrice ?? (await getGasPrice({ connector }));
     var transaction: TransactionEVM = {
         from: source,
         to: destination,

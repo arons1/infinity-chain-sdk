@@ -6,7 +6,7 @@ export type ReturnEstimate = {
     gasPrice?: string;
 };
 export type EstimateGasParams = {
-    web3: Web3;
+    connector: Web3;
     source: string;
     tokenContract?: string;
     destination?: string;
@@ -17,7 +17,7 @@ export type EstimateGasParams = {
     priorityFee?: string;
 };
 export type EstimateGasTokenParams = {
-    web3: Web3;
+    connector: Web3;
     source: string;
     tokenContract: string;
     destination: string;
@@ -30,14 +30,14 @@ export type EstimateGasTokenParams = {
 
 export type NonceParams = {
     address: string;
-    web3: Web3;
+    connector: Web3;
 };
 
 export type GasPriceParams = {
-    web3: Web3;
+    connector: Web3;
 };
 export type GasLimitParams = {
-    web3: Web3;
+    connector: Web3;
     source: string;
     destination: string;
     tokenContract?: string;
@@ -50,7 +50,7 @@ export type GasLimitParams = {
 export type CalculateGasPrice = {
     transaction: TransactionEVM;
     gasPrice: string;
-    web3: Web3;
+    connector: Web3;
     chainId: number;
     feeRatio: number;
     priorityFee?: string;

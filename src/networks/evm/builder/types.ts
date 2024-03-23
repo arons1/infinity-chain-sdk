@@ -5,7 +5,7 @@ export type BuildTransaction = {
     destination: string;
     data?: string;
     value?: string;
-    web3: Web3;
+    connector: Web3;
     chainId: number;
     feeRatio: number;
     priorityFee?: string;
@@ -16,7 +16,7 @@ export type BuildTokenTransaction = {
     destination: string;
     value: string;
     tokenContract: string;
-    web3: Web3;
+    connector: Web3;
     chainId: number;
     feeRatio: number;
     priorityFee?: string;
@@ -27,5 +27,5 @@ export type DataTransferType = {
     destination: string;
     value: string;
     tokenContract: string;
-    web3: Web3;
+    connector: Web3;
 };

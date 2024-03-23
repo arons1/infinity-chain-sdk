@@ -32,7 +32,7 @@ export const calculateGasPrice = async ({
 }: CalculateGasPrice): Promise<TransactionEVM> => {
     if (chainId == 1 || chainId == 137) {
         if (!isValidNumber(priorityFee)) throw new Error(PriorityFeeError);
-        const maxPriority = web3.utils.toHex(
+        const maxPriority = connector.utils.toHex(
             new BigNumber(priorityFee as string)
                 .multipliedBy(feeRatio + 1)
                 .toString(10)
@@ -42,12 +42,12 @@ export const calculateGasPrice = async ({
         transaction.maxFeePerGas = new BigNumber(maxPriority)
             .plus(new BigNumber(gasPrice).multipliedBy(1 + feeRatio))
             .toString(10);
-        transaction.maxFeePerGas = web3.utils.toHex(
+        transaction.maxFeePerGas = connector.utils.toHex(
             new BigNumber(transaction.maxFeePerGas).toString(10).split('.')[0],
         );
         delete transaction.gasPrice;
     } else {
-        transaction.gasPrice = web3.utils.toHex(gasPrice);
+        transaction.gasPrice = connector.utils.toHex(gasPrice);
     }
 
     if (transaction.value)
@@ -63,14 +63,14 @@ getGasPrice
 export const getGasPrice = async ({
     connector,
 }: GasPriceParams): Promise<string> => {
-    return '0x' + (await web3.eth.getGasPrice()).toString(16);
+    return '0x' + (await connector.eth.getGasPrice()).toString(16);
 };
-const estimateGas = async (web3: Web3, chainId: number, tx: TransactionEVM) => {
+const estimateGas = async (connector: Web3, chainId: number, tx: TransactionEVM) => {
     const auxCalc = { ...tx };
     if (chainId == 100009) {
         delete auxCalc.nonce;
     }
-    tx.gasLimit = '0x' + (await web3.eth.estimateGas(auxCalc)).toString(16);
+    tx.gasLimit = '0x' + (await connector.eth.estimateGas(auxCalc)).toString(16);
     return tx.gasLimit;
 };
 /* 
@@ -108,7 +108,7 @@ export const getGasLimit = async ({
         if (!isValidAddress(tokenContract as string))
             throw new Error(InvalidContractAddress);
         if (!contract) throw new Error(InvalidTokenContract);
-        const nonce = await getNonce({ address: source, web3 });
+        const nonce = await getNonce({ address: source, connector });
         if (!nonce) throw new Error(CannotGetNonce);
         const data = contract.methods.transfer(destination, value).encodeABI();
         const estimateGasNormal = await estimateGas(connector, chainId, {
@@ -128,7 +128,7 @@ export const getGasLimit = async ({
             value: '0x' + new BigNumber(value).toString(16),
         };
         if (chainId != 100009) {
-            const nonce = await getNonce({ address: source, web3 });
+            const nonce = await getNonce({ address: source, connector });
             if (nonce == undefined) throw new Error(CannotGetNonce);
             tx.nonce = nonce;
         }
@@ -151,6 +151,6 @@ export const getNonce = async ({
 }: NonceParams): Promise<string> => {
     return (
         '0x' +
-        (await web3.eth.getTransactionCount(address, 'pending')).toString(16)
+        (await connector.eth.getTransactionCount(address, 'pending')).toString(16)
     );
 };

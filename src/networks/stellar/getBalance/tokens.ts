@@ -1,11 +1,11 @@
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { GetBalanceParams } from './types';
+import { GetAccountBalanceParams } from './types';
 import { BalanceResult } from '../../types';
 import { AccountResponse, Horizon } from 'stellar-sdk';
 export const getAccountBalances = async ({
     accounts,
     connector,
-}: GetBalanceParams): Promise<Record<string, BalanceResult[]>> => {
+}: GetAccountBalanceParams): Promise<Record<string, BalanceResult[]>> => {
     const result: Record<string, BalanceResult[]> = {};
     for (let account of accounts) {
         const accountBalances: AccountResponse =

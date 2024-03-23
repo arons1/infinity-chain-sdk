@@ -17,7 +17,7 @@ export const getAccountBalances = async ({
     addresses,
     contracts,
 }: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
-    const contract = new web3.eth.Contract(minABI);
+    const contract = new connector.eth.Contract(minABI);
     const map: RPCBalanceResult = {};
     const batchList: BatchBalance[] = [];
     contracts.map(contractAddress => {

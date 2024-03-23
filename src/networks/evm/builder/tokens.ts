@@ -84,7 +84,7 @@ const getDataTransfer = ({
     tokenContract,
     connector,
 }: DataTransferType) => {
-    var contract = new web3.eth.Contract(ERC20Abi, tokenContract, {
+    var contract = new connector.eth.Contract(ERC20Abi, tokenContract, {
         from: source,
     });
     return contract.methods.transfer(destination, value).encodeABI();
@@ -97,7 +97,7 @@ const getDataApprove = ({
     tokenContract,
     connector,
 }: DataTransferType) => {
-    var contract = new web3.eth.Contract(ERC20Abi, tokenContract, {
+    var contract = new connector.eth.Contract(ERC20Abi, tokenContract, {
         from: source,
     });
     return contract.methods.approve(destination, value).encodeABI();

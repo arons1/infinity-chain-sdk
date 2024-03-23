@@ -32,7 +32,7 @@ describe('networksStellar', () => {
             api: apiStellar,
         });
         console.log(built);
-        expect(true).toBe(true);
+        expect(built?.length).toBeGreaterThan(10);
     });
     test('builderToken', async () => {
         const seed = getSeed({ mnemonic });
@@ -79,15 +79,12 @@ describe('networksStellar', () => {
         });
         const balance = await getAccountBalances({
             accounts: [publicAddress],
-            api: apiStellar,
+            connector: apiStellar,
         });
         expect(
             balance[publicAddress].find(
                 (a: BalanceResult) => a.address == 'native',
             ).value,
         ).toBe('39999900');
-    });
-    test('sendTransaction', async () => {
-        expect(true).toBe(true);
     });
 });

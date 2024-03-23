@@ -8,6 +8,10 @@ export type ResultBalanceRPC = {
 };
 
 export type GetBalanceParams = {
+    account: string;
+    connector: Server;
+};
+export type GetAccountBalanceParams = {
     accounts: string[];
     connector: Server;
 };

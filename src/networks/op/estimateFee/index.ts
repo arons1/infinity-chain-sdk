@@ -7,7 +7,7 @@ import Web3 from 'web3';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const estimateL1Cost = async (
-    web3: Web3,
+    connector: Web3,
     tx: TransactionEVM,
 ): Promise<string> => {
     const gpo = new web3.eth.Contract(

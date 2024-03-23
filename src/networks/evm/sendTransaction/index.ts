@@ -5,12 +5,12 @@ export const sendTransaction = async ({
     transaction,
     privateKey,
 }: SendTransactionParams): Promise<string> => {
-    const { rawTransaction } = await web3.eth.accounts.signTransaction(
+    const { rawTransaction } = await connector.eth.accounts.signTransaction(
         transaction,
         privateKey,
     );
     return new Promise((resolve, reject) => {
-        web3.eth
+        connector.eth
             .sendSignedTransaction(rawTransaction)
             .once('transactionHash', (txid: string) => {
                 resolve(txid);
