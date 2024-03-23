@@ -28,7 +28,7 @@ estimateFee
     @param tokenContract: token contract
 */
 export const estimateFee = async ({
-    web3,
+    connector,
     source,
     tokenContract = '',
     destination = '',
@@ -46,7 +46,7 @@ export const estimateFee = async ({
         if (!isValidAddress(tokenContract))
             throw new Error(InvalidContractAddress);
         resultEstimate = await estimateTokenFee({
-            web3,
+            connector,
             source,
             tokenContract,
             destination,
@@ -58,7 +58,7 @@ export const estimateFee = async ({
         });
     } else {
         resultEstimate = await estimateCurrencyFee({
-            web3,
+            connector,
             source,
             destination,
             value,
@@ -74,7 +74,7 @@ export const estimateFee = async ({
         .toString(10);
     if (chainId == 10)
         fee = new BigNumber(
-            await estimateL1Cost(web3, resultEstimate.transaction),
+            await estimateL1Cost(connector, resultEstimate.transaction),
         )
             .plus(fee)
             .toString(10);

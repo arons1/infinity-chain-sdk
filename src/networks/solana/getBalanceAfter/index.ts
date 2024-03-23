@@ -15,12 +15,12 @@ import { AccountLayout } from '@solana/spl-token';
 
 const getBalanceAfterVersioned = async ({
     accounts,
-    web3,
+    connector,
     signer,
     transaction,
 }: EstimateFeeParams): Promise<Record<string, DataBalance>> => {
     const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
-        await web3.simulateTransaction(transaction, {
+        await connector.simulateTransaction(transaction, {
             accounts: {
                 encoding: 'base64',
                 addresses: accounts,
@@ -50,12 +50,12 @@ const getBalanceAfterVersioned = async ({
 };
 const getBalanceAfterLegacy = async ({
     accounts,
-    web3,
+    connector,
     signer,
     transaction,
 }: EstimateLegacyFeeParams): Promise<Record<string, DataBalance>> => {
     const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
-        await web3.simulateTransaction(
+        await connector.simulateTransaction(
             transaction,
             undefined,
             accounts.map(a => new PublicKey(a)),
@@ -83,7 +83,7 @@ const getBalanceAfterLegacy = async ({
     return accounts_after;
 };
 export const getBalanceAfter = async ({
-    web3,
+    connector,
     transaction,
     signer,
 }: GetBalanceAfterParams): Promise<Record<string, DataBalance>> => {
@@ -92,7 +92,7 @@ export const getBalanceAfter = async ({
             accounts: transaction.message.staticAccountKeys.map(a =>
                 a.toString(),
             ),
-            web3,
+            connector,
             signer,
             transaction: transaction as VersionedTransaction,
         });
@@ -104,7 +104,7 @@ export const getBalanceAfter = async ({
         );
         return await getBalanceAfterLegacy({
             accounts,
-            web3,
+            connector,
             signer,
             transaction: transaction as Transaction,
         });

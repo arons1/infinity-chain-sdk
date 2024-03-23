@@ -25,7 +25,7 @@ import Web3 from 'web3';
 export const calculateGasPrice = async ({
     transaction,
     gasPrice,
-    web3,
+    connector,
     chainId,
     feeRatio,
     priorityFee,
@@ -61,7 +61,7 @@ getGasPrice
     @param web3: web3 connector
 */
 export const getGasPrice = async ({
-    web3,
+    connector,
 }: GasPriceParams): Promise<string> => {
     return '0x' + (await web3.eth.getGasPrice()).toString(16);
 };
@@ -95,7 +95,7 @@ export const getGasLimit = async ({
     source,
     contract,
     chainId,
-    web3,
+    connector,
     isToken = false,
 }: GasLimitParams): Promise<{
     data: string;
@@ -111,7 +111,7 @@ export const getGasLimit = async ({
         const nonce = await getNonce({ address: source, web3 });
         if (!nonce) throw new Error(CannotGetNonce);
         const data = contract.methods.transfer(destination, value).encodeABI();
-        const estimateGasNormal = await estimateGas(web3, chainId, {
+        const estimateGasNormal = await estimateGas(connector, chainId, {
             from: source,
             nonce: nonce,
             to: tokenContract as string,
@@ -132,7 +132,7 @@ export const getGasLimit = async ({
             if (nonce == undefined) throw new Error(CannotGetNonce);
             tx.nonce = nonce;
         }
-        const estimateGasNormal = await estimateGas(web3, chainId, tx);
+        const estimateGasNormal = await estimateGas(connector, chainId, tx);
         return {
             estimateGas: estimateGasNormal,
             data: '',
@@ -147,7 +147,7 @@ getNonce
 */
 export const getNonce = async ({
     address,
-    web3,
+    connector,
 }: NonceParams): Promise<string> => {
     return (
         '0x' +

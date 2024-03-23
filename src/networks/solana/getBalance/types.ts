@@ -1,8 +1,8 @@
 import { Connection } from '@solana/web3.js';
 
 export type GetAccountsTransactionsParams = {
-    web3: Connection;
-    address: string;
+    connector: Connection;
+    accounts: string[];
 };
 
 export type TokenBalancesResult = Record<string, number>;

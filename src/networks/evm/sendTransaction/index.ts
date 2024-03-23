@@ -1,7 +1,7 @@
 import { SendTransactionParams } from './types';
 
 export const sendTransaction = async ({
-    web3,
+    connector,
     transaction,
     privateKey,
 }: SendTransactionParams): Promise<string> => {

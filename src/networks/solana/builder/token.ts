@@ -18,12 +18,12 @@ export const addAssociatedCreation = async ({
     mintToken,
     destination,
     publicKey,
-    web3,
+    connector,
 }: AddAssociatedCreationParams) => {
     const [checkSender, associatedTokenSender] = await checkIfAccountExists({
         mintToken,
         publicKey,
-        web3,
+        connector,
     });
     var extraFee = 0;
     var iterations = 0;
@@ -44,7 +44,7 @@ export const addAssociatedCreation = async ({
         {
             mintToken,
             publicKey: new PublicKey(destination),
-            web3,
+            connector,
         },
     );
     if (!checkReceiver) {
@@ -60,7 +60,7 @@ export const addAssociatedCreation = async ({
         iterations += 1;
     }
     if (iterations > 0) {
-        const resTr = await getMinimumBalanceForRent(web3, true);
+        const resTr = await getMinimumBalanceForRent(connector, true);
         extraFee += resTr * iterations;
     }
     return {
@@ -76,7 +76,7 @@ export const tokenTransaction = async ({
     publicKey,
     decimalsToken,
     value,
-    web3,
+    connector,
 }: TokenTransactionParams) => {
     const instructions: any = [];
     const { senderTokenAccount, receiverTokenAccount } =
@@ -85,7 +85,7 @@ export const tokenTransaction = async ({
             mintToken,
             destination,
             publicKey,
-            web3,
+            connector,
         });
     const transactionSpl = createTransferCheckedInstruction(
         senderTokenAccount, // from

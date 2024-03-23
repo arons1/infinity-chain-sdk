@@ -4,13 +4,13 @@ import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 export const estimateFee = async ({
-    web3,
+    connector,
     transaction,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if ('message' in transaction)
         return {
             fee: (
-                await web3.getFeeForMessage(
+                await connector.getFeeForMessage(
                     (transaction as VersionedTransaction).message,
                     'confirmed',
                 )
@@ -19,7 +19,7 @@ export const estimateFee = async ({
     else
         return {
             fee: new BigNumber(
-                (await transaction.getEstimatedFee(web3)) as number,
+                (await transaction.getEstimatedFee(connector)) as number,
             ).toString(10),
         };
 };

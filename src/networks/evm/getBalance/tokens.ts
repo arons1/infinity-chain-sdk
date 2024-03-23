@@ -13,7 +13,7 @@ const minABI = [
     },
 ];
 export const getAccountBalances = async ({
-    web3,
+    connector,
     addresses,
     contracts,
 }: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
@@ -29,7 +29,7 @@ export const getAccountBalances = async ({
     for (let { contractAddress, address } of batchList) {
         if (contractAddress == 'native') {
             map[address][contractAddress] = (
-                await getBalance({ web3, address })
+                await getBalance({ connector, address })
             ).balance;
         } else {
             contract.options.address = contractAddress;

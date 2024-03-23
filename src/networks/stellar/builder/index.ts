@@ -57,8 +57,8 @@ export const preparePayment = async ({
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {
-    const key_pair = Keypair.fromSecret(props.keyPair.secret());
     const transaction: Transaction = await preparePayment(props);
+    const key_pair = Keypair.fromSecret(props.keyPair.secret());
     transaction.sign(key_pair);
     return transaction.toEnvelope().toXDR('base64');
 };

@@ -16,7 +16,7 @@ estimateCurrencyFee
 */
 export const estimateCurrencyFee = async ({
     value = '0',
-    web3,
+    connector,
     source,
     destination = '',
     chainId,
@@ -28,7 +28,7 @@ export const estimateCurrencyFee = async ({
         source,
         destination,
         value,
-        web3,
+        connector,
         chainId,
         isToken: false,
     });
@@ -42,14 +42,14 @@ export const estimateCurrencyFee = async ({
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,
-            web3,
+            connector,
         });
         if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
     }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,
-        web3,
+        connector,
         chainId,
         feeRatio,
         priorityFee,

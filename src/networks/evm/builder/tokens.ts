@@ -29,7 +29,7 @@ export const buildTokenTransaction = async ({
     value,
     source,
     destination,
-    web3,
+    connector,
     chainId,
     feeRatio = 0.5,
     priorityFee,
@@ -44,7 +44,7 @@ export const buildTokenTransaction = async ({
         throw new Error(MissingPriorityFee);
     if (!gasPrice)
         gasPrice = await getGasPrice({
-            web3,
+            connector,
         });
 
     const data = await getDataTransfer({
@@ -52,7 +52,7 @@ export const buildTokenTransaction = async ({
         destination,
         value,
         tokenContract,
-        web3,
+        connector,
     });
     var transaction = {
         from: source,
@@ -62,14 +62,14 @@ export const buildTokenTransaction = async ({
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,
-            web3,
+            connector,
         });
         if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
     }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,
-        web3,
+        connector,
         chainId,
         feeRatio,
         priorityFee,
@@ -82,7 +82,7 @@ const getDataTransfer = ({
     destination,
     value,
     tokenContract,
-    web3,
+    connector,
 }: DataTransferType) => {
     var contract = new web3.eth.Contract(ERC20Abi, tokenContract, {
         from: source,
@@ -95,7 +95,7 @@ const getDataApprove = ({
     destination,
     value,
     tokenContract,
-    web3,
+    connector,
 }: DataTransferType) => {
     var contract = new web3.eth.Contract(ERC20Abi, tokenContract, {
         from: source,
@@ -118,7 +118,7 @@ export const buildTokenApproveTransaction = async ({
     value,
     source,
     destination,
-    web3,
+    connector,
     chainId,
     feeRatio = 0.5,
     priorityFee,
@@ -131,7 +131,7 @@ export const buildTokenApproveTransaction = async ({
     if (!isValidAddress(tokenContract)) throw new Error(InvalidAddress);
     if (!gasPrice)
         gasPrice = await getGasPrice({
-            web3,
+            connector,
         });
 
     const data = await getDataApprove({
@@ -139,7 +139,7 @@ export const buildTokenApproveTransaction = async ({
         destination,
         value,
         tokenContract,
-        web3,
+        connector,
     });
     var transaction = {
         from: source,
@@ -149,13 +149,13 @@ export const buildTokenApproveTransaction = async ({
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,
-            web3,
+            connector,
         });
     }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,
-        web3,
+        connector,
         chainId,
         feeRatio,
         priorityFee,

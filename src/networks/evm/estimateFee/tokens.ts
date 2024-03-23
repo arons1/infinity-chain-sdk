@@ -18,7 +18,7 @@ estimateTokenFee
 */
 export const estimateTokenFee = async ({
     value = '0',
-    web3,
+    connector,
     source,
     destination,
     gasPrice,
@@ -37,13 +37,13 @@ export const estimateTokenFee = async ({
         value,
         contract,
         chainId,
-        web3,
+        connector,
         isToken: true,
     });
     gasPrice =
         gasPrice ??
         (await getGasPrice({
-            web3,
+            connector,
         }));
 
     var transaction: TransactionEVM = {
@@ -56,14 +56,14 @@ export const estimateTokenFee = async ({
     if (chainId != 100009) {
         transaction.nonce = await getNonce({
             address: source,
-            web3,
+            connector,
         });
         if (transaction.nonce == undefined) throw new Error(CannotGetNonce);
     }
     transaction = await calculateGasPrice({
         transaction,
         gasPrice,
-        web3,
+        connector,
         chainId,
         feeRatio,
         priorityFee,

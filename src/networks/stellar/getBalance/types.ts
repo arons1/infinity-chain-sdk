@@ -8,6 +8,6 @@ export type ResultBalanceRPC = {
 };
 
 export type GetBalanceParams = {
-    account: string;
+    accounts: string[];
     api: Server;
 };

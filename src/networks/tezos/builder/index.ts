@@ -9,7 +9,7 @@ export const buildOperations = async ({
     value,
     mintToken,
     idToken,
-    web3,
+    connector,
 }: BuildOperationsParams) => {
     const contract = await web3.contract.at(mintToken);
     var isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
@@ -37,7 +37,7 @@ export const buildTransaction = async ({
     mintToken,
     idToken = 0,
     privateKey,
-    web3,
+    connector,
     feeRatio = 0.5,
 }: BuildTransactionParams) => {
     web3.setSignerProvider(await InMemorySigner.fromSecretKey(privateKey));
@@ -48,7 +48,7 @@ export const buildTransaction = async ({
             value,
             mintToken,
             idToken,
-            web3,
+            connector,
         });
         const transferFees = await web3.estimate.transfer(
             operation.toTransferParams(),

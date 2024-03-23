@@ -10,7 +10,7 @@ export type ResultBlockHash = {
     lastValidBlockHeight: number;
 };
 export type GetAccountsParams = {
-    web3: Connection;
+    connector: Connection;
     address: string;
 };
 export type GetAccountsResult = {

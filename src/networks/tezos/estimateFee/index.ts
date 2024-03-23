@@ -27,7 +27,7 @@ export const estimateFee = async ({
     to,
     idToken = 0,
     mintToken,
-    web3,
+    connector,
     feeRatio,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     let transferFees;
@@ -38,7 +38,7 @@ export const estimateFee = async ({
             value: amount,
             mintToken,
             idToken,
-            web3,
+            connector,
         });
         transferFees = await web3.estimate.transfer(
             operation.toTransferParams(),

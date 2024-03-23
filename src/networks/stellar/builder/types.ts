@@ -1,4 +1,4 @@
-import { Server,Keypair } from 'stellar-sdk';
+import { Server, Keypair } from 'stellar-sdk';
 
 export type BuildTransactionParams = {
     value: string;

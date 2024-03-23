@@ -30,10 +30,10 @@ export const rawTransaction = async ({
     destination,
     publicKey,
     value,
-    web3,
+    connector,
 }: RawTransactionParams) => {
     var instructions: any[] = [];
-    const { blockhash } = await getLastBlockhash(web3);
+    const { blockhash } = await getLastBlockhash(connector);
     if (mintToken != undefined) {
         instructions = await tokenTransaction({
             memo,
@@ -42,7 +42,7 @@ export const rawTransaction = async ({
             destination,
             publicKey,
             value,
-            web3,
+            connector,
         });
     } else {
         instructions = await currencyTransaction({

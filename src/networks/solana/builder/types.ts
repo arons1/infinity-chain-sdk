@@ -5,7 +5,7 @@ export type AddAssociatedCreationParams = {
     mintToken: string;
     destination: string;
     publicKey: PublicKey;
-    web3: Connection;
+    connector: Connection;
 };
 
 export type TransactionBuilderParams = {
@@ -15,7 +15,7 @@ export type TransactionBuilderParams = {
     destination: string;
     decimalsToken?: number;
     value: string;
-    web3: Connection;
+    connector: Connection;
 };
 export type RawTransactionParams = {
     memo: string;
@@ -24,7 +24,7 @@ export type RawTransactionParams = {
     destination: string;
     decimalsToken?: number;
     value: string;
-    web3: Connection;
+    connector: Connection;
 };
 
 export type CurrencyTransactionParams = {
@@ -40,5 +40,5 @@ export type TokenTransactionParams = {
     publicKey: PublicKey;
     decimalsToken: number;
     value: string;
-    web3: Connection;
+    connector: Connection;
 };

@@ -19,7 +19,7 @@ const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
 
 export const getAccountsHashes = async ({
-    web3,
+    connector,
     address,
     accounts,
     signatures,
@@ -29,7 +29,7 @@ export const getAccountsHashes = async ({
     var transactionHashes = [];
     for (;;) {
         transactionHashes = await getAccountsTransactionsHashes({
-            web3,
+            connector,
             accounts,
             address,
             signatures,
@@ -48,7 +48,7 @@ export const getAccountsHashes = async ({
 
 export const getTransactions = async ({
     pendingTransactions,
-    web3,
+    connector,
 }: GetTransactionsParams) => {
     var transactionsRes: ParsedTransactionWithMeta[] = [];
     var hashes: Record<string, boolean> = {};
@@ -56,7 +56,7 @@ export const getTransactions = async ({
         for (let i = 0; i < pendingTransactions.length; i += LIMIT_BATCH) {
             const hashesPending = pendingTransactions.slice(i, i + LIMIT_BATCH);
             const detailsTransactions: ParsedTransactionWithMeta[] =
-                (await web3.getParsedTransactions(hashesPending, {
+                (await connector.getParsedTransactions(hashesPending, {
                     maxSupportedTransactionVersion: 0,
                     commitment: 'confirmed',
                 })) as ParsedTransactionWithMeta[];
@@ -78,14 +78,14 @@ export const getTransactions = async ({
 };
 
 export const getAccountsTransactions = async ({
-    web3,
+    connector,
     address,
     accounts,
     signatures,
     limit = LIMIT_CALLS,
 }: GetAccountsTransactionsParams) => {
     const transactionHashes = await getAccountsHashes({
-        web3,
+        connector,
         address,
         accounts,
         signatures,
@@ -99,7 +99,7 @@ export const getAccountsTransactions = async ({
     pendingTransactions = Array.from(new Set(pendingTransactions));
     const detailsTransactions = await getTransactions({
         pendingTransactions,
-        web3,
+        connector,
     });
     var hashes: Record<string, HashesDetails> = {};
     transactionHashes.map(accountHashes => {
@@ -118,7 +118,7 @@ export const getAccountsTransactions = async ({
     return { hashes, accounts };
 };
 export const getAccountsTransactionsHashes = async ({
-    web3,
+    connector,
     address,
     accounts,
     signatures,
@@ -139,7 +139,7 @@ export const getAccountsTransactionsHashes = async ({
     for (let i = 0; i < acc_array.length; i += LIMIT_BATCH) {
         const addresses = acc_array.slice(i, i + LIMIT_BATCH);
         const resultBatchs = await getBatchAddressesWithPagination({
-            web3,
+            connector,
             addresses,
             signatures: signatures ?? {},
             pagination,
@@ -151,14 +151,14 @@ export const getAccountsTransactionsHashes = async ({
 };
 
 const getBatchAddressesWithPagination = async ({
-    web3,
+    connector,
     addresses,
     signatures,
     pagination,
     limit,
 }: GetBatchAddressesWithPaginationParams) => {
     const batchResults = await getBatchAddresses({
-        web3,
+        connector,
         addresses,
         signatures,
         pagination,
@@ -184,7 +184,7 @@ const getBatchAddressesWithPagination = async ({
     }
     if (needRecall) {
         const resultBatchsAux = await getBatchAddressesWithPagination({
-            web3,
+            connector,
             addresses,
             signatures,
             pagination,
@@ -206,7 +206,7 @@ const getBatchAddressesWithPagination = async ({
     return resultBatchs;
 };
 const getBatchAddresses = async ({
-    web3,
+    connector,
     addresses,
     signatures,
     pagination,
@@ -216,7 +216,7 @@ const getBatchAddresses = async ({
         const data: PaginationData = { limit };
         if (pagination[address]) data.before = pagination[address];
         if (signatures[address]) data.until = signatures[address];
-        const args = web3._buildArgsAtLeastConfirmed(
+        const args = connector._buildArgsAtLeastConfirmed(
             [address],
             undefined,
             undefined,
@@ -228,7 +228,7 @@ const getBatchAddresses = async ({
         };
     });
 
-    const unsafeRes = await web3._rpcBatchRequest(batch);
+    const unsafeRes = await connector._rpcBatchRequest(batch);
     const res = unsafeRes.map((unsafeRes: any) => {
         const res = create(unsafeRes, GetSignaturesForAddressRpcResult);
         if ('error' in res) {

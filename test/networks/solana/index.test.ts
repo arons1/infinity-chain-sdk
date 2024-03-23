@@ -30,7 +30,7 @@ describe('networksSolana', () => {
             keyPair,
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             value: '1000000',
-            web3: web3Solana,
+            connector: web3Solana,
         });
         expect(built.length).toBeGreaterThan(0);
     });
@@ -44,7 +44,7 @@ describe('networksSolana', () => {
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
             value: '1000',
-            web3: web3Solana,
+            connector: web3Solana,
         });
         expect(built.length).toBeGreaterThan(0);
     });
@@ -56,11 +56,11 @@ describe('networksSolana', () => {
             publicKey: new PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
             value: '1000000',
-            web3: web3Solana,
+            connector: web3Solana,
         });
         const fee = await estimateFee({
             transaction: built,
-            web3: web3Solana,
+            connector: web3Solana,
         });
         expect(new BigNumber(fee.fee as string).toNumber()).toBeGreaterThan(0);
     });
@@ -74,11 +74,11 @@ describe('networksSolana', () => {
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
             value: '1000',
-            web3: web3Solana,
+            connector: web3Solana,
         });
         const balancesAfter = await getBalanceAfter({
             transaction: built,
-            web3: web3Solana,
+            connector: web3Solana,
             signer: new PublicKey(keyPair.publicKey).toString(),
         });
         expect(
@@ -95,7 +95,7 @@ describe('networksSolana', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const balance = await getBalance({
-            web3: web3Solana,
+            connector: web3Solana,
             address: new PublicKey(keyPair.publicKey).toString(),
         });
         expect(balance.balance).toBe('5525167');
@@ -105,8 +105,8 @@ describe('networksSolana', () => {
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const pubAddress = new PublicKey(keyPair.publicKey).toString();
         const balance = await getAccountBalances({
-            web3: web3Solana,
-            address: pubAddress,
+            connector: web3Solana,
+            accounts: [pubAddress],
         });
         expect(
             balance[pubAddress].find(
@@ -124,11 +124,11 @@ describe('networksSolana', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const address = new PublicKey(keyPair.publicKey).toString();
-        const accounts = await getAccounts({ address, web3: web3Solana });
+        const accounts = await getAccounts({ address, connector: web3Solana });
         const transactions = await getAccountsTransactions({
             address,
             accounts,
-            web3: web3Solana,
+            connector: web3Solana,
         });
         expect(
             transactions.hashes[
