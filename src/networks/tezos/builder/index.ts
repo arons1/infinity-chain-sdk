@@ -1,11 +1,16 @@
 import { InMemorySigner } from '@taquito/signer';
 import {
+    BuildOperationParams,
+    BuildOperationResult,
     BuildOperationsParams,
     BuildTransactionParams,
     BuildTransactionResult,
+    BuildTransferParams,
 } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getAditionalFee } from '../estimateFee';
+import { readOnlySigner } from '../getBalance/tez';
+import { ContractMethod, ContractProvider } from '@taquito/taquito';
 
 export const buildOperations = async ({
     source,
@@ -37,6 +42,52 @@ export const buildOperations = async ({
         return contract.methods.transfer(source, destination, value);
     }
 };
+export const buildOperation = async ({
+    source,
+    destination,
+    value,
+    mintToken,
+    idToken = 0,
+    connector,
+    decimalsToken,
+    feeRatio = 0.5,
+}: BuildOperationParams): Promise<BuildOperationResult> => {
+    connector.setSignerProvider(readOnlySigner);
+    const operation: ContractMethod<ContractProvider> = await buildOperations({
+        source,
+        destination,
+        value,
+        mintToken,
+        idToken,
+        decimalsToken,
+        connector,
+    });
+    const transferFees = await connector.estimate.transfer(
+        operation.toTransferParams(),
+    );
+    var estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
+    estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
+    return {
+        operation,
+        fee: estimatedBaseFee.toString(10),
+    };
+};
+export const buildTransfer = async ({
+    connector,
+    value,
+    destination,
+    feeRatio = 0.5,
+}: BuildTransferParams): Promise<string> => {
+    connector.setSignerProvider(readOnlySigner);
+    const amount = new BigNumber(value).shiftedBy(-6).toNumber();
+    const transferFees = await connector.estimate.transfer({
+        to: destination,
+        amount,
+    });
+    var estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
+    estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
+    return estimatedBaseFeeb.toString(10);
+};
 export const buildTransaction = async ({
     source,
     destination,
@@ -48,9 +99,9 @@ export const buildTransaction = async ({
     decimalsToken,
     feeRatio = 0.5,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
-    connector.setSignerProvider(await InMemorySigner.fromSecretKey(privateKey));
+    connector.setSignerProvider(readOnlySigner);
     if (mintToken && decimalsToken) {
-        const operation = await buildOperations({
+        const operationResult = await buildOperation({
             source,
             destination,
             value,
@@ -59,32 +110,33 @@ export const buildTransaction = async ({
             decimalsToken,
             connector,
         });
-        const transferFees = await connector.estimate.transfer(
-            operation.toTransferParams(),
-        );
-        var estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
-        estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
         return {
             broadcast: () =>
-                operation.send({ fee: estimatedBaseFee.toNumber() }),
-            fee: estimatedBaseFee.toString(10),
+                operationResult.operation.send({
+                    fee: new BigNumber(operationResult.fee).toNumber(),
+                }),
+            fee: operationResult.fee,
         };
     } else {
-        const amount = new BigNumber(value).shiftedBy(-6).toNumber();
-        const transferFees = await connector.estimate.transfer({
-            to: destination,
-            amount,
+        const fee = await buildTransfer({
+            connector,
+            value,
+            destination,
+            feeRatio,
         });
-        var estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
-        estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
         return {
-            broadcast: () =>
-                connector.contract.transfer({
+            broadcast: async () => {
+                connector.setSignerProvider(
+                    await InMemorySigner.fromSecretKey(privateKey),
+                );
+                const amount = new BigNumber(value).shiftedBy(-6).toNumber();
+                return connector.contract.transfer({
                     to: destination,
                     amount,
-                    fee: estimatedBaseFeeb.toNumber(),
-                }),
-            fee: estimatedBaseFeeb.toString(10),
+                    fee: new BigNumber(fee).toNumber(),
+                });
+            },
+            fee,
         };
     }
 };

@@ -10,7 +10,7 @@ import {
     READ_ONLY_SIGNER_PK_HASH,
 } from '../../constants';
 
-const readOnlySigner = new ReadOnlySigner(
+export const readOnlySigner = new ReadOnlySigner(
     READ_ONLY_SIGNER_PK_HASH,
     READ_ONLY_SIGNER_PK,
 );

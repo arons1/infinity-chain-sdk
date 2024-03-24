@@ -12,6 +12,11 @@ import { estimateFee } from '../../../lib/commonjs/networks/tezos/estimateFee';
 
 import { web3Tezos } from '../../utils';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import {
+    getBalance,
+    getAccountBalances,
+} from '../../../lib/commonjs/networks/tezos/getBalance';
+import { BalanceResult } from '../../../lib/commonjs/networks/types';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -44,8 +49,8 @@ describe('networksTezos', () => {
         const built = await buildTransaction({
             source: publicAddress,
             destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
-            mintToken:"KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
-            decimalsToken:6,
+            mintToken: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
+            decimalsToken: 6,
             value: '1000',
             privateKey,
             connector: web3Tezos,
@@ -73,9 +78,37 @@ describe('networksTezos', () => {
         );
     });
     test('getBalance', async () => {
-        expect(true).toBe(true);
+        const seed = getSeed({ mnemonic });
+        const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
+        const publicAddress = getPublicTezosAddress({
+            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+        });
+        const balanceResult = await getBalance({
+            address: publicAddress,
+        });
+        expect(balanceResult.balance).toBe('400000');
     });
     test('getAccountBalances', async () => {
-        expect(true).toBe(true);
+        const seed = getSeed({ mnemonic });
+        const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
+        const publicAddress = getPublicTezosAddress({
+            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+        });
+        const balanceResult: Record<string, BalanceResult[]> =
+            await getAccountBalances({
+                account: publicAddress,
+                assetSlugs: ['tez', 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn_0'],
+            });
+        expect(
+            balanceResult[publicAddress]?.find(a => a.address == 'native')
+                ?.value,
+        ).toBe('400000');
+        expect(
+            balanceResult[publicAddress]?.find(
+                a =>
+                    a.address == 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn' &&
+                    a.id == 0,
+            )?.value,
+        ).toBe('8133');
     });
 });
