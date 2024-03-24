@@ -14,14 +14,14 @@ const minABI = [
 ];
 export const getAccountBalances = async ({
     connector,
-    addresses,
+    accounts,
     contracts,
 }: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     const contract = new connector.eth.Contract(minABI);
     const map: RPCBalanceResult = {};
     const batchList: BatchBalance[] = [];
     contracts.map(contractAddress => {
-        addresses.map(address => {
+        accounts.map(address => {
             batchList.push({ contractAddress, address });
             map[address] = {};
         });

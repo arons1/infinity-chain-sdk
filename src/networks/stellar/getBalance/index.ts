@@ -7,7 +7,8 @@ export const getBalance = async ({
     account,
     connector,
 }: GetBalanceParams): Promise<CurrencyBalanceResult> => {
-    const accountBalances: AccountResponse = await connector.loadAccount(account);
+    const accountBalances: AccountResponse =
+        await connector.loadAccount(account);
     const balanceCurrency = new BigNumber(
         accountBalances?.balances?.find(a => a.asset_type == 'native')
             ?.balance as string,

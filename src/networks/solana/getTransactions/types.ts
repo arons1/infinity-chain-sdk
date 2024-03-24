@@ -12,7 +12,7 @@ export type GetAccountsHashesParams = GetAccountsTransactionsParams;
 export type GetAccountsTransactionsHashesParams = GetAccountsTransactionsParams;
 export type GetBatchAddressesWithPaginationParams = {
     connector: any;
-    addresses: AddressesFormat[];
+    accounts: AddressesFormat[];
     signatures: Record<string, string>;
     pagination: Record<string, string>;
     limit: number;

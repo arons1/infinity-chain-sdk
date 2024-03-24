@@ -2,7 +2,7 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { EstimateFeeParams } from './types';
 import { DEFAULT_FEE } from '@taquito/taquito';
 import { hasManager } from '../utils';
-import { buildOperations } from '../builder';
+import { buildTransaction } from '../builder';
 import { EstimateFeeResult } from '../../types';
 import { TezosToolkit } from '@taquito/taquito';
 
@@ -28,34 +28,22 @@ export const estimateFee = async ({
     idToken = 0,
     mintToken,
     connector,
-    feeRatio,
+    decimalsToken,
+    privateKey,
+    feeRatio = 0.5,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
-    let transferFees;
-    if (mintToken) {
-        const operation = await buildOperations({
-            source: from,
-            destination: to,
-            value: amount,
-            mintToken,
-            idToken,
-            connector,
-        });
-        transferFees = await connector.estimate.transfer(
-            operation.toTransferParams(),
-        );
-    } else {
-        transferFees = await connector.estimate.transfer({
-            to,
-            amount: new BigNumber(amount).toNumber(),
-        });
-    }
-    var estimatedBaseFee = new BigNumber(
-        transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
-    );
-    estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
+    const built = await buildTransaction({
+        source: from,
+        destination: to,
+        value: amount,
+        mintToken,
+        idToken,
+        privateKey,
+        connector,
+        decimalsToken,
+        feeRatio,
+    });
     return {
-        fee: estimatedBaseFee
-            .plus(await feeReveal(from, connector))
-            .toString(10),
+        fee: new BigNumber(built.fee).plus(await feeReveal(from, connector)).toString(10),
     };
 };

@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import { Connection } from '@solana/web3.js';
 import { Server } from 'stellar-sdk';
+import { TezosToolkit } from '@taquito/taquito';
 
 export const web3Matic = new Web3('https://polygon-rpc.com');
 export const web3Op = new Web3(
@@ -8,3 +9,4 @@ export const web3Op = new Web3(
 );
 export const web3Solana = new Connection('https://solnode.guarda.com/');
 export const apiStellar = new Server('https://horizon.stellar.org');
+export const web3Tezos = new TezosToolkit('https://mainnet.ecadinfra.com');

@@ -6,7 +6,7 @@ export type BalanceParams = {
 };
 export type RPCBalancesParams = {
     connector: Web3;
-    addresses: string[];
+    accounts: string[];
     contracts: string[];
 };
 

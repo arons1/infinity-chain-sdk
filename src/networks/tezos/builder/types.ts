@@ -1,4 +1,4 @@
-import { TezosToolkit } from '@taquito/taquito';
+import { TezosToolkit,TransactionOperation } from '@taquito/taquito';
 
 export type BuildTransactionParams = {
     source: string;
@@ -8,6 +8,7 @@ export type BuildTransactionParams = {
     privateKey: string;
     connector: TezosToolkit;
     idToken?: number;
+    decimalsToken?: number;
     feeRatio?: number;
 };
 
@@ -16,6 +17,12 @@ export type BuildOperationsParams = {
     destination: string;
     value: string;
     mintToken: string;
+    decimalsToken: number;
     idToken: number;
     connector: TezosToolkit;
 };
+
+export type BuildTransactionResult = {
+    fee:string,
+    broadcast:() => Promise<TransactionOperation>
+}

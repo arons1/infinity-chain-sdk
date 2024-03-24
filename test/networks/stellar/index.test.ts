@@ -29,9 +29,8 @@ describe('networksStellar', () => {
                 'GA6BGWB26N7DNX42CKUOYLLNOJR4PNH3V5U2674HG5KVYLN7W62ZAODC',
             value: '1000',
             keyPair,
-            api: apiStellar,
+            connector: apiStellar,
         });
-        console.log(built);
         expect(built?.length).toBeGreaterThan(10);
     });
     test('builderToken', async () => {
@@ -49,7 +48,7 @@ describe('networksStellar', () => {
             code: 'USDC',
             keyPair,
             issuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
-            api: apiStellar,
+            connector: apiStellar,
         });
         expect(built?.length).toBeGreaterThan(10);
     });
@@ -67,7 +66,7 @@ describe('networksStellar', () => {
         });
         const balance = await getBalance({
             account: publicAddress,
-            api: apiStellar,
+            connector: apiStellar,
         });
         expect(balance.balance).toBe('39999900');
     });
@@ -82,9 +81,22 @@ describe('networksStellar', () => {
             connector: apiStellar,
         });
         expect(
-            balance[publicAddress].find(
+            balance[publicAddress]?.find(
                 (a: BalanceResult) => a.address == 'native',
-            ).value,
+            )?.value,
         ).toBe('39999900');
+        expect(
+            balance[publicAddress]?.find(
+                (a: BalanceResult) => a.address == 'native',
+            )?.freeze,
+        ).toBe('15000000');
+        expect(
+            balance[publicAddress]?.find(
+                (a: BalanceResult) =>
+                    a.address ==
+                        'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN' &&
+                    a.code == 'USDC',
+            )?.value,
+        ).toBe('100000');
     });
 });

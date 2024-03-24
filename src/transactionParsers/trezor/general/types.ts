@@ -12,7 +12,7 @@ export type GeneralTransactionEncode = {
     isError: number;
 };
 type vIn = {
-    addresses: string[];
+    accounts: string[];
     vout: number;
     n: number;
     txid: string;
@@ -22,7 +22,7 @@ type vIn = {
 };
 type vOut = {
     scriptPubKey: {
-        addresses: string[];
+        accounts: string[];
         hex: string;
     };
     n: number;

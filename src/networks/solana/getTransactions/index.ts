@@ -137,10 +137,10 @@ export const getAccountsTransactionsHashes = async ({
     const pagination = {};
     var result: any[] = [];
     for (let i = 0; i < acc_array.length; i += LIMIT_BATCH) {
-        const addresses = acc_array.slice(i, i + LIMIT_BATCH);
+        const accounts = acc_array.slice(i, i + LIMIT_BATCH);
         const resultBatchs = await getBatchAddressesWithPagination({
             connector,
-            addresses,
+            accounts,
             signatures: signatures ?? {},
             pagination,
             limit: limit as number,
@@ -152,14 +152,14 @@ export const getAccountsTransactionsHashes = async ({
 
 const getBatchAddressesWithPagination = async ({
     connector,
-    addresses,
+    accounts,
     signatures,
     pagination,
     limit,
 }: GetBatchAddressesWithPaginationParams) => {
     const batchResults = await getBatchAddresses({
         connector,
-        addresses,
+        accounts,
         signatures,
         pagination,
         limit,
@@ -167,7 +167,7 @@ const getBatchAddressesWithPagination = async ({
     await sleep(SLEEP_BETWEEN_CALLS);
     const resultBatchs = batchResults.map((a, index) => {
         return {
-            ...addresses[index],
+            ...accounts[index],
             result: a.map(b => b.signature),
         };
     });
@@ -179,13 +179,13 @@ const getBatchAddressesWithPagination = async ({
             needRecall = true;
         } else {
             if (pagination[address] != undefined) delete pagination[address];
-            addresses = addresses.filter(a => address != a.address);
+            accounts = accounts.filter(a => address != a.address);
         }
     }
     if (needRecall) {
         const resultBatchsAux = await getBatchAddressesWithPagination({
             connector,
-            addresses,
+            accounts,
             signatures,
             pagination,
             limit,
@@ -207,12 +207,12 @@ const getBatchAddressesWithPagination = async ({
 };
 const getBatchAddresses = async ({
     connector,
-    addresses,
+    accounts,
     signatures,
     pagination,
     limit,
 }: GetBatchAddressesWithPaginationParams): Promise<ResultSignature[][]> => {
-    const batch = addresses.map(({ address }) => {
+    const batch = accounts.map(({ address }) => {
         const data: PaginationData = { limit };
         if (pagination[address]) data.before = pagination[address];
         if (signatures[address]) data.until = signatures[address];

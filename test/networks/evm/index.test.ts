@@ -48,7 +48,7 @@ describe('networksEVM', () => {
     });
     test('getAccountBalances', async () => {
         const bal = await getAccountBalances({
-            addresses: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
+            accounts: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
             connector: web3Matic,
             contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });

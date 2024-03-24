@@ -5,6 +5,7 @@ const utils_1 = require("../../utils");
 const builder_1 = require("../../../lib/commonjs/networks/stellar/builder");
 const estimateFee_1 = require("../../../lib/commonjs/networks/stellar/estimateFee");
 const getBalance_1 = require("../../../lib/commonjs/networks/stellar/getBalance");
+const getBalance_2 = require("../../../lib/commonjs/networks/stellar/getBalance");
 const ed25519_1 = require("@infinity/core-sdk/lib/commonjs/networks/ed25519");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -21,10 +22,9 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             destination: 'GA6BGWB26N7DNX42CKUOYLLNOJR4PNH3V5U2674HG5KVYLN7W62ZAODC',
             value: '1000',
             keyPair,
-            api: utils_1.apiStellar,
+            connector: utils_1.apiStellar,
         });
-        console.log(built);
-        (0, globals_1.expect)(true).toBe(true);
+        (0, globals_1.expect)(built?.length).toBeGreaterThan(10);
     });
     (0, globals_1.test)('builderToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
@@ -40,7 +40,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             code: 'USDC',
             keyPair,
             issuer: 'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN',
-            api: utils_1.apiStellar,
+            connector: utils_1.apiStellar,
         });
         (0, globals_1.expect)(built?.length).toBeGreaterThan(10);
     });
@@ -56,14 +56,24 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         const balance = await (0, getBalance_1.getBalance)({
             account: publicAddress,
-            api: utils_1.apiStellar,
+            connector: utils_1.apiStellar,
         });
         (0, globals_1.expect)(balance.balance).toBe('39999900');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
-        (0, globals_1.expect)(true).toBe(true);
-    });
-    (0, globals_1.test)('sendTransaction', async () => {
-        (0, globals_1.expect)(true).toBe(true);
+        const seed = (0, ed25519_1.getSeed)({ mnemonic });
+        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
+        const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 148 }),
+        });
+        const balance = await (0, getBalance_2.getAccountBalances)({
+            accounts: [publicAddress],
+            connector: utils_1.apiStellar,
+        });
+        (0, globals_1.expect)(balance[publicAddress]?.find((a) => a.address == 'native')?.value).toBe('39999900');
+        (0, globals_1.expect)(balance[publicAddress]?.find((a) => a.address == 'native')?.freeze).toBe('15000000');
+        (0, globals_1.expect)(balance[publicAddress]?.find((a) => a.address ==
+            'GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN' &&
+            a.code == 'USDC')?.value).toBe('100000');
     });
 });

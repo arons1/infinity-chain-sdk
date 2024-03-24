@@ -138,20 +138,20 @@ export class TrezorWebsocket {
 
     subscribeAddresses(
         wallet: string,
-        addresses: string[],
+        accounts: string[],
         callback: (pr?: any) => void,
     ) {
-        if (addresses.length > 50) {
-            addresses = addresses.slice(addresses.length - 50, 50);
+        if (accounts.length > 50) {
+            accounts = accounts.slice(accounts.length - 50, 50);
         }
-        addresses = addresses.map(s => s.trim());
+        accounts = accounts.map(s => s.trim());
         if (this.subscribeAddressesId) {
             this.subscribeAddressesId = '';
         }
         this.callbacks[wallet] = callback;
         this.subscribeAddressesId = this.subscribe(
             'subscribeAddresses',
-            { addresses },
+            { accounts },
             this.callbacks[wallet],
         );
     }
@@ -176,9 +176,9 @@ export class TrezorWebsocket {
         return allAddresses;
     }
 
-    async connectCoin(addresses: string[], wallet: string) {
-        this.wallets[wallet] = addresses;
-        this.subscribeAddresses(wallet, addresses, this.callbacks[wallet]);
+    async connectCoin(accounts: string[], wallet: string) {
+        this.wallets[wallet] = accounts;
+        this.subscribeAddresses(wallet, accounts, this.callbacks[wallet]);
     }
 
     connect() {

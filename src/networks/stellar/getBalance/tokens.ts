@@ -26,11 +26,8 @@ export const getAccountBalances = async ({
                     address: balanceRes.asset_type,
                     value: new BigNumber(balanceRes.balance)
                         .shiftedBy(7)
-                        .plus(reserve)
                         .toString(10),
-                    freeze: new BigNumber(balanceRes.balance)
-                        .shiftedBy(7)
-                        .toString(10),
+                    freeze: reserve,
                 });
             } else {
                 const balance: Horizon.BalanceLineAsset<'credit_alphanum4'> =

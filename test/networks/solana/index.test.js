@@ -22,7 +22,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             keyPair,
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             value: '1000000',
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
     });
@@ -36,7 +36,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
             value: '1000',
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
     });
@@ -48,11 +48,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             publicKey: new web3_js_1.PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
             value: '1000000',
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         const fee = await (0, estimateFee_1.estimateFee)({
             transaction: built,
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee.fee).toNumber()).toBeGreaterThan(0);
     });
@@ -66,11 +66,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             destination: 'CFhmGszsmQS8gKk7bV175v5vPhaMagbSNvHiqgDkmK1S',
             decimalsToken: 6,
             value: '1000',
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         const balancesAfter = await (0, getBalanceAfter_1.getBalanceAfter)({
             transaction: built,
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
             signer: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
         });
         (0, globals_1.expect)(balancesAfter['Fhof9N6pgye6WvT2EnAHyF9WJ5J77hSxLQYEQrEU4KC1']
@@ -82,7 +82,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const balance = await (0, getBalance_1.getBalance)({
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
             address: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
         });
         (0, globals_1.expect)(balance.balance).toBe('5525167');
@@ -92,8 +92,8 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const pubAddress = new web3_js_1.PublicKey(keyPair.publicKey).toString();
         const balance = await (0, tokens_1.getAccountBalances)({
-            web3: utils_1.web3Solana,
-            address: pubAddress,
+            connector: utils_1.web3Solana,
+            accounts: [pubAddress],
         });
         (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'native')?.value).toBe('5525167');
         (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')?.value).toBe('99206');
@@ -102,11 +102,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const address = new web3_js_1.PublicKey(keyPair.publicKey).toString();
-        const accounts = await (0, utils_2.getAccounts)({ address, web3: utils_1.web3Solana });
+        const accounts = await (0, utils_2.getAccounts)({ address, connector: utils_1.web3Solana });
         const transactions = await (0, getTransactions_1.getAccountsTransactions)({
             address,
             accounts,
-            web3: utils_1.web3Solana,
+            connector: utils_1.web3Solana,
         });
         (0, globals_1.expect)(transactions.hashes['54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29'].details?.blockTime).toBe(1711053522);
         (0, globals_1.expect)(transactions.hashes['5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m'].details?.blockTime).toBe(1711053273);

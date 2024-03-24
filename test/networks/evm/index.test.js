@@ -12,7 +12,7 @@ const PRIORITY_FEES = {
 (0, globals_1.describe)('networksEVM', () => {
     (0, globals_1.test)('builder', async () => {
         const built = await (0, builder_1.buildTransaction)({
-            web3: utils_1.web3Matic,
+            connector: utils_1.web3Matic,
             chainId: 137,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
@@ -24,7 +24,7 @@ const PRIORITY_FEES = {
     });
     (0, globals_1.test)('estimateFee', async () => {
         const built = await (0, estimateFee_1.estimateFee)({
-            web3: utils_1.web3Matic,
+            connector: utils_1.web3Matic,
             chainId: 137,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
@@ -38,14 +38,14 @@ const PRIORITY_FEES = {
     (0, globals_1.test)('getBalance', async () => {
         const bal = await (0, getBalance_1.getBalance)({
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
-            web3: utils_1.web3Matic,
+            connector: utils_1.web3Matic,
         });
         (0, globals_1.expect)(bal.balance).toBe('100366941538263892');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const bal = await (0, getBalance_1.getAccountBalances)({
-            addresses: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
-            web3: utils_1.web3Matic,
+            accounts: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
+            connector: utils_1.web3Matic,
             contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });
         (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == '0x5fe2b58c013d7601147dcdd68c143a77499f5531')?.value).toBe('255945616675368817');

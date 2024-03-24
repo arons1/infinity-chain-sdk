@@ -65,12 +65,17 @@ export const getGasPrice = async ({
 }: GasPriceParams): Promise<string> => {
     return '0x' + (await connector.eth.getGasPrice()).toString(16);
 };
-const estimateGas = async (connector: Web3, chainId: number, tx: TransactionEVM) => {
+const estimateGas = async (
+    connector: Web3,
+    chainId: number,
+    tx: TransactionEVM,
+) => {
     const auxCalc = { ...tx };
     if (chainId == 100009) {
         delete auxCalc.nonce;
     }
-    tx.gasLimit = '0x' + (await connector.eth.estimateGas(auxCalc)).toString(16);
+    tx.gasLimit =
+        '0x' + (await connector.eth.estimateGas(auxCalc)).toString(16);
     return tx.gasLimit;
 };
 /* 
@@ -151,6 +156,8 @@ export const getNonce = async ({
 }: NonceParams): Promise<string> => {
     return (
         '0x' +
-        (await connector.eth.getTransactionCount(address, 'pending')).toString(16)
+        (await connector.eth.getTransactionCount(address, 'pending')).toString(
+            16,
+        )
     );
 };
