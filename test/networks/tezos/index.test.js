@@ -23,8 +23,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             privateKey,
             connector: utils_1.web3Tezos,
         });
-        console.log(built);
-        (0, globals_1.expect)(true).toBe(true);
+        (0, globals_1.expect)(built.broadcast != undefined).toBe(true);
     });
     (0, globals_1.test)('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
@@ -32,11 +31,14 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
         });
+        const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
+        const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
         const fee = await (0, estimateFee_1.estimateFee)({
             amount: '1000',
             from: publicAddress,
             to: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             connector: utils_1.web3Tezos,
+            privateKey,
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee?.fee).toNumber()).toBeGreaterThan(10);
     });
@@ -44,9 +46,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         (0, globals_1.expect)(true).toBe(true);
     });
     (0, globals_1.test)('getAccountBalances', async () => {
-        (0, globals_1.expect)(true).toBe(true);
-    });
-    (0, globals_1.test)('sendTransaction', async () => {
         (0, globals_1.expect)(true).toBe(true);
     });
 });

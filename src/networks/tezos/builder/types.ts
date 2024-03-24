@@ -1,4 +1,4 @@
-import { TezosToolkit,TransactionOperation } from '@taquito/taquito';
+import { TezosToolkit, TransactionOperation } from '@taquito/taquito';
 
 export type BuildTransactionParams = {
     source: string;
@@ -23,6 +23,6 @@ export type BuildOperationsParams = {
 };
 
 export type BuildTransactionResult = {
-    fee:string,
-    broadcast:() => Promise<TransactionOperation>
-}
+    fee: string;
+    broadcast: () => Promise<TransactionOperation>;
+};

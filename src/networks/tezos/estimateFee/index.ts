@@ -44,6 +44,8 @@ export const estimateFee = async ({
         feeRatio,
     });
     return {
-        fee: new BigNumber(built.fee).plus(await feeReveal(from, connector)).toString(10),
+        fee: new BigNumber(built.fee)
+            .plus(await feeReveal(from, connector))
+            .toString(10),
     };
 };

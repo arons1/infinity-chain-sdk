@@ -33,6 +33,25 @@ describe('networksTezos', () => {
         });
         expect(built.broadcast != undefined).toBe(true);
     });
+    test('builderToken', async () => {
+        const seed = getSeed({ mnemonic });
+        const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
+        const publicAddress = getPublicTezosAddress({
+            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+        });
+        const secretKey = getPrivateKey({ keyPair });
+        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const built = await buildTransaction({
+            source: publicAddress,
+            destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
+            mintToken:"KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
+            decimalsToken:6,
+            value: '1000',
+            privateKey,
+            connector: web3Tezos,
+        });
+        expect(built.broadcast != undefined).toBe(true);
+    });
     test('estimateFee', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
@@ -57,9 +76,6 @@ describe('networksTezos', () => {
         expect(true).toBe(true);
     });
     test('getAccountBalances', async () => {
-        expect(true).toBe(true);
-    });
-    test('sendTransaction', async () => {
         expect(true).toBe(true);
     });
 });

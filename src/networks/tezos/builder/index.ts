@@ -1,5 +1,9 @@
 import { InMemorySigner } from '@taquito/signer';
-import { BuildOperationsParams, BuildTransactionParams, BuildTransactionResult } from './types';
+import {
+    BuildOperationsParams,
+    BuildTransactionParams,
+    BuildTransactionResult,
+} from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getAditionalFee } from '../estimateFee';
 
@@ -43,7 +47,7 @@ export const buildTransaction = async ({
     connector,
     decimalsToken,
     feeRatio = 0.5,
-}: BuildTransactionParams) : Promise<BuildTransactionResult> => {
+}: BuildTransactionParams): Promise<BuildTransactionResult> => {
     connector.setSignerProvider(await InMemorySigner.fromSecretKey(privateKey));
     if (mintToken && decimalsToken) {
         const operation = await buildOperations({
