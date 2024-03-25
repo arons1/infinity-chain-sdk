@@ -59,18 +59,17 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
         });
-        const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
-        const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
         });
         const fee = await (0, estimateFee_1.estimateFee)({
-            amount: '1000',
-            from: publicAddress,
-            to: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
-            connector: utils_1.web3Tezos,
-            privateKey,
+            source: publicAddress,
+            destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
+            mintToken: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
+            decimalsToken: 8,
+            value: '1000',
             pkHash,
+            connector: utils_1.web3Tezos,
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee?.fee).toNumber()).toBeGreaterThan(10);
     });

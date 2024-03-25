@@ -25,4 +25,4 @@ export type ChangeIndexResult = {
 export type ChangeIndexResolve = {
     index: number;
     protocol: number;
-}
+};

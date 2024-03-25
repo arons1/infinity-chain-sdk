@@ -3,7 +3,7 @@ import { Connection } from '@solana/web3.js';
 import { Server } from 'stellar-sdk';
 import { TezosToolkit } from '@taquito/taquito';
 import { XrplClient } from 'xrpl-client';
-import { TrezorWebsocket } from '../lib/commonjs/networks/utxo/connector';
+import { TrezorWebsocket } from '../lib/commonjs/networks/utxo/trezorWebsocket';
 
 export const web3Matic = new Web3('https://polygon-rpc.com');
 export const web3Op = new Web3(

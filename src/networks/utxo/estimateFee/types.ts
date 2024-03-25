@@ -8,6 +8,6 @@ export type EstimateFeeParams = {
     feeRatio?: number;
 };
 export type FeeResult = {
-    low:string;
-    high:string
-}
+    low: string;
+    high: string;
+};

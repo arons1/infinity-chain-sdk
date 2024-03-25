@@ -8,7 +8,6 @@ export type EstimateFeeParams = {
     mintToken?: string;
     decimalsToken?: number;
     connector: TezosToolkit;
-    privateKey: string;
     feeRatio?: number;
     pkHash: string;
 };

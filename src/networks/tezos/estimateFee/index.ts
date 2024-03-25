@@ -6,7 +6,11 @@ import { buildOperation, buildTransfer } from '../builder';
 import { EstimateFeeResult } from '../../types';
 import { TezosToolkit } from '@taquito/taquito';
 import { RpcForger, CompositeForger } from '@taquito/taquito';
-import { ReadOnlySigner, michelEncoder, readOnlySigner } from '../getBalance/tez';
+import {
+    ReadOnlySigner,
+    michelEncoder,
+    readOnlySigner,
+} from '../getBalance/tez';
 import { localForger } from '@taquito/local-forging';
 
 const ADDITIONAL_FEE = 100;
@@ -62,8 +66,8 @@ export const estimateFee = async ({
         });
         return {
             fee: new BigNumber(operationResult.fee)
-            .plus(await feeReveal(source, connector))
-            .toString(10),
+                .plus(await feeReveal(source, connector))
+                .toString(10),
         };
     } else {
         const fee = await buildTransfer({
@@ -75,12 +79,11 @@ export const estimateFee = async ({
             feeRatio,
         });
         return {
-            fee:new BigNumber(fee)
-            .plus(await feeReveal(source, connector))
-            .toString(10)
+            fee: new BigNumber(fee)
+                .plus(await feeReveal(source, connector))
+                .toString(10),
         };
     }
-
 };
 
 export const estimateOperation = async ({

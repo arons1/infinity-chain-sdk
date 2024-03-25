@@ -96,7 +96,7 @@ export const tokenTransaction = async ({
     decimalsToken,
     value,
     connector,
-}: TokenTransactionParams) : Promise<TransactionInstruction[]> => {
+}: TokenTransactionParams): Promise<TransactionInstruction[]> => {
     const instructions: TransactionInstruction[] = [];
     const { senderTokenAccount, receiverTokenAccount } =
         await addAssociatedCreation({

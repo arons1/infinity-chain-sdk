@@ -8,7 +8,7 @@ export type AssetExistsRequest = {
 
 export type Asset = {
     asset_code: string;
-    asset_issuer:string;
+    asset_issuer: string;
 };
 
 export type AccountExists = {

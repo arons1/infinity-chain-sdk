@@ -45,7 +45,7 @@ export const buildTransaction = async ({
     memo = '',
     utxos = [],
     feeRatio = 0.5,
-}: BuildParameters) : Promise<BuildTransactionResult> => {
+}: BuildParameters): Promise<BuildTransactionResult> => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     const network = networks.networks.default[coinId as string];
     if (accounts.find(a => a.useAsChange) == undefined)

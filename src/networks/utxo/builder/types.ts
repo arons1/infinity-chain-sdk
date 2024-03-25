@@ -19,9 +19,9 @@ type Account = {
     useAsChange: boolean;
 };
 export type BuildTransactionResult = {
-    feePerByte:FeeResult;
+    feePerByte: FeeResult;
     utxos: UTXOResult[];
-    hex:string;
+    hex: string;
     utxosUsed: UTXOResult[];
-    transactionSize:string,
-}
+    transactionSize: string;
+};

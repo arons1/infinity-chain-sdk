@@ -13,6 +13,7 @@ import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateFee';
 import {
     SupportedChains,
+    Transaction,
     isValidAddress,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
@@ -73,12 +74,17 @@ export const estimateFee = async ({
     var fee = new BigNumber(resultEstimate.estimateGas)
         .multipliedBy(resultEstimate.gasPrice as string)
         .toString(10);
-    if (chainId == 10)
+    if (chainId == 10) {
+        const txBuilder = new Transaction(
+            resultEstimate.transaction,
+        ).serialize();
         fee = new BigNumber(
-            await estimateL1Cost(connector, resultEstimate.transaction),
+            await estimateL1Cost(connector, txBuilder.toString('hex')),
         )
             .plus(fee)
             .toString(10);
+    }
+
     return {
         fee,
         transaction: resultEstimate.transaction,

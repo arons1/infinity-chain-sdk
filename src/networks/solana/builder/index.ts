@@ -20,7 +20,9 @@ buildTransaction
     @param value: amount to transfer
     @param connector: solana web3 connector
 */
-export const buildTransaction = async (props: TransactionBuilderParams) : Promise<string> => {
+export const buildTransaction = async (
+    props: TransactionBuilderParams,
+): Promise<string> => {
     const transactionPay = await rawTransaction({
         ...props,
         publicKey: new PublicKey(props.keyPair.publicKey),

@@ -1,4 +1,8 @@
-import { ChangeIndexResult, LastChangeIndexParameters,ChangeIndexResolve } from './types';
+import {
+    ChangeIndexResult,
+    LastChangeIndexParameters,
+    ChangeIndexResolve,
+} from './types';
 /*
 getLastChangeIndex
     Returns balance addition of all extended public keys

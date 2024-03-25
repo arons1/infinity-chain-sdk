@@ -237,7 +237,6 @@ export class TrezorWebsocket {
         this.ws.onmessage = async function (e: any) {
             var resp = JSON.parse(e.data);
             var f = pusher.pendingMessages[resp.id];
-            console.log(resp);
             if (f != undefined) {
                 delete pusher.pendingMessages[resp.id];
                 f(resp.data);

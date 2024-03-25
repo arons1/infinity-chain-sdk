@@ -18,9 +18,14 @@ buildTransaction
 */
 export const buildTransaction = async (
     props: BuildTransaction,
-): Promise<TransactionEVM | undefined> => {
+): Promise<string> => {
     const gaslimit = await estimateFee(props);
-    return gaslimit.transaction;
+    const { rawTransaction } =
+        await props.connector.eth.accounts.signTransaction(
+            gaslimit.transaction as TransactionEVM,
+            props.privateKey,
+        );
+    return rawTransaction;
 };
 
 export * from './tokens';

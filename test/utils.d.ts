@@ -3,7 +3,7 @@ import { Connection } from '@solana/web3.js';
 import { Server } from 'stellar-sdk';
 import { TezosToolkit } from '@taquito/taquito';
 import { XrplClient } from 'xrpl-client';
-import { TrezorWebsocket } from '../lib/commonjs/networks/utxo/connector';
+import { TrezorWebsocket } from '../lib/commonjs/networks/utxo/trezorWebsocket';
 export declare const web3Matic: Web3<import("web3-eth").RegisteredSubscription>;
 export declare const web3Op: Web3<import("web3-eth").RegisteredSubscription>;
 export declare const web3Solana: Connection;

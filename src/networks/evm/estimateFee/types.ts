@@ -13,7 +13,7 @@ export type EstimateGasParams = {
     value?: string;
     chainId: number;
     gasPrice?: string;
-    feeRatio: number;
+    feeRatio?: number;
     priorityFee?: string;
 };
 export type EstimateGasTokenParams = {
@@ -24,7 +24,7 @@ export type EstimateGasTokenParams = {
     value?: string;
     gasPrice?: string;
     chainId: number;
-    feeRatio: number;
+    feeRatio?: number;
     priorityFee?: string;
 };
 
@@ -52,6 +52,6 @@ export type CalculateGasPrice = {
     gasPrice: string;
     connector: Web3;
     chainId: number;
-    feeRatio: number;
+    feeRatio?: number;
     priorityFee?: string;
 };

@@ -36,7 +36,7 @@ export const calculateGasPrice = async ({
     gasPrice,
     connector,
     chainId,
-    feeRatio,
+    feeRatio = 0.5,
     priorityFee,
 }: CalculateGasPrice): Promise<TransactionEVM> => {
     if (chainId == 1 || chainId == 137) {

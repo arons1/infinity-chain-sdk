@@ -1,22 +1,15 @@
 import { SendTransactionParams } from './types';
 
-
 /* 
 sendTransaction
     Returns balances of the token's contracts and current balance of each address passed
     @param connector: web3 connector
-    @param transaction: TransactionEVM
-    @param privateKey: Private key
+    @param rawTransaction: raw transaction
 */
 export const sendTransaction = async ({
     connector,
-    transaction,
-    privateKey,
+    rawTransaction,
 }: SendTransactionParams): Promise<string> => {
-    const { rawTransaction } = await connector.eth.accounts.signTransaction(
-        transaction,
-        privateKey,
-    );
     return new Promise((resolve, reject) => {
         connector.eth
             .sendSignedTransaction(rawTransaction)

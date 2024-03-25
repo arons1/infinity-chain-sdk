@@ -6,23 +6,47 @@ import {
     getAccountBalances,
     getBalance,
 } from '../../../lib/commonjs/networks/evm/getBalance';
+import { getPublicAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import {
+    getRootNode,
+    getPrivateKey,
+    getPrivateMasterKey,
+} from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
+import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
 const PRIORITY_FEES = {
     1: '1000000000',
     137: '21000000000',
 };
-
+const mnemonic =
+    'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksEVM', () => {
     test('builder', async () => {
+        const rootNode = getRootNode({ mnemonic, network: networks['eth'] });
+        const privateAccountNode = getPrivateMasterKey({
+            bipIdCoin: 60,
+            protocol: 44,
+            rootNode,
+        });
+        const publicAddress = getPublicAddress({
+            change: 0,
+            index: 0,
+            publicAccountNode: privateAccountNode,
+        });
+        const privateKey = getPrivateKey({
+            change: 0,
+            index: 0,
+            privateAccountNode,
+        });
         const built = await buildTransaction({
             connector: web3Matic,
             chainId: 137,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
-            source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
-            feeRatio: 0.5,
+            source: publicAddress as string,
             priorityFee: PRIORITY_FEES[137],
-            value: '1000000000000',
+            value: '100000',
+            privateKey: privateKey.privateKey as Buffer,
         });
-        expect(built?.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
+        expect(built.length > 0).toBe(true);
     });
     test('estimateFee', async () => {
         const built = await estimateFee({
@@ -33,10 +57,10 @@ describe('networksEVM', () => {
             tokenContract: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
             feeRatio: 0.5,
             priorityFee: PRIORITY_FEES[137],
-            value: '1000000000000',
+            value: '100000',
         });
         expect(built.transaction?.data).toBe(
-            '0xa9059cbb000000000000000000000000e7a38be77db0fec3cff01c01838508201bcb5a07000000000000000000000000000000000000000000000000000000e8d4a51000',
+            '0xa9059cbb000000000000000000000000e7a38be77db0fec3cff01c01838508201bcb5a0700000000000000000000000000000000000000000000000000000000000186a0',
         );
     });
     test('getBalance', async () => {

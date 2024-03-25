@@ -82,7 +82,7 @@ describe('networksTezos', () => {
             decimalsToken: 8,
             value: '1000',
             pkHash,
-            connector: web3Tezos
+            connector: web3Tezos,
         });
 
         expect(new BigNumber(fee?.fee as string).toNumber()).toBeGreaterThan(
