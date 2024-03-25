@@ -5,7 +5,12 @@ import {
 import feeAbi from '@infinity/core-sdk/lib/commonjs/core/abi/fee';
 import Web3 from 'web3';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-
+/* 
+estimateL1Cost
+    Returns estimate L1Cost
+    @param connector: web3 connector
+    @param tx: TransactionEVM
+*/
 export const estimateL1Cost = async (
     connector: Web3,
     tx: TransactionEVM,

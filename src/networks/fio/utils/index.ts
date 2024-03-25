@@ -1,6 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { FIOBalance } from './types';
 
+/* 
+getAddressFromAccount
+    get address from account
+    @param account: address from account
+*/
 export const getAddressFromAccount = (account: string) => {
     return new Promise(function (resolve, reject) {
         axios
