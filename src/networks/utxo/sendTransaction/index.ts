@@ -1,11 +1,11 @@
 import { SendTransactionParams } from './types';
 
 export const sendTransaction = ({
-    trezorWebsocket,
+    connector,
     rawTransaction,
 }: SendTransactionParams): Promise<string> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket.send(
+        connector.send(
             'sendTransaction',
             {
                 hex: rawTransaction,

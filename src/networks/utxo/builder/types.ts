@@ -5,7 +5,7 @@ import { TrezorWebsocket } from '../trezorWebsocket';
 export type BuildParameters = {
     coinId: string;
     amount: string;
-    trezorWebsocket: TrezorWebsocket;
+    connector: TrezorWebsocket;
     accounts: Account[];
     destination: string;
     memo?: string;

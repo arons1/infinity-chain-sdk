@@ -2,13 +2,13 @@ import { ChangeIndexResult, LastChangeIndexParameters } from './types';
 
 export const getLastChangeIndex = async ({
     extendedPublicKey,
-    trezorWebsocket,
+    connector,
 }: LastChangeIndexParameters): Promise<{
     index: number;
     protocol: number;
 }> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket.send(
+        connector.send(
             'getAccountInfo',
             {
                 descriptor: extendedPublicKey,

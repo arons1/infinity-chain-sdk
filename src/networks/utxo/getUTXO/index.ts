@@ -2,10 +2,10 @@ import { GetUTXOParams, UTXOResult } from './types';
 
 export const getUTXO = ({
     extendedPublicKey,
-    trezorWebsocket,
+    connector,
 }: GetUTXOParams): Promise<UTXOResult[]> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket.send(
+        connector.send(
             'getAccountUtxo',
             {
                 descriptor: extendedPublicKey,

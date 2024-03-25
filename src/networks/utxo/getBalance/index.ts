@@ -2,11 +2,11 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
 const getAccountInfo = ({
-    trezorWebsocket,
+    connector,
     address,
 }: GetAccountInfoParams): Promise<string> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket.send(
+        connector.send(
             'getAccountInfo',
             {
                 descriptor: address,
@@ -31,12 +31,12 @@ const getAccountInfo = ({
 };
 
 export const getAccountBalances = async ({
-    trezorWebsocket,
+    connector,
     extendedPublicKeys,
 }: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     const result: Record<string, BalanceResult[]> = {};
     for (let address of extendedPublicKeys) {
-        const balances = await getAccountInfo({ address, trezorWebsocket });
+        const balances = await getAccountInfo({ address, connector });
         result[address] = [
             {
                 value: balances,
@@ -47,12 +47,12 @@ export const getAccountBalances = async ({
 };
 
 export const getBalance = async ({
-    trezorWebsocket,
+    connector,
     extendedPublicKeys,
 }: GetAccountBalancesParams): Promise<CurrencyBalanceResult> => {
     var balance = new BigNumber(0);
     for (let address of extendedPublicKeys) {
-        const balances = await getAccountInfo({ address, trezorWebsocket });
+        const balances = await getAccountInfo({ address, connector });
         balance = balance.plus(balances);
     }
     return {

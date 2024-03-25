@@ -14,15 +14,15 @@ import { getUTXO } from '../getUTXO';
 import { EstimateFeeResult } from '../../types';
 
 export const getFeePerByte = ({
-    trezorWebsocket,
+    connector,
 }: {
-    trezorWebsocket: any;
+    connector: any;
 }): Promise<{
     low: string;
     high: string;
 }> => {
     return new Promise((resolve, reject) => {
-        trezorWebsocket.send(
+        connector.send(
             'estimateFee',
             {
                 blocks: [1, 2, 3, 4],
@@ -61,7 +61,7 @@ export const estimateFee = async ({
     extendedPublicKeys,
     coinId,
     amount,
-    trezorWebsocket,
+    connector,
     feeRatio = 0.5,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if (extendedPublicKeys == undefined || extendedPublicKeys.length == 0)
@@ -75,7 +75,7 @@ export const estimateFee = async ({
         try {
             const utxos_address = await getUTXO({
                 extendedPublicKey,
-                trezorWebsocket,
+                connector,
             });
             utxos = [...utxos_address, ...utxos];
         } catch (e) {
@@ -109,7 +109,7 @@ export const estimateFee = async ({
     let feePerByte;
     // 5º Get fee per byte
     try {
-        feePerByte = await getFeePerByte({ trezorWebsocket });
+        feePerByte = await getFeePerByte({ connector });
     } catch (e) {
         console.error(e);
         throw new Error(CannotGetFeePerByte);

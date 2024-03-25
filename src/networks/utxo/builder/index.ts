@@ -24,11 +24,16 @@ import {
     opcodes,
     script,
 } from 'bitcoinjs-lib';
-
+/*
+accountExists
+    Returns if an account exists
+    @param connector: XRP api connector
+    @param account: account to check if it exists
+*/
 export const buildTransaction = async ({
     coinId,
     amount,
-    trezorWebsocket,
+    connector,
     accounts,
     destination,
     memo = '',
@@ -49,7 +54,7 @@ export const buildTransaction = async ({
             try {
                 const utxos_address = await getUTXO({
                     extendedPublicKey,
-                    trezorWebsocket,
+                    connector,
                 });
                 utxos = [...utxos_address, ...utxos];
             } catch (e) {
@@ -67,7 +72,7 @@ export const buildTransaction = async ({
     let feePerByte;
     // 5º Get fee per byte
     try {
-        feePerByte = await getFeePerByte({ trezorWebsocket });
+        feePerByte = await getFeePerByte({ connector });
     } catch (e) {
         console.error(e);
         throw new Error(CannotGetFeePerByte);
@@ -116,7 +121,7 @@ export const buildTransaction = async ({
                 const { index, protocol } = await getLastChangeIndex({
                     extendedPublicKey: accounts.find(a => a.useAsChange)
                         ?.extendedPublicKey as string,
-                    trezorWebsocket,
+                    connector,
                 });
                 changeProtocol = protocol;
                 lastChangeIndex = index;

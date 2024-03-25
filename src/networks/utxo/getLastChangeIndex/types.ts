@@ -2,7 +2,7 @@ import { TrezorWebsocket } from '../trezorWebsocket';
 
 export type LastChangeIndexParameters = {
     extendedPublicKey: string;
-    trezorWebsocket: TrezorWebsocket;
+    connector: TrezorWebsocket;
 };
 type TokensChangeIndex = {
     name: string;

@@ -4,6 +4,6 @@ export type EstimateFeeParams = {
     extendedPublicKeys: string[];
     coinId: string;
     amount: string;
-    trezorWebsocket: TrezorWebsocket;
+    connector: TrezorWebsocket;
     feeRatio?: number;
 };

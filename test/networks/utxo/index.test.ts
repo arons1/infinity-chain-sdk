@@ -6,7 +6,7 @@ import {
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
-import { trezorWebsocket } from '../../utils';
+import { connector } from '../../utils';
 import { sleep } from '../../../lib/commonjs/networks/solana/utils';
 import {
     estimateFee,
@@ -25,8 +25,8 @@ const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksUTXO', () => {
     test('builder', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -50,22 +50,22 @@ describe('networksUTXO', () => {
                     useAsChange: true,
                 },
             ],
-            trezorWebsocket,
+            connector,
         });
         expect(build?.hex?.length > 0).toBe(true);
     });
     test('getFeePerByte', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
-        const fee = await getFeePerByte({ trezorWebsocket });
+        const fee = await getFeePerByte({ connector });
         expect(new BigNumber(fee.low).toNumber()).toBeGreaterThan(0);
         expect(new BigNumber(fee.high).toNumber()).toBeGreaterThan(0);
     });
     test('estimateFee', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -81,15 +81,15 @@ describe('networksUTXO', () => {
             amount: '10000',
             coinId: 'ltc',
             extendedPublicKeys: [xpub],
-            trezorWebsocket,
+            connector,
         });
         expect(
             new BigNumber(estimate.fee as string).toNumber(),
         ).toBeGreaterThan(0);
     });
     test('getBalance', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -103,13 +103,13 @@ describe('networksUTXO', () => {
         );
         const balance = await getBalance({
             extendedPublicKeys: [xpub],
-            trezorWebsocket,
+            connector,
         });
         expect(new BigNumber(balance.balance).toNumber()).toBeGreaterThan(-1);
     });
     test('getAccountBalances', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -123,15 +123,15 @@ describe('networksUTXO', () => {
         );
         const balance = await getAccountBalances({
             extendedPublicKeys: [xpub],
-            trezorWebsocket,
+            connector,
         });
         expect(
             new BigNumber(balance[Object.keys(balance)[0]][0].value).toNumber(),
         ).toBeGreaterThan(-1);
     });
     test('getUTXO', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -145,13 +145,13 @@ describe('networksUTXO', () => {
         );
         const utxo = await getUTXO({
             extendedPublicKey: xpub,
-            trezorWebsocket,
+            connector,
         });
         expect(utxo.length).toBeGreaterThan(-1);
     });
     test('getLastChangeIndex', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -165,15 +165,15 @@ describe('networksUTXO', () => {
         );
         const { index, protocol } = await getLastChangeIndex({
             extendedPublicKey: xpub,
-            trezorWebsocket,
+            connector,
         });
         expect(index).toBeGreaterThan(-1);
         expect(protocol).toBe(44);
     });
     /*
     test('sendTransaction', async () => {
-        while (!trezorWebsocket.connected) {
-            console.log(trezorWebsocket.connected);
+        while (!connector.connected) {
+            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -196,10 +196,10 @@ describe('networksUTXO', () => {
                     useAsChange:true
                 },
             ],
-            trezorWebsocket,
+            connector,
         });
         const txhash = await sendTransaction({
-            trezorWebsocket,
+            connector,
             rawTransaction: build.hex,
         });
         expect(txhash.length).toBeGreaterThan(0);
