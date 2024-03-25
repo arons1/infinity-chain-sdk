@@ -4,7 +4,12 @@ import retry from 'async-retry';
 import { Tezos, loadContract, isFA2Token } from './tez';
 import { toAsset } from './helpers';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
-
+/*
+getAccountBalances
+    Returns get balance asset
+    @param account: source account
+    @param assetSlugs: assets slugs
+*/
 export const getAccountBalances = async ({
     account,
     assetSlugs,
@@ -21,7 +26,12 @@ export const getAccountBalances = async ({
     }
     return result;
 };
-
+/*
+getAssetBalance
+    Returns get balance asset
+    @param account: source account
+    @param assetSlug: asset slug
+*/
 export const getAssetBalance = async ({
     account,
     assetSlug,
@@ -78,7 +88,11 @@ export const getAssetBalance = async ({
         address: tokenContractAddress,
     };
 };
-
+/*
+getBalance
+    Returns get balance
+    @param address: source account
+*/
 export const getBalance = async ({
     address,
 }: {

@@ -2,7 +2,12 @@ import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed2551
 import { Payment, BuildTransactionParams, PreparePaymentParams } from './types';
 
 const LEDGER_OFFSET = 20;
-
+/*
+preparePayment
+    Returns prepared payment
+    @param connector: XRP api connector
+    @param tx:transaction to be prepared
+*/
 export const preparePayment = async ({
     tx,
     connector,
@@ -27,6 +32,16 @@ export const preparePayment = async ({
     }
     return tx;
 };
+/*
+buildTransaction
+    Returns prepared payment
+    @param connector: XRP api connector
+    @param amount: amount to send
+    @param from: source account
+    @param to: destination to send
+    @param keyPair: keypair
+    @param memo:memo string(optional)
+*/
 export const buildTransaction = async ({
     amount,
     from,

@@ -1,9 +1,9 @@
 import { TezosToolkit } from '@taquito/taquito';
 
 export type EstimateFeeParams = {
-    amount: string;
-    from: string;
-    to: string;
+    value: string;
+    source: string;
+    destination: string;
     idToken?: number;
     mintToken?: string;
     decimalsToken?: number;

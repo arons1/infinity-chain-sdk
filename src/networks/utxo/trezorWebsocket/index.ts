@@ -209,7 +209,6 @@ export class TrezorWebsocket {
             for (let wallet in pusher.wallets) {
                 pusher.connectCoin(pusher.wallets[wallet], wallet);
             }
-            console.log(pusher.coin + ' websockets: Connected');
             pusher.timeOutInt = setInterval(function () {
                 if (
                     pusher.ws != undefined &&

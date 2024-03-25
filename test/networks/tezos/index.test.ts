@@ -72,18 +72,17 @@ describe('networksTezos', () => {
         const publicAddress = getPublicTezosAddress({
             publicKey: getPublicKey({ keyPair, coinId: 1729 }),
         });
-        const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });
         const fee = await estimateFee({
-            amount: '1000',
-            from: publicAddress,
-            to: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
-            connector: web3Tezos,
-            privateKey,
+            source: publicAddress,
+            destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
+            mintToken: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
+            decimalsToken: 8,
+            value: '1000',
             pkHash,
+            connector: web3Tezos
         });
 
         expect(new BigNumber(fee?.fee as string).toNumber()).toBeGreaterThan(

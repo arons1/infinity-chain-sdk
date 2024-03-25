@@ -90,7 +90,7 @@ export const buildOperation = async ({
         fee: estimatedBaseFee.toString(10),
     };
 };
-const buildTransfer = async ({
+export const buildTransfer = async ({
     connector,
     value,
     source,

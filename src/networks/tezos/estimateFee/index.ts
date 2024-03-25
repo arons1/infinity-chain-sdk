@@ -2,11 +2,11 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { EstimateFeeParams, EstimateOperation } from './types';
 import { DEFAULT_FEE } from '@taquito/taquito';
 import { formatOpParamsBeforeSend, hasManager } from '../utils';
-import { buildTransaction } from '../builder';
+import { buildOperation, buildTransfer } from '../builder';
 import { EstimateFeeResult } from '../../types';
 import { TezosToolkit } from '@taquito/taquito';
 import { RpcForger, CompositeForger } from '@taquito/taquito';
-import { ReadOnlySigner, michelEncoder } from '../getBalance/tez';
+import { ReadOnlySigner, michelEncoder, readOnlySigner } from '../getBalance/tez';
 import { localForger } from '@taquito/local-forging';
 
 const ADDITIONAL_FEE = 100;
@@ -24,35 +24,63 @@ export const feeReveal = async (account: string, connector: TezosToolkit) => {
     }
     return 0;
 };
+/*
+estimateFee
+    Returns estimate fee
+    @param value: amount to transfer
+    @param source: source account
+    @param destination: destination account
+    @param idToken: Id of the token(optional)
+    @param mintToken: mint of the token to transfer(optional)
+    @param connector: Tezos api connector
+    @param pkHash: public hash of source account
+    @param decimalsToken: Decimals of the token to transfer(optional)
+    @param feeRatio: Ratio of fee
+*/
 export const estimateFee = async ({
-    amount,
-    from,
-    to,
+    value,
+    source,
+    destination,
     idToken = 0,
     mintToken,
     connector,
     pkHash,
     decimalsToken,
-    privateKey,
     feeRatio = 0.5,
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
-    const built = await buildTransaction({
-        source: from,
-        destination: to,
-        pkHash,
-        value: amount,
-        mintToken,
-        idToken,
-        privateKey,
-        connector,
-        decimalsToken,
-        feeRatio,
-    });
-    return {
-        fee: new BigNumber(built.fee)
-            .plus(await feeReveal(from, connector))
+    connector.setSignerProvider(readOnlySigner);
+    if (mintToken && decimalsToken) {
+        const operationResult = await buildOperation({
+            source,
+            pkHash,
+            destination,
+            value,
+            mintToken,
+            idToken,
+            decimalsToken,
+            connector,
+        });
+        return {
+            fee: new BigNumber(operationResult.fee)
+            .plus(await feeReveal(source, connector))
             .toString(10),
-    };
+        };
+    } else {
+        const fee = await buildTransfer({
+            connector,
+            pkHash,
+            source,
+            value,
+            destination,
+            feeRatio,
+        });
+        return {
+            fee:new BigNumber(fee)
+            .plus(await feeReveal(source, connector))
+            .toString(10)
+        };
+    }
+
 };
 
 export const estimateOperation = async ({
