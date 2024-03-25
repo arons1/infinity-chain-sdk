@@ -13,7 +13,7 @@ import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { BuildParameters } from './types';
+import { BuildParameters, BuildTransactionResult } from './types';
 import { networks } from '@infinity/core-sdk';
 import { getLastChangeIndex } from '../getLastChangeIndex';
 import {
@@ -25,10 +25,16 @@ import {
     script,
 } from 'bitcoinjs-lib';
 /*
-accountExists
-    Returns if an account exists
-    @param connector: XRP api connector
-    @param account: account to check if it exists
+buildTransaction
+    Returns transaction build result
+    @param coinId: coin id
+    @param amount: amount to send
+    @param connector: trezorWebsocket object
+    @param accounts: array of Account objects
+    @param destination: where to send to
+    @param memo: memo string (optional)
+    @param utxos: utxo to use (optional)
+    @param feeRatio: Fee ratio
 */
 export const buildTransaction = async ({
     coinId,
@@ -37,10 +43,9 @@ export const buildTransaction = async ({
     accounts,
     destination,
     memo = '',
-    changeIndex = -1,
     utxos = [],
     feeRatio = 0.5,
-}: BuildParameters) => {
+}: BuildParameters) : Promise<BuildTransactionResult> => {
     const selected = PROVIDER_TREZOR[coinId as string] as string;
     const network = networks.networks.default[coinId as string];
     if (accounts.find(a => a.useAsChange) == undefined)
@@ -115,17 +120,14 @@ export const buildTransaction = async ({
             .multipliedBy(-1);
         if (changeAmount.isGreaterThan(DUST[coinId])) {
             feeOutput = feeOutput.plus(34);
-            var lastChangeIndex = changeIndex;
             var changeProtocol = 44;
-            if (lastChangeIndex == -1) {
-                const { index, protocol } = await getLastChangeIndex({
-                    extendedPublicKey: accounts.find(a => a.useAsChange)
-                        ?.extendedPublicKey as string,
-                    connector,
-                });
-                changeProtocol = protocol;
-                lastChangeIndex = index;
-            }
+            const { index, protocol } = await getLastChangeIndex({
+                extendedPublicKey: accounts.find(a => a.useAsChange)
+                    ?.extendedPublicKey as string,
+                connector,
+            });
+            changeProtocol = protocol;
+            var lastChangeIndex = index;
 
             let addressChange;
 

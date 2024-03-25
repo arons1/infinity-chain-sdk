@@ -1,5 +1,5 @@
 import { PROVIDER_TREZOR } from '../../../constants';
-import { EstimateFeeParams } from './types';
+import { EstimateFeeParams, FeeResult } from './types';
 import {
     CannotGetUTXO,
     CoinNotIntegrated,
@@ -12,15 +12,16 @@ import { DUST } from '../constants';
 import { UTXOResult } from '../getUTXO/types';
 import { getUTXO } from '../getUTXO';
 import { EstimateFeeResult } from '../../types';
-
+/*
+getFeePerByte
+    Returns FeeResult with the low and high fee of the last blocks 1 2 3 4 
+    @param connector: trezorWebsocket object
+*/
 export const getFeePerByte = ({
     connector,
 }: {
     connector: any;
-}): Promise<{
-    low: string;
-    high: string;
-}> => {
+}): Promise<FeeResult> => {
     return new Promise((resolve, reject) => {
         connector.send(
             'estimateFee',
@@ -56,7 +57,15 @@ export const getFeePerByte = ({
         );
     });
 };
-
+/*
+estimateFee
+    Returns transaction build result
+    @param extendedPublicKeys: array of extended keys
+    @param coinId: coin id
+    @param amount: ammount to send
+    @param connector: trezorWebsocket object
+    @param feeRatio: Fee ratio
+*/
 export const estimateFee = async ({
     extendedPublicKeys,
     coinId,

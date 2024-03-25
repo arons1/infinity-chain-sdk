@@ -22,3 +22,7 @@ export type ChangeIndexResult = {
     usedTokens: number;
     tokens: TokensChangeIndex[];
 };
+export type ChangeIndexResolve = {
+    index: number;
+    protocol: number;
+}

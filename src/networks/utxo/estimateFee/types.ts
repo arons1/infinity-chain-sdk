@@ -7,3 +7,7 @@ export type EstimateFeeParams = {
     connector: TrezorWebsocket;
     feeRatio?: number;
 };
+export type FeeResult = {
+    low:string;
+    high:string
+}

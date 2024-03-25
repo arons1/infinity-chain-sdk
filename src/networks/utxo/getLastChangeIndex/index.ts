@@ -1,12 +1,14 @@
-import { ChangeIndexResult, LastChangeIndexParameters } from './types';
-
+import { ChangeIndexResult, LastChangeIndexParameters,ChangeIndexResolve } from './types';
+/*
+getLastChangeIndex
+    Returns balance addition of all extended public keys
+    @param connector: trezorWebsocket object
+    @param extendedPublicKeys: array extended public keys
+*/
 export const getLastChangeIndex = async ({
     extendedPublicKey,
     connector,
-}: LastChangeIndexParameters): Promise<{
-    index: number;
-    protocol: number;
-}> => {
+}: LastChangeIndexParameters): Promise<ChangeIndexResolve> => {
     return new Promise((resolve, reject) => {
         connector.send(
             'getAccountInfo',

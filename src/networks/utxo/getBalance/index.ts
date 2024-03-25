@@ -1,6 +1,12 @@
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
+/*
+getAccountInfo
+    Returns balance of the extended public keys
+    @param connector: trezorWebsocket object
+    @param address: extended public key
+*/
 const getAccountInfo = ({
     connector,
     address,
@@ -29,7 +35,12 @@ const getAccountInfo = ({
         );
     });
 };
-
+/*
+getAccountBalances
+    Returns balance addition of all extended public keys
+    @param connector: trezorWebsocket object
+    @param extendedPublicKeys: array extended public keys
+*/
 export const getAccountBalances = async ({
     connector,
     extendedPublicKeys,
@@ -45,7 +56,12 @@ export const getAccountBalances = async ({
     }
     return result;
 };
-
+/*
+getBalance
+    Returns balance addition of all extended public keys
+    @param connector: trezorWebsocket object
+    @param extendedPublicKeys: array extended public keys
+*/
 export const getBalance = async ({
     connector,
     extendedPublicKeys,
