@@ -16,7 +16,7 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksStellar', () => {
-    test.skip('builder', async () => {
+    test('builder', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
@@ -33,7 +33,7 @@ describe('networksStellar', () => {
         });
         expect(built?.length).toBeGreaterThan(10);
     });
-    test.skip('builderToken', async () => {
+    test('builderToken', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
@@ -52,13 +52,13 @@ describe('networksStellar', () => {
         });
         expect(built?.length).toBeGreaterThan(10);
     });
-    test.skip('estimateFee', async () => {
+    test('estimateFee', async () => {
         const fee = await estimateFee();
         expect(new BigNumber(fee?.fee as string).toNumber()).toBeGreaterThan(
             10,
         );
     });
-    test.skip('getBalance', async () => {
+    test('getBalance', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
@@ -70,7 +70,7 @@ describe('networksStellar', () => {
         });
         expect(balance.balance).toBe('39999900');
     });
-    test.skip('getAccountBalances', async () => {
+    test('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({

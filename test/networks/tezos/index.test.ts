@@ -22,7 +22,7 @@ import { BalanceResult } from '../../../lib/commonjs/networks/types';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksTezos', () => {
-    test.skip('builder', async () => {
+    test('builder', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
@@ -43,7 +43,7 @@ describe('networksTezos', () => {
         });
         expect(built.broadcast != undefined).toBe(true);
     });
-    test.skip('builderToken', async () => {
+    test('builderToken', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
@@ -66,7 +66,7 @@ describe('networksTezos', () => {
         });
         expect(built.broadcast != undefined).toBe(true);
     });
-    test.skip('estimateFee', async () => {
+    test('estimateFee', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
@@ -90,7 +90,7 @@ describe('networksTezos', () => {
             10,
         );
     });
-    test.skip('getBalance', async () => {
+    test('getBalance', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
@@ -102,7 +102,7 @@ describe('networksTezos', () => {
         });
         expect(balanceResult.balance).toBe('334081');
     });
-    test.skip('getAccountBalances', async () => {
+    test('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
@@ -126,7 +126,7 @@ describe('networksTezos', () => {
         ).toBe('8133');
     });
     /*
-    test.skip('sendTransaction', async () => {
+    test('sendTransaction', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({

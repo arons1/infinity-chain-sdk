@@ -12,7 +12,7 @@ const PRIORITY_FEES = {
 };
 
 describe('networksEVM', () => {
-    test.skip('builder', async () => {
+    test('builder', async () => {
         const built = await buildTransaction({
             connector: web3Matic,
             chainId: 137,
@@ -24,7 +24,7 @@ describe('networksEVM', () => {
         });
         expect(built?.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
     });
-    test.skip('estimateFee', async () => {
+    test('estimateFee', async () => {
         const built = await estimateFee({
             connector: web3Matic,
             chainId: 137,
@@ -39,14 +39,14 @@ describe('networksEVM', () => {
             '0xa9059cbb000000000000000000000000e7a38be77db0fec3cff01c01838508201bcb5a07000000000000000000000000000000000000000000000000000000e8d4a51000',
         );
     });
-    test.skip('getBalance', async () => {
+    test('getBalance', async () => {
         const bal = await getBalance({
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             connector: web3Matic,
         });
         expect(bal.balance).toBe('100366941538263892');
     });
-    test.skip('getAccountBalances', async () => {
+    test('getAccountBalances', async () => {
         const bal = await getAccountBalances({
             accounts: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
             connector: web3Matic,

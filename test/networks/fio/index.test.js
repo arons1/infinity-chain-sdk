@@ -8,7 +8,7 @@ const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp
 const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksFIO', () => {
-    globals_1.test.skip('builder', async () => {
+    globals_1.test('builder', async () => {
         const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic });
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
             bipIdCoin: 235,
@@ -26,13 +26,13 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built.signatures.length).toBe(1);
     });
-    globals_1.test.skip('estimateFee', async () => {
+    globals_1.test('estimateFee', async () => {
         const fee = await (0, estimateFee_1.estimateFee)({
             source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
         });
         (0, globals_1.expect)(parseInt(fee.fee)).toBeGreaterThan(2000000000);
     });
-    globals_1.test.skip('getBalance', async () => {
+    globals_1.test('getBalance', async () => {
         const bal = await (0, getBalance_1.getBalance)('FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR');
         (0, globals_1.expect)(bal.balance + '').toBe('3684876260');
         (0, globals_1.expect)(bal.available + '').toBe('3684876260');

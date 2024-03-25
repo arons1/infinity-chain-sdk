@@ -9,7 +9,7 @@ const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const getBalance_1 = require("../../../lib/commonjs/networks/tezos/getBalance");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksTezos', () => {
-    globals_1.test.skip('builder', async () => {
+    globals_1.test('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
@@ -30,7 +30,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built.broadcast != undefined).toBe(true);
     });
-    globals_1.test.skip('builderToken', async () => {
+    globals_1.test('builderToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
@@ -53,7 +53,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built.broadcast != undefined).toBe(true);
     });
-    globals_1.test.skip('estimateFee', async () => {
+    globals_1.test('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
@@ -74,7 +74,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee?.fee).toNumber()).toBeGreaterThan(10);
     });
-    globals_1.test.skip('getBalance', async () => {
+    globals_1.test('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
@@ -85,7 +85,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(balanceResult.balance).toBe('334081');
     });
-    globals_1.test.skip('getAccountBalances', async () => {
+    globals_1.test('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
@@ -101,7 +101,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             a.id == 0)?.value).toBe('8133');
     });
     /*
-    test.skip('sendTransaction', async () => {
+    test('sendTransaction', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
