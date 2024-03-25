@@ -1,5 +1,10 @@
 import { GetUTXOParams, UTXOResult } from './types';
-
+/*
+getUTXO
+    Returns utxos
+    @param connector: trezorWebsocket object
+    @param extendedPublicKeys: array extended public keys
+*/
 export const getUTXO = ({
     extendedPublicKey,
     connector,
@@ -14,7 +19,6 @@ export const getUTXO = ({
                 to: 1,
             },
             (data: UTXOResult[]) => {
-                console.log(data);
                 if (!data) {
                     reject();
                     return;

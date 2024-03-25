@@ -1,5 +1,10 @@
 import { SendTransactionParams } from './types';
-
+/*
+sendTransaction
+    Returns transaction hash
+    @param connector: trezorWebsocket object
+    @param rawTransaction: string raw transaction
+*/
 export const sendTransaction = ({
     connector,
     rawTransaction,
