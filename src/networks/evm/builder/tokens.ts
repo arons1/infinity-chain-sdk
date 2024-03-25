@@ -13,11 +13,13 @@ import {
     isValidAddress,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import ERC20Abi from '@infinity/core-sdk/lib/commonjs/core/abi/erc20';
+
 /* 
 buildTokenTransaction
     Returns a transfer token transaction formatted to be sign and send
     @param value: ammount to send (optional)
     @param source: source account
+    @param connector: web3 connector
     @param destination: destination account
     @param tokenContract: token contract
     @param chainId: The ID of the chain
@@ -108,6 +110,7 @@ buildTokenApproveTransaction
     @param value: ammount to send (optional)
     @param source: source account
     @param destination: destination account
+    @param connector: web3 connector
     @param tokenContract: token contract
     @param chainId: The ID of the chain
     @param feeRatio: Between 0 and 1, default 0.5, its the range to increase or decrease de fee, 0.5 = use default gasPrice (optional)

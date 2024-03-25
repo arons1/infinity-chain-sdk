@@ -7,10 +7,11 @@ import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 estimateCurrencyFee
     Returns currency transfer estimate cost
     @param value: Amount to bridge in wei
-    @param web3: web3 connector
+    @param connector: web3 connector
     @param source: source account to send from
     @param destination: destination account to receive
     @param chainId: chainId
+    @param gasPrice: Gas Price (optional)
     @param feeRatio: ratio (between 0 and 1) to increase de fee
     @param priorityFee: account index derivation
 */

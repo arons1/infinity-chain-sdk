@@ -21,7 +21,16 @@ import {
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import Web3 from 'web3';
-
+/* 
+calculateGasPrice
+    Format gas price based on the current transaction
+    @param connector: web3 connector
+    @param chainId: chainId
+    @param transaction: TransactionEVM
+    @param gasPrice: gas price
+    @param feeRatio: number fee ratio
+    @param priorityFee: priority fee number
+*/
 export const calculateGasPrice = async ({
     transaction,
     gasPrice,
@@ -65,6 +74,13 @@ export const getGasPrice = async ({
 }: GasPriceParams): Promise<string> => {
     return '0x' + (await connector.eth.getGasPrice()).toString(16);
 };
+/* 
+estimateGas
+    Returns gas limit estimate cost
+    @param connector: web3 connector
+    @param chainId: chainId
+    @param tx: TransactionEVM
+*/
 const estimateGas = async (
     connector: Web3,
     chainId: number,
@@ -82,16 +98,13 @@ const estimateGas = async (
 getGasLimit
     Returns gas limit estimate cost
     @param value: Amount to bridge in wei
-    @param web3: web3 connector
+    @param connector: web3 connector
     @param source: source account to send from
     @param destination: destination account to receive
     @param chainId: chainId
-    @param feeRatio: ratio (between 0 and 1) to increase de fee
-    @param priorityFee: account index derivation
     @param tokenContract: token contract
     @param contract: Web3 contract
     @param isToken: If it's a token transfer
-    @param isBridge: If it's a BSC to BC bridge
 */
 export const getGasLimit = async ({
     destination,

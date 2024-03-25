@@ -1,5 +1,13 @@
 import { SendTransactionParams } from './types';
 
+
+/* 
+sendTransaction
+    Returns balances of the token's contracts and current balance of each address passed
+    @param connector: web3 connector
+    @param transaction: TransactionEVM
+    @param privateKey: Private key
+*/
 export const sendTransaction = async ({
     connector,
     transaction,

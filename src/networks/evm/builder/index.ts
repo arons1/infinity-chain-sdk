@@ -11,6 +11,7 @@ buildTransaction
     @param destination: destination account
     @param data: data of the transaction (optional)
     @param chainId: The ID of the chain
+    @param connector: Web3 Connector
     @param feeRatio: Between 0 and 1, default 0.5, its the range to increase or decrease de fee, 0.5 = use default gasPrice (optional)
     @param priorityFee: Just for chainId, 1 or 137, it's used for calculating the fee
     @param gasPrice: It's the gas price to use (optional). Place it just when you require a fixed gasPrice.

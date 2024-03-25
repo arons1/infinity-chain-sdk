@@ -6,7 +6,7 @@ const estimateFee_1 = require("../../../lib/commonjs/networks/op/estimateFee");
 const utils_1 = require("../../utils");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 (0, globals_1.describe)('networksOP', () => {
-    globals_1.test('estimateL1Cost', async () => {
+    (0, globals_1.test)('estimateL1Cost', async () => {
         const built = await (0, builder_1.buildTransaction)({
             connector: utils_1.web3Op,
             chainId: 10,

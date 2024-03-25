@@ -12,6 +12,13 @@ const minABI = [
         type: 'function',
     },
 ];
+/* 
+getAccountBalances
+    Returns balances of the token's contracts and current balance of each address passed
+    @param connector: web3 connector
+    @param accounts: accounts to get the balances of the tokens and current balance
+    @param contracts: token's contracts
+*/
 export const getAccountBalances = async ({
     connector,
     accounts,

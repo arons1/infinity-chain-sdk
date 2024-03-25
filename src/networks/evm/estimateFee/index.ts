@@ -19,13 +19,14 @@ import {
 /* 
 estimateFee
     Returns estimate fee transfer
-    @param web3: web3 connector
+    @param connector: web3 connector
     @param source: source account to send from
     @param destination: destination account to receive
     @param chainId: chainId
     @param feeRatio: ratio (between 0 and 1) to increase de fee
     @param priorityFee: account index derivation
     @param tokenContract: token contract
+    @param gasPrice: Gas Price (optional)
 */
 export const estimateFee = async ({
     connector,
