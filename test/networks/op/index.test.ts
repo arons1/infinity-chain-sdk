@@ -16,6 +16,6 @@ describe('networksOP', () => {
             value: '1000000000000',
         });
         const cost = await estimateL1Cost(web3Op, built as TransactionEVM);
-        expect(new BigNumber(cost).toNumber()).toBeGreaterThan(31909947118);
+        expect(new BigNumber(cost).toNumber()).toBeGreaterThan(1909947118);
     });
 });

@@ -5,14 +5,17 @@ import {
     BuildOperationsParams,
     BuildTransactionParams,
     BuildTransactionResult,
+    BuildTransferOperationResult,
+    BuildTransferOperationsParams,
     BuildTransferParams,
 } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { getAditionalFee } from '../estimateFee';
+import { estimateOperation, getAditionalFee } from '../estimateFee';
 import { ReadOnlySigner, readOnlySigner } from '../getBalance/tez';
 import { ContractMethod, ContractProvider } from '@taquito/taquito';
+import { formatOpParamsBeforeSend } from '../utils';
 
-export const buildOperations = async ({
+export const buildTransferOperations = async ({
     source,
     destination,
     value,
@@ -20,7 +23,7 @@ export const buildOperations = async ({
     decimalsToken,
     idToken,
     connector,
-}: BuildOperationsParams) => {
+}: BuildTransferOperationsParams) => {
     const contract = await connector.contract.at(mintToken);
     var isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
     if (isFA2) {
@@ -52,17 +55,18 @@ export const buildOperation = async ({
     connector,
     decimalsToken,
     feeRatio = 0.5,
-}: BuildOperationParams): Promise<BuildOperationResult> => {
+}: BuildOperationParams): Promise<BuildTransferOperationResult> => {
     connector.setSignerProvider(new ReadOnlySigner(source, pkHash));
-    const operation: ContractMethod<ContractProvider> = await buildOperations({
-        source,
-        destination,
-        value,
-        mintToken,
-        idToken,
-        decimalsToken,
-        connector,
-    });
+    const operation: ContractMethod<ContractProvider> =
+        await buildTransferOperations({
+            source,
+            destination,
+            value,
+            mintToken,
+            idToken,
+            decimalsToken,
+            connector,
+        });
     const transferFees = await connector.estimate.transfer(
         operation.toTransferParams(),
     );
@@ -146,4 +150,31 @@ export const buildTransaction = async ({
             fee,
         };
     }
+};
+
+export const buildOperations = async ({
+    operations,
+    connector,
+    privateKey,
+    pkHash,
+    source,
+}: BuildOperationsParams): Promise<BuildOperationResult> => {
+    const batch = await connector.contract.batch(
+        operations.map(formatOpParamsBeforeSend),
+    );
+    const fee = await estimateOperation({
+        operations,
+        connector,
+        pkHash,
+        source,
+    });
+    return {
+        broadcast: async () => {
+            connector.setSignerProvider(
+                await InMemorySigner.fromSecretKey(privateKey),
+            );
+            return batch.send();
+        },
+        fee: fee?.fee as string,
+    };
 };

@@ -108,7 +108,8 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             accounts,
             connector: utils_1.web3Solana,
         });
-        (0, globals_1.expect)(transactions.hashes['54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29'].details?.blockTime).toBe(1711053522);
-        (0, globals_1.expect)(transactions.hashes['5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m'].details?.blockTime).toBe(1711053273);
+        console.log(transactions);
+        (0, globals_1.expect)(transactions.hashes['54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29']?.details?.blockTime).toBe(1711053522);
+        (0, globals_1.expect)(transactions.hashes['5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m']?.details?.blockTime).toBe(1711053273);
     });
 });

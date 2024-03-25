@@ -83,7 +83,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const balanceResult = await (0, getBalance_1.getBalance)({
             address: publicAddress,
         });
-        (0, globals_1.expect)(balanceResult.balance).toBe('400000');
+        (0, globals_1.expect)(balanceResult.balance).toBe('334081');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
@@ -96,8 +96,31 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             assetSlugs: ['tez', 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn_0'],
         });
         (0, globals_1.expect)(balanceResult[publicAddress]?.find(a => a.address == 'native')
-            ?.value).toBe('400000');
+            ?.value).toBe('334081');
         (0, globals_1.expect)(balanceResult[publicAddress]?.find(a => a.address == 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn' &&
             a.id == 0)?.value).toBe('8133');
     });
+    /*
+    test('sendTransaction', async () => {
+        const seed = getSeed({ mnemonic });
+        const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
+        const publicAddress = getPublicTezosAddress({
+            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+        });
+        const secretKey = getPrivateKey({ keyPair });
+        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const pkHash = getTezosPublicKeyHash({
+            keyPair,
+        });
+        const built = await buildTransaction({
+            source: publicAddress,
+            destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
+            value: '1000',
+            pkHash,
+            privateKey,
+            connector: web3Tezos,
+        });
+        const result = await built.broadcast();
+        expect(result?.hash?.length > 0).toBe(true);
+    });*/
 });

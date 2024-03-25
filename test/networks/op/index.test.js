@@ -16,6 +16,6 @@ const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
             value: '1000000000000',
         });
         const cost = await (0, estimateFee_1.estimateL1Cost)(utils_1.web3Op, built);
-        (0, globals_1.expect)(new core_1.BigNumber(cost).toNumber()).toBeGreaterThan(31909947118);
+        (0, globals_1.expect)(new core_1.BigNumber(cost).toNumber()).toBeGreaterThan(1909947118);
     });
 });

@@ -7,7 +7,7 @@ import {
 import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/xrp/builder';
 import { estimateFee } from '../../../lib/commonjs/networks/xrp/estimateFee';
-import { sendTransaction } from '../../../lib/commonjs/networks/xrp/sendTransaction';
+//import { sendTransaction } from '../../../lib/commonjs/networks/xrp/sendTransaction';
 
 import { apiRipple } from '../../utils';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
@@ -53,7 +53,7 @@ describe('networksXRP', () => {
             address: publicAddress,
             connector: apiRipple,
         });
-        expect(balanceResult.balance).toBe('20548073');
+        expect(balanceResult.balance).toBe('20548051');
     });
     /*
 

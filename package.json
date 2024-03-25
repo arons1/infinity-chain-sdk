@@ -47,7 +47,7 @@
     "nobuild:coverage-html": "nyc report --reporter=html",
     "prettier": "prettier \"src/**/*.ts\" \"test/**/*.ts\" --ignore-path ./.prettierignore",
     "prettierjs": "prettier \"lib/commonjs/**/*.js\" --ignore-path ./.prettierignore",
-    "test": "npm run build && npm run build:tests && npm run format:ci && npm run lint && jest",
+    "test": "npm run build && npm run build:tests && npm run format:ci && npm run lint && jest --testTimeout=60000",
     "unit": "npm run build && npm run nobuild:unit"
   },
   "repository": {

@@ -1,4 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
+
 import {
     buildTransaction,
     rawTransaction,
@@ -130,15 +131,16 @@ describe('networksSolana', () => {
             accounts,
             connector: web3Solana,
         });
+        console.log(transactions);
         expect(
             transactions.hashes[
                 '54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29'
-            ].details?.blockTime,
+            ]?.details?.blockTime,
         ).toBe(1711053522);
         expect(
             transactions.hashes[
                 '5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m'
-            ].details?.blockTime,
+            ]?.details?.blockTime,
         ).toBe(1711053273);
     });
 });

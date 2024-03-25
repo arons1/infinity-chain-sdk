@@ -12,3 +12,9 @@ export type EstimateFeeParams = {
     feeRatio?: number;
     pkHash: string;
 };
+export type EstimateOperation = {
+    operations: object[];
+    connector: TezosToolkit;
+    pkHash: string;
+    source: string;
+};

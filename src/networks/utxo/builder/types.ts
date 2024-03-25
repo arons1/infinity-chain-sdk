@@ -3,14 +3,14 @@ import { UTXOResult } from '../getUTXO/types';
 import { TrezorWebsocket } from '../trezorWebsocket';
 
 export type BuildParameters = {
-    extendedPublicKeys: string;
+    extendedPublicKeys: string[];
     coinId: string;
     amount: string;
     trezorWebsocket: TrezorWebsocket;
     privateAccountNode: BIP32Interface;
     destination: string;
-    memo: string;
+    memo?: string;
     changeIndex?: number;
     utxos?: UTXOResult[];
-    feeRatio: number;
+    feeRatio?: number;
 };

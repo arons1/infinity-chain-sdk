@@ -1,5 +1,6 @@
 import { WEBSOCKETS } from '../constants';
-import WebSocket from 'ws';
+import { WebSocket } from 'ws';
+
 const no_op = () => {};
 export class TrezorWebsocket {
     messageID: number;
@@ -197,9 +198,13 @@ export class TrezorWebsocket {
         if (!server.endsWith('/websocket')) {
             server += '/websocket';
         }
-        this.ws = new WebSocket(server);
+        this.ws = new WebSocket(server, {
+            headers: {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
+            },
+        });
         this.ws.onopen = function () {
-            console.log(pusher.coin + ' websockets: Connected');
             pusher.connected = true;
             for (let wallet in pusher.wallets) {
                 pusher.connectCoin(pusher.wallets[wallet], wallet);

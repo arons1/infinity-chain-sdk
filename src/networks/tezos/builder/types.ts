@@ -1,4 +1,8 @@
-import { TezosToolkit, TransactionOperation } from '@taquito/taquito';
+import {
+    TezosToolkit,
+    TransactionOperation,
+    BatchOperation,
+} from '@taquito/taquito';
 import { ContractMethod, ContractProvider } from '@taquito/taquito';
 
 export type BuildTransactionParams = {
@@ -14,7 +18,7 @@ export type BuildTransactionParams = {
     feeRatio?: number;
 };
 
-export type BuildOperationsParams = {
+export type BuildTransferOperationsParams = {
     source: string;
     destination: string;
     value: string;
@@ -23,13 +27,23 @@ export type BuildOperationsParams = {
     idToken: number;
     connector: TezosToolkit;
 };
+export type BuildOperationsParams = {
+    operations: object[];
+    connector: TezosToolkit;
+    privateKey: string;
+    pkHash: string;
+    source: string;
+};
 
 export type BuildTransactionResult = {
     fee: string;
     broadcast: () => Promise<TransactionOperation>;
 };
-
 export type BuildOperationResult = {
+    fee: string;
+    broadcast: () => Promise<BatchOperation>;
+};
+export type BuildTransferOperationResult = {
     operation: ContractMethod<ContractProvider>;
     fee: string;
 };
