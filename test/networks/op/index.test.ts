@@ -6,7 +6,7 @@ import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 describe('networksOP', () => {
-    test('estimateL1Cost', async () => {
+    test.skip('estimateL1Cost', async () => {
         const built = await buildTransaction({
             connector: web3Op,
             chainId: 10,

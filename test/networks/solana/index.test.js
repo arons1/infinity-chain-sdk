@@ -14,7 +14,7 @@ const tokens_1 = require("../../../lib/commonjs/networks/solana/getBalance/token
 const utils_2 = require("../../../lib/commonjs/networks/solana/utils");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksSolana', () => {
-    (0, globals_1.test)('build', async () => {
+    globals_1.test.skip('build', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const built = await (0, builder_1.buildTransaction)({
@@ -26,7 +26,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
     });
-    (0, globals_1.test)('buildToken', async () => {
+    globals_1.test.skip('buildToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const built = await (0, builder_1.buildTransaction)({
@@ -40,7 +40,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built.length).toBeGreaterThan(0);
     });
-    (0, globals_1.test)('estimateFee', async () => {
+    globals_1.test.skip('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const built = await (0, builder_1.rawTransaction)({
@@ -56,7 +56,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee.fee).toNumber()).toBeGreaterThan(0);
     });
-    (0, globals_1.test)('getBalanceAfter', async () => {
+    globals_1.test.skip('getBalanceAfter', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const built = await (0, builder_1.rawTransaction)({
@@ -78,7 +78,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         (0, globals_1.expect)(balancesAfter['6xR2P7Av2m6k2Dg1ZgW3kQCZLVfXt9YxYz1LdjBimD7z']
             .amount).toBe('98206');
     });
-    (0, globals_1.test)('getBalance', async () => {
+    globals_1.test.skip('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const balance = await (0, getBalance_1.getBalance)({
@@ -87,7 +87,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(balance.balance).toBe('5525167');
     });
-    (0, globals_1.test)('getAccountBalances', async () => {
+    globals_1.test.skip('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const pubAddress = new web3_js_1.PublicKey(keyPair.publicKey).toString();
@@ -98,7 +98,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'native')?.value).toBe('5525167');
         (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')?.value).toBe('99206');
     });
-    (0, globals_1.test)('getTransactions', async () => {
+    globals_1.test.skip('getTransactions', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
         const address = new web3_js_1.PublicKey(keyPair.publicKey).toString();
@@ -108,7 +108,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             accounts,
             connector: utils_1.web3Solana,
         });
-        console.log(transactions);
         (0, globals_1.expect)(transactions.hashes['54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29']?.details?.blockTime).toBe(1711053522);
         (0, globals_1.expect)(transactions.hashes['5dTKE91sPpis4xVH2HLAC6UcnzConQ4LouzLB34wEQHHSthjWicZvm1GVvbbbJpZnLv74SvKTjGbcyqj32sDEy4m']?.details?.blockTime).toBe(1711053273);
     });

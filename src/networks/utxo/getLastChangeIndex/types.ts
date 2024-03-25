@@ -4,10 +4,21 @@ export type LastChangeIndexParameters = {
     extendedPublicKey: string;
     trezorWebsocket: TrezorWebsocket;
 };
-
-export type ChangeIndexResult = {
+type TokensChangeIndex = {
     name: string;
     path: string;
     transfers: number;
     decimals: number;
+};
+export type ChangeIndexResult = {
+    address: string;
+    balance: string;
+    totalReceived: string;
+    totalSent: string;
+    unconfirmedBalance: string;
+    unconfirmedTxs: number;
+    txs: number;
+    addrTxCount: number;
+    usedTokens: number;
+    tokens: TokensChangeIndex[];
 };

@@ -209,6 +209,7 @@ export class TrezorWebsocket {
             for (let wallet in pusher.wallets) {
                 pusher.connectCoin(pusher.wallets[wallet], wallet);
             }
+            console.log(pusher.coin + ' websockets: Connected');
             pusher.timeOutInt = setInterval(function () {
                 if (
                     pusher.ws != undefined &&
@@ -237,6 +238,7 @@ export class TrezorWebsocket {
         this.ws.onmessage = async function (e: any) {
             var resp = JSON.parse(e.data);
             var f = pusher.pendingMessages[resp.id];
+            console.log(resp);
             if (f != undefined) {
                 delete pusher.pendingMessages[resp.id];
                 f(resp.data);

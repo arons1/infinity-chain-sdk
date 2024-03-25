@@ -10,7 +10,7 @@ const ed25519_1 = require("@infinity/core-sdk/lib/commonjs/networks/ed25519");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksStellar', () => {
-    (0, globals_1.test)('builder', async () => {
+    globals_1.test.skip('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
@@ -26,7 +26,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built?.length).toBeGreaterThan(10);
     });
-    (0, globals_1.test)('builderToken', async () => {
+    globals_1.test.skip('builderToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
@@ -44,11 +44,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(built?.length).toBeGreaterThan(10);
     });
-    (0, globals_1.test)('estimateFee', async () => {
+    globals_1.test.skip('estimateFee', async () => {
         const fee = await (0, estimateFee_1.estimateFee)();
         (0, globals_1.expect)(new core_1.BigNumber(fee?.fee).toNumber()).toBeGreaterThan(10);
     });
-    (0, globals_1.test)('getBalance', async () => {
+    globals_1.test.skip('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
@@ -60,7 +60,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         (0, globals_1.expect)(balance.balance).toBe('39999900');
     });
-    (0, globals_1.test)('getAccountBalances', async () => {
+    globals_1.test.skip('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({

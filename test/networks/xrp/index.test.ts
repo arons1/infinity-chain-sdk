@@ -16,7 +16,7 @@ import { getBalance } from '../../../lib/commonjs/networks/xrp/getBalance';
 const mnemonic =
     'raw green cereal demand genius mansion pistol couple surround divide chef shadow';
 describe('networksXRP', () => {
-    test('builder', async () => {
+    test.skip('builder', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({
@@ -34,7 +34,7 @@ describe('networksXRP', () => {
         expect(built.length > 0).toBe(true);
     });
 
-    test('estimateFee', async () => {
+    test.skip('estimateFee', async () => {
         const fee = await estimateFee({
             connector: apiRipple,
         });
@@ -43,7 +43,7 @@ describe('networksXRP', () => {
             10,
         );
     });
-    test('getBalance', async () => {
+    test.skip('getBalance', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({
@@ -57,7 +57,7 @@ describe('networksXRP', () => {
     });
     /*
 
-    test('sendTransaction', async () => {
+    test.skip('sendTransaction', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({

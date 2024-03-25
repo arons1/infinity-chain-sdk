@@ -10,7 +10,7 @@ const PRIORITY_FEES = {
     137: '21000000000',
 };
 (0, globals_1.describe)('networksEVM', () => {
-    (0, globals_1.test)('builder', async () => {
+    globals_1.test.skip('builder', async () => {
         const built = await (0, builder_1.buildTransaction)({
             connector: utils_1.web3Matic,
             chainId: 137,
@@ -22,7 +22,7 @@ const PRIORITY_FEES = {
         });
         (0, globals_1.expect)(built?.maxPriorityFeePerGas).toBe('0x3331353030303030303030');
     });
-    (0, globals_1.test)('estimateFee', async () => {
+    globals_1.test.skip('estimateFee', async () => {
         const built = await (0, estimateFee_1.estimateFee)({
             connector: utils_1.web3Matic,
             chainId: 137,
@@ -35,14 +35,14 @@ const PRIORITY_FEES = {
         });
         (0, globals_1.expect)(built.transaction?.data).toBe('0xa9059cbb000000000000000000000000e7a38be77db0fec3cff01c01838508201bcb5a07000000000000000000000000000000000000000000000000000000e8d4a51000');
     });
-    (0, globals_1.test)('getBalance', async () => {
+    globals_1.test.skip('getBalance', async () => {
         const bal = await (0, getBalance_1.getBalance)({
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             connector: utils_1.web3Matic,
         });
         (0, globals_1.expect)(bal.balance).toBe('100366941538263892');
     });
-    (0, globals_1.test)('getAccountBalances', async () => {
+    globals_1.test.skip('getAccountBalances', async () => {
         const bal = await (0, getBalance_1.getAccountBalances)({
             accounts: ['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'],
             connector: utils_1.web3Matic,

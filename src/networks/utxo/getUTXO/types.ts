@@ -11,4 +11,5 @@ export type UTXOResult = {
     value: string;
     path: string;
     txid: string;
+    extendedPublicKey: string;
 };

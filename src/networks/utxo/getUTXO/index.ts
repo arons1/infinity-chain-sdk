@@ -14,6 +14,7 @@ export const getUTXO = ({
                 to: 1,
             },
             (data: UTXOResult[]) => {
+                console.log(data);
                 if (!data) {
                     reject();
                     return;
@@ -27,6 +28,7 @@ export const getUTXO = ({
                                 : extendedPublicKey.startsWith('ypub')
                                   ? 49
                                   : 44,
+                            extendedPublicKey,
                         };
                     }),
                 );

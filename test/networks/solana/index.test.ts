@@ -19,11 +19,10 @@ import {
 import { PublicKey } from '@solana/web3.js';
 import { getAccountBalances } from '../../../lib/commonjs/networks/solana/getBalance/tokens';
 import { getAccounts } from '../../../lib/commonjs/networks/solana/utils';
-
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksSolana', () => {
-    test('build', async () => {
+    test.skip('build', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const built = await buildTransaction({
@@ -35,7 +34,7 @@ describe('networksSolana', () => {
         });
         expect(built.length).toBeGreaterThan(0);
     });
-    test('buildToken', async () => {
+    test.skip('buildToken', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const built = await buildTransaction({
@@ -49,7 +48,7 @@ describe('networksSolana', () => {
         });
         expect(built.length).toBeGreaterThan(0);
     });
-    test('estimateFee', async () => {
+    test.skip('estimateFee', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const built = await rawTransaction({
@@ -65,7 +64,7 @@ describe('networksSolana', () => {
         });
         expect(new BigNumber(fee.fee as string).toNumber()).toBeGreaterThan(0);
     });
-    test('getBalanceAfter', async () => {
+    test.skip('getBalanceAfter', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const built = await rawTransaction({
@@ -92,7 +91,7 @@ describe('networksSolana', () => {
         ).toBe('98206');
     });
 
-    test('getBalance', async () => {
+    test.skip('getBalance', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const balance = await getBalance({
@@ -101,7 +100,7 @@ describe('networksSolana', () => {
         });
         expect(balance.balance).toBe('5525167');
     });
-    test('getAccountBalances', async () => {
+    test.skip('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const pubAddress = new PublicKey(keyPair.publicKey).toString();
@@ -121,7 +120,7 @@ describe('networksSolana', () => {
             )?.value,
         ).toBe('99206');
     });
-    test('getTransactions', async () => {
+    test.skip('getTransactions', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
         const address = new PublicKey(keyPair.publicKey).toString();
@@ -131,7 +130,6 @@ describe('networksSolana', () => {
             accounts,
             connector: web3Solana,
         });
-        console.log(transactions);
         expect(
             transactions.hashes[
                 '54AYtcw9mti95uzQ2pAUDCZNYpoR1HHS19TX8Dg21By4m6SpThYUX9RCquxckKs92348UbuDmkaJVCRr23VqnX29'

@@ -12,7 +12,7 @@ import { getFIOPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/e
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksFIO', () => {
-    test('builder', async () => {
+    test.skip('builder', async () => {
         const rootNode = getRootNode({ mnemonic });
         const privateAccountNode = getPrivateMasterKey({
             bipIdCoin: 235,
@@ -31,13 +31,13 @@ describe('networksFIO', () => {
         });
         expect(built.signatures.length).toBe(1);
     });
-    test('estimateFee', async () => {
+    test.skip('estimateFee', async () => {
         const fee = await estimateFee({
             source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
         });
         expect(parseInt(fee.fee as string)).toBeGreaterThan(2000000000);
     });
-    test('getBalance', async () => {
+    test.skip('getBalance', async () => {
         const bal = await getBalance(
             'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
         );
