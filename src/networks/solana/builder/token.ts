@@ -5,14 +5,22 @@ import {
     createTransferCheckedInstruction,
 } from '@solana/spl-token';
 import { AddAssociatedCreationParams, TokenTransactionParams } from './types';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, TransactionInstruction } from '@solana/web3.js';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import {
     checkIfAccountExists,
     getMinimumBalanceForRent,
     memoInstruction,
 } from '../utils';
-
+/* 
+addAssociatedCreation
+    Add associated creation account of a token to the instructions of a transaction
+    @param instructions,
+    @param mintToken,
+    @param destination,
+    @param publicKey,
+    @param connector
+*/
 export const addAssociatedCreation = async ({
     instructions,
     mintToken,
@@ -69,6 +77,17 @@ export const addAssociatedCreation = async ({
         extraFee,
     };
 };
+/* 
+tokenTransaction
+    Returns instructions for making a token transaction
+    @param memo: memo string (optional)
+    @param mintToken: mint of the token to transfer
+    @param destination: receiver of the transfer
+    @param publicKey: public key source
+    @param decimalsToken: decimals of the token to transfer
+    @param value: value to transfer
+    @param connector: web3 solana connector
+*/
 export const tokenTransaction = async ({
     memo = '',
     mintToken,
@@ -77,8 +96,8 @@ export const tokenTransaction = async ({
     decimalsToken,
     value,
     connector,
-}: TokenTransactionParams) => {
-    const instructions: any = [];
+}: TokenTransactionParams) : Promise<TransactionInstruction[]> => {
+    const instructions: TransactionInstruction[] = [];
     const { senderTokenAccount, receiverTokenAccount } =
         await addAssociatedCreation({
             instructions,

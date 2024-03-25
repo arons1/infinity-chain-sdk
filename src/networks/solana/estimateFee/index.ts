@@ -2,7 +2,12 @@ import { VersionedTransaction } from '@solana/web3.js';
 import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-
+/* 
+rawTransaction
+    Returns raw transaction
+    @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
+    @param connector: solana web3 connector
+*/
 export const estimateFee = async ({
     connector,
     transaction,

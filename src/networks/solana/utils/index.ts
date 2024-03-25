@@ -13,11 +13,24 @@ import {
 } from '@solana/spl-token';
 import { MEMO_PROGRAM_ID } from '../constants';
 
+
+/* 
+getLastBlockhash
+    Returns last blockhash
+    @param connector: solana web3 connector
+*/
 export const getLastBlockhash = async (
     connector: Connection,
 ): Promise<ResultBlockHash> => {
     return (await connector.getLatestBlockhash()) as ResultBlockHash;
 };
+/* 
+checkIfAccountExists
+    Check if an account exists for the current token and public key
+    @param connector: solana web3 connector
+    @param publicKey: public key source
+    @param mintToken: mint of the token to transfer
+*/
 export const checkIfAccountExists = async ({
     mintToken,
     publicKey,
@@ -46,6 +59,12 @@ export const checkIfAccountExists = async ({
         return [false, associatedToken];
     }
 };
+/* 
+getMinimumBalanceForRent
+    Get minimal reserve amount
+    @param connector: solana web3 connector
+    @param isToken: Token reserve or solana reserve
+*/
 export const getMinimumBalanceForRent = async (
     connector: Connection,
     isToken: boolean,
@@ -58,6 +77,11 @@ export const getMinimumBalanceForRent = async (
         return isToken ? 2039280 : 890880;
     }
 };
+/* 
+memoInstruction
+    Returns instruction for passed memo
+    @param memo: Memo for the instruction
+*/
 export const memoInstruction = (memo: string) => {
     return new TransactionInstruction({
         programId: new PublicKey(MEMO_PROGRAM_ID),
@@ -69,6 +93,12 @@ export const memoInstruction = (memo: string) => {
 export const sleep = (ms: number): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
+/* 
+getAccounts
+    Returns instruction for passed memo
+    @param connector: solana web3 connector
+    @param address: get accounts of an address
+*/
 export const getAccounts = async ({
     connector,
     address,

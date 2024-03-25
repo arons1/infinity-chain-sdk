@@ -82,6 +82,12 @@ const getBalanceAfterLegacy = async ({
     });
     return accounts_after;
 };
+/* 
+getBalanceAfter
+    Returns balance after of the accounts of the signer
+    @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
+    @param connector: solana web3 connector
+*/
 export const getBalanceAfter = async ({
     connector,
     transaction,

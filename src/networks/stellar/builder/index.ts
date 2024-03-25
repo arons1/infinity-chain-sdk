@@ -10,7 +10,17 @@ import { estimateFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-
+/*
+preparePayment
+    Returns prepared transaction
+    @param value: Value to transfer
+    @param source: Fee payer
+    @param destination: Address to transfer to
+    @param connector: Stellar api connector
+    @param code: Code issuer of the token to send to (optional)
+    @param issuer: Address issuer of the token to send to (optional)
+    @param memo: memo to place in the transaction (optional)
+*/
 export const preparePayment = async ({
     value,
     source,
@@ -53,7 +63,18 @@ export const preparePayment = async ({
     }
     return transaction.setTimeout(30).build();
 };
-
+/*
+buildTransaction
+    Returns prepared transaction
+    @param value: Value to transfer
+    @param source: Fee payer
+    @param destination: Address to transfer to
+    @param connector: Stellar api connector
+    @param code: Code issuer of the token to send to (optional)
+    @param issuer: Address issuer of the token to send to (optional)
+    @param memo: memo to place in the transaction (optional)
+    @param keyPair: Key pair to sign the transaction
+*/
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {

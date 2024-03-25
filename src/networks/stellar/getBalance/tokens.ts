@@ -2,6 +2,13 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalanceParams } from './types';
 import { BalanceResult } from '../../types';
 import { AccountResponse, Horizon } from 'stellar-sdk';
+
+/*
+getAccountBalances
+    Returns balances of tokens and stellar of the account
+    @param accounts: accounts to get the balances from
+    @param connector: Stellar api connector
+*/
 export const getAccountBalances = async ({
     accounts,
     connector,

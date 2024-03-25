@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+/* 
+sendTransaction
+    sends transaction
+    @param rawTransaction: raw transaction hex
+*/
 export const sendTransaction = (rawTransaction: string): Promise<string> => {
     return new Promise((resolve, reject) => {
         axios

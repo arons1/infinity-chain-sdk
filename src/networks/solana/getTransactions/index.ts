@@ -17,7 +17,15 @@ import { GetSignaturesForAddressRpcResult } from './results';
 import { sleep } from '../utils';
 const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
-
+/* 
+getAccountsHashes
+    Returns hashes of the transactions of the accounts passed
+    @param connector: solana web3 connector
+    @param address: string of the account to get the hashes from
+    @param accounts: accounts to get the hashes from
+    @param signatures: last transaction of each account
+    @param limit: limit per call requests
+*/
 export const getAccountsHashes = async ({
     connector,
     address,
@@ -45,7 +53,12 @@ export const getAccountsHashes = async ({
     }
     return transactionHashes;
 };
-
+/* 
+getTransactions
+    Returns transtions details of the hashes passed
+    @param connector: solana web3 connector
+    @param pendingTransactions: transactions hashes to get the details from
+*/
 export const getTransactions = async ({
     pendingTransactions,
     connector,
@@ -76,7 +89,15 @@ export const getTransactions = async ({
     }
     return transactionsRes;
 };
-
+/* 
+getAccountsTransactions
+    Returns transtions details of the hashes passed
+    @param connector: solana web3 connector
+    @param address: address to get the transactions from
+    @param accounts: accounts of the tokens
+    @param signatures: hashes of the transactions already saved in the wallet
+    @param limit: limit of transactions per batch(optional)
+*/
 export const getAccountsTransactions = async ({
     connector,
     address,
@@ -117,7 +138,8 @@ export const getAccountsTransactions = async ({
 
     return { hashes, accounts };
 };
-export const getAccountsTransactionsHashes = async ({
+
+const getAccountsTransactionsHashes = async ({
     connector,
     address,
     accounts,

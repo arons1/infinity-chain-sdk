@@ -9,8 +9,18 @@ import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import * as Web3 from '@solana/web3.js';
-
-export const buildTransaction = async (props: TransactionBuilderParams) => {
+/* 
+buildTransaction
+    Returns raw transaction built signed
+    @param memo: memo (optional)
+    @param keyPair: key pair
+    @param mintToken: mint of the token to transfer (optional)
+    @param destination: receiver of the transfer
+    @param decimalsToken?: decimals of the token to transfer (optional)
+    @param value: amount to transfer
+    @param connector: solana web3 connector
+*/
+export const buildTransaction = async (props: TransactionBuilderParams) : Promise<string> => {
     const transactionPay = await rawTransaction({
         ...props,
         publicKey: new PublicKey(props.keyPair.publicKey),
@@ -22,7 +32,17 @@ export const buildTransaction = async (props: TransactionBuilderParams) => {
         coinId: 'solana',
     });
 };
-
+/* 
+rawTransaction
+    Returns raw transaction
+    @param memo: memo (optional)
+    @param publicKey: public key source
+    @param mintToken: mint of the token to transfer (optional)
+    @param destination: receiver of the transfer
+    @param decimalsToken: decimals of the token to transfer (optional)
+    @param value: amount to transfer
+    @param connector: solana web3 connector
+*/
 export const rawTransaction = async ({
     memo = '',
     mintToken,
@@ -31,7 +51,7 @@ export const rawTransaction = async ({
     publicKey,
     value,
     connector,
-}: RawTransactionParams) => {
+}: RawTransactionParams): Promise<VersionedTransaction> => {
     var instructions: any[] = [];
     const { blockhash } = await getLastBlockhash(connector);
     if (mintToken != undefined) {

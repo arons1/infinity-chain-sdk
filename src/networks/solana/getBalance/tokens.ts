@@ -3,7 +3,12 @@ import { getBalance } from '../getBalance';
 import { BalanceResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getAccounts } from '../utils';
-
+/* 
+getAccountBalances
+    Returns accounts balances
+    @param accounts: accounts to get the balance from
+    @param connector: solana web3 connector
+*/
 export const getAccountBalances = async ({
     connector,
     accounts,
