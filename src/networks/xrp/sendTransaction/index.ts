@@ -17,6 +17,7 @@ export const sendTransaction = ({
                 },
             )
             .then((result: AnyJson) => {
+                console.log(result);
                 const transactionResult = result as TransactionResult;
                 if (
                     transactionResult.engine_result == 'tesSUCCESS' ||

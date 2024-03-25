@@ -5,6 +5,7 @@ import {
     getPublicTezosAddress,
     getSecretAddress,
     getSeed,
+    getTezosPublicKeyHash,
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/tezos/builder';
@@ -29,10 +30,14 @@ describe('networksTezos', () => {
         });
         const secretKey = getPrivateKey({ keyPair });
         const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const pkHash = getTezosPublicKeyHash({
+            keyPair,
+        });
         const built = await buildTransaction({
             source: publicAddress,
             destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             value: '1000',
+            pkHash,
             privateKey,
             connector: web3Tezos,
         });
@@ -46,13 +51,17 @@ describe('networksTezos', () => {
         });
         const secretKey = getPrivateKey({ keyPair });
         const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const pkHash = getTezosPublicKeyHash({
+            keyPair,
+        });
         const built = await buildTransaction({
             source: publicAddress,
             destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             mintToken: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
-            decimalsToken: 6,
+            decimalsToken: 8,
             value: '1000',
             privateKey,
+            pkHash,
             connector: web3Tezos,
         });
         expect(built.broadcast != undefined).toBe(true);
@@ -65,12 +74,16 @@ describe('networksTezos', () => {
         });
         const secretKey = getPrivateKey({ keyPair });
         const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const pkHash = getTezosPublicKeyHash({
+            keyPair,
+        });
         const fee = await estimateFee({
             amount: '1000',
             from: publicAddress,
             to: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             connector: web3Tezos,
             privateKey,
+            pkHash,
         });
 
         expect(new BigNumber(fee?.fee as string).toNumber()).toBeGreaterThan(
@@ -83,6 +96,7 @@ describe('networksTezos', () => {
         const publicAddress = getPublicTezosAddress({
             publicKey: getPublicKey({ keyPair, coinId: 1729 }),
         });
+
         const balanceResult = await getBalance({
             address: publicAddress,
         });

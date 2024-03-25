@@ -430,7 +430,7 @@
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
 "@infinity/core-sdk@D:/trabajo/infinity-core-sdk":
-  version "1.0.25"
+  version "1.0.29"
   dependencies:
     "@harmony-js/crypto" "^0.1.56"
     "@noble/ed25519" "github:harusurv/noble-ed25519.git"
@@ -451,15 +451,16 @@
     randombytes "^2.1.0"
     ripple-keypairs "^2.0.0"
     secp256k1 "^5.0.0"
+    stellar-base "8.2.2"
     stellar-sdk "10.4.1"
     superstruct "^1.0.3"
     tweetnacl "^1.0.3"
     typeforce "^1.18.0"
     wif "^4.0.0"
-    xrpl-accountlib "^3.2.9"
+    xrpl-sign-keypairs "^2.5.0"
 
 "@infinity/core-sdk@file:../infinity-core-sdk":
-  version "1.0.25"
+  version "1.0.29"
   dependencies:
     "@harmony-js/crypto" "^0.1.56"
     "@noble/ed25519" "github:harusurv/noble-ed25519.git"
@@ -480,12 +481,13 @@
     randombytes "^2.1.0"
     ripple-keypairs "^2.0.0"
     secp256k1 "^5.0.0"
+    stellar-base "8.2.2"
     stellar-sdk "10.4.1"
     superstruct "^1.0.3"
     tweetnacl "^1.0.3"
     typeforce "^1.18.0"
     wif "^4.0.0"
-    xrpl-accountlib "^3.2.9"
+    xrpl-sign-keypairs "^2.5.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -1276,13 +1278,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/brorand@^1.0.30":
-  version "1.0.33"
-  resolved "https://registry.yarnpkg.com/@types/brorand/-/brorand-1.0.33.tgz#a4fb5ffc15901ec588631379e1e8b468e551db1a"
-  integrity sha512-KmNsWYtzKXpmxjecvYWUEGK5biJB/1kpHRObHZD8eme1tz/TvbESbZeNAHPRNd5qyCJiHk2ztbNzKbPC6TuPFg==
-  dependencies:
-    "@types/node" "*"
-
 "@types/bs58check@^2.1.0":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@types/bs58check/-/bs58check-2.1.2.tgz#ca6264599cd9c0bdfeb839a0927f13a9cb77ba0f"
@@ -1743,7 +1738,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-base-x@^3.0.2, base-x@^3.0.3, base-x@^3.0.9:
+base-x@^3.0.2, base-x@^3.0.9:
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/base-x/-/base-x-3.0.9.tgz#6349aaabb58526332de9f60995e548a53fe21320"
   integrity sha512-H7JU6iBHTal1gp56aKoaa//YUxEaAOUiydvrV/pILqIHXTtqxSkATOnDA2u+jZ/61sD+L/412+7kzXRtWukhpQ==
@@ -1809,11 +1804,6 @@ bignumber.js@^4.0.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.1.0.tgz#db6f14067c140bd46624815a7916c92d9b6c24b1"
   integrity sha512-eJzYkFYy9L4JzXsbymsFn3p54D+llV27oTQ+ziJG7WFRheJcNZilgVXMG0LoZtlQSKBsJdWtLFqOD0u+U0jZKA==
 
-bignumber.js@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-5.0.0.tgz#fbce63f09776b3000a83185badcde525daf34833"
-  integrity sha512-KWTu6ZMVk9sxlDJQh2YH1UOnfDP8O8TpxUxgQG/vKASoSnEjK9aVuOueFaPcQEYQ5fyNXNTOYwYw3099RYebWg==
-
 bignumber.js@^9.0.1, bignumber.js@^9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
@@ -1831,7 +1821,7 @@ bip174@^1.0.1:
   resolved "https://registry.yarnpkg.com/bip174/-/bip174-1.0.1.tgz#858a587f9529e22ee9b0572fd884e5783696824d"
   integrity sha512-Mq2aFs1TdMfxBpYPg7uzjhsiXbAtoVq44TNjEWtvuZBiBgc3m7+n55orYMtTAxdg7jWbL4DtH0MKocJER4xERQ==
 
-bip32@^2.0.4, bip32@^2.0.6:
+bip32@^2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/bip32/-/bip32-2.0.6.tgz#6a81d9f98c4cd57d05150c60d8f9e75121635134"
   integrity sha512-HpV5OMLLGTjSVblmrtYRfFFKuQB+GArM0+XP8HGWfJ5vxYBqo+DesvJwOdC2WJ3bCkZShGf0QIfoIpeomVzVdA==
@@ -1844,7 +1834,7 @@ bip32@^2.0.4, bip32@^2.0.6:
     typeforce "^1.11.5"
     wif "^2.0.6"
 
-bip39@3.1.0, bip39@^3.0.2, bip39@^3.0.4:
+bip39@3.1.0, bip39@^3.0.2:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/bip39/-/bip39-3.1.0.tgz#c55a418deaf48826a6ceb34ac55b3ee1577e18a3"
   integrity sha512-c9kiwdk45Do5GL0vJMe7tS95VjCii65mYAH7DfWl3uW8AVzXKQVUm64i3hzVybBDMp9r7j9iNxR85+ul8MdN/A==
@@ -2408,19 +2398,6 @@ electron-to-chromium@^1.4.668:
   version "1.4.700"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.700.tgz#0270c9f57d6782af031f71e16ef810d0588a1e2f"
   integrity sha512-40dqKQ3F7C8fbBEmjSeJ+qEHCKzPyrP9SkeIBZ3wSCUH9nhWStrDz030XlDzlhNhlul1Z0fz7TpDFnsIzo4Jtg==
-
-elliptic@6.5.4:
-  version "6.5.4"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.4.tgz#da37cebd31e79a1367e941b592ed1fbebd58abbb"
-  integrity sha512-iLhC6ULemrljPZb+QutR5TQGB+pdW6KGD5RSegS+8sorOZT+rdQFbsQFJgvN3eRqNALqJer4oQ16YvJHlU8hzQ==
-  dependencies:
-    bn.js "^4.11.9"
-    brorand "^1.1.0"
-    hash.js "^1.0.0"
-    hmac-drbg "^1.0.1"
-    inherits "^2.0.4"
-    minimalistic-assert "^1.0.1"
-    minimalistic-crypto-utils "^1.0.1"
 
 elliptic@^6.4.0, elliptic@^6.4.1, elliptic@^6.5.2, elliptic@^6.5.4:
   version "6.5.5"
@@ -3019,7 +2996,7 @@ hash-base@^3.0.0:
     readable-stream "^3.6.0"
     safe-buffer "^5.2.0"
 
-hash.js@^1.0.0, hash.js@^1.0.3, hash.js@^1.1.7:
+hash.js@^1.0.0, hash.js@^1.0.3:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hash.js/-/hash.js-1.1.7.tgz#0babca538e8d4ee4a0f8988d68866537a003cf42"
   integrity sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA==
@@ -4447,7 +4424,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-ripple-address-codec@^4.2.4, ripple-address-codec@^4.2.5, ripple-address-codec@^4.3.1:
+ripple-address-codec@^4.2.4, ripple-address-codec@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.3.1.tgz#68fbaf646bb8567f70743af7f1ce4479f73efbf6"
   integrity sha512-Qa3+9wKVvpL/xYtT6+wANsn0A1QcC5CT6IMZbRJZ/1lGt7gmwIfsrCuz1X0+LCEO7zgb+3UT1I1dc0k/5dwKQQ==
@@ -4463,7 +4440,7 @@ ripple-address-codec@^5.0.0:
     "@scure/base" "^1.1.3"
     "@xrplf/isomorphic" "^1.0.0"
 
-ripple-keypairs@^1.1.4, ripple-keypairs@^1.1.5:
+ripple-keypairs@^1.1.4:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/ripple-keypairs/-/ripple-keypairs-1.3.1.tgz#7fa531df36b138134afb53555a87d7f5eb465b2e"
   integrity sha512-dmPlraWKJciFJxHcoubDahGnoIalG5e/BtV6HNDUs7wLXmtnLMHt6w4ed9R8MTL2zNrVPiIdI/HCtMMo0Tm7JQ==
@@ -4482,14 +4459,6 @@ ripple-keypairs@^2.0.0:
     "@noble/curves" "^1.0.0"
     "@xrplf/isomorphic" "^1.0.0"
     ripple-address-codec "^5.0.0"
-
-ripple-secret-codec@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/ripple-secret-codec/-/ripple-secret-codec-1.0.3.tgz#dbc27bf18f09fb5cfe2aa8f814ee378e7731d001"
-  integrity sha512-vYcHlJx1p+5uH4ORda2dlvbgCy68m/Ib2kn+Np6PMmRoBenf9pKHa4vzaWmp2SjJKPi1921lQjdeAWoXdm7E0g==
-  dependencies:
-    base-x "^3.0.3"
-    bignumber.js "^5.0.0"
 
 rpc-websockets@^7.5.1:
   version "7.9.0"
@@ -5370,26 +5339,6 @@ ws@^8.13.0, ws@^8.5.0, ws@^8.8.1:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
   integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
 
-xrpl-accountlib@^3.2.9:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/xrpl-accountlib/-/xrpl-accountlib-3.3.0.tgz#0fa4596c61c931e593ae4a0a1761ace83537e07a"
-  integrity sha512-NjHOWoewHIYGCp+vfFjsrFRIaQasP5E+9iSP1s/ulp7DQljC0Gkhj+q/IMo2gQE97mLOWSN9eL7kvW3mVf3KLQ==
-  dependencies:
-    assert "^2.0.0"
-    bip32 "^2.0.6"
-    bip39 "^3.0.4"
-    bn.js "^5.2.1"
-    elliptic "6.5.4"
-    hash.js "^1.1.7"
-    lodash "^4.17.21"
-    ripple-address-codec "^4.2.5"
-    ripple-keypairs "^1.1.4"
-    ripple-secret-codec "^1.0.3"
-    xrpl-binary-codec-prerelease "^7.0.1"
-    xrpl-client "^2.3.0"
-    xrpl-secret-numbers "^0.3.3"
-    xrpl-sign-keypairs "^2.5.0"
-
 xrpl-binary-codec-prerelease@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/xrpl-binary-codec-prerelease/-/xrpl-binary-codec-prerelease-7.0.1.tgz#650052e7622233da65a4b1b370d109e17b7c54f2"
@@ -5402,22 +5351,13 @@ xrpl-binary-codec-prerelease@^7.0.1:
     decimal.js "^10.2.0"
     ripple-address-codec "^4.3.1"
 
-xrpl-client@2.4.0, xrpl-client@^2.3.0:
+xrpl-client@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/xrpl-client/-/xrpl-client-2.4.0.tgz#5cfed5e8fb066f6c33cae5a9c7f0db9bfbf05e0c"
   integrity sha512-UQiCHVtdqqXt5uzOEZzQZ+idXvVJDnXrTjaQ5wwYDAolI6YXSBZCXWaljdY8b10LEZqq6Xr8dMaSHivr8P4LIQ==
   dependencies:
     debug "^4.1.1"
     websocket "^1.0.34"
-
-xrpl-secret-numbers@^0.3.3:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/xrpl-secret-numbers/-/xrpl-secret-numbers-0.3.4.tgz#947d6c803b8ff0286f19256e0fc54ea1bee96ae2"
-  integrity sha512-B3m0OLRsmNLQpN/BUR15+LC4yejM/pdneoWgijfBYbgjVVnpyCF5+Ur7zbAs4nCAlBUZYXnxp+o/rSNZkke9jQ==
-  dependencies:
-    "@types/brorand" "^1.0.30"
-    brorand "^1.1.0"
-    ripple-keypairs "^1.1.5"
 
 xrpl-sign-keypairs@^2.5.0:
   version "2.5.0"

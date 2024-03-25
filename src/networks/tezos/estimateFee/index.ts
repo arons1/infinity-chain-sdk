@@ -28,6 +28,7 @@ export const estimateFee = async ({
     idToken = 0,
     mintToken,
     connector,
+    pkHash,
     decimalsToken,
     privateKey,
     feeRatio = 0.5,
@@ -35,6 +36,7 @@ export const estimateFee = async ({
     const built = await buildTransaction({
         source: from,
         destination: to,
+        pkHash,
         value: amount,
         mintToken,
         idToken,

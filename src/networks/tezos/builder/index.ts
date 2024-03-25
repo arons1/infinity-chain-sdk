@@ -9,7 +9,7 @@ import {
 } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getAditionalFee } from '../estimateFee';
-import { readOnlySigner } from '../getBalance/tez';
+import { ReadOnlySigner, readOnlySigner } from '../getBalance/tez';
 import { ContractMethod, ContractProvider } from '@taquito/taquito';
 
 export const buildOperations = async ({
@@ -45,6 +45,7 @@ export const buildOperations = async ({
 export const buildOperation = async ({
     source,
     destination,
+    pkHash,
     value,
     mintToken,
     idToken = 0,
@@ -52,7 +53,7 @@ export const buildOperation = async ({
     decimalsToken,
     feeRatio = 0.5,
 }: BuildOperationParams): Promise<BuildOperationResult> => {
-    connector.setSignerProvider(readOnlySigner);
+    connector.setSignerProvider(new ReadOnlySigner(source, pkHash));
     const operation: ContractMethod<ContractProvider> = await buildOperations({
         source,
         destination,
@@ -75,10 +76,12 @@ export const buildOperation = async ({
 export const buildTransfer = async ({
     connector,
     value,
+    source,
+    pkHash,
     destination,
     feeRatio = 0.5,
 }: BuildTransferParams): Promise<string> => {
-    connector.setSignerProvider(readOnlySigner);
+    connector.setSignerProvider(new ReadOnlySigner(source, pkHash));
     const amount = new BigNumber(value).shiftedBy(-6).toNumber();
     const transferFees = await connector.estimate.transfer({
         to: destination,
@@ -91,6 +94,7 @@ export const buildTransfer = async ({
 export const buildTransaction = async ({
     source,
     destination,
+    pkHash,
     value,
     mintToken,
     idToken = 0,
@@ -103,6 +107,7 @@ export const buildTransaction = async ({
     if (mintToken && decimalsToken) {
         const operationResult = await buildOperation({
             source,
+            pkHash,
             destination,
             value,
             mintToken,
@@ -120,6 +125,8 @@ export const buildTransaction = async ({
     } else {
         const fee = await buildTransfer({
             connector,
+            pkHash,
+            source,
             value,
             destination,
             feeRatio,

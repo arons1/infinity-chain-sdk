@@ -17,10 +17,14 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
         const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
+        const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
+            keyPair,
+        });
         const built = await (0, builder_1.buildTransaction)({
             source: publicAddress,
             destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             value: '1000',
+            pkHash,
             privateKey,
             connector: utils_1.web3Tezos,
         });
@@ -34,13 +38,17 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
         const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
+        const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
+            keyPair,
+        });
         const built = await (0, builder_1.buildTransaction)({
             source: publicAddress,
             destination: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             mintToken: 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn',
-            decimalsToken: 6,
+            decimalsToken: 8,
             value: '1000',
             privateKey,
+            pkHash,
             connector: utils_1.web3Tezos,
         });
         (0, globals_1.expect)(built.broadcast != undefined).toBe(true);
@@ -53,12 +61,16 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
         const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
+        const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
+            keyPair,
+        });
         const fee = await (0, estimateFee_1.estimateFee)({
             amount: '1000',
             from: publicAddress,
             to: 'tz1VQA4RP4fLjEEMW2FR4pE9kAg5abb5h5GL',
             connector: utils_1.web3Tezos,
             privateKey,
+            pkHash,
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee?.fee).toNumber()).toBeGreaterThan(10);
     });
@@ -83,9 +95,9 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             account: publicAddress,
             assetSlugs: ['tez', 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn_0'],
         });
-        (0, globals_1.expect)(balanceResult[publicAddress].find(a => a.address == 'native')
+        (0, globals_1.expect)(balanceResult[publicAddress]?.find(a => a.address == 'native')
             ?.value).toBe('400000');
-        (0, globals_1.expect)(balanceResult[publicAddress].find(a => a.address == 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn' &&
+        (0, globals_1.expect)(balanceResult[publicAddress]?.find(a => a.address == 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn' &&
             a.id == 0)?.value).toBe('8133');
     });
 });

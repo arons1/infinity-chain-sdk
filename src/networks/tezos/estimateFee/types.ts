@@ -10,4 +10,5 @@ export type EstimateFeeParams = {
     connector: TezosToolkit;
     privateKey: string;
     feeRatio?: number;
+    pkHash: string;
 };

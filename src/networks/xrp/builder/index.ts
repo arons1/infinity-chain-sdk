@@ -25,7 +25,7 @@ export const preparePayment = async ({
     if (tx.Fee == undefined) {
         tx.Fee = connector.getState().fee.last + '';
     }
-    return JSON.stringify(tx);
+    return tx;
 };
 export const buildTransaction = async ({
     amount,
@@ -34,7 +34,7 @@ export const buildTransaction = async ({
     keyPair,
     connector,
     memo = '',
-}: BuildTransactionParams) => {
+}: BuildTransactionParams): Promise<string> => {
     const tx = {
         TransactionType: 'Payment',
         Amount: amount,

@@ -8,6 +8,7 @@ export type BuildTransactionParams = {
     mintToken?: string;
     privateKey: string;
     connector: TezosToolkit;
+    pkHash: string;
     idToken?: number;
     decimalsToken?: number;
     feeRatio?: number;
@@ -33,6 +34,7 @@ export type BuildOperationResult = {
     fee: string;
 };
 export type BuildOperationParams = {
+    pkHash: string;
     source: string;
     destination: string;
     value: string;
@@ -46,6 +48,8 @@ export type BuildOperationParams = {
 export type BuildTransferParams = {
     connector: TezosToolkit;
     value: string;
+    source: string;
+    pkHash: string;
     destination: string;
     feeRatio: number;
 };
