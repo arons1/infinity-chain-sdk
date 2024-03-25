@@ -5,7 +5,11 @@ import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
-
+/* 
+estimateFee
+    Returns fee
+    @param source: source account
+*/
 export const estimateFee = ({
     source,
 }: {

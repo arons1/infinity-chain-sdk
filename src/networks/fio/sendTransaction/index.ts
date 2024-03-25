@@ -1,6 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { SendTransactionParams, SendTransactionResult } from './types';
 
+/* 
+sendTransaction
+    sends transaction
+    @param rawTransaction: raw transaction hex
+*/
 export const sendTransaction = async ({
     rawTransaction,
 }: SendTransactionParams): Promise<string> => {

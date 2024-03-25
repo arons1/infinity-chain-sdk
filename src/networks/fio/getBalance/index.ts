@@ -2,6 +2,11 @@ import axios, { AxiosResponse } from 'axios';
 import { FIOBalanceResponse } from './type';
 import { CurrencyBalanceResult } from '../../types';
 
+/* 
+getBalance
+    Returns fee
+    @param address: address to get the balance from
+*/
 export const getBalance = (address: string): Promise<CurrencyBalanceResult> => {
     return new Promise((resolve, reject) => {
         axios

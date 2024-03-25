@@ -8,6 +8,14 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 const fetchJson = async (uri: string, opts = {}) => {
     return fetch(uri, opts);
 };
+/* 
+buildTransaction
+    Returns a transaction formatted to be sign and send
+    @param value: ammount to send (optional)
+    @param source: source account
+    @param destination: destination account
+    @param privateKey: Private key
+*/
 export const buildTransaction = async ({
     value,
     source,
