@@ -1,7 +1,5 @@
-export const MissingCoinId = 'Missing coinId';
-export const MissingChainId = 'Missing chainId';
-export const UnsupportedChainId = 'Unsupported chainId';
-export const MissingAddress = 'Missing address';
-export const MissingExtendedKey = 'Missing extended public key';
-export const InternalTransactionsSupported =
-    'Internal transactions not supported';
+export const MissingCoinId = 'ERR_MISSING_COIN_ID';
+export const MissingChainId = 'ERR_MISSING_CHAIN_ID';
+export const UnsupportedChainId = 'ERR_UNSUPPORTED_CHAIN_ID';
+export const MissingAddress = 'ERR_MISSING_ADDRESS';
+export const MissingExtendedKey = 'ERR_MISSING_EXTENDED_PUBLIC_KEY';

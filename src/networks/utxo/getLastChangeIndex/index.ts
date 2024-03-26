@@ -21,7 +21,6 @@ export const getLastChangeIndex = async ({
                 details: 'tokens',
             },
             (data: ChangeIndexResult) => {
-                console.log(data);
                 if (!data) {
                     reject();
                     return;

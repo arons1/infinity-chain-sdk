@@ -1,5 +1,5 @@
 import { CurrencyBalanceResult } from '../../types';
-import { getBalanceParamsChecker } from '../errors';
+import { getBalanceParamsChecker } from '../parametersChecker';
 import { BalanceParams } from './types';
 
 /* 

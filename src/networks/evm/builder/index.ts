@@ -1,7 +1,7 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { BuildTransaction } from './types';
 import { estimateFee } from '../estimateFee';
-import { buildParametersChecker } from '../errors';
+import { buildParametersChecker } from '../parametersChecker';
 
 /* 
 buildTransaction

@@ -1,4 +1,4 @@
-import { sendTransactionParamsChecker } from '../errors';
+import { sendTransactionParamsChecker } from '../parametersChecker';
 import { SendTransactionParams } from './types';
 
 /* 

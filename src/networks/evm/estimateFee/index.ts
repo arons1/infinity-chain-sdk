@@ -11,7 +11,7 @@ import {
     Transaction,
     isValidAddress,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
-import { estimateParametersChecker } from '../errors';
+import { estimateParametersChecker } from '../parametersChecker';
 
 /* 
 estimateFee
