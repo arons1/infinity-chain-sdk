@@ -109,8 +109,8 @@ export const buildTransfer = async ({
     return estimatedBaseFeeb.toString(10);
 };
 /*
-buildOperations
-    Returns prepared transaction of operations
+buildTransaction
+    Returns prepared transaction
     @param source: source account
     @param destination: destination account
     @param pkHash: public hash of source account
