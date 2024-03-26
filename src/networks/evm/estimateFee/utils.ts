@@ -13,11 +13,8 @@ import {
     PriorityFeeError,
 } from '../../../errors/networks';
 
-import {
-    TransactionEVM,
-    isValidAddress,
-} from '@infinity/core-sdk/lib/commonjs/networks/evm';
-
+import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import Web3 from 'web3';

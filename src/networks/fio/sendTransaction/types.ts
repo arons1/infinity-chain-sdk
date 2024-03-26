@@ -1,7 +1,3 @@
-export type SendTransactionParams = {
-    rawTransaction: string;
-};
-
 export type SendTransactionResult = {
     processed: {
         action_traces: ActionTrace[];

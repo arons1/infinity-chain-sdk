@@ -10,11 +10,7 @@ estimateFee
     Returns fee
     @param source: source account
 */
-export const estimateFee = ({
-    source,
-}: {
-    source: string;
-}): Promise<EstimateFeeResult> => {
+export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
     return new Promise(resolve => {
         axios
             .post('https://fio.blockpane.com/v1/chain/get_fee', {

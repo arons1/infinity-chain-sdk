@@ -16,3 +16,5 @@ export const InvalidNumber = 'ERR_INVALID_NUMBER';
 export const InvalidFeeRatio = 'ERR_INVALID_FEE_RATIO';
 export const MissingOrInvalidConnector = 'ERR_INVALID_CONNECTOR';
 export const InvalidData = 'ERR_INVALID_DATA';
+export const TransactionNotSigned = 'ERR_TRANSACTION_NOT_SIGNED';
+export const InvalidRawTransaction = 'ERR_INVALID_RAW_TRANSACTION';

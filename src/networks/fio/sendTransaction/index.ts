@@ -1,31 +1,34 @@
 import axios, { AxiosResponse } from 'axios';
-import { SendTransactionParams, SendTransactionResult } from './types';
+import { SendTransactionResult } from './types';
+import { sendTransactionParametersChecker } from '../parametersChecker';
+import { BuildTransactionFIOResult } from '../builder/types';
 
 /* 
 sendTransaction
     sends transaction
     @param rawTransaction: raw transaction hex
 */
-export const sendTransaction = async ({
-    rawTransaction,
-}: SendTransactionParams): Promise<string> => {
+export const sendTransaction = async (
+    transaction: BuildTransactionFIOResult,
+): Promise<string> => {
+    sendTransactionParametersChecker(transaction);
     return new Promise((resolve, reject) => {
         axios
             .post(
                 'https://fio.blockpane.com/v1/chain/push_transaction',
-                rawTransaction,
+                transaction,
             )
             .then((result: AxiosResponse<SendTransactionResult>) => {
                 if (result.data) {
                     resolve(result.data.transaction_id);
                 } else {
                     console.error(result);
-                    reject();
+                    reject(result);
                 }
             })
             .catch(e => {
                 console.error(e);
-                reject();
+                reject(e);
             });
     });
 };

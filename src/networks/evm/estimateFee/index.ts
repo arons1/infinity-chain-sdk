@@ -7,10 +7,7 @@ import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateFee';
-import {
-    Transaction,
-    isValidAddress,
-} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Transaction } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
 
 /* 
@@ -31,8 +28,6 @@ export const estimateFee = async (
     estimateParametersChecker(props);
     let resultEstimate;
     if (props.tokenContract && props.tokenContract.length > 0) {
-        if (!isValidAddress(props.tokenContract))
-            throw new Error(InvalidContractAddress);
         resultEstimate = await estimateTokenFee(
             props as EstimateGasTokenParams,
         );

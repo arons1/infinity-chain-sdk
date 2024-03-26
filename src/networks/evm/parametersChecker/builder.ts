@@ -4,5 +4,6 @@ import { estimateParametersChecker } from './estimateFee';
 
 export const buildParametersChecker = (props: BuildTransaction) => {
     estimateParametersChecker(props);
-    if (!props.privateKey) throw new Error(MissingPrivateKey);
+    if (!props.privateKey || !Buffer.isBuffer(props.privateKey))
+        throw new Error(MissingPrivateKey);
 };

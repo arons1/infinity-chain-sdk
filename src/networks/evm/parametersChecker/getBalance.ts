@@ -4,7 +4,7 @@ import {
     InvalidAddress,
     MissingOrInvalidConnector,
 } from '../../../errors/networks';
-import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
 
 export const getBalanceParamsChecker = (props: BalanceParams) => {
     if (!props.connector || !(props.connector instanceof Web3))

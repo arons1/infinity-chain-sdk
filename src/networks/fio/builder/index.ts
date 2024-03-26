@@ -37,7 +37,7 @@ export const buildTransaction = async ({
             payee_public_key: address,
             amount: value,
             max_fee: new BigNumber(
-                (await estimateFee({ source })).fee as string,
+                (await estimateFee(source)).fee as string,
             ).toNumber(),
             tpid: '',
             actor: getFIOAccount(source),

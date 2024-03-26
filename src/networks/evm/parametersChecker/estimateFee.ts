@@ -8,10 +8,9 @@ import {
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import Web3 from 'web3';
-import {
-    SupportedChains,
-    isValidAddress,
-} from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { SupportedChains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
+
 import { EstimateGasParams } from '../estimateFee';
 
 export const estimateParametersChecker = (props: EstimateGasParams) => {
