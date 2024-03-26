@@ -115,6 +115,7 @@ export const getGasLimit = async ({
     chainId,
     connector,
     isToken = false,
+    approve = false,
 }: GasLimitParams): Promise<{
     data: string;
     estimateGas: string;
@@ -128,7 +129,9 @@ export const getGasLimit = async ({
         if (!contract) throw new Error(InvalidTokenContract);
         const nonce = await getNonce({ address: source, connector });
         if (!nonce) throw new Error(CannotGetNonce);
-        const data = contract.methods.transfer(destination, value).encodeABI();
+        const data = approve
+            ? contract.methods.approve(destination, value).encodeABI()
+            : contract.methods.transfer(destination, value).encodeABI();
         const estimateGasNormal = await estimateGas(connector, chainId, {
             from: source,
             nonce: nonce,

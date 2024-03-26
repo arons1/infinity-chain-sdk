@@ -15,6 +15,7 @@ export type EstimateGasParams = {
     gasPrice?: string;
     feeRatio?: number;
     priorityFee?: string;
+    approve?: boolean;
 };
 export type EstimateGasTokenParams = {
     connector: Web3;
@@ -26,6 +27,7 @@ export type EstimateGasTokenParams = {
     chainId: number;
     feeRatio?: number;
     priorityFee?: string;
+    approve?: boolean;
 };
 
 export type NonceParams = {
@@ -45,6 +47,7 @@ export type GasLimitParams = {
     chainId: number;
     contract?: any;
     isToken: boolean;
+    approve?: boolean;
 };
 
 export type CalculateGasPrice = {

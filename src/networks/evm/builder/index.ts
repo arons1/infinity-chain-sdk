@@ -1,7 +1,7 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
-
 import { BuildTransaction } from './types';
 import { estimateFee } from '../estimateFee';
+import { buildParametersChecker } from '../errors';
 
 /* 
 buildTransaction
@@ -15,10 +15,12 @@ buildTransaction
     @param feeRatio: Between 0 and 1, default 0.5, its the range to increase or decrease de fee, 0.5 = use default gasPrice (optional)
     @param priorityFee: Just for chainId, 1 or 137, it's used for calculating the fee
     @param gasPrice: It's the gas price to use (optional). Place it just when you require a fixed gasPrice.
+    @param approve: If it is a token approve allowance or it is a token transfer
 */
 export const buildTransaction = async (
     props: BuildTransaction,
 ): Promise<string> => {
+    buildParametersChecker(props);
     const gaslimit = await estimateFee(props);
     const { rawTransaction } =
         await props.connector.eth.accounts.signTransaction(
@@ -28,5 +30,4 @@ export const buildTransaction = async (
     return rawTransaction;
 };
 
-export * from './tokens';
 export * from './types';

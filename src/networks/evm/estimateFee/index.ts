@@ -1,21 +1,17 @@
-import { EstimateGasParams } from './types';
+import { EstimateGasParams, EstimateGasTokenParams } from './types';
 // @ts-ignore
 import feeAbi from '../../../core/abi/fee';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import {
-    InvalidAddress,
-    InvalidChainError,
-    InvalidContractAddress,
-} from '../../../errors/networks';
+import { InvalidContractAddress } from '../../../errors/networks';
 import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateFee';
 import {
-    SupportedChains,
     Transaction,
     isValidAddress,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { estimateParametersChecker } from '../errors';
 
 /* 
 estimateFee
@@ -29,57 +25,29 @@ estimateFee
     @param tokenContract: token contract
     @param gasPrice: Gas Price (optional)
 */
-export const estimateFee = async ({
-    connector,
-    source,
-    tokenContract = '',
-    destination = '',
-    value = '0',
-    chainId,
-    gasPrice,
-    feeRatio = 0.5,
-    priorityFee,
-}: EstimateGasParams): Promise<EstimateFeeResult> => {
-    if (!isValidAddress(source)) throw new Error(InvalidAddress);
-    if (!SupportedChains.includes(chainId)) throw new Error(InvalidChainError);
-    if (!isValidAddress(destination)) throw new Error(InvalidAddress);
+export const estimateFee = async (
+    props: EstimateGasParams,
+): Promise<EstimateFeeResult> => {
+    estimateParametersChecker(props);
     let resultEstimate;
-    if (tokenContract.length > 0) {
-        if (!isValidAddress(tokenContract))
+    if (props.tokenContract && props.tokenContract.length > 0) {
+        if (!isValidAddress(props.tokenContract))
             throw new Error(InvalidContractAddress);
-        resultEstimate = await estimateTokenFee({
-            connector,
-            source,
-            tokenContract,
-            destination,
-            gasPrice,
-            value,
-            chainId,
-            feeRatio,
-            priorityFee,
-        });
+        resultEstimate = await estimateTokenFee(
+            props as EstimateGasTokenParams,
+        );
     } else {
-        resultEstimate = await estimateCurrencyFee({
-            connector,
-            source,
-            destination,
-            value,
-            chainId,
-            gasPrice,
-            feeRatio,
-            priorityFee,
-        });
+        resultEstimate = await estimateCurrencyFee(props);
     }
-
     var fee = new BigNumber(resultEstimate.estimateGas)
         .multipliedBy(resultEstimate.gasPrice as string)
         .toString(10);
-    if (chainId == 10) {
+    if (props.chainId == 10) {
         const txBuilder = new Transaction(
             resultEstimate.transaction,
         ).serialize();
         fee = new BigNumber(
-            await estimateL1Cost(connector, txBuilder.toString('hex')),
+            await estimateL1Cost(props.connector, txBuilder.toString('hex')),
         )
             .plus(fee)
             .toString(10);

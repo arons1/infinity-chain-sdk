@@ -1,4 +1,5 @@
 import { CurrencyBalanceResult } from '../../types';
+import { getBalanceParamsChecker } from '../errors';
 import { BalanceParams } from './types';
 
 /* 
@@ -7,14 +8,14 @@ getBalance
     @param connector: web3 connector
     @param address: address to get the balance from
 */
-export const getBalance = async ({
-    address,
-    connector,
-}: BalanceParams): Promise<CurrencyBalanceResult> => {
+export const getBalance = async (
+    props: BalanceParams,
+): Promise<CurrencyBalanceResult> => {
+    getBalanceParamsChecker(props);
     return {
-        balance: (await connector.eth.getBalance(address, 'latest')).toString(
-            10,
-        ),
+        balance: (
+            await props.connector.eth.getBalance(props.address, 'latest')
+        ).toString(10),
     } as CurrencyBalanceResult;
 };
 export * from './tokens';

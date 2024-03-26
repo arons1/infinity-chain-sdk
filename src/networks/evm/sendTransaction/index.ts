@@ -1,3 +1,4 @@
+import { sendTransactionParamsChecker } from '../errors';
 import { SendTransactionParams } from './types';
 
 /* 
@@ -6,13 +7,13 @@ sendTransaction
     @param connector: web3 connector
     @param rawTransaction: raw transaction
 */
-export const sendTransaction = async ({
-    connector,
-    rawTransaction,
-}: SendTransactionParams): Promise<string> => {
+export const sendTransaction = async (
+    props: SendTransactionParams,
+): Promise<string> => {
+    sendTransactionParamsChecker(props);
     return new Promise((resolve, reject) => {
-        connector.eth
-            .sendSignedTransaction(rawTransaction)
+        props.connector.eth
+            .sendSignedTransaction(props.rawTransaction)
             .once('transactionHash', (txid: string) => {
                 resolve(txid);
             })

@@ -12,3 +12,7 @@ export const InvalidAddress = 'invalid address';
 export const MissingPriorityFee = 'missing priority fee';
 export const ProtocolNotSupported = 'unsupported protocol';
 export const SpecifyChangePublic = 'specify change public';
+export const InvalidNumber = 'invalid number';
+export const InvalidFeeRatio = 'fee ratio has to be between 0 and 1';
+export const MissingOrInvalidConnector = 'missing or invalid connector';
+export const InvalidData = 'invalid data';
