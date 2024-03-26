@@ -4,7 +4,7 @@ import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/f
 import { InvalidAddress, InvalidAmount } from '../../../errors/networks';
 import { MissingPrivateKey } from '@infinity/core-sdk/lib/commonjs/errors';
 
-export const buildParametersChecker = (props: BuildTransactionParams) => {
+export const builderParametersChecker = (props: BuildTransactionParams) => {
     if (!isValidNumber(props.value)) throw new Error(InvalidAmount);
     if (!isValidAddress(props.source)) throw new Error(InvalidAddress);
     if (!isValidAddress(props.destination)) throw new Error(InvalidAddress);

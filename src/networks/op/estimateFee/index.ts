@@ -1,6 +1,7 @@
 import feeAbi from '@infinity/core-sdk/lib/commonjs/core/abi/fee';
 import Web3 from 'web3';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { estimateFeeParametersChecker } from '../parametersChecker';
 /* 
 estimateL1Cost
     Returns estimate L1Cost
@@ -11,6 +12,7 @@ export const estimateL1Cost = async (
     connector: Web3,
     rawTransaction: string,
 ): Promise<string> => {
+    estimateFeeParametersChecker(connector,rawTransaction);
     const gpo = new connector.eth.Contract(
         feeAbi,
         '0x420000000000000000000000000000000000000F',

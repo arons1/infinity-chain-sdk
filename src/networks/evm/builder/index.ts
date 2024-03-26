@@ -1,7 +1,7 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { BuildTransaction } from './types';
 import { estimateFee } from '../estimateFee';
-import { buildParametersChecker } from '../parametersChecker';
+import { builderParametersChecker } from '../parametersChecker';
 
 /* 
 buildTransaction
@@ -20,7 +20,7 @@ buildTransaction
 export const buildTransaction = async (
     props: BuildTransaction,
 ): Promise<string> => {
-    buildParametersChecker(props);
+    builderParametersChecker(props);
     const gaslimit = await estimateFee(props);
     const { rawTransaction } =
         await props.connector.eth.accounts.signTransaction(

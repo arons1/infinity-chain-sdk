@@ -36,6 +36,7 @@ export const getAddressFromAccount = (account: string) => {
     });
 };
 export const convertPubKeyToAccount = async (address: string) => {
+    getAddressFromAccountParametersChecker(address);
     if (address.startsWith('FIO')) return address;
     const result = await getAddressFromAccount(address);
     return result;

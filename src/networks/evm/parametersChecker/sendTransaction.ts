@@ -4,11 +4,11 @@ import {
     MissingOrInvalidConnector,
 } from '../../../errors/networks';
 import { SendTransactionParams } from '../sendTransaction/types';
-import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
+import { isHexString } from '@infinity/core-sdk/lib/commonjs/core/base';
 
 export const sendTransactionParamsChecker = (props: SendTransactionParams) => {
     if (!props.connector || !(props.connector instanceof Web3))
         throw new Error(MissingOrInvalidConnector);
-    if (props.rawTransaction && !isValidNumber(props.rawTransaction))
+    if (props.rawTransaction && !isHexString(props.rawTransaction))
         throw new Error(InvalidNumber);
 };

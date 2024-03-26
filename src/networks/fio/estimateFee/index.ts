@@ -3,6 +3,7 @@ import { FeeResult } from './types';
 import { FIOSDK } from '@fioprotocol/fiosdk';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { estimateFeeParametersChecker } from '../parametersChecker';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
 /* 
@@ -11,6 +12,7 @@ estimateFee
     @param source: source account
 */
 export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
+    estimateFeeParametersChecker(source);
     return new Promise(resolve => {
         axios
             .post('https://fio.blockpane.com/v1/chain/get_fee', {

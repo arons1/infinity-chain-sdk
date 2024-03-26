@@ -4,6 +4,7 @@ import { FIOSDK } from '@fioprotocol/fiosdk';
 import { estimateFee } from '../estimateFee';
 import { getFIOAccount } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { builderParametersChecker } from '../parametersChecker';
 
 const fetchJson = async (uri: string, opts = {}) => {
     return fetch(uri, opts);
@@ -16,16 +17,14 @@ buildTransaction
     @param destination: destination account
     @param privateKey: Private key
 */
-export const buildTransaction = async ({
-    value,
-    source,
-    destination,
-    privateKey,
-}: BuildTransactionParams): Promise<BuildTransactionFIOResult> => {
-    const address = await convertPubKeyToAccount(destination);
+export const buildTransaction = async (
+    props: BuildTransactionParams,
+): Promise<BuildTransactionFIOResult> => {
+    builderParametersChecker(props);
+    const address = await convertPubKeyToAccount(props.destination);
     var user = new FIOSDK(
-        privateKey,
-        source,
+        props.privateKey,
+        props.source,
         'https://fio.blockpane.com/v1/',
         fetchJson,
     );
@@ -35,12 +34,12 @@ export const buildTransaction = async ({
         account: 'fio.token',
         data: {
             payee_public_key: address,
-            amount: value,
+            amount: props.value,
             max_fee: new BigNumber(
-                (await estimateFee(source)).fee as string,
+                (await estimateFee(props.source)).fee as string,
             ).toNumber(),
             tpid: '',
-            actor: getFIOAccount(source),
+            actor: getFIOAccount(props.source),
         },
     });
 };
