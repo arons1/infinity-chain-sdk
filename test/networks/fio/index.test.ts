@@ -32,9 +32,9 @@ describe('networksFIO', () => {
         expect(built.signatures.length).toBe(1);
     });
     test('estimateFee', async () => {
-        const fee = await estimateFee({
-            source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
-        });
+        const fee = await estimateFee(
+            'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
+        );
         expect(parseInt(fee.fee as string)).toBeGreaterThan(965584403);
     });
     test('getBalance', async () => {

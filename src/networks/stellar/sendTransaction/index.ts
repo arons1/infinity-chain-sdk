@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { sendTransactionParamsChecker } from '../parametersChecker';
 
 /* 
 sendTransaction
@@ -6,6 +7,7 @@ sendTransaction
     @param rawTransaction: raw transaction hex
 */
 export const sendTransaction = (rawTransaction: string): Promise<string> => {
+    sendTransactionParamsChecker(rawTransaction);
     return new Promise((resolve, reject) => {
         axios
             .post('https://horizon.stellar.org/transactions', {

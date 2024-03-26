@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { AccountExists, AssetExistsRequest } from './types';
 import StellarSdk, { Asset } from 'stellar-sdk';
+import { accountExistsParametersChecker } from '../parametersChecker';
 
 /* 
 assetExists
@@ -39,9 +40,10 @@ accountExists
     @param connector: Stellar api connector
     @param account: account to check if it exists
 */
-export const accountExists = async ({ connector, account }: AccountExists) => {
+export const accountExists = async (props: AccountExists) => {
+    accountExistsParametersChecker(props)
     try {
-        await connector.loadAccount(account);
+        await props.connector.loadAccount(props.account);
         return true;
     } catch (e) {
         return false;

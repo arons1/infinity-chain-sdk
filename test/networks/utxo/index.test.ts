@@ -26,7 +26,6 @@ const mnemonic =
 describe('networksUTXO', () => {
     test('builder', async () => {
         while (!connector.connected) {
-            console.log(connector.connected);
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
@@ -38,7 +37,6 @@ describe('networksUTXO', () => {
             privateAccountNode.neutered().toBase58(),
             'xpub',
         );
-        console.log(xpub);
         const build = await buildTransaction({
             amount: '10000',
             coinId: 'ltc',

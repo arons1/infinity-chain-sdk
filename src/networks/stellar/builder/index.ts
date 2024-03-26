@@ -10,6 +10,7 @@ import { estimateFee } from '../estimateFee';
 import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { builderParametersChecker } from '../parametersChecker';
 /*
 preparePayment
     Returns prepared transaction
@@ -78,6 +79,7 @@ buildTransaction
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {
+    builderParametersChecker(props);
     const transaction: Transaction = await preparePayment(props);
     const key_pair = Keypair.fromSecret(props.keyPair.secret());
     transaction.sign(key_pair);

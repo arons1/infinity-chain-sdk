@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import {
-    InvalidNumber,
+    InvalidRawTransaction,
     MissingOrInvalidConnector,
 } from '../../../errors/networks';
 import { SendTransactionParams } from '../sendTransaction/types';
@@ -10,5 +10,5 @@ export const sendTransactionParamsChecker = (props: SendTransactionParams) => {
     if (!props.connector || !(props.connector instanceof Web3))
         throw new Error(MissingOrInvalidConnector);
     if (props.rawTransaction && !isHexString(props.rawTransaction))
-        throw new Error(InvalidNumber);
+        throw new Error(InvalidRawTransaction);
 };

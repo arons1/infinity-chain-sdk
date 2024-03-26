@@ -19,7 +19,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
 (0, globals_1.describe)('networksUTXO', () => {
     (0, globals_1.test)('builder', async () => {
         while (!utils_1.connector.connected) {
-            console.log(utils_1.connector.connected);
             await (0, utils_2.sleep)(500);
         }
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
@@ -28,7 +27,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             protocol: 44,
         });
         const xpub = (0, secp256k1_1.encodeGeneric)(privateAccountNode.neutered().toBase58(), 'xpub');
-        console.log(xpub);
         const build = await (0, builder_1.buildTransaction)({
             amount: '10000',
             coinId: 'ltc',

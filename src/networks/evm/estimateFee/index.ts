@@ -41,7 +41,10 @@ export const estimateFee = async (
             resultEstimate.transaction,
         ).serialize();
         fee = new BigNumber(
-            await estimateL1Cost(props.connector, txBuilder.toString('hex')),
+            await estimateL1Cost(
+                props.connector,
+                '0x' + txBuilder.toString('hex'),
+            ),
         )
             .plus(fee)
             .toString(10);

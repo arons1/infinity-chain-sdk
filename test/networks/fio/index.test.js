@@ -27,10 +27,8 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         (0, globals_1.expect)(built.signatures.length).toBe(1);
     });
     (0, globals_1.test)('estimateFee', async () => {
-        const fee = await (0, estimateFee_1.estimateFee)({
-            source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
-        });
-        (0, globals_1.expect)(parseInt(fee.fee)).toBeGreaterThan(2000000000);
+        const fee = await (0, estimateFee_1.estimateFee)('FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR');
+        (0, globals_1.expect)(parseInt(fee.fee)).toBeGreaterThan(965584403);
     });
     (0, globals_1.test)('getBalance', async () => {
         const bal = await (0, getBalance_1.getBalance)('FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR');

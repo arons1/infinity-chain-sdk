@@ -17,6 +17,6 @@ export const checkIfAccountExistsParametersChecker = (
     if (!props.connector || !(props.connector instanceof Connection))
         throw new Error(MissingOrInvalidConnector);
     if (!props.publicKey || !(props.publicKey instanceof PublicKey))
-        throw new Error(MissingOrInvalidConnector);
+        throw new Error(InvalidAddress);
     if (!props.mintToken) throw new Error(InvalidAddress);
 };

@@ -2,18 +2,17 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetBalanceParams } from './types';
 import { CurrencyBalanceResult } from '../../types';
 import { AccountResponse } from 'stellar-sdk';
+import { getBalanceParametersChecker } from '../parametersChecker';
 /*
 getBalance
     Returns balance of the account
     @param account: account to get the balance from
     @param connector: Stellar api connector
 */
-export const getBalance = async ({
-    account,
-    connector,
-}: GetBalanceParams): Promise<CurrencyBalanceResult> => {
+export const getBalance = async (props: GetBalanceParams): Promise<CurrencyBalanceResult> => {
+    getBalanceParametersChecker(props);
     const accountBalances: AccountResponse =
-        await connector.loadAccount(account);
+        await props.connector.loadAccount(props.account);
     const balanceCurrency = new BigNumber(
         accountBalances?.balances?.find(a => a.asset_type == 'native')
             ?.balance as string,

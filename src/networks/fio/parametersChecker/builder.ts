@@ -8,6 +8,6 @@ export const builderParametersChecker = (props: BuildTransactionParams) => {
     if (!isValidNumber(props.value)) throw new Error(InvalidAmount);
     if (!isValidAddress(props.source)) throw new Error(InvalidAddress);
     if (!isValidAddress(props.destination)) throw new Error(InvalidAddress);
-    if (!props.privateKey || !Buffer.isBuffer(props.privateKey))
+    if (!props.privateKey || typeof props.privateKey != 'string')
         throw new Error(MissingPrivateKey);
 };
