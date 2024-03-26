@@ -9,10 +9,13 @@ getBalance
     @param account: account to get the balance from
     @param connector: Stellar api connector
 */
-export const getBalance = async (props: GetBalanceParams): Promise<CurrencyBalanceResult> => {
+export const getBalance = async (
+    props: GetBalanceParams,
+): Promise<CurrencyBalanceResult> => {
     getBalanceParametersChecker(props);
-    const accountBalances: AccountResponse =
-        await props.connector.loadAccount(props.account);
+    const accountBalances: AccountResponse = await props.connector.loadAccount(
+        props.account,
+    );
     const balanceCurrency = new BigNumber(
         accountBalances?.balances?.find(a => a.asset_type == 'native')
             ?.balance as string,

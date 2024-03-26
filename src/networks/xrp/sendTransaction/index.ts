@@ -1,15 +1,17 @@
 import { AnyJson } from 'xrpl-client';
 import { SendTransactionParams, TransactionResult, TxJson } from './types';
+import { sendTransactionParamsChecker } from '../parametersChecker';
 /*
 sendTransaction
     Returns hash of the transaction broadacasted
     @param connector: XRP api connector
     @param rawTransaction: raw transaction to broadcast
 */
-export const sendTransaction = ({
-    rawTransaction,
-    connector,
-}: SendTransactionParams): Promise<string> => {
+export const sendTransaction = (
+    props: SendTransactionParams,
+): Promise<string> => {
+    sendTransactionParamsChecker(props);
+    const { rawTransaction, connector } = props;
     return new Promise((resolve, reject) => {
         connector
             .send(

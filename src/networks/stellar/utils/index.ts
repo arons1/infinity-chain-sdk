@@ -41,7 +41,7 @@ accountExists
     @param account: account to check if it exists
 */
 export const accountExists = async (props: AccountExists) => {
-    accountExistsParametersChecker(props)
+    accountExistsParametersChecker(props);
     try {
         await props.connector.loadAccount(props.account);
         return true;

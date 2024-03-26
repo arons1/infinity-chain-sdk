@@ -23,4 +23,4 @@ export const MissingMintTokenOrDecimalsTokens =
     'ERR_MISSING_MINT_DECIMALS_TOKEN';
 export const MissingTransaction = 'ERR_MISSING_TRANSACTION';
 export const ExceededLimit = 'ERR_EXCEEDED_LIMIT';
-export const MissingKeyPair = "ERR_MISSING_KEYPAIR"
+export const MissingKeyPair = 'ERR_MISSING_KEYPAIR';

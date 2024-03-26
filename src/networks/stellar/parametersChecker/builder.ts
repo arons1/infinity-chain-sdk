@@ -17,7 +17,8 @@ export const builderParametersChecker = async (
     if (props.memo && !isValidMemo(props.memo)) throw new Error(InvalidMemo);
     if (!isValidAddress(props.destination)) throw new Error(InvalidAddress);
     if (!isValidAddress(props.source)) throw new Error(InvalidAddress);
-    if (props.issuer && !isValidAddress(props.issuer)) throw new Error(InvalidAddress);
+    if (props.issuer && !isValidAddress(props.issuer))
+        throw new Error(InvalidAddress);
     if (!props.connector || !(props.connector instanceof Server))
         throw new Error(MissingOrInvalidConnector);
     if (!isValidNumber(props.value)) throw new Error(InvalidNumber);

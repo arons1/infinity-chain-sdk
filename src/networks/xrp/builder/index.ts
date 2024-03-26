@@ -1,5 +1,9 @@
 import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Payment, BuildTransactionParams, PreparePaymentParams } from './types';
+import {
+    builderParametersChecker,
+    preparePaymentParametersChecker,
+} from '../parametersChecker/builder';
 
 const LEDGER_OFFSET = 20;
 /*
@@ -8,10 +12,9 @@ preparePayment
     @param connector: XRP api connector
     @param tx:transaction to be prepared
 */
-export const preparePayment = async ({
-    tx,
-    connector,
-}: PreparePaymentParams) => {
+export const preparePayment = async (props: PreparePaymentParams) => {
+    preparePaymentParametersChecker(props);
+    const { tx, connector } = props;
     if (tx.Sequence == undefined) {
         const request = {
             command: 'account_info',
@@ -42,14 +45,11 @@ buildTransaction
     @param keyPair: keypair
     @param memo:memo string(optional)
 */
-export const buildTransaction = async ({
-    amount,
-    from,
-    to,
-    keyPair,
-    connector,
-    memo = '',
-}: BuildTransactionParams): Promise<string> => {
+export const buildTransaction = async (
+    props: BuildTransactionParams,
+): Promise<string> => {
+    builderParametersChecker(props);
+    const { amount, from, to, keyPair, connector, memo = '' } = props;
     const tx = {
         TransactionType: 'Payment',
         Amount: amount,

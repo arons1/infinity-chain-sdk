@@ -1,3 +1,4 @@
+import { BIP32Interface } from 'bitcoinjs-lib';
 import { XrplClient } from 'xrpl-client';
 
 export type Payment = {
@@ -17,7 +18,7 @@ export type BuildTransactionParams = {
     to: string;
     memo?: string;
     connector: XrplClient;
-    keyPair: any;
+    keyPair: BIP32Interface;
 };
 export type PreparePaymentParams = {
     connector: XrplClient;
