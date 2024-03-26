@@ -9,6 +9,7 @@ import { currencyTransaction } from './currency';
 import { getLastBlockhash } from '../utils';
 import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import * as Web3 from '@solana/web3.js';
+import { builderParametersChecker } from '../parametersChecker';
 /* 
 buildTransaction
     Returns raw transaction built signed
@@ -23,6 +24,7 @@ buildTransaction
 export const buildTransaction = async (
     props: TransactionBuilderParams,
 ): Promise<string> => {
+    builderParametersChecker(props);
     const transactionPay = await rawTransaction({
         ...props,
         publicKey: new PublicKey(props.keyPair.publicKey),

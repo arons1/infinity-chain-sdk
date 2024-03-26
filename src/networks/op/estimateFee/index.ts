@@ -12,7 +12,7 @@ export const estimateL1Cost = async (
     connector: Web3,
     rawTransaction: string,
 ): Promise<string> => {
-    estimateFeeParametersChecker(connector,rawTransaction);
+    estimateFeeParametersChecker(connector, rawTransaction);
     const gpo = new connector.eth.Contract(
         feeAbi,
         '0x420000000000000000000000000000000000000F',

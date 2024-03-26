@@ -18,3 +18,8 @@ export const MissingOrInvalidConnector = 'ERR_INVALID_CONNECTOR';
 export const InvalidData = 'ERR_INVALID_DATA';
 export const TransactionNotSigned = 'ERR_TRANSACTION_NOT_SIGNED';
 export const InvalidRawTransaction = 'ERR_INVALID_RAW_TRANSACTION';
+export const InvalidMemo = 'ERR_INVALID_MEMO';
+export const MissingMintTokenOrDecimalsTokens =
+    'ERR_MISSING_MINT_DECIMALS_TOKEN';
+export const MissingTransaction = 'ERR_MISSING_TRANSACTION';
+export const ExceededLimit = 'ERR_EXCEEDED_LIMIT';

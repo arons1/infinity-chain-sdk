@@ -6,3 +6,7 @@ export type GetAccountsTransactionsParams = {
 };
 
 export type TokenBalancesResult = Record<string, number>;
+export type GetBalanceParams = {
+    connector: Connection;
+    address: string;
+};

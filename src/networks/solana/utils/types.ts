@@ -17,3 +17,8 @@ export type GetAccountsResult = {
     account: AccountInfo<ParsedAccountData>;
     pubkey: PublicKey;
 };
+export type CheckIfAccountExistsParams = {
+    mintToken: string;
+    publicKey: PublicKey;
+    connector: Connection;
+};

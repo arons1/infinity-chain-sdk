@@ -12,6 +12,7 @@ import {
     VersionedTransaction,
 } from '@solana/web3.js';
 import { AccountLayout } from '@solana/spl-token';
+import { getBalanceAfterParametersChecker } from '../parametersChecker';
 
 const getBalanceAfterVersioned = async ({
     accounts,
@@ -88,11 +89,11 @@ getBalanceAfter
     @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
     @param connector: solana web3 connector
 */
-export const getBalanceAfter = async ({
-    connector,
-    transaction,
-    signer,
-}: GetBalanceAfterParams): Promise<Record<string, DataBalance>> => {
+export const getBalanceAfter = async (
+    props: GetBalanceAfterParams,
+): Promise<Record<string, DataBalance>> => {
+    getBalanceAfterParametersChecker(props);
+    const { connector, transaction, signer } = props;
     if ('message' in transaction)
         return await getBalanceAfterVersioned({
             accounts: transaction.message.staticAccountKeys.map(a =>

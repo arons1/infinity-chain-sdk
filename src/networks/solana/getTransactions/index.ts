@@ -15,6 +15,7 @@ import {
 import { create } from 'superstruct';
 import { GetSignaturesForAddressRpcResult } from './results';
 import { sleep } from '../utils';
+import { getTransactionsParametersChecker } from '../parametersChecker';
 const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
 /* 
@@ -98,13 +99,17 @@ getAccountsTransactions
     @param signatures: hashes of the transactions already saved in the wallet
     @param limit: limit of transactions per batch(optional)
 */
-export const getAccountsTransactions = async ({
-    connector,
-    address,
-    accounts,
-    signatures,
-    limit = LIMIT_CALLS,
-}: GetAccountsTransactionsParams) => {
+export const getAccountsTransactions = async (
+    props: GetAccountsTransactionsParams,
+) => {
+    getTransactionsParametersChecker(props);
+    const {
+        connector,
+        address,
+        accounts,
+        signatures,
+        limit = LIMIT_CALLS,
+    } = props;
     const transactionHashes = await getAccountsHashes({
         connector,
         address,

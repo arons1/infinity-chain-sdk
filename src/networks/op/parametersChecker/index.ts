@@ -1,2 +1,1 @@
-export * from './estimateFee'
-
+export * from './estimateFee';

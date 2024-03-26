@@ -2,21 +2,22 @@ import { VersionedTransaction } from '@solana/web3.js';
 import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { estimateFeeParametersChecker } from '../parametersChecker';
 /* 
 rawTransaction
     Returns raw transaction
     @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
     @param connector: solana web3 connector
 */
-export const estimateFee = async ({
-    connector,
-    transaction,
-}: EstimateFeeParams): Promise<EstimateFeeResult> => {
-    if ('message' in transaction)
+export const estimateFee = async (
+    props: EstimateFeeParams,
+): Promise<EstimateFeeResult> => {
+    estimateFeeParametersChecker(props);
+    if ('message' in props.transaction)
         return {
             fee: (
-                await connector.getFeeForMessage(
-                    (transaction as VersionedTransaction).message,
+                await props.connector.getFeeForMessage(
+                    (props.transaction as VersionedTransaction).message,
                     'confirmed',
                 )
             ).value?.toString(10),
@@ -24,7 +25,9 @@ export const estimateFee = async ({
     else
         return {
             fee: new BigNumber(
-                (await transaction.getEstimatedFee(connector)) as number,
+                (await props.transaction.getEstimatedFee(
+                    props.connector,
+                )) as number,
             ).toString(10),
         };
 };

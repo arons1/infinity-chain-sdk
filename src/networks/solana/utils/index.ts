@@ -4,7 +4,12 @@ import {
     PublicKey,
     TransactionInstruction,
 } from '@solana/web3.js';
-import { GetAccountsParams, GetAccountsResult, ResultBlockHash } from './types';
+import {
+    CheckIfAccountExistsParams,
+    GetAccountsParams,
+    GetAccountsResult,
+    ResultBlockHash,
+} from './types';
 import {
     ASSOCIATED_TOKEN_PROGRAM_ID,
     TOKEN_PROGRAM_ID,
@@ -12,6 +17,15 @@ import {
     getAssociatedTokenAddress,
 } from '@solana/spl-token';
 import { MEMO_PROGRAM_ID } from '../constants';
+import {
+    checkIfAccountExistsParametersChecker,
+    getAccountsParametersChecker,
+} from '../parametersChecker';
+import { isValidMemo } from '@infinity/core-sdk/lib/commonjs/networks/utils/solana';
+import {
+    InvalidMemo,
+    MissingOrInvalidConnector,
+} from '../../../errors/networks';
 
 /* 
 getLastBlockhash
@@ -30,15 +44,11 @@ checkIfAccountExists
     @param publicKey: public key source
     @param mintToken: mint of the token to transfer
 */
-export const checkIfAccountExists = async ({
-    mintToken,
-    publicKey,
-    connector,
-}: {
-    mintToken: string;
-    publicKey: PublicKey;
-    connector: Connection;
-}): Promise<[boolean, PublicKey]> => {
+export const checkIfAccountExists = async (
+    props: CheckIfAccountExistsParams,
+): Promise<[boolean, PublicKey]> => {
+    checkIfAccountExistsParametersChecker(props);
+    const { mintToken, publicKey, connector } = props;
     const associatedToken = await getAssociatedTokenAddress(
         new PublicKey(mintToken),
         publicKey,
@@ -68,6 +78,8 @@ export const getMinimumBalanceForRent = async (
     connector: Connection,
     isToken: boolean,
 ) => {
+    if (!connector || !(connector instanceof Connection))
+        throw new Error(MissingOrInvalidConnector);
     try {
         return await connector.getMinimumBalanceForRentExemption(
             isToken ? 165 : 0,
@@ -82,6 +94,7 @@ memoInstruction
     @param memo: Memo for the instruction
 */
 export const memoInstruction = (memo: string) => {
+    if (!isValidMemo(memo)) throw new Error(InvalidMemo);
     return new TransactionInstruction({
         programId: new PublicKey(MEMO_PROGRAM_ID),
         keys: [],
@@ -98,10 +111,11 @@ getAccounts
     @param connector: solana web3 connector
     @param address: get accounts of an address
 */
-export const getAccounts = async ({
-    connector,
-    address,
-}: GetAccountsParams): Promise<GetAccountsResult[]> => {
+export const getAccounts = async (
+    props: GetAccountsParams,
+): Promise<GetAccountsResult[]> => {
+    getAccountsParametersChecker(props);
+    const { connector, address } = props;
     const filters: GetProgramAccountsFilter[] = [
         {
             dataSize: 165,
