@@ -21,5 +21,4 @@ export const builderParametersChecker = async (
     if (!props.connector || !(props.connector instanceof Server))
         throw new Error(MissingOrInvalidConnector);
     if (!isValidNumber(props.value)) throw new Error(InvalidNumber);
-
 };

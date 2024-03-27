@@ -58,7 +58,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             await (0, utils_2.sleep)(500);
         }
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
-            rootNode: (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default['ltc'] }),
+            rootNode: (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default[registry_1.Coins.LTC] }),
             bipIdCoin: registry_1.CoinIds.LTC,
             protocol: registry_1.Protocol.LEGACY,
         });
@@ -147,17 +147,17 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
-            rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: CoinIds[Coins.LTC],
+            rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
+            bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const build = await buildTransaction({
             amount: '10000',
-            coinId: 'ltc',
+            coinId: Coins.LTC,
             destination: 'LZg4esEAthGQpg4QshXf7CwJi8XLhQdPDx',
             accounts: [
                 {

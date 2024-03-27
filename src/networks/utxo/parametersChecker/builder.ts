@@ -33,7 +33,7 @@ export const builderParametersChecker = (props: BuildParameters) => {
     )
         throw new Error(SpecifyChangePublic);
     if (!selected) throw new Error(CoinNotIntegrated);
-    if (isValidNumber(props.amount)) throw new Error(InvalidAmount);
+    if (!isValidNumber(props.amount)) throw new Error(InvalidAmount);
     if (!network) throw new Error(InvalidNetworkVersion);
     if (props.feeRatio && (props.feeRatio < 0 || props.feeRatio > 1))
         throw new Error(InvalidFeeRatio);
@@ -41,7 +41,7 @@ export const builderParametersChecker = (props: BuildParameters) => {
         throw new Error(MissingOrInvalidConnector);
     if (
         !props.destination &&
-        isValidAddress(props.destination, network as Network)
+        !isValidAddress(props.destination, network as Network)
     )
         throw new Error(InvalidAddress);
     if (

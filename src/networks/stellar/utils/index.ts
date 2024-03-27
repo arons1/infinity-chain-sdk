@@ -46,6 +46,7 @@ export const accountExists = async (props: AccountExists) => {
         await props.connector.loadAccount(props.account);
         return true;
     } catch (e) {
+        console.error(e);
         return false;
     }
 };
