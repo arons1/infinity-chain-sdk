@@ -30,7 +30,10 @@ describe('networksTezos', () => {
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
+        const privateKey = getSecretAddress({
+            bipIdCoin: CoinIds.TEZOS,
+            secretKey,
+        });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });
@@ -51,7 +54,10 @@ describe('networksTezos', () => {
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
+        const privateKey = getSecretAddress({
+            bipIdCoin: CoinIds.TEZOS,
+            secretKey,
+        });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });

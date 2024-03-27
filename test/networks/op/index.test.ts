@@ -10,15 +10,22 @@ import {
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import {
+    CoinIds,
+    Coins,
+    Protocol,
+} from '@infinity/core-sdk/lib/commonjs/networks/registry';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksOP', () => {
     test('estimateL1Cost', async () => {
-        const rootNode = getRootNode({ mnemonic, network: networks[Coins.ETH] });
+        const rootNode = getRootNode({
+            mnemonic,
+            network: networks[Coins.ETH],
+        });
         const privateAccountNode = getPrivateMasterKey({
-            bipIdCoin: 60,
-            protocol: 44,
+            bipIdCoin: CoinIds.ETH,
+            protocol: Protocol.LEGACY,
             rootNode,
         });
         const publicAddress = getPublicAddress({

@@ -4,12 +4,11 @@ import {
     InvalidAddress,
     InvalidMemo,
     InvalidNumber,
-    MissingKeyPair,
     MissingOrInvalidConnector,
 } from '../../../errors/networks';
 import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/stellar';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
-import { Keypair, Server } from 'stellar-sdk';
+import { Server } from 'stellar-sdk';
 
 export const builderParametersChecker = async (
     props: BuildTransactionParams,
@@ -22,6 +21,5 @@ export const builderParametersChecker = async (
     if (!props.connector || !(props.connector instanceof Server))
         throw new Error(MissingOrInvalidConnector);
     if (!isValidNumber(props.value)) throw new Error(InvalidNumber);
-    if (!props.keyPair || !(props.keyPair instanceof Keypair))
-        throw new Error(MissingKeyPair);
+
 };

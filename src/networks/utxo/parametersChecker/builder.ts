@@ -12,7 +12,6 @@ import {
 } from '../../../errors/networks';
 import { BuildParameters } from '../builder/types';
 import { networks } from '@infinity/core-sdk';
-import { MissingCoinId } from '../../../errors/transactionParsers';
 import { InvalidNetworkVersion } from '@infinity/core-sdk/lib/commonjs/errors';
 import { TrezorWebsocket } from '../trezorWebsocket';
 import {
@@ -26,7 +25,6 @@ import { Network } from 'bitcoinjs-lib';
     utxos?: UTXOResult[] | undefined;
 */
 export const builderParametersChecker = (props: BuildParameters) => {
-    if (typeof props.coinId != 'string') throw new Error(MissingCoinId);
     const selected = PROVIDER_TREZOR[props.coinId] as string;
     const network = networks.networks.default[props.coinId];
     if (
@@ -41,7 +39,10 @@ export const builderParametersChecker = (props: BuildParameters) => {
         throw new Error(InvalidFeeRatio);
     if (!props.connector || !(props.connector instanceof TrezorWebsocket))
         throw new Error(MissingOrInvalidConnector);
-    if (!props.destination && isValidAddress(props.destination, props.coinId))
+    if (
+        !props.destination &&
+        isValidAddress(props.destination, network as Network)
+    )
         throw new Error(InvalidAddress);
     if (
         props.accounts.find(

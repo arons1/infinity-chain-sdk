@@ -17,7 +17,10 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
-        const privateKey = (0, ed25519_1.getSecretAddress)({ bipIdCoin: registry_1.CoinIds.TEZOS, secretKey });
+        const privateKey = (0, ed25519_1.getSecretAddress)({
+            bipIdCoin: registry_1.CoinIds.TEZOS,
+            secretKey,
+        });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
         });
@@ -38,7 +41,10 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
-        const privateKey = (0, ed25519_1.getSecretAddress)({ bipIdCoin: registry_1.CoinIds.TEZOS, secretKey });
+        const privateKey = (0, ed25519_1.getSecretAddress)({
+            bipIdCoin: registry_1.CoinIds.TEZOS,
+            secretKey,
+        });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
         });

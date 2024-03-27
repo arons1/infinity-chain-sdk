@@ -19,7 +19,10 @@ const PRIORITY_FEES = {
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksEVM', () => {
     (0, globals_1.test)('builder', async () => {
-        const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default[registry_1.Coins.ETH] });
+        const rootNode = (0, secp256k1_1.getRootNode)({
+            mnemonic,
+            network: networks_1.default[registry_1.Coins.ETH],
+        });
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
             bipIdCoin: registry_1.CoinIds.ETH,
             protocol: registry_1.Protocol.LEGACY,

@@ -1,4 +1,4 @@
-import { Coins } from "@infinity/core-sdk/lib/commonjs/networks/registry";
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 export type GeneralApiParams = {
     coinId?: Coins;

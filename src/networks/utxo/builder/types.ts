@@ -2,10 +2,10 @@ import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 import { UTXOResult } from '../getUTXO/types';
 import { TrezorWebsocket } from '../trezorWebsocket';
 import { FeeResult } from '../estimateFee/types';
-import { CoinIds } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 export type BuildParameters = {
-    coinId: CoinIds;
+    coinId: Coins;
     amount: string;
     connector: TrezorWebsocket;
     accounts: Account[];

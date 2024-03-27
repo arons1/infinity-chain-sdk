@@ -30,7 +30,7 @@ describe('networksXRP', () => {
             amount: '10',
             keyPair,
             connector: apiRipple,
-            memo: 'test',
+            memo: '123456',
         });
         expect(built.length > 0).toBe(true);
     });
@@ -62,7 +62,7 @@ describe('networksXRP', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 144 }),
+            publicKey: getPublicKey({ keyPair, coinId: CoinIds.XRP }),
         });
 
         const rawTransaction = await buildTransaction({
@@ -71,7 +71,7 @@ describe('networksXRP', () => {
             amount: '10',
             keyPair,
             connector: apiRipple,
-            memo: 'test',
+            memo: '123123',
         });
         const result = await sendTransaction({
             rawTransaction,

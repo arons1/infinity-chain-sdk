@@ -15,10 +15,13 @@ const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksOP', () => {
     (0, globals_1.test)('estimateL1Cost', async () => {
-        const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default[registry_1.Coins.ETH] });
+        const rootNode = (0, secp256k1_1.getRootNode)({
+            mnemonic,
+            network: networks_1.default[registry_1.Coins.ETH],
+        });
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
-            bipIdCoin: 60,
-            protocol: 44,
+            bipIdCoin: registry_1.CoinIds.ETH,
+            protocol: registry_1.Protocol.LEGACY,
             rootNode,
         });
         const publicAddress = (0, address_1.getPublicAddress)({

@@ -4,6 +4,7 @@ import { Server } from 'stellar-sdk';
 import { TezosToolkit } from '@taquito/taquito';
 import { XrplClient } from 'xrpl-client';
 import { TrezorWebsocket } from '../lib/commonjs/networks/utxo/trezorWebsocket';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 export const web3Matic = new Web3('https://polygon-rpc.com');
 export const web3Op = new Web3(
@@ -13,5 +14,5 @@ export const web3Solana = new Connection('https://solana.twnodes.com/');
 export const apiStellar = new Server('https://horizon.stellar.org');
 export const web3Tezos = new TezosToolkit('https://mainnet.ecadinfra.com');
 export const apiRipple = new XrplClient();
-export const connector = new TrezorWebsocket('ltc');
+export const connector = new TrezorWebsocket(Coins.LTC);
 connector.connect();

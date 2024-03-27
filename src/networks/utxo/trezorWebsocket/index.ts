@@ -1,3 +1,4 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import { WEBSOCKETS } from '../constants';
 import { WebSocket } from 'ws';
 
@@ -14,7 +15,7 @@ export class TrezorWebsocket {
     coin: string;
     timeOutInt: NodeJS.Timeout | undefined;
     callbacks: Record<string, any> = {};
-    constructor(coin: string) {
+    constructor(coin: Coins) {
         this.url = WEBSOCKETS[coin];
         this.messageID = 0;
         this.coin = coin;

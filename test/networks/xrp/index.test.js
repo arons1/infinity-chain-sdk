@@ -23,7 +23,7 @@ const mnemonic = 'raw green cereal demand genius mansion pistol couple surround 
             amount: '10',
             keyPair,
             connector: utils_1.apiRipple,
-            memo: 'test',
+            memo: '123456',
         });
         (0, globals_1.expect)(built.length > 0).toBe(true);
     });
