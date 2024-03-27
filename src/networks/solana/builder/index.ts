@@ -10,6 +10,7 @@ import { getLastBlockhash } from '../utils';
 import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import * as Web3 from '@solana/web3.js';
 import { builderParametersChecker } from '../parametersChecker';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 /* 
 buildTransaction
     Returns raw transaction built signed
@@ -33,7 +34,7 @@ export const buildTransaction = async (
     return signTransaction({
         transaction: transactionPay,
         keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
-        coinId: 'solana',
+        coinId: Coins.SOLANA,
     });
 };
 /* 

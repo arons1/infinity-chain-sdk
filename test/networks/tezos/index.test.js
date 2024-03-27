@@ -7,16 +7,17 @@ const estimateFee_1 = require("../../../lib/commonjs/networks/tezos/estimateFee"
 const utils_1 = require("../../utils");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const getBalance_1 = require("../../../lib/commonjs/networks/tezos/getBalance");
+const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksTezos', () => {
     (0, globals_1.test)('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
-        const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
+        const privateKey = (0, ed25519_1.getSecretAddress)({ bipIdCoin: registry_1.CoinIds.TEZOS, secretKey });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
         });
@@ -34,10 +35,10 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const secretKey = (0, ed25519_1.getPrivateKey)({ keyPair });
-        const privateKey = (0, ed25519_1.getSecretAddress)({ coinId: 1729, secretKey });
+        const privateKey = (0, ed25519_1.getSecretAddress)({ bipIdCoin: registry_1.CoinIds.TEZOS, secretKey });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
         });
@@ -57,7 +58,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const pkHash = (0, ed25519_1.getTezosPublicKeyHash)({
             keyPair,
@@ -77,7 +78,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const balanceResult = await (0, getBalance_1.getBalance)({
             address: publicAddress,
@@ -88,7 +89,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 1729 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const balanceResult = await (0, getBalance_1.getAccountBalances)({
             account: publicAddress,
@@ -104,10 +105,10 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });

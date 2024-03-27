@@ -1,12 +1,8 @@
-import { PROVIDER_TREZOR } from '../../../constants';
 import {
     CannotGetFeePerByte,
     CannotGetUTXO,
-    CoinNotIntegrated,
     ErrorBuildingUTXOTransaction,
-    InvalidAmount,
     ProtocolNotSupported,
-    SpecifyChangePublic,
 } from '../../../errors/networks';
 import { DUST } from '../constants';
 import { getFeePerByte } from '../estimateFee';
@@ -24,6 +20,7 @@ import {
     opcodes,
     script,
 } from 'bitcoinjs-lib';
+import { builderParametersChecker } from '../parametersChecker';
 /*
 buildTransaction
     Returns transaction build result
@@ -36,22 +33,21 @@ buildTransaction
     @param utxos: utxo to use (optional)
     @param feeRatio: Fee ratio
 */
-export const buildTransaction = async ({
-    coinId,
-    amount,
-    connector,
-    accounts,
-    destination,
-    memo = '',
-    utxos = [],
-    feeRatio = 0.5,
-}: BuildParameters): Promise<BuildTransactionResult> => {
-    const selected = PROVIDER_TREZOR[coinId as string] as string;
-    const network = networks.networks.default[coinId as string];
-    if (accounts.find(a => a.useAsChange) == undefined)
-        throw new Error(SpecifyChangePublic);
-    if (!selected) throw new Error(CoinNotIntegrated);
-    if (amount.includes('.')) throw new Error(InvalidAmount);
+export const buildTransaction = async (
+    props: BuildParameters,
+): Promise<BuildTransactionResult> => {
+    var {
+        coinId,
+        amount,
+        connector,
+        accounts,
+        destination,
+        memo = '',
+        utxos = [],
+        feeRatio = 0.5,
+    } = props;
+    builderParametersChecker(props);
+    const network = networks.networks.default[coinId];
     // 1º Get UTXOs
     if (utxos.length == 0) {
         const extendedPublicKeys = accounts.map(a => a.extendedPublicKey);

@@ -12,6 +12,7 @@ import { estimateFee } from '../../../lib/commonjs/networks/xrp/estimateFee';
 import { apiRipple } from '../../utils';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getBalance } from '../../../lib/commonjs/networks/xrp/getBalance';
+import { CoinIds } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const mnemonic =
     'raw green cereal demand genius mansion pistol couple surround divide chef shadow';
@@ -20,7 +21,7 @@ describe('networksXRP', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 144 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.XRP }),
         });
 
         const built = await buildTransaction({
@@ -47,7 +48,7 @@ describe('networksXRP', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = getPublicXRPAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 144 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.XRP }),
         });
         const balanceResult = await getBalance({
             address: publicAddress,

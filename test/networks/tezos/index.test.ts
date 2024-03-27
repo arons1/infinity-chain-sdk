@@ -18,6 +18,7 @@ import {
     getAccountBalances,
 } from '../../../lib/commonjs/networks/tezos/getBalance';
 import { BalanceResult } from '../../../lib/commonjs/networks/types';
+import { CoinIds } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -26,10 +27,10 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });
@@ -47,10 +48,10 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });
@@ -70,7 +71,7 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
@@ -93,7 +94,7 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
 
         const balanceResult = await getBalance({
@@ -105,7 +106,7 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const balanceResult: Record<string, BalanceResult[]> =
             await getAccountBalances({
@@ -129,10 +130,10 @@ describe('networksTezos', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/1729'/0'/0'" });
         const publicAddress = getPublicTezosAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 1729 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.TEZOS }),
         });
         const secretKey = getPrivateKey({ keyPair });
-        const privateKey = getSecretAddress({ coinId: 1729, secretKey });
+        const privateKey = getSecretAddress({ bipIdCoin: CoinIds.TEZOS, secretKey });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
         });

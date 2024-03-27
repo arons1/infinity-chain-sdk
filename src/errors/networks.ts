@@ -24,3 +24,5 @@ export const MissingMintTokenOrDecimalsTokens =
 export const MissingTransaction = 'ERR_MISSING_TRANSACTION';
 export const ExceededLimit = 'ERR_EXCEEDED_LIMIT';
 export const MissingKeyPair = 'ERR_MISSING_KEYPAIR';
+export const InvalidExtenedPublicKey = 'ERR_INVALID_EXTENDED_PUBLICKEY';
+export const InvalidUTXO = 'ERR_INVALID_UTXO';

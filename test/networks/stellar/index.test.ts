@@ -13,6 +13,7 @@ import {
     getSeed,
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { CoinIds } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksStellar', () => {
@@ -20,7 +21,7 @@ describe('networksStellar', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 148 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
         const built = await buildTransaction({
             memo: 'test',
@@ -37,7 +38,7 @@ describe('networksStellar', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 148 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
         const built = await buildTransaction({
             memo: 'test',
@@ -62,7 +63,7 @@ describe('networksStellar', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 148 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
         const balance = await getBalance({
             account: publicAddress,
@@ -74,7 +75,7 @@ describe('networksStellar', () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
         const publicAddress = getPublicStellarAddress({
-            publicKey: getPublicKey({ keyPair, coinId: 148 }),
+            publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
         const balance = await getAccountBalances({
             accounts: [publicAddress],

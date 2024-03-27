@@ -13,6 +13,7 @@ import {
     getPrivateMasterKey,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
+import { CoinIds, Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 const PRIORITY_FEES = {
     1: '1000000000',
     137: '21000000000',
@@ -21,10 +22,10 @@ const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksEVM', () => {
     test('builder', async () => {
-        const rootNode = getRootNode({ mnemonic, network: networks['eth'] });
+        const rootNode = getRootNode({ mnemonic, network: networks[Coins.ETH] });
         const privateAccountNode = getPrivateMasterKey({
-            bipIdCoin: 60,
-            protocol: 44,
+            bipIdCoin: CoinIds.ETH,
+            protocol: Protocol.LEGACY,
             rootNode,
         });
         const publicAddress = getPublicAddress({

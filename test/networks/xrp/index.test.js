@@ -8,13 +8,14 @@ const estimateFee_1 = require("../../../lib/commonjs/networks/xrp/estimateFee");
 const utils_1 = require("../../utils");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const getBalance_1 = require("../../../lib/commonjs/networks/xrp/getBalance");
+const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'raw green cereal demand genius mansion pistol couple surround divide chef shadow';
 (0, globals_1.describe)('networksXRP', () => {
     (0, globals_1.test)('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = (0, ed25519_1.getPublicXRPAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 144 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.XRP }),
         });
         const built = await (0, builder_1.buildTransaction)({
             from: publicAddress,
@@ -36,7 +37,7 @@ const mnemonic = 'raw green cereal demand genius mansion pistol couple surround 
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/144'/0'/0/0" });
         const publicAddress = (0, ed25519_1.getPublicXRPAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 144 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.XRP }),
         });
         const balanceResult = await (0, getBalance_1.getBalance)({
             address: publicAddress,

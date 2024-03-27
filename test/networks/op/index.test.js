@@ -11,10 +11,11 @@ const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
 const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address");
 const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1");
 const networks_1 = __importDefault(require("@infinity/core-sdk/lib/commonjs/networks/networks"));
+const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksOP', () => {
     (0, globals_1.test)('estimateL1Cost', async () => {
-        const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default['eth'] });
+        const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic, network: networks_1.default[registry_1.Coins.ETH] });
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
             bipIdCoin: 60,
             protocol: 44,

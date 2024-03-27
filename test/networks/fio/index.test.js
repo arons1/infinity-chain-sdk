@@ -6,13 +6,14 @@ const estimateFee_1 = require("../../../lib/commonjs/networks/fio/estimateFee");
 const getBalance_1 = require("../../../lib/commonjs/networks/fio/getBalance");
 const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1");
 const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address");
+const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksFIO', () => {
     (0, globals_1.test)('builder', async () => {
         const rootNode = (0, secp256k1_1.getRootNode)({ mnemonic });
         const privateAccountNode = (0, secp256k1_1.getPrivateMasterKey)({
-            bipIdCoin: 235,
-            protocol: 44,
+            bipIdCoin: registry_1.CoinIds.FIO,
+            protocol: registry_1.Protocol.LEGACY,
             rootNode,
         });
         const privateAddress = (0, address_1.getFIOPrivateAddress)({

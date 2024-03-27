@@ -8,6 +8,7 @@ import {
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import { getFIOPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm/address';
+import { CoinIds, Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -15,8 +16,8 @@ describe('networksFIO', () => {
     test('builder', async () => {
         const rootNode = getRootNode({ mnemonic });
         const privateAccountNode = getPrivateMasterKey({
-            bipIdCoin: 235,
-            protocol: 44,
+            bipIdCoin: CoinIds.FIO,
+            protocol: Protocol.LEGACY,
             rootNode,
         });
         const privateAddress = getFIOPrivateAddress({

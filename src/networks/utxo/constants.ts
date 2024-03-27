@@ -1,12 +1,14 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+
 export const DUST: Record<string, number> = {
-    btc: 546,
-    ltc: 1000,
-    doge: 50000000,
-    groestlcoin: 1000,
+    [Coins.BTC]: 546,
+    [Coins.LTC]: 1000,
+    [Coins.DOGE]: 50000000,
+    [Coins.GRS]: 1000,
 };
 export const WEBSOCKETS: Record<string, string> = {
-    btc: 'https://btc1.trezor.io',
-    ltc: 'https://ltc1.trezor.io',
-    doge: 'https://doge1.trezor.io',
-    groestlcoin: 'https://blockbook.groestlcoin.org',
+    [Coins.BTC]: 'https://btc1.trezor.io',
+    [Coins.LTC]: 'https://ltc1.trezor.io',
+    [Coins.DOGE]: 'https://doge1.trezor.io',
+    [Coins.GRS]: 'https://blockbook.groestlcoin.org',
 };

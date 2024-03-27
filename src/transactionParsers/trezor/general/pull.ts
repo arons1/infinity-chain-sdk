@@ -14,7 +14,7 @@ export const pull = ({ coinId, address, page, limit }: GeneralApiParams) => {
     } else {
         if (!address) throw new Error(MissingAddress);
     }
-    const selected = PROVIDER_TREZOR[coinId as string] as string;
+    const selected = PROVIDER_TREZOR[coinId] as string;
     if (!selected) throw new Error(CoinNotIntegrated);
     if (coinId == 'eth') {
         return {

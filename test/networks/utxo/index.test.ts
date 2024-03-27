@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/utxo/builder';
 import {
+    Encoding,
     encodeGeneric,
     getPrivateMasterKey,
     getRootNode,
@@ -20,6 +21,7 @@ import { getUTXO } from '../../../lib/commonjs/networks/utxo/getUTXO';
 import { getLastChangeIndex } from '../../../lib/commonjs/networks/utxo/getLastChangeIndex';
 //import { sendTransaction } from '../../../lib/commonjs/networks/utxo/sendTransaction';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { CoinIds, Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -30,16 +32,16 @@ describe('networksUTXO', () => {
         }
         const privateAccountNode = getPrivateMasterKey({
             rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const build = await buildTransaction({
             amount: '10000',
-            coinId: 'ltc',
+            coinId: CoinIds.LTC,
             destination: 'LZg4esEAthGQpg4QshXf7CwJi8XLhQdPDx',
             accounts: [
                 {
@@ -68,16 +70,16 @@ describe('networksUTXO', () => {
         }
         const privateAccountNode = getPrivateMasterKey({
             rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const estimate = await estimateFee({
             amount: '10000',
-            coinId: 'ltc',
+            coinId: Coins.LTC,
             extendedPublicKeys: [xpub],
             connector,
         });
@@ -91,13 +93,13 @@ describe('networksUTXO', () => {
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
-            rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const balance = await getBalance({
             extendedPublicKeys: [xpub],
@@ -111,13 +113,13 @@ describe('networksUTXO', () => {
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
-            rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const balance = await getAccountBalances({
             extendedPublicKeys: [xpub],
@@ -133,13 +135,13 @@ describe('networksUTXO', () => {
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
-            rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const utxo = await getUTXO({
             extendedPublicKey: xpub,
@@ -153,13 +155,13 @@ describe('networksUTXO', () => {
             await sleep(500);
         }
         const privateAccountNode = getPrivateMasterKey({
-            rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
+            bipIdCoin: CoinIds.LTC,
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            'xpub',
+            Encoding.XPUB,
         );
         const { index, protocol } = await getLastChangeIndex({
             extendedPublicKey: xpub,
@@ -176,8 +178,8 @@ describe('networksUTXO', () => {
         }
         const privateAccountNode = getPrivateMasterKey({
             rootNode: getRootNode({ mnemonic, network: networks['ltc'] }),
-            bipIdCoin: 2,
-            protocol: 44,
+            bipIdCoin: CoinIds[Coins.LTC],
+            protocol: Protocol.LEGACY,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),

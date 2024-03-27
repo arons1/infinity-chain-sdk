@@ -8,13 +8,14 @@ const getBalance_1 = require("../../../lib/commonjs/networks/stellar/getBalance"
 const getBalance_2 = require("../../../lib/commonjs/networks/stellar/getBalance");
 const ed25519_1 = require("@infinity/core-sdk/lib/commonjs/networks/ed25519");
 const core_1 = require("@infinity/core-sdk/lib/commonjs/core");
+const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksStellar', () => {
     (0, globals_1.test)('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 148 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.STELLAR }),
         });
         const built = await (0, builder_1.buildTransaction)({
             memo: 'test',
@@ -30,7 +31,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 148 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.STELLAR }),
         });
         const built = await (0, builder_1.buildTransaction)({
             memo: 'test',
@@ -52,7 +53,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 148 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.STELLAR }),
         });
         const balance = await (0, getBalance_1.getBalance)({
             account: publicAddress,
@@ -64,7 +65,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/148'/0'" });
         const publicAddress = (0, ed25519_1.getPublicStellarAddress)({
-            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, coinId: 148 }),
+            publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.STELLAR }),
         });
         const balance = await (0, getBalance_2.getAccountBalances)({
             accounts: [publicAddress],

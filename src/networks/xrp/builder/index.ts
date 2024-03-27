@@ -4,6 +4,7 @@ import {
     builderParametersChecker,
     preparePaymentParametersChecker,
 } from '../parametersChecker/builder';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const LEDGER_OFFSET = 20;
 /*
@@ -61,6 +62,6 @@ export const buildTransaction = async (
     return signTransaction({
         transaction: txPrepared,
         keyPair,
-        coinId: 'xrp',
+        coinId: Coins.XRP,
     });
 };
