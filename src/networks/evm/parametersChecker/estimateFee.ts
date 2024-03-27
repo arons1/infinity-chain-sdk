@@ -8,7 +8,7 @@ import {
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import Web3 from 'web3';
-import { SupportedChains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Chains, SupportedChains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
 
 import { EstimateGasParams } from '../estimateFee';
@@ -29,6 +29,6 @@ export const estimateParametersChecker = (props: EstimateGasParams) => {
         throw new Error(InvalidNumber);
     if (!props.connector || !(props.connector instanceof Web3))
         throw new Error(MissingOrInvalidConnector);
-    if (!props.priorityFee && (props.chainId == 1 || props.chainId == 137))
+    if (!props.priorityFee && (props.chainId == Chains.ETH || props.chainId == Chains.MATIC))
         throw new Error(MissingPriorityFee);
 };

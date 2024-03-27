@@ -21,6 +21,7 @@ import {
     script,
 } from 'bitcoinjs-lib';
 import { builderParametersChecker } from '../parametersChecker';
+import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 /*
 buildTransaction
     Returns transaction build result
@@ -86,7 +87,7 @@ export const buildTransaction = async (
 
     for (let utxo of utxos) {
         amountLeft = amountLeft.minus(utxo.value);
-        if (utxo.protocol == 84) feeAcc = feeAcc.plus(68);
+        if (utxo.protocol == Protocol.SEGWIT) feeAcc = feeAcc.plus(68);
         else feeAcc = feeAcc.plus(148);
 
         utxosUsed.push(utxo);
@@ -116,7 +117,7 @@ export const buildTransaction = async (
             .multipliedBy(-1);
         if (changeAmount.isGreaterThan(DUST[coinId])) {
             feeOutput = feeOutput.plus(34);
-            var changeProtocol = 44;
+            var changeProtocol = Protocol.LEGACY;
             const { index, protocol } = await getLastChangeIndex({
                 extendedPublicKey: accounts.find(a => a.useAsChange)
                     ?.extendedPublicKey as string,
@@ -127,7 +128,7 @@ export const buildTransaction = async (
 
             let addressChange;
 
-            if (changeProtocol == 49) {
+            if (changeProtocol == Protocol.WRAPPED_SEGWIT) {
                 addressChange = networks.utxo.getPublicAddressP2WPKHP2S({
                     publicAccountNode: accounts.find(a => a.useAsChange)
                         ?.node as BIP32Interface,
@@ -135,7 +136,7 @@ export const buildTransaction = async (
                     index: lastChangeIndex,
                     network,
                 });
-            } else if (changeProtocol == 44) {
+            } else if (changeProtocol == Protocol.LEGACY) {
                 addressChange = networks.utxo.getPublicAddressP2PKH({
                     publicAccountNode: accounts.find(a => a.useAsChange)
                         ?.node as BIP32Interface,
@@ -143,7 +144,7 @@ export const buildTransaction = async (
                     index: lastChangeIndex,
                     network,
                 });
-            } else if (changeProtocol == 84) {
+            } else if (changeProtocol == Protocol.SEGWIT) {
                 addressChange = networks.utxo.getPublicAddressSegwit({
                     publicAccountNode: accounts.find(a => a.useAsChange)
                         ?.node as BIP32Interface,
@@ -174,14 +175,14 @@ export const buildTransaction = async (
             index: parseInt(index),
         });
         const privateKey = ECPair.fromWIF(keyPair.toWIF(), network as Network);
-        if (unspent.protocol == 84) {
+        if (unspent.protocol == Protocol.SEGWIT) {
             tx.sign({
                 prevOutScriptType: 'p2wpkh',
                 vin: k,
                 keyPair: privateKey,
                 witnessValue: new BigNumber(unspent.value).toNumber(),
             });
-        } else if (unspent.protocol == 49) {
+        } else if (unspent.protocol == Protocol.WRAPPED_SEGWIT) {
             const redem = networks.utxo.getRedeemP2WPKH({
                 publicKey: keyPair.publicKey,
                 network,
@@ -193,7 +194,7 @@ export const buildTransaction = async (
                 redeemScript: redem,
                 witnessValue: new BigNumber(unspent.value).toNumber(),
             });
-        } else if (unspent.protocol == 44) {
+        } else if (unspent.protocol == Protocol.LEGACY) {
             tx.sign(k, privateKey);
         } else {
             throw new Error(ProtocolNotSupported);

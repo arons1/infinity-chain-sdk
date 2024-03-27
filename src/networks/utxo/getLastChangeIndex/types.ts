@@ -1,3 +1,4 @@
+import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import { TrezorWebsocket } from '../trezorWebsocket';
 
 export type LastChangeIndexParameters = {
@@ -24,5 +25,5 @@ export type ChangeIndexResult = {
 };
 export type ChangeIndexResolve = {
     index: number;
-    protocol: number;
+    protocol: Protocol;
 };

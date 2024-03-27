@@ -36,7 +36,7 @@ export const calculateGasPrice = async ({
     feeRatio = 0.5,
     priorityFee,
 }: CalculateGasPrice): Promise<TransactionEVM> => {
-    if (chainId == 1 || chainId == 137) {
+    if (chainId == Chains.ETH || chainId == Chains.MATIC) {
         if (!isValidNumber(priorityFee)) throw new Error(PriorityFeeError);
         const maxPriority = connector.utils.toHex(
             new BigNumber(priorityFee as string)

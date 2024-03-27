@@ -6,7 +6,7 @@ import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateFee';
-import { Transaction } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Chains, Transaction } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
 
 /* 
@@ -36,7 +36,7 @@ export const estimateFee = async (
     var fee = new BigNumber(resultEstimate.estimateGas)
         .multipliedBy(resultEstimate.gasPrice as string)
         .toString(10);
-    if (props.chainId == 10) {
+    if (props.chainId == Chains.OP) {
         const txBuilder = new Transaction(
             resultEstimate.transaction,
         ).serialize();
