@@ -22,8 +22,8 @@ import {
     Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 const PRIORITY_FEES = {
-    1: '1000000000',
-    137: '21000000000',
+    [Chains.ETH]: '1000000000',
+    [Chains.MATIC]: '21000000000',
 };
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -53,7 +53,7 @@ describe('networksEVM', () => {
             chainId: Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: publicAddress as string,
-            priorityFee: PRIORITY_FEES[137],
+            priorityFee: PRIORITY_FEES[Chains.MATIC],
             value: '100000',
             privateKey: privateKey.privateKey as Buffer,
         });
@@ -67,7 +67,7 @@ describe('networksEVM', () => {
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             tokenContract: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
             feeRatio: 0.5,
-            priorityFee: PRIORITY_FEES[137],
+            priorityFee: PRIORITY_FEES[Chains.MATIC],
             value: '100000',
         });
         expect(built.transaction?.data).toBe(
