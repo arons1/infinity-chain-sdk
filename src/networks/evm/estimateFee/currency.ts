@@ -1,4 +1,4 @@
-import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Chains, TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { CannotGetNonce } from '../../../errors/networks';
 import { EstimateGasParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
@@ -40,7 +40,7 @@ export const estimateCurrencyFee = async ({
         value: value,
         gasLimit: estimateGas,
     };
-    if (chainId != 100009) {
+    if (chainId != Chains.VET) {
         transaction.nonce = await getNonce({
             address: source,
             connector,

@@ -13,7 +13,7 @@ import {
     PriorityFeeError,
 } from '../../../errors/networks';
 
-import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Chains, TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
@@ -84,7 +84,7 @@ const estimateGas = async (
     tx: TransactionEVM,
 ) => {
     const auxCalc = { ...tx };
-    if (chainId == 100009) {
+    if (chainId == Chains.VET) {
         delete auxCalc.nonce;
     }
     tx.gasLimit =
@@ -145,7 +145,7 @@ export const getGasLimit = async ({
             to: destination,
             value: '0x' + new BigNumber(value).toString(16),
         };
-        if (chainId != 100009) {
+        if (chainId != Chains.VET) {
             const nonce = await getNonce({ address: source, connector });
             if (nonce == undefined) throw new Error(CannotGetNonce);
             tx.nonce = nonce;

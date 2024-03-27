@@ -2,7 +2,7 @@ import { EstimateGasTokenParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 import ERC20Abi from '@infinity/core-sdk/lib/commonjs/core/abi/erc20';
 import { CannotGetNonce } from '../../../errors/networks';
-import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import { Chains, TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 /* 
 estimateTokenFee
@@ -56,7 +56,7 @@ export const estimateTokenFee = async ({
         gasLimit: estimateGas,
         value: value,
     };
-    if (chainId != 100009) {
+    if (chainId != Chains.VET) {
         transaction.nonce = await getNonce({
             address: source,
             connector,
