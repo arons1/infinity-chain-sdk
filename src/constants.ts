@@ -19,7 +19,10 @@ export const PROVIDER_TREZOR: Record<Coins, string> = {
     [Coins.AVAX]: '',
     [Coins.XDC]: '',
     [Coins.KCC]: '',
-    [Coins.OKC]: '',
+    [Coins.OKX]: '',
     [Coins.BSC]: '',
+    [Coins.ARB]: '',
+    [Coins.ETH_TESTNET]: '',
+    [Coins.BSC_TESTNET]: '',
 };
 export const SLEEP_BETWEEN_CALLS = 500;

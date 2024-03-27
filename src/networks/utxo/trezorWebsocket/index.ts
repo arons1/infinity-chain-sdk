@@ -1,6 +1,7 @@
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import { WEBSOCKETS } from '../constants';
 import { WebSocket } from 'ws';
+import { UnsupportedTrezorWebsocket } from '../../../errors/networks';
 
 const no_op = () => {};
 export class TrezorWebsocket {
@@ -17,6 +18,8 @@ export class TrezorWebsocket {
     callbacks: Record<string, any> = {};
     constructor(coin: Coins) {
         this.url = WEBSOCKETS[coin];
+        if (!this.url || this.url.length == 0)
+            throw new Error(UnsupportedTrezorWebsocket);
         this.messageID = 0;
         this.coin = coin;
         this.connected = false;

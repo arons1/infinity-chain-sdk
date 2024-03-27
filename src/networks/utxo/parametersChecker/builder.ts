@@ -32,7 +32,7 @@ export const builderParametersChecker = (props: BuildParameters) => {
         props.accounts.find(a => a.useAsChange) == undefined
     )
         throw new Error(SpecifyChangePublic);
-    if (!selected) throw new Error(CoinNotIntegrated);
+    if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
     if (!isValidNumber(props.amount)) throw new Error(InvalidAmount);
     if (!network) throw new Error(InvalidNetworkVersion);
     if (props.feeRatio && (props.feeRatio < 0 || props.feeRatio > 1))

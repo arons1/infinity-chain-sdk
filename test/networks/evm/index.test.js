@@ -40,7 +40,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         });
         const built = await (0, builder_1.buildTransaction)({
             connector: utils_1.web3Matic,
-            chainId: 137,
+            chainId: evm_1.Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: publicAddress,
             priorityFee: PRIORITY_FEES[137],
@@ -52,7 +52,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     (0, globals_1.test)('estimateFee', async () => {
         const built = await (0, estimateFee_1.estimateFee)({
             connector: utils_1.web3Matic,
-            chainId: 137,
+            chainId: evm_1.Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             tokenContract: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',

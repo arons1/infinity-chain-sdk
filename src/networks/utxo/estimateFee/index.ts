@@ -76,7 +76,7 @@ export const estimateFee = async ({
     if (extendedPublicKeys == undefined || extendedPublicKeys.length == 0)
         throw new Error(MissingExtendedKey);
     const selected = PROVIDER_TREZOR[coinId] as string;
-    if (!selected) throw new Error(CoinNotIntegrated);
+    if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
     if (amount.includes('.')) throw new Error(InvalidAmount);
     // 1º Get UTXOs
     var utxos: UTXOResult[] = [];
