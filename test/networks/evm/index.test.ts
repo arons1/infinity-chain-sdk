@@ -6,7 +6,10 @@ import {
     getAccountBalances,
     getBalance,
 } from '../../../lib/commonjs/networks/evm/getBalance';
-import { getPublicAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import {
+    Chains,
+    getPublicAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import {
     getRootNode,
     getPrivateKey,
@@ -47,7 +50,7 @@ describe('networksEVM', () => {
         });
         const built = await buildTransaction({
             connector: web3Matic,
-            chainId: 137,
+            chainId: Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: publicAddress as string,
             priorityFee: PRIORITY_FEES[137],
@@ -59,7 +62,7 @@ describe('networksEVM', () => {
     test('estimateFee', async () => {
         const built = await estimateFee({
             connector: web3Matic,
-            chainId: 137,
+            chainId: Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             tokenContract: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',

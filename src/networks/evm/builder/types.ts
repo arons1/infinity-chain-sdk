@@ -1,3 +1,4 @@
+import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import Web3 from 'web3';
 
 export type BuildTransaction = {
@@ -5,7 +6,7 @@ export type BuildTransaction = {
     destination: string;
     value?: string;
     connector: Web3;
-    chainId: number;
+    chainId: Chains;
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;
@@ -19,7 +20,7 @@ export type BuildTokenTransaction = {
     value: string;
     tokenContract: string;
     connector: Web3;
-    chainId: number;
+    chainId: Chains;
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;

@@ -1,4 +1,7 @@
-import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import {
+    Chains,
+    TransactionEVM,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import Web3 from 'web3';
 export type ReturnEstimate = {
     transaction: TransactionEVM;
@@ -11,7 +14,7 @@ export type EstimateGasParams = {
     tokenContract?: string;
     destination?: string;
     value?: string;
-    chainId: number;
+    chainId: Chains;
     gasPrice?: string;
     feeRatio?: number;
     priorityFee?: string;
@@ -24,7 +27,7 @@ export type EstimateGasTokenParams = {
     destination: string;
     value?: string;
     gasPrice?: string;
-    chainId: number;
+    chainId: Chains;
     feeRatio?: number;
     priorityFee?: string;
     approve?: boolean;
@@ -44,7 +47,7 @@ export type GasLimitParams = {
     destination: string;
     tokenContract?: string;
     value: string;
-    chainId: number;
+    chainId: Chains;
     contract?: any;
     isToken: boolean;
     approve?: boolean;
@@ -54,7 +57,7 @@ export type CalculateGasPrice = {
     transaction: TransactionEVM;
     gasPrice: string;
     connector: Web3;
-    chainId: number;
+    chainId: Chains;
     feeRatio?: number;
     priorityFee?: string;
 };
