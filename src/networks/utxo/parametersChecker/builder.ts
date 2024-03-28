@@ -11,7 +11,6 @@ import {
     SpecifyChangePublic,
 } from '../../../errors/networks';
 import { BuildParameters } from '../builder/types';
-import { networks } from '@infinity/core-sdk';
 import { InvalidNetworkVersion } from '@infinity/core-sdk/lib/commonjs/errors';
 import { TrezorWebsocket } from '../trezorWebsocket';
 import {
@@ -20,13 +19,14 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/utxo';
 import { isValidPath } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import { Network } from 'bitcoinjs-lib';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 /*
     utxos?: UTXOResult[] | undefined;
 */
 export const builderParametersChecker = (props: BuildParameters) => {
     const selected = PROVIDER_TREZOR[props.coinId] as string;
-    const network = networks.networks.default[props.coinId];
+    const network = config[props.coinId].network;
     if (
         Array.isArray(props.accounts) &&
         props.accounts.find(a => a.useAsChange) == undefined

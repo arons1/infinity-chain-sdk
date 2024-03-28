@@ -22,6 +22,7 @@ import {
 } from 'bitcoinjs-lib';
 import { builderParametersChecker } from '../parametersChecker';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 /*
 buildTransaction
     Returns transaction build result
@@ -48,7 +49,7 @@ export const buildTransaction = async (
         feeRatio = 0.5,
     } = props;
     builderParametersChecker(props);
-    const network = networks.networks.default[coinId];
+    const network = config[coinId].network;
     // 1º Get UTXOs
     if (utxos.length == 0) {
         const extendedPublicKeys = accounts.map(a => a.extendedPublicKey);
