@@ -13,8 +13,8 @@ const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp
 const networks_1 = __importDefault(require("@infinity/core-sdk/lib/commonjs/networks/networks"));
 const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const PRIORITY_FEES = {
-    1: '1000000000',
-    137: '21000000000',
+    [evm_1.Chains.ETH]: '1000000000',
+    [evm_1.Chains.MATIC]: '21000000000',
 };
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksEVM', () => {
@@ -43,7 +43,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             chainId: evm_1.Chains.MATIC,
             destination: '0xE7A38be77db0fEc3cff01c01838508201BCB5a07',
             source: publicAddress,
-            priorityFee: PRIORITY_FEES[137],
+            priorityFee: PRIORITY_FEES[evm_1.Chains.MATIC],
             value: '100000',
             privateKey: privateKey.privateKey,
         });
@@ -57,7 +57,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             source: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             tokenContract: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
             feeRatio: 0.5,
-            priorityFee: PRIORITY_FEES[137],
+            priorityFee: PRIORITY_FEES[evm_1.Chains.MATIC],
             value: '100000',
         });
         (0, globals_1.expect)(built.transaction?.data).toBe('0xa9059cbb000000000000000000000000e7a38be77db0fec3cff01c01838508201bcb5a0700000000000000000000000000000000000000000000000000000000000186a0');

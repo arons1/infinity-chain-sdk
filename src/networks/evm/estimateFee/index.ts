@@ -6,7 +6,10 @@ import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
 import { estimateCurrencyFee } from './currency';
 import { estimateL1Cost } from '../../op/estimateFee';
-import { Chains, Transaction } from '@infinity/core-sdk/lib/commonjs/networks/evm';
+import {
+    Chains,
+    Transaction,
+} from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
 
 /* 
