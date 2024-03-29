@@ -28,7 +28,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             bipIdCoin: registry_1.CoinIds.LTC,
             protocol: registry_1.Protocol.LEGACY,
         });
-        const xpub = (0, secp256k1_1.encodeGeneric)(privateAccountNode.neutered().toBase58(), networks_2.Encoding.XPUB);
+        const xpub = (0, secp256k1_1.encodeGeneric)(privateAccountNode.neutered().toBase58(), networks_2.Encoding.LTUB);
         const build = await (0, builder_1.buildTransaction)({
             amount: '10000',
             coinId: registry_1.Coins.LTC,
