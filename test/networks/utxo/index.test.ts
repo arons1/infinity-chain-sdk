@@ -1,12 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/utxo/builder';
 import {
-    Encoding,
     encodeGeneric,
     getPrivateMasterKey,
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
-import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
 import { connector } from '../../utils';
 import { sleep } from '../../../lib/commonjs/networks/solana/utils';
 import {
@@ -26,6 +24,8 @@ import {
     Coins,
     Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
+import { Encoding } from '@infinity/core-sdk/lib/commonjs/networks';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
@@ -41,7 +41,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const build = await buildTransaction({
             amount: '10000',
