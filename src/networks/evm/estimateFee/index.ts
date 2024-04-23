@@ -1,6 +1,4 @@
 import { EstimateGasParams, EstimateGasTokenParams } from './types';
-// @ts-ignore
-import feeAbi from '../../../core/abi/fee';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { EstimateFeeResult } from '../../types';
 import { estimateTokenFee } from './tokens';
@@ -36,7 +34,7 @@ export const estimateFee = async (
     } else {
         resultEstimate = await estimateCurrencyFee(props);
     }
-    var fee = new BigNumber(resultEstimate.estimateGas)
+    let fee = new BigNumber(resultEstimate.estimateGas)
         .multipliedBy(resultEstimate.gasPrice as string)
         .toString(10);
     if (props.chainId == Chains.OP) {

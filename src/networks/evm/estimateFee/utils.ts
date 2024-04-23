@@ -61,7 +61,7 @@ export const calculateGasPrice = async ({
 
     if (transaction.value)
         transaction.value =
-            '0x' + new BigNumber(transaction.value as string).toString(16);
+            '0x' + new BigNumber(transaction.value).toString(16);
     return transaction;
 };
 /* 

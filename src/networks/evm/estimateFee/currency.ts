@@ -37,7 +37,7 @@ export const estimateCurrencyFee = async ({
         isToken: false,
     });
     gasPrice = gasPrice ?? (await getGasPrice({ connector }));
-    var transaction: TransactionEVM = {
+    let transaction: TransactionEVM = {
         from: source,
         to: destination,
         value: value,
