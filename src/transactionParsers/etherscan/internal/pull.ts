@@ -7,7 +7,7 @@ export const pull = ({
     address,
     page,
     limit,
-    startblock = 1
+    startblock = 1,
 }: GeneralApiParams) => {
     const selected = PROVIDER[chainId as number] as string;
     if (!selected) throw new Error('Not integrated chain');
@@ -18,7 +18,9 @@ export const pull = ({
             apiKey +
             '&action=txlistinternal&address=' +
             address +
-            '&startblock='+startblock+'&endblock=99999999999999999999999&sort=desc&page=' +
+            '&startblock=' +
+            startblock +
+            '&endblock=99999999999999999999999&sort=desc&page=' +
             page +
             '&offset=' +
             limit,

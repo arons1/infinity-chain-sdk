@@ -8,5 +8,5 @@ export type GeneralApiParams = {
     cursor?: string;
     chainId?: number;
     apiKey?: string;
-    startblock?:number;
+    startblock?: number;
 };
