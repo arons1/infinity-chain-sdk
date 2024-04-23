@@ -8,8 +8,9 @@ import { LoadPublicNodesParams, LoadStorageParams } from './type';
 import { CannotGeneratePublicAddress } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
+import BaseWallet from './base';
 
-abstract class CoinWallet {
+class CoinWallet extends BaseWallet {
     base: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id: Coins;
     publicNode!: Record<Protocol, BIP32Interface>;
@@ -17,9 +18,25 @@ abstract class CoinWallet {
     addresses!: Record<Protocol, Record<DerivationName | string,Record<number, Record<number, string>>>>;
     publicAddresses!: Record<Protocol, string>;
     constructor(id: Coins, mnemonic?: string) {
+        super()
         this.id = id;
         this.base = Coin(id);
         if (mnemonic) this.initAddresses(mnemonic);
+    }
+    estimateFee(_props: any) {
+        throw new Error('Method not implemented.');
+    }
+    buildTransaction(_props: any) {
+        throw new Error('Method not implemented.');
+    }
+    getBalance(_props: any) {
+        throw new Error('Method not implemented.');
+    }
+    sendTransaction(_props: any) {
+        throw new Error('Method not implemented.');
+    }
+    getTransactions(_props: any) {
+        throw new Error('Method not implemented.');
     }
 
     loadFromStorage({
@@ -71,11 +88,6 @@ abstract class CoinWallet {
         }
     
     }
-    abstract estimateFee(_props: any): any;
-    abstract buildTransaction(_props: any): any;
-    abstract getBalance(_props: any): any;
-    abstract sendTransaction(_props: any): any;
-    abstract getTransactions(_props: any): any;
 }
 
 export default CoinWallet;
