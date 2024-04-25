@@ -1,4 +1,5 @@
 
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/solana";
 import { TransactionBuilderParams } from "../../networks/solana/builder/types";
 import { GetAccountsTransactionsParams, GetBalanceParams } from "../../networks/solana/getBalance/types";
@@ -23,7 +24,10 @@ class SolanaWallet extends CoinWallet {
         return sendTransaction(_props)
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

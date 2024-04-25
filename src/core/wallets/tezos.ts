@@ -1,4 +1,5 @@
 
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/tezos";
 import { BuildTransactionParams, BuildTransactionResult } from "../../networks/tezos/builder/types";
 import { EstimateFeeParams } from "../../networks/tezos/estimateFee/types";
@@ -23,7 +24,10 @@ class TezosWallet extends CoinWallet {
         return sendTransaction(_props)
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

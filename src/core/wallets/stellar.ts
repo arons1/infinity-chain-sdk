@@ -1,4 +1,5 @@
 
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/stellar";
 import { BuildTransactionParams } from "../../networks/stellar/builder/types";
 import { GetAccountBalanceParams, GetBalanceParams } from "../../networks/stellar/getBalance/types";
@@ -22,7 +23,10 @@ class StellarWallet extends CoinWallet {
         return sendTransaction(rawTransaction)
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

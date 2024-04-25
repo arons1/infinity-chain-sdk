@@ -1,4 +1,5 @@
 
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import { buildTransaction, estimateFee, getBalance, sendTransaction } from "../../networks/xrp";
 import { BuildTransactionParams } from "../../networks/xrp/builder/types";
@@ -21,7 +22,10 @@ class XRPWallet extends CoinWallet {
         return sendTransaction(_props);
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

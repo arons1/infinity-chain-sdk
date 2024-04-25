@@ -12,6 +12,7 @@ import BaseWallet from './base';
 
 class CoinWallet extends BaseWallet {
 
+
     base: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id: Coins;
     publicNode!: Record<Protocol, BIP32Interface>;
@@ -25,6 +26,9 @@ class CoinWallet extends BaseWallet {
         if (mnemonic) this.initAddresses(mnemonic);
     }
     getAccountBalances(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
     estimateFee(_props: any) {

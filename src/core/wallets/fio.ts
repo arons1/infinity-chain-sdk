@@ -1,4 +1,5 @@
 
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { buildTransaction, estimateFee, getBalance, sendTransaction } from "../../networks/fio";
 import { BuildTransactionFIOResult, BuildTransactionParams } from "../../networks/fio/builder/types";
 import { CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
@@ -18,7 +19,10 @@ class FIOWallet extends CoinWallet {
         return sendTransaction(_props);
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

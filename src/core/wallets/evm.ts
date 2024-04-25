@@ -25,6 +25,9 @@ class EVMWallet extends CoinWallet {
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
+    }
 }
 
 export default EVMWallet
