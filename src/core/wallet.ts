@@ -40,6 +40,9 @@ class CoinWallet extends BaseWallet {
         else if(!protocol){
             throw new Error(MissingProtocol)
         }
+        else if(!this.addresses[protocol]?.[derivationName]){
+            throw new Error(CannotGeneratePublicAddress)
+        }
         return this.addresses[protocol][derivationName][0][0]
     }
     loadFromStorage({
