@@ -83,12 +83,14 @@ const getBalanceAfterLegacy = async ({
     });
     return accounts_after;
 };
-/* 
-getBalanceAfter
-    Returns balance after of the accounts of the signer
-    @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
-    @param connector: solana web3 connector
-*/
+/**
+ * getBalanceAfter
+ * Returns balance after of the accounts of the signer
+ * @param {GetBalanceAfterParams} props
+ * @param {VersionedTransaction|Transaction} props.transaction Transaction web3 solana
+ * @param {Web3Connector} props.connector solana web3 connector
+ * @returns {Promise<Record<string, DataBalance>>}
+ */
 export const getBalanceAfter = async (
     props: GetBalanceAfterParams,
 ): Promise<Record<string, DataBalance>> => {

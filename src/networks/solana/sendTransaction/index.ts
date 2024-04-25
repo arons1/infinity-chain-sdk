@@ -1,11 +1,15 @@
 import { sendTransactionParametersChecker } from '../parametersChecker';
 import { SendTransactionParams } from './types';
-/* 
-sendTransaction
-    sends transaction
-    @param rawTransaction: raw transaction hex
-    @param connector: solana web3 connector
-*/
+
+/**
+ * Sends a transaction to the Solana blockchain.
+ *
+ * @param props - The transaction properties
+ * @param {Buffer} props.rawTransaction - The raw transaction hex
+ * @param {Connection} props.connector - The Solana web3 connector
+ *
+ * @returns {Promise<string>} The transaction signature
+ */
 export const sendTransaction = async (
     props: SendTransactionParams,
 ): Promise<string> => {

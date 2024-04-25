@@ -90,15 +90,18 @@ export const getTransactions = async ({
     }
     return transactionsRes;
 };
-/* 
-getAccountsTransactions
-    Returns transtions details of the hashes passed
-    @param connector: solana web3 connector
-    @param address: address to get the transactions from
-    @param accounts: accounts of the tokens
-    @param signatures: hashes of the transactions already saved in the wallet
-    @param limit: limit of transactions per batch(optional)
-*/
+/**
+ * getAccountsTransactions
+ *
+ * Returns transactions details of the hashes passed
+ * @param {GetAccountsTransactionsParams} props
+ * @param {Web3} props.connector Solana web3 connector
+ * @param {string} props.address Address to get the transactions from
+ * @param {string[]} props.accounts Accounts of the tokens
+ * @param {string[]} props.signatures Hashes of the transactions already saved in the wallet
+ * @param {number} [props.limit=1000] Limit of transactions per batch(optional)
+ * @returns {Promise<HashesResult[]>}
+ */
 export const getAccountsTransactions = async (
     props: GetAccountsTransactionsParams,
 ) => {
