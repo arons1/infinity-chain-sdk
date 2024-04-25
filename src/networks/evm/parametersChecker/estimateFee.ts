@@ -38,5 +38,3 @@ export const estimateParametersChecker = (props: EstimateGasParams) => {
     )
         throw new Error(MissingPriorityFee);
 };
-
-

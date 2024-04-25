@@ -1,28 +1,45 @@
-
-import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
-import { buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/stellar";
-import { BuildTransactionParams } from "../../networks/stellar/builder/types";
-import { GetAccountBalanceParams, GetBalanceParams } from "../../networks/stellar/getBalance/types";
-import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
-import CoinWallet from "../wallet";
-import { GetReceiveAddressParams } from "../type";
-import { DerivationName, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
+import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
+import {
+    buildTransaction,
+    estimateFee,
+    getAccountBalances,
+    getBalance,
+    sendTransaction,
+} from '../../networks/stellar';
+import { BuildTransactionParams } from '../../networks/stellar/builder/types';
+import {
+    GetAccountBalanceParams,
+    GetBalanceParams,
+} from '../../networks/stellar/getBalance/types';
+import {
+    BalanceResult,
+    CurrencyBalanceResult,
+    EstimateFeeResult,
+} from '../../networks/types';
+import CoinWallet from '../wallet';
+import { GetReceiveAddressParams } from '../type';
+import {
+    DerivationName,
+    Protocol,
+} from '@infinity/core-sdk/lib/commonjs/networks';
 
 class StellarWallet extends CoinWallet {
     estimateFee(): Promise<EstimateFeeResult> {
-        return estimateFee()
+        return estimateFee();
     }
     buildTransaction(_props: BuildTransactionParams): Promise<string> {
-        return buildTransaction(_props)
+        return buildTransaction(_props);
     }
     getBalance(_props: GetBalanceParams): Promise<CurrencyBalanceResult> {
-        return getBalance(_props)
+        return getBalance(_props);
     }
-    getAccountBalances(_props: GetAccountBalanceParams): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances(
+        _props: GetAccountBalanceParams,
+    ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances(_props);
     }
     sendTransaction(rawTransaction: string): Promise<string> {
-        return sendTransaction(rawTransaction)
+        return sendTransaction(rawTransaction);
     }
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
@@ -30,8 +47,6 @@ class StellarWallet extends CoinWallet {
     loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
-    
-    
 }
 
-export default StellarWallet
+export default StellarWallet;

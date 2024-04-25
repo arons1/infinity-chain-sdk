@@ -1,14 +1,33 @@
-
-import CoinWallet from "../wallet";
+import CoinWallet from '../wallet';
 import { EstimateGasParams } from '../../../lib/commonjs/networks/evm/estimateFee/types';
-import { BalanceParams, BuildTransaction, RPCBalancesParams, buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/evm";
-import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
-import { SendTransactionParams } from "../../networks/evm/sendTransaction/types";
-import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
-import { DerivationName, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
-import config from "@infinity/core-sdk/lib/commonjs/networks/config";
-import { GetReceiveAddressParams } from "../type";
-import { MissingDerivationName, MissingParams, MissingProtocol } from "../../errors/networks";
+import {
+    BalanceParams,
+    BuildTransaction,
+    RPCBalancesParams,
+    buildTransaction,
+    estimateFee,
+    getAccountBalances,
+    getBalance,
+    sendTransaction,
+} from '../../networks/evm';
+import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
+import { SendTransactionParams } from '../../networks/evm/sendTransaction/types';
+import {
+    BalanceResult,
+    CurrencyBalanceResult,
+    EstimateFeeResult,
+} from '../../networks/types';
+import {
+    DerivationName,
+    Protocol,
+} from '@infinity/core-sdk/lib/commonjs/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { GetReceiveAddressParams } from '../type';
+import {
+    MissingDerivationName,
+    MissingParams,
+    MissingProtocol,
+} from '../../errors/networks';
 
 class EVMWallet extends CoinWallet {
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
@@ -17,7 +36,9 @@ class EVMWallet extends CoinWallet {
     buildTransaction(_props: BuildTransaction): Promise<string> {
         return buildTransaction(_props);
     }
-    getAccountBalances(_props: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances(
+        _props: RPCBalancesParams,
+    ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances(_props);
     }
     getBalance(_props: BalanceParams): Promise<CurrencyBalanceResult> {
@@ -32,8 +53,6 @@ class EVMWallet extends CoinWallet {
     loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
-
-
 }
 
-export default EVMWallet
+export default EVMWallet;
