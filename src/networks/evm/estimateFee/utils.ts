@@ -25,7 +25,7 @@ import Web3 from 'web3';
 /**
  * Calculate Gas Price
  * Format gas price based on the current transaction
- * @param {TransactionEVM} transaction
+ * @param {TransactionEVM} transaction 
  * @param {string} gasPrice
  * @param {Web3} connector
  * @param {number} chainId
