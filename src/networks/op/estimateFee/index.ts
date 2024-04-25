@@ -2,12 +2,13 @@ import feeAbi from '@infinity/core-sdk/lib/commonjs/core/abi/fee';
 import Web3 from 'web3';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
-/* 
-estimateL1Cost
-    Returns estimate L1Cost
-    @param connector: web3 connector
-    @param rawTransaction: raw transaction
-*/
+
+/**
+ * Estimates L1 Cost
+ * @param {Web3} connector Web3 connector
+ * @param {string} rawTransaction Raw transaction
+ * @returns {Promise<string>} Estimated L1 Cost as string
+ */
 export const estimateL1Cost = async (
     connector: Web3,
     rawTransaction: string,

@@ -11,17 +11,19 @@ import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed2551
 import * as Web3 from '@solana/web3.js';
 import { builderParametersChecker } from '../parametersChecker';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
-/* 
-buildTransaction
-    Returns raw transaction built signed
-    @param memo: memo (optional)
-    @param keyPair: key pair
-    @param mintToken: mint of the token to transfer (optional)
-    @param destination: receiver of the transfer
-    @param decimalsToken?: decimals of the token to transfer (optional)
-    @param value: amount to transfer
-    @param connector: solana web3 connector
-*/
+
+/**
+ * Builds a signed raw transaction
+ * @param {Object} props
+ * @param {string} [props.memo] - transaction memo (optional)
+ * @param {KeyPair} props.keyPair - key pair
+ * @param {string} [props.mintToken] - mint of the token to transfer (optional)
+ * @param {string} props.destination - receiver of the transfer
+ * @param {number} [props.decimalsToken] - decimals of the token to transfer (optional)
+ * @param {string} props.value - amount to transfer
+ * @param {Web3} props.connector - solana web3 connector
+ * @returns {Promise<string>} signed raw transaction
+ */
 export const buildTransaction = async (
     props: TransactionBuilderParams,
 ): Promise<string> => {
@@ -36,19 +38,20 @@ export const buildTransaction = async (
         keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
         coinId: Coins.SOLANA,
     });
-};
-/* 
-rawTransaction
-    Returns raw transaction
-    @param memo: memo (optional)
-    @param publicKey: public key source
-    @param mintToken: mint of the token to transfer (optional)
-    @param destination: receiver of the transfer
-    @param decimalsToken: decimals of the token to transfer (optional)
-    @param value: amount to transfer
-    @param connector: solana web3 connector
-*/
-export const rawTransaction = async ({
+}
+
+/**
+ * Returns raw transaction
+ * @param {string} memo - memo (optional)
+ * @param {string} mintToken - mint of the token to transfer (optional)
+ * @param {number} decimalsToken - decimals of the token to transfer (optional)
+ * @param {string} destination - receiver of the transfer
+ * @param {PublicKey} publicKey - public key source
+ * @param {string} value - amount to transfer
+ * @param {Web3} connector - solana web3 connector
+ * @returns {Promise<VersionedTransaction>}
+ */
+export const rawTransaction = async ({ 
     memo = '',
     mintToken,
     decimalsToken,
@@ -57,7 +60,7 @@ export const rawTransaction = async ({
     value,
     connector,
 }: RawTransactionParams): Promise<VersionedTransaction> => {
-    var instructions: any[] = [];
+    let instructions: any[] = [];
     const { blockhash } = await getLastBlockhash(connector);
     if (mintToken != undefined) {
         instructions = await tokenTransaction({

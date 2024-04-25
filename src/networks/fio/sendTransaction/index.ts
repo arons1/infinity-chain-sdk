@@ -3,11 +3,14 @@ import { SendTransactionResult } from './types';
 import { sendTransactionParametersChecker } from '../parametersChecker';
 import { BuildTransactionFIOResult } from '../builder/types';
 
-/* 
-sendTransaction
-    sends transaction
-    @param rawTransaction: raw transaction hex
-*/
+/**
+ * sendTransaction
+ *
+ * Sends transaction
+ *
+ * @param {BuildTransactionFIOResult} transaction Raw transaction hex
+ * @return {Promise<string>} Transaction ID
+ */
 export const sendTransaction = async (
     transaction: BuildTransactionFIOResult,
 ): Promise<string> => {

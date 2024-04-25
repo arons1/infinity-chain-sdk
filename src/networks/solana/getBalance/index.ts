@@ -3,12 +3,13 @@ import { CurrencyBalanceResult } from '../../types';
 import { GetBalanceParams } from './types';
 import { getBalanceParametersChecker } from '../parametersChecker';
 
-/* 
-getBalance
-    Returns account balance
-    @param address: string of the account to get the balance from
-    @param connector: solana web3 connector
-*/
+/**
+ * Returns the balance of the given account.
+ *
+ * @param {string} props.address - the account to get the balance from
+ * @param {Connection} props.connector - solana web3 connector
+ * @returns {Promise<CurrencyBalanceResult>} - the balance of the account
+ */
 export const getBalance = async (
     props: GetBalanceParams,
 ): Promise<CurrencyBalanceResult> => {

@@ -2,14 +2,15 @@ import axios, { AxiosResponse } from 'axios';
 import { FIOBalance } from './types';
 import { getAddressFromAccountParametersChecker } from '../parametersChecker';
 
-/* 
-getAddressFromAccount
-    get address from account
-    @param account: address from account
-*/
-export const getAddressFromAccount = (account: string) => {
+/**
+ * getAddressFromAccount
+ *   get address from account
+ *   @param {string} account - address from account
+ * @returns {Promise<string>} address
+ */
+export const getAddressFromAccount = (account:string) => {
     getAddressFromAccountParametersChecker(account);
-    return new Promise(function (resolve, reject) {
+    return new Promise((resolve, reject) => {
         axios
             .post('https://fio.blockpane.com/v1/chain/get_account', {
                 account_name: account,

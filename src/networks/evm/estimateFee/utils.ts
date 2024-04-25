@@ -25,12 +25,12 @@ import Web3 from 'web3';
 /**
  * Calculate Gas Price
  * Format gas price based on the current transaction
- * @param {TransactionEVM} transaction 
- * @param {string} gasPrice
- * @param {Web3} connector
- * @param {number} chainId
- * @param {number} [feeRatio=0.5]
- * @param {string|undefined} [priorityFee]
+ * @param {TransactionEVM} transaction TransactionEVM
+ * @param {string} gasPrice Gas Price
+ * @param {Web3} connector Web3 connector
+ * @param {number} chainId Chain ID
+ * @param {number} [feeRatio=0.5] Between 0 and 1, default 0.5, its the range to increase or decrease de fee, 0.5 = use default gasPrice (optional)
+ * @param {string|undefined} [priorityFee] Just for chainId, 1 or 137, it's used for calculating the fee
  * @returns {Promise<TransactionEVM>}
  */
 export const calculateGasPrice = async ({ 
@@ -105,16 +105,15 @@ const estimateGas = async (
  *
  * Returns gas limit estimate cost
  *
- * @param {Object} params
- * @param {string} params.destination - destination account to receive
- * @param {string} params.tokenContract - token contract
- * @param {string} params.value - Amount to bridge in wei
- * @param {string} params.source - source account to send from
- * @param {Contract} params.contract - Web3 contract
- * @param {number} params.chainId - chainId
- * @param {Web3} params.connector - web3 connector
- * @param {boolean} [params.isToken=false] - If it's a token transfer
- * @param {boolean} [params.approve=false] - If it's an approve
+ * @param {string} destination - destination account to receive
+ * @param {string} tokenContract - token contract
+ * @param {string} value - Amount to bridge in wei
+ * @param {string} source - source account to send from
+ * @param {Contract} contract - Web3 contract
+ * @param {number} chainId - chainId
+ * @param {Web3} connector - web3 connector
+ * @param {boolean} [isToken=false] - If it's a token transfer
+ * @param {boolean} [approve=false] - If it's an approve
  *
  * @returns {Promise<{data: string, estimateGas: string}>}
  */

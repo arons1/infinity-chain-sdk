@@ -12,29 +12,29 @@ import {
     getMinimumBalanceForRent,
     memoInstruction,
 } from '../utils';
-/* 
-addAssociatedCreation
-    Add associated creation account of a token to the instructions of a transaction
-    @param instructions,
-    @param mintToken,
-    @param destination,
-    @param publicKey,
-    @param connector
-*/
-export const addAssociatedCreation = async ({
-    instructions,
-    mintToken,
-    destination,
-    publicKey,
-    connector,
+
+/**
+ * Add associated creation account of a token to the instructions of a transaction
+ * @param {any[]} instructions instructions to add to
+ * @param {string} mintToken token mint to associate with the account
+ * @param {string} destination destination account of the token
+ * @param {string }publicKey public key of the source
+ * @param {Connection} connector solana web3 connector
+ */
+export const addAssociatedCreation = async ({ 
+    instructions, 
+    mintToken, 
+    destination, 
+    publicKey, 
+    connector 
 }: AddAssociatedCreationParams) => {
     const [checkSender, associatedTokenSender] = await checkIfAccountExists({
         mintToken,
         publicKey,
         connector,
     });
-    var extraFee = 0;
-    var iterations = 0;
+    let extraFee = 0;
+    let iterations = 0;
     if (!checkSender) {
         const inst = createAssociatedTokenAccountInstruction(
             publicKey,
@@ -77,25 +77,29 @@ export const addAssociatedCreation = async ({
         extraFee,
     };
 };
-/* 
-tokenTransaction
-    Returns instructions for making a token transaction
-    @param memo: memo string (optional)
-    @param mintToken: mint of the token to transfer
-    @param destination: receiver of the transfer
-    @param publicKey: public key source
-    @param decimalsToken: decimals of the token to transfer
-    @param value: value to transfer
-    @param connector: web3 solana connector
-*/
-export const tokenTransaction = async ({
-    memo = '',
-    mintToken,
-    destination,
-    publicKey,
-    decimalsToken,
-    value,
-    connector,
+
+/**
+ * tokenTransaction
+ *
+ * Returns instructions for making a token transaction
+ *
+ * @param {string} [memo] memo string (optional)
+ * @param {string} mintToken mint of the token to transfer
+ * @param {string} destination receiver of the transfer
+ * @param {string} publicKey public key source
+ * @param {number} decimalsToken decimals of the token to transfer
+ * @param {string} value value to transfer
+ * @param {Connection} connector web3 solana connector
+ * @returns {Promise<TransactionInstruction[]>} instructions for making a token transaction
+ */
+export const tokenTransaction = async ({ 
+    memo = '', 
+    mintToken, 
+    destination, 
+    publicKey, 
+    decimalsToken, 
+    value, 
+    connector 
 }: TokenTransactionParams): Promise<TransactionInstruction[]> => {
     const instructions: TransactionInstruction[] = [];
     const { senderTokenAccount, receiverTokenAccount } =

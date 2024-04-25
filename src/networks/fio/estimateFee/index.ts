@@ -6,11 +6,14 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
-/* 
-estimateFee
-    Returns fee
-    @param source: source account
-*/
+
+/**
+ * estimateFee
+ * Returns fee
+ *
+ * @param {string} source - source account
+ * @returns {Promise<EstimateFeeResult>}
+ */
 export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(source);
     return new Promise(resolve => {

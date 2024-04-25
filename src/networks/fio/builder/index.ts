@@ -8,14 +8,16 @@ import { builderParametersChecker } from '../parametersChecker';
 
 const fetchJson = async (uri: string, opts = {}) => {
     return fetch(uri, opts);
-};
-/* 
-buildTransaction
-    Returns a transaction formatted to be sign and send
-    @param value: ammount to send (optional)
-    @param source: source account
-    @param destination: destination account
-    @param privateKey: Private key
+};/**
+* buildTransaction
+* 
+* Returns a transaction formatted to be sign and send
+*
+* @param {number} [value] - ammount to send (optional)
+* @param {string} source - source account
+* @param {string} destination - destination account
+* @param {string} [privateKey] - Private key
+* @returns {Promise<BuildTransactionFIOResult>} - Returns a transaction formatted to be sign and send
 */
 export const buildTransaction = async (
     props: BuildTransactionParams,

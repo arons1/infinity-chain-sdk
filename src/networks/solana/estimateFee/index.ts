@@ -3,12 +3,13 @@ import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
-/* 
-rawTransaction
-    Returns raw transaction
-    @param transaction: Transaction web3 solana VersionedTransaction | Transaction 
-    @param connector: solana web3 connector
-*/
+
+/**
+ * Estimates fee for Solana transaction
+ * @param {VersionedTransaction | Transaction} props.transaction Transaction object (VersionedTransaction or Transaction)
+ * @param {Connection} props.connector solana web3 connector
+ * @returns {Promise<EstimateFeeResult>} raw transaction
+ */
 export const estimateFee = async (
     props: EstimateFeeParams,
 ): Promise<EstimateFeeResult> => {
