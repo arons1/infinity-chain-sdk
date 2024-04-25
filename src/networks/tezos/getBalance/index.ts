@@ -4,6 +4,7 @@ import retry from 'async-retry';
 import { Tezos, loadContract, isFA2Token } from './tez';
 import { toAsset } from './helpers';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
+import { GetAccountBalancesParams, GetBalanceParams } from './types';
 /*
 getAccountBalances
     Returns get balance asset
@@ -13,10 +14,7 @@ getAccountBalances
 export const getAccountBalances = async ({
     account,
     assetSlugs,
-}: {
-    account: string;
-    assetSlugs: string[];
-}): Promise<Record<string, BalanceResult[]>> => {
+}: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     var result: Record<string, BalanceResult[]> = {
         [account]: [],
     };
@@ -95,9 +93,7 @@ getBalance
 */
 export const getBalance = async ({
     address,
-}: {
-    address: string;
-}): Promise<CurrencyBalanceResult> => {
+}: GetBalanceParams): Promise<CurrencyBalanceResult> => {
     return {
         balance: (await getAssetBalance({ account: address, assetSlug: 'tez' }))
             .value,

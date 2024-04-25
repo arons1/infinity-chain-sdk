@@ -16,6 +16,7 @@ abstract class BaseWallet {
     abstract getBalance(_props: any): any;
     abstract sendTransaction(_props: any): any;
     abstract getTransactions(_props: any): any;
+    abstract getAccountBalances(_props: any): any;
 }
 
 export default BaseWallet;

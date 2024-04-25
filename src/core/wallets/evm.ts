@@ -1,21 +1,29 @@
 
 import CoinWallet from "../wallet";
+import { EstimateGasParams } from '../../../lib/commonjs/networks/evm/estimateFee/types';
+import { BalanceParams, BuildTransaction, RPCBalancesParams, buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/evm";
+import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
+import { SendTransactionParams } from "../../networks/evm/sendTransaction/types";
+import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 
 class EVMWallet extends CoinWallet {
-    estimateFee(_props: any) {
-        throw new Error('Method not implemented.');
+    estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
+        return estimateFee(_props);
     }
-    buildTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+    buildTransaction(_props: BuildTransaction): Promise<string> {
+        return buildTransaction(_props);
     }
-    getBalance(_props: any) {
-        throw new Error('Method not implemented.');
+    getAccountBalances(_props: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> {
+        return getAccountBalances(_props);
     }
-    sendTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+    getBalance(_props: BalanceParams): Promise<CurrencyBalanceResult> {
+        return getBalance(_props);
+    }
+    sendTransaction(_props: SendTransactionParams): Promise<string> {
+        return sendTransaction(_props);
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
 }
 

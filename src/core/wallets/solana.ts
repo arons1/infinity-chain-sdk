@@ -1,18 +1,26 @@
 
+import { buildTransaction, estimateFee, getAccountBalances, getBalance, sendTransaction } from "../../networks/solana";
+import { TransactionBuilderParams } from "../../networks/solana/builder/types";
+import { GetAccountsTransactionsParams, GetBalanceParams } from "../../networks/solana/getBalance/types";
+import { SendTransactionParams } from "../../networks/solana/sendTransaction/types";
+import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import CoinWallet from "../wallet";
 
 class SolanaWallet extends CoinWallet {
-    estimateFee(_props: any) {
-        throw new Error('Method not implemented.');
+    estimateFee(_props: any): Promise<EstimateFeeResult> {
+        return estimateFee(_props) ;
     }
-    buildTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+    buildTransaction(_props: TransactionBuilderParams): Promise<string> {
+        return buildTransaction(_props)
     }
-    getBalance(_props: any) {
-        throw new Error('Method not implemented.');
+    getBalance(_props: GetBalanceParams): Promise<CurrencyBalanceResult> {
+        return getBalance(_props)
     }
-    sendTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+    getAccountBalances(_props: GetAccountsTransactionsParams): Promise<Record<string, BalanceResult[]>> {
+        return getAccountBalances(_props)
+    }
+    sendTransaction(_props: SendTransactionParams): Promise<string> {
+        return sendTransaction(_props)
     }
     getTransactions(_props: any) {
         throw new Error('Method not implemented.');

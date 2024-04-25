@@ -17,7 +17,7 @@ sendTransaction
     @param decimalsToken: Decimals of the token to transfer(optional)
     @param feeRatio: Ratio of fee
 */
-export const sendTransaction = async (props: BuildTransactionParams) => {
+export const sendTransaction = async (props: BuildTransactionParams) : Promise<string> => {
     const built = await buildTransaction(props);
     return new Promise((resolve, reject) => {
         built

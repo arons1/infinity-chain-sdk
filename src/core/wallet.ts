@@ -11,6 +11,7 @@ import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import BaseWallet from './base';
 
 class CoinWallet extends BaseWallet {
+
     base: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id: Coins;
     publicNode!: Record<Protocol, BIP32Interface>;
@@ -23,20 +24,23 @@ class CoinWallet extends BaseWallet {
         this.base = Coin(id);
         if (mnemonic) this.initAddresses(mnemonic);
     }
+    getAccountBalances(_props: any) {
+        throw new Error(NotImplemented);
+    }
     estimateFee(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
     buildTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
     getBalance(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
     sendTransaction(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
     getTransactions(_props: any) {
-        throw new Error('Method not implemented.');
+        throw new Error(NotImplemented);
     }
 
     loadFromStorage({
