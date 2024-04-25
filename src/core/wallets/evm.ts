@@ -5,6 +5,7 @@ import { BalanceParams, BuildTransaction, RPCBalancesParams, buildTransaction, e
 import { NotImplemented } from "@infinity/core-sdk/lib/commonjs/errors";
 import { SendTransactionParams } from "../../networks/evm/sendTransaction/types";
 import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
+import { GetChangeAddressParams, GetReceiveAddressParams } from "../type";
 
 class EVMWallet extends CoinWallet {
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
@@ -28,6 +29,10 @@ class EVMWallet extends CoinWallet {
     loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
+    getReceiveAddress(_props: GetReceiveAddressParams): string {
+        throw new Error(NotImplemented);
+    }
+
 }
 
 export default EVMWallet

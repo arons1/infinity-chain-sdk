@@ -7,6 +7,7 @@ import { EstimateFeeParams } from "../../networks/xrp/estimateFee/types";
 import { GetBalanceParams } from "../../networks/xrp/getBalance/types";
 import { SendTransactionParams } from "../../networks/xrp/sendTransaction/types";
 import CoinWallet from "../wallet";
+import { GetReceiveAddressParams } from "../type";
 
 class XRPWallet extends CoinWallet {
     estimateFee(props:EstimateFeeParams): EstimateFeeResult {
@@ -25,6 +26,9 @@ class XRPWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     loadConnector(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getReceiveAddress(_props: GetReceiveAddressParams): string {
         throw new Error(NotImplemented);
     }
 }

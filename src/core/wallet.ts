@@ -4,7 +4,7 @@ import Coin from '@infinity/core-sdk/lib/commonjs/networks/coin';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
-import { LoadPublicNodesParams, LoadStorageParams } from './type';
+import { GetChangeAddressParams, GetReceiveAddressParams, LoadPublicNodesParams, LoadStorageParams } from './type';
 import { CannotGeneratePublicAddress } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
@@ -25,28 +25,9 @@ class CoinWallet extends BaseWallet {
         this.base = Coin(id);
         if (mnemonic) this.initAddresses(mnemonic);
     }
-    getAccountBalances(_props: any) {
+    getReceiveAddress(_props: any): string {
         throw new Error(NotImplemented);
     }
-    loadConnector(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    estimateFee(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    buildTransaction(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    getBalance(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    sendTransaction(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
-    }
-
     loadFromStorage({
         account,
         addresses,
@@ -95,6 +76,29 @@ class CoinWallet extends BaseWallet {
             }
         }
     
+    }
+    
+    getAccountBalances(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    loadConnector(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    estimateFee(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    buildTransaction(_props: any) {
+        throw new Error(NotImplemented);
+    }
+
+    getBalance(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    sendTransaction(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getTransactions(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 

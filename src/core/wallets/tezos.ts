@@ -6,6 +6,7 @@ import { EstimateFeeParams } from "../../networks/tezos/estimateFee/types";
 import { GetAccountBalancesParams, GetBalanceParams } from "../../networks/tezos/getBalance/types";
 import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import CoinWallet from "../wallet";
+import { GetReceiveAddressParams } from "../type";
 
 class TezosWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
@@ -27,6 +28,10 @@ class TezosWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     loadConnector(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    
+    getReceiveAddress(_props: GetReceiveAddressParams): string {
         throw new Error(NotImplemented);
     }
 }

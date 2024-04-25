@@ -5,6 +5,7 @@ import { BuildTransactionParams } from "../../networks/stellar/builder/types";
 import { GetAccountBalanceParams, GetBalanceParams } from "../../networks/stellar/getBalance/types";
 import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import CoinWallet from "../wallet";
+import { GetReceiveAddressParams } from "../type";
 
 class StellarWallet extends CoinWallet {
     estimateFee(): Promise<EstimateFeeResult> {
@@ -26,6 +27,10 @@ class StellarWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     loadConnector(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    
+    getReceiveAddress(_props: GetReceiveAddressParams): string {
         throw new Error(NotImplemented);
     }
 }

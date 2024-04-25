@@ -11,3 +11,14 @@ export type LoadPublicNodesParams = {
     change?: number, 
     index?:number
 }
+
+export type GetReceiveAddressParams = {
+    derivationName?: DerivationName,
+    protocol?: Protocol
+}
+
+export type GetChangeAddressParams = {
+    derivationName: DerivationName,
+    protocol: Protocol,
+    changeIndex: number
+}

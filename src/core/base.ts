@@ -3,6 +3,7 @@ import { Coins,DerivationName, Protocol } from '@infinity/core-sdk/lib/commonjs/
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
+import { GetChangeAddressParams, GetReceiveAddressParams } from './type';
 abstract class BaseWallet {
     base!: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id!: Coins;
@@ -18,6 +19,7 @@ abstract class BaseWallet {
     abstract getTransactions(_props: any): any;
     abstract getAccountBalances(_props: any): any;
     abstract loadConnector(props: any): any;
+    abstract getReceiveAddress(props:GetReceiveAddressParams):string;
 }
 
 export default BaseWallet;
