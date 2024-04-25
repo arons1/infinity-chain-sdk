@@ -8,7 +8,7 @@ import { getAddressFromAccountParametersChecker } from '../parametersChecker';
  *   @param {string} account - address from account
  * @returns {Promise<string>} address
  */
-export const getAddressFromAccount = (account:string) => {
+export const getAddressFromAccount = (account: string) => {
     getAddressFromAccountParametersChecker(account);
     return new Promise((resolve, reject) => {
         axios

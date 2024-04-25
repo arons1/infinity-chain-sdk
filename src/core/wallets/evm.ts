@@ -18,7 +18,6 @@ import {
     EstimateFeeResult,
 } from '../../networks/types';
 
-
 class EVMWallet extends CoinWallet {
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
         return estimateFee(_props);

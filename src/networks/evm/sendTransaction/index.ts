@@ -1,12 +1,11 @@
 import { sendTransactionParamsChecker } from '../parametersChecker';
 import { SendTransactionParams } from './types';
 
-
 /**
  * sendTransaction
- * 
+ *
  * Returns balances of the token's contracts and current balance of each address passed
- * 
+ *
  * @param {Web3} connector       Web3 connector
  * @param {string} rawTransaction  Raw transaction
  */

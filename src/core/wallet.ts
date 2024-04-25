@@ -1,10 +1,18 @@
 import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
-import { Coins, DerivationName, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
+import {
+    Coins,
+    DerivationName,
+    Protocol,
+} from '@infinity/core-sdk/lib/commonjs/networks';
 import Coin from '@infinity/core-sdk/lib/commonjs/networks/coin';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
-import { GetReceiveAddressParams, LoadPublicNodesParams, LoadStorageParams } from './type';
+import {
+    GetReceiveAddressParams,
+    LoadPublicNodesParams,
+    LoadStorageParams,
+} from './type';
 import { CannotGeneratePublicAddress, NotInitizated } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
@@ -15,16 +23,19 @@ class CoinWallet extends BaseWallet {
     id: Coins;
     publicNode!: Record<Protocol, BIP32Interface>;
     account!: string;
-    addresses!: Record<Protocol, Record<DerivationName | string,Record<number, Record<number, string>>>>;
+    addresses!: Record<
+        Protocol,
+        Record<DerivationName | string, Record<number, Record<number, string>>>
+    >;
     publicAddresses!: Record<Protocol, string>;
     initializated: boolean = false;
     constructor(id: Coins, mnemonic?: string) {
-        super()
+        super();
         this.id = id;
         this.base = Coin(id);
         if (mnemonic) this.initAddresses(mnemonic);
     }
-     /**
+    /**
      * Retrieves the receive address based on the derivation name and protocol.
      *
      * @param {GetReceiveAddressParams} params - The parameters for retrieving the receive address.
@@ -37,16 +48,19 @@ class CoinWallet extends BaseWallet {
         derivationName,
         protocol,
     }: GetReceiveAddressParams): string {
-        if (!this.initializated)
-            throw new Error(NotInitizated);
+        if (!this.initializated) throw new Error(NotInitizated);
         const derivations = config[this.id].derivations;
-        const derivation = derivations.find(d => d.name === derivationName && d.protocol === protocol);
+        const derivation = derivations.find(
+            d => d.name === derivationName && d.protocol === protocol,
+        );
         if (!derivation) {
             if (derivations.length === 1)
-                return this.addresses[derivations[0].protocol][derivations[0].name][0][0]
-            throw new Error(CannotGeneratePublicAddress)
+                return this.addresses[derivations[0].protocol][
+                    derivations[0].name
+                ][0][0];
+            throw new Error(CannotGeneratePublicAddress);
         }
-        return this.addresses[derivation.protocol][derivation.name][0][0]
+        return this.addresses[derivation.protocol][derivation.name][0][0];
     }
     /**
      * Loads data from storage into the wallet instance.
@@ -64,7 +78,7 @@ class CoinWallet extends BaseWallet {
         if (account) this.account = account;
         if (publicAddresses) this.publicAddresses = publicAddresses;
         this.addresses = addresses;
-        this.initializated = true
+        this.initializated = true;
     }
     /**
      * Initializes addresses for the wallet using the provided mnemonic.
@@ -82,12 +96,12 @@ class CoinWallet extends BaseWallet {
                 addressResult.extendedPublicAddress as string;
             if (this.id == Coins.TEZOS)
                 this.account = addressResult.account as string;
-            if(this.id == Coins.FIO)
+            if (this.id == Coins.FIO)
                 this.account = addressResult.account as string;
         }
-        this.initializated = true
+        this.initializated = true;
     }
-        /**
+    /**
      * Loads public nodes for a given protocol and generates public addresses.
      *
      * @param {LoadPublicNodesParams} param - The parameters for loading public nodes.
@@ -98,35 +112,41 @@ class CoinWallet extends BaseWallet {
      * @throws {Error} Throws an error if public nodes cannot be generated.
      */
     loadPublicNodes({
-        protocol, 
-        publicMasterAddress, 
-        change = 0, 
-        index = 0
-    }:LoadPublicNodesParams) {
+        protocol,
+        publicMasterAddress,
+        change = 0,
+        index = 0,
+    }: LoadPublicNodesParams) {
         this.publicNode[protocol] = this.base.importMaster(
             publicMasterAddress,
         ) as BIP32Interface;
         if (!this.publicNode[protocol])
             throw new Error(CannotGeneratePublicAddress);
-        this.publicAddresses[protocol] = publicMasterAddress
-        const derivations = config[this.id].derivations.filter(a => a.protocol == protocol)
-        for(let derivation of derivations){
-            const address = this.base.generatePublicAddresses({publicAccountNode:this.publicNode[protocol],derivation:derivation.name,change,index})
-            if(address){
-                if(!this.addresses[protocol])
-                    this.addresses[protocol] = {}
-                if(!this.addresses[protocol][derivation.name])
-                    this.addresses[protocol][derivation.name] = {}
-                if(!this.addresses[protocol][derivation.name][change])
-                    this.addresses[protocol][derivation.name][change] = {}
-                this.addresses[protocol][derivation.name][change][index] = address.publicAddress as string;
-                this.account = address.account
+        this.publicAddresses[protocol] = publicMasterAddress;
+        const derivations = config[this.id].derivations.filter(
+            a => a.protocol == protocol,
+        );
+        for (let derivation of derivations) {
+            const address = this.base.generatePublicAddresses({
+                publicAccountNode: this.publicNode[protocol],
+                derivation: derivation.name,
+                change,
+                index,
+            });
+            if (address) {
+                if (!this.addresses[protocol]) this.addresses[protocol] = {};
+                if (!this.addresses[protocol][derivation.name])
+                    this.addresses[protocol][derivation.name] = {};
+                if (!this.addresses[protocol][derivation.name][change])
+                    this.addresses[protocol][derivation.name][change] = {};
+                this.addresses[protocol][derivation.name][change][index] =
+                    address.publicAddress as string;
+                this.account = address.account;
             }
         }
-        this.initializated = true
+        this.initializated = true;
     }
 
-    
     getAccountBalances(_props: any) {
         throw new Error(NotImplemented);
     }

@@ -2,7 +2,6 @@ import { CurrencyBalanceResult } from '../../types';
 import { getBalanceParamsChecker } from '../parametersChecker';
 import { BalanceParams } from './types';
 
-
 /**
  * getBalance
  * Returns balance of the address

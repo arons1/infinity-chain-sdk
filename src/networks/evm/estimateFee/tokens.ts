@@ -7,7 +7,6 @@ import {
     TransactionEVM,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
-
 /**
  * estimateTokenFee
  * Returns token transfer estimate cost
@@ -23,7 +22,7 @@ import {
  * @param {boolean} approve Flag to approve the token
  * @returns {Promise<ReturnEstimate>} Estimated cost
  */
-export const estimateTokenFee = async ({ 
+export const estimateTokenFee = async ({
     value = '0',
     connector,
     source,

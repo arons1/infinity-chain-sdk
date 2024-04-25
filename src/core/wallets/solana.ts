@@ -19,7 +19,6 @@ import {
 } from '../../networks/types';
 import CoinWallet from '../wallet';
 
-
 class SolanaWallet extends CoinWallet {
     estimateFee(_props: any): Promise<EstimateFeeResult> {
         return estimateFee(_props);

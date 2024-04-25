@@ -10,7 +10,6 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
 
-
 /**
  * estimateFee
  *

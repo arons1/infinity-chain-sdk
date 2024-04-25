@@ -33,7 +33,7 @@ import Web3 from 'web3';
  * @param {string|undefined} [priorityFee] Just for chainId, 1 or 137, it's used for calculating the fee
  * @returns {Promise<TransactionEVM>}
  */
-export const calculateGasPrice = async ({ 
+export const calculateGasPrice = async ({
     transaction,
     gasPrice,
     connector,
@@ -73,10 +73,9 @@ export const calculateGasPrice = async ({
  * @param {Web3} connector Web3 connector
  * @returns {Promise<string>} Gas price
  */
-export const getGasPrice = async ({ connector }:GasPriceParams) => {
+export const getGasPrice = async ({ connector }: GasPriceParams) => {
     return '0x' + (await connector.eth.getGasPrice()).toString(16);
 };
-
 
 /**
  * estimateGas

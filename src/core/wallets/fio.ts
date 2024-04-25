@@ -12,7 +12,6 @@ import {
 import { CurrencyBalanceResult, EstimateFeeResult } from '../../networks/types';
 import CoinWallet from '../wallet';
 
-
 class FIOWallet extends CoinWallet {
     estimateFee(source: string): Promise<EstimateFeeResult> {
         return estimateFee(source);

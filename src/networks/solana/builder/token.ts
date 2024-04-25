@@ -21,12 +21,12 @@ import {
  * @param {string }publicKey public key of the source
  * @param {Connection} connector solana web3 connector
  */
-export const addAssociatedCreation = async ({ 
-    instructions, 
-    mintToken, 
-    destination, 
-    publicKey, 
-    connector 
+export const addAssociatedCreation = async ({
+    instructions,
+    mintToken,
+    destination,
+    publicKey,
+    connector,
 }: AddAssociatedCreationParams) => {
     const [checkSender, associatedTokenSender] = await checkIfAccountExists({
         mintToken,
@@ -92,14 +92,14 @@ export const addAssociatedCreation = async ({
  * @param {Connection} connector web3 solana connector
  * @returns {Promise<TransactionInstruction[]>} instructions for making a token transaction
  */
-export const tokenTransaction = async ({ 
-    memo = '', 
-    mintToken, 
-    destination, 
-    publicKey, 
-    decimalsToken, 
-    value, 
-    connector 
+export const tokenTransaction = async ({
+    memo = '',
+    mintToken,
+    destination,
+    publicKey,
+    decimalsToken,
+    value,
+    connector,
 }: TokenTransactionParams): Promise<TransactionInstruction[]> => {
     const instructions: TransactionInstruction[] = [];
     const { senderTokenAccount, receiverTokenAccount } =

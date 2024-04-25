@@ -3,7 +3,6 @@ import { FIOBalanceResponse } from './type';
 import { CurrencyBalanceResult } from '../../types';
 import { getBalanceParametersChecker } from '../parametersChecker';
 
-
 /**
  * Retrieves the balance of the given FIO address.
  *

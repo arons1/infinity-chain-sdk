@@ -6,7 +6,6 @@ import { CannotGetNonce } from '../../../errors/networks';
 import { EstimateGasParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 
-
 /**
  * Estimates the cost of a currency transfer transaction.
  *

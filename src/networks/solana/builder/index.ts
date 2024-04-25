@@ -38,7 +38,7 @@ export const buildTransaction = async (
         keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
         coinId: Coins.SOLANA,
     });
-}
+};
 
 /**
  * Returns raw transaction
@@ -51,7 +51,7 @@ export const buildTransaction = async (
  * @param {Web3} connector - solana web3 connector
  * @returns {Promise<VersionedTransaction>}
  */
-export const rawTransaction = async ({ 
+export const rawTransaction = async ({
     memo = '',
     mintToken,
     decimalsToken,

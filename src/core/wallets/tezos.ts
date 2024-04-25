@@ -22,7 +22,6 @@ import {
 } from '../../networks/types';
 import CoinWallet from '../wallet';
 
-
 class TezosWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee(_props);

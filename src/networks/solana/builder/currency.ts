@@ -13,11 +13,11 @@ import { memoInstruction } from '../utils';
  * @returns {Promise<TransactionInstruction[]>}
  */
 
-export const currencyTransaction = async ({ 
-    memo = '', 
-    publicKey, 
-    destination, 
-    value, 
+export const currencyTransaction = async ({
+    memo = '',
+    publicKey,
+    destination,
+    value,
 }: CurrencyTransactionParams) => {
     const instructions: any = [
         SystemProgram.transfer({

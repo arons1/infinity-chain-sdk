@@ -21,7 +21,11 @@ const minABI = [
  * @param {string[]} contracts token's contracts
  * @returns {Promise<Record<string, BalanceResult[]>>} balances of token contracts and current balance of the addresses
  */
-export const getAccountBalances = async ({ connector, accounts, contracts }: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
+export const getAccountBalances = async ({
+    connector,
+    accounts,
+    contracts,
+}: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     const contract = new connector.eth.Contract(minABI);
     const map: RPCBalanceResult = {};
     const batchList: BatchBalance[] = [];

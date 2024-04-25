@@ -18,7 +18,6 @@ import {
 } from '../../networks/types';
 import CoinWallet from '../wallet';
 
-
 class StellarWallet extends CoinWallet {
     estimateFee(): Promise<EstimateFeeResult> {
         return estimateFee();
