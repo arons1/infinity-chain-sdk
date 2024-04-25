@@ -10,18 +10,23 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
 
-/* 
-estimateFee
-    Returns estimate fee transfer
-    @param connector: web3 connector
-    @param source: source account to send from
-    @param destination: destination account to receive
-    @param chainId: chainId
-    @param feeRatio: ratio (between 0 and 1) to increase de fee
-    @param priorityFee: account index derivation
-    @param tokenContract: token contract
-    @param gasPrice: Gas Price (optional)
-*/
+
+/**
+ * estimateFee
+ *
+ * Returns estimate fee transfer
+ *
+ * @param {Object} props
+ * @param {Web3} props.connector - Web3 connector
+ * @param {string} props.source - Source account to send from
+ * @param {string} props.destination - Destination account to receive
+ * @param {string} props.chainId - ChainId
+ * @param {number} props.feeRatio - Ratio (between 0 and 1) to increase de fee
+ * @param {number} [props.priorityFee] - Account index derivation
+ * @param {string} [props.tokenContract] - Token contract
+ * @param {string} [props.gasPrice] - Gas Price (optional)
+ * @returns {Promise<EstimateFeeResult>}
+ */
 export const estimateFee = async (
     props: EstimateGasParams,
 ): Promise<EstimateFeeResult> => {

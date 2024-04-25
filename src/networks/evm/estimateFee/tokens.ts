@@ -7,20 +7,23 @@ import {
     TransactionEVM,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
-/* 
-estimateTokenFee
-    Returns token transfer estimate cost
-    @param value: value to bridge in wei
-    @param connector: web3 connector
-    @param source: source account to send from
-    @param destination: destination account to receive
-    @param chainId: chainId
-    @param feeRatio: ratio (between 0 and 1) to increase de fee
-    @param priorityFee: account index derivation
-    @param tokenContract: token contract
-    @param gasPrice: Gas Price (optional)
-*/
-export const estimateTokenFee = async ({
+
+/**
+ * estimateTokenFee
+ * Returns token transfer estimate cost
+ * @param {string} value Value to bridge in wei
+ * @param {Web3} connector Web3 connector
+ * @param {string} source Source account to send from
+ * @param {string} destination Destination account to receive
+ * @param {number} chainId ChainId
+ * @param {number} feeRatio Ratio (between 0 and 1) to increase de fee
+ * @param {number} priorityFee Account index derivation
+ * @param {string} tokenContract Token contract
+ * @param {string} gasPrice Gas Price (optional)
+ * @param {boolean} approve Flag to approve the token
+ * @returns {Promise<ReturnEstimate>} Estimated cost
+ */
+export const estimateTokenFee = async ({ 
     value = '0',
     connector,
     source,

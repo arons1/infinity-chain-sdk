@@ -21,17 +21,19 @@ import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/e
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import Web3 from 'web3';
-/* 
-calculateGasPrice
-    Format gas price based on the current transaction
-    @param connector: web3 connector
-    @param chainId: chainId
-    @param transaction: TransactionEVM
-    @param gasPrice: gas price
-    @param feeRatio: number fee ratio
-    @param priorityFee: priority fee number
-*/
-export const calculateGasPrice = async ({
+
+/**
+ * Calculate Gas Price
+ * Format gas price based on the current transaction
+ * @param {TransactionEVM} transaction
+ * @param {string} gasPrice
+ * @param {Web3} connector
+ * @param {number} chainId
+ * @param {number} [feeRatio=0.5]
+ * @param {string|undefined} [priorityFee]
+ * @returns {Promise<TransactionEVM>}
+ */
+export const calculateGasPrice = async ({ 
     transaction,
     gasPrice,
     connector,
@@ -64,23 +66,26 @@ export const calculateGasPrice = async ({
             '0x' + new BigNumber(transaction.value).toString(16);
     return transaction;
 };
-/* 
-getGasPrice
-    Returns gas price
-    @param web3: web3 connector
-*/
-export const getGasPrice = async ({
-    connector,
-}: GasPriceParams): Promise<string> => {
+
+/**
+ * getGasPrice
+ * Returns gas price
+ * @param {Web3} connector Web3 connector
+ * @returns {Promise<string>} Gas price
+ */
+export const getGasPrice = async ({ connector }:GasPriceParams) => {
     return '0x' + (await connector.eth.getGasPrice()).toString(16);
 };
-/* 
-estimateGas
-    Returns gas limit estimate cost
-    @param connector: web3 connector
-    @param chainId: chainId
-    @param tx: TransactionEVM
-*/
+
+
+/**
+ * estimateGas
+ * Returns gas limit estimate cost
+ * @param {Web3} connector Web3 connector
+ * @param {number} chainId ChainId
+ * @param {TransactionEVM} tx TransactionEVM
+ * @returns {Promise<string>} Gas limit estimate cost
+ */
 const estimateGas = async (
     connector: Web3,
     chainId: number,
@@ -94,18 +99,25 @@ const estimateGas = async (
         '0x' + (await connector.eth.estimateGas(auxCalc)).toString(16);
     return tx.gasLimit;
 };
-/* 
-getGasLimit
-    Returns gas limit estimate cost
-    @param value: Amount to bridge in wei
-    @param connector: web3 connector
-    @param source: source account to send from
-    @param destination: destination account to receive
-    @param chainId: chainId
-    @param tokenContract: token contract
-    @param contract: Web3 contract
-    @param isToken: If it's a token transfer
-*/
+
+/**
+ * getGasLimit
+ *
+ * Returns gas limit estimate cost
+ *
+ * @param {Object} params
+ * @param {string} params.destination - destination account to receive
+ * @param {string} params.tokenContract - token contract
+ * @param {string} params.value - Amount to bridge in wei
+ * @param {string} params.source - source account to send from
+ * @param {Contract} params.contract - Web3 contract
+ * @param {number} params.chainId - chainId
+ * @param {Web3} params.connector - web3 connector
+ * @param {boolean} [params.isToken=false] - If it's a token transfer
+ * @param {boolean} [params.approve=false] - If it's an approve
+ *
+ * @returns {Promise<{data: string, estimateGas: string}>}
+ */
 export const getGasLimit = async ({
     destination,
     tokenContract,
@@ -160,12 +172,16 @@ export const getGasLimit = async ({
         };
     }
 };
-/* 
-getNonce
-    Returns gas limit estimate cost
-    @param address: Account
-    @param web3: web3 connector
-*/
+
+/**
+ * getNonce
+ *
+ * @param {NonceParams} params
+ * @param {string} address - Account
+ * @param {Web3} connector - web3 connector
+ *
+ * @returns {Promise<string>} Gas limit estimate cost
+ */
 export const getNonce = async ({
     address,
     connector,

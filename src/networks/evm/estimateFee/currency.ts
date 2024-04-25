@@ -6,25 +6,28 @@ import { CannotGetNonce } from '../../../errors/networks';
 import { EstimateGasParams, ReturnEstimate } from './types';
 import { calculateGasPrice, getGasLimit, getGasPrice, getNonce } from './utils';
 
-/* 
-estimateCurrencyFee
-    Returns currency transfer estimate cost
-    @param value: Amount to bridge in wei
-    @param connector: web3 connector
-    @param source: source account to send from
-    @param destination: destination account to receive
-    @param chainId: chainId
-    @param gasPrice: Gas Price (optional)
-    @param feeRatio: ratio (between 0 and 1) to increase de fee
-    @param priorityFee: account index derivation
-*/
+
+/**
+ * Estimates the cost of a currency transfer transaction.
+ *
+ * @param {Object} options
+ * @param {string} [options.value="0"] The amount to bridge in wei.
+ * @param {Web3} options.connector The Web3 connector.
+ * @param {string} options.source The source account to send from.
+ * @param {string} [options.destination=""] The destination account to receive.
+ * @param {number} options.chainId The chain ID.
+ * @param {number} [options.gasPrice] The gas price to use.
+ * @param {number} [options.feeRatio=0.5] The ratio to increase the fee (between 0 and 1).
+ * @param {number} [options.priorityFee] The account index derivation.
+ * @returns {Promise<ReturnEstimate>} The estimated gas cost, gas price and the transaction.
+ */
 export const estimateCurrencyFee = async ({
     value = '0',
     connector,
     source,
     destination = '',
     chainId,
-    feeRatio,
+    feeRatio = 0.5,
     priorityFee,
     gasPrice,
 }: EstimateGasParams): Promise<ReturnEstimate> => {

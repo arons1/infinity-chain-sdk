@@ -12,18 +12,16 @@ const minABI = [
         type: 'function',
     },
 ];
-/* 
-getAccountBalances
-    Returns balances of the token's contracts and current balance of each address passed
-    @param connector: web3 connector
-    @param accounts: accounts to get the balances of the tokens and current balance
-    @param contracts: token's contracts
-*/
-export const getAccountBalances = async ({
-    connector,
-    accounts,
-    contracts,
-}: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
+
+/**
+ * getAccountBalances
+ * Returns balances of the token's contracts and current balance of each address passed
+ * @param {Web3} connector web3 connector
+ * @param {string[]} accounts addresses to get the balances of the tokens and current balance
+ * @param {string[]} contracts token's contracts
+ * @returns {Promise<Record<string, BalanceResult[]>>} balances of token contracts and current balance of the addresses
+ */
+export const getAccountBalances = async ({ connector, accounts, contracts }: RPCBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     const contract = new connector.eth.Contract(minABI);
     const map: RPCBalanceResult = {};
     const batchList: BatchBalance[] = [];
