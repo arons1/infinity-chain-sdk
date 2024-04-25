@@ -17,17 +17,7 @@ import {
     CurrencyBalanceResult,
     EstimateFeeResult,
 } from '../../networks/types';
-import {
-    DerivationName,
-    Protocol,
-} from '@infinity/core-sdk/lib/commonjs/networks';
-import config from '@infinity/core-sdk/lib/commonjs/networks/config';
-import { GetReceiveAddressParams } from '../type';
-import {
-    MissingDerivationName,
-    MissingParams,
-    MissingProtocol,
-} from '../../errors/networks';
+
 
 class EVMWallet extends CoinWallet {
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {

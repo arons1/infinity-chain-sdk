@@ -21,11 +21,7 @@ import {
     EstimateFeeResult,
 } from '../../networks/types';
 import CoinWallet from '../wallet';
-import { GetReceiveAddressParams } from '../type';
-import {
-    DerivationName,
-    Protocol,
-} from '@infinity/core-sdk/lib/commonjs/networks';
+
 
 class TezosWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {

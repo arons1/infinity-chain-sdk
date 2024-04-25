@@ -11,7 +11,6 @@ import { EstimateFeeParams } from '../../networks/xrp/estimateFee/types';
 import { GetBalanceParams } from '../../networks/xrp/getBalance/types';
 import { SendTransactionParams } from '../../networks/xrp/sendTransaction/types';
 import CoinWallet from '../wallet';
-import { GetReceiveAddressParams } from '../type';
 
 class XRPWallet extends CoinWallet {
     estimateFee(props: EstimateFeeParams): EstimateFeeResult {

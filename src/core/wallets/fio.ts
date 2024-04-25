@@ -11,11 +11,7 @@ import {
 } from '../../networks/fio/builder/types';
 import { CurrencyBalanceResult, EstimateFeeResult } from '../../networks/types';
 import CoinWallet from '../wallet';
-import { GetReceiveAddressParams } from '../type';
-import {
-    DerivationName,
-    Protocol,
-} from '@infinity/core-sdk/lib/commonjs/networks';
+
 
 class FIOWallet extends CoinWallet {
     estimateFee(source: string): Promise<EstimateFeeResult> {

@@ -26,7 +26,7 @@ import {
     LastChangeIndexParameters,
 } from '../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
-import { GetChangeAddressParams, GetReceiveAddressParams } from '../type';
+import { GetChangeAddressParams } from '../type';
 
 class UTXOWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
