@@ -6,6 +6,7 @@ import { GetAccountBalanceParams, GetBalanceParams } from "../../networks/stella
 import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import CoinWallet from "../wallet";
 import { GetReceiveAddressParams } from "../type";
+import { DerivationName, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
 
 class StellarWallet extends CoinWallet {
     estimateFee(): Promise<EstimateFeeResult> {
@@ -30,9 +31,7 @@ class StellarWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     
-    getReceiveAddress(_props: GetReceiveAddressParams): string {
-        throw new Error(NotImplemented);
-    }
+    
 }
 
 export default StellarWallet

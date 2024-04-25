@@ -41,9 +41,7 @@ class UTXOWallet extends CoinWallet {
     loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
-    getReceiveAddress(_props: GetReceiveAddressParams): string {
-        throw new Error(NotImplemented);
-    }
+
     getChangeAddress(_props: GetChangeAddressParams): string {
         throw new Error(NotImplemented);
     }

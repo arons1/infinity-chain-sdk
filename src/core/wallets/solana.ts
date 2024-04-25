@@ -6,7 +6,8 @@ import { GetAccountsTransactionsParams, GetBalanceParams } from "../../networks/
 import { SendTransactionParams } from "../../networks/solana/sendTransaction/types";
 import { BalanceResult, CurrencyBalanceResult, EstimateFeeResult } from "../../networks/types";
 import CoinWallet from "../wallet";
-import { GetChangeAddressParams, GetReceiveAddressParams } from "../type";
+import { GetReceiveAddressParams } from "../type";
+import { DerivationName, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
 
 class SolanaWallet extends CoinWallet {
     estimateFee(_props: any): Promise<EstimateFeeResult> {
@@ -30,9 +31,7 @@ class SolanaWallet extends CoinWallet {
     loadConnector(_props: any) {
         throw new Error(NotImplemented);
     }
-    getReceiveAddress(_props: GetReceiveAddressParams): string {
-        throw new Error(NotImplemented);
-    }
+
 
 }
 
