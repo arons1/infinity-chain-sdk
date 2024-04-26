@@ -16,6 +16,8 @@ import BaseWallet from './base';
 import { initProtocols } from './utils';
 
 class CoinWallet extends BaseWallet {
+
+
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super();
         this.id = id;
@@ -26,6 +28,7 @@ class CoinWallet extends BaseWallet {
             throw Error(
                 'You need to pass both mnemonic and walletName or none',
             );
+        
     }
     /**
      * Retrieves the receive address based on the derivation name and protocol.
@@ -46,6 +49,16 @@ class CoinWallet extends BaseWallet {
         );
         if (!derivation) throw new Error(CannotGeneratePublicAddress);
         return this.addresses[walletName ?? this.walletSelected][derivation.protocol][derivation.name][0][0];
+    }
+    /**
+     * Removes a wallet from the addresses, publicNode, and extendedPublicKeys objects.
+     *
+     * @param {string} walletName - The name of the wallet to remove.
+     */
+    removeWallet(walletName: string) {
+        delete this.addresses[walletName]
+        delete this.publicNode[walletName]
+        delete this.extendedPublicKeys[walletName]
     }
     /**
      * Loads data from storage into the wallet instance.

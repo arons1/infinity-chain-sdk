@@ -1,3 +1,5 @@
+import { TransactionEVM } from "@infinity/core-sdk/lib/commonjs/networks/evm";
+
 export type EstimateGasParams = {
     tokenContract?: string;
     destination?: string;
@@ -14,13 +16,20 @@ export type BuildTransaction = {
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;
-    privateKey: Buffer;
+    mnemonic:string;
     tokenContract?: string;
     approve?: boolean;
     walletName?: string;
 };
-
+export type SignTransactionParams = {
+    transaction: TransactionEVM;
+    mnemonic:string;
+}
 export type RPCBalancesParams = {
     contracts: string[];
     accounts?: string[];
 };
+export type SignMessageParams = {
+    mnemonic:string;
+    message:string;
+}

@@ -10,7 +10,7 @@ export type BuildTransaction = {
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;
-    privateKey: Buffer;
+    privateKey: string;
     tokenContract?: string;
     approve?: boolean;
 };
@@ -24,7 +24,7 @@ export type BuildTokenTransaction = {
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;
-    privateKey: Buffer;
+    privateKey: string;
 };
 export type DataTransferType = {
     source: string;

@@ -20,13 +20,17 @@ import {
     BuildTransaction,
     EstimateGasParams,
     RPCBalancesParams,
+    SignMessageParams,
+    SignTransactionParams,
 } from './types';
 import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
+import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 
 class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
+    base!: ECDSACoin;
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
         this.chain = config[id].chain as Chains;
@@ -55,14 +59,46 @@ class EVMWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
     buildTransaction(_props: BuildTransaction): Promise<string> {
+        const rootNode = this.base.getRootNode(_props.mnemonic)
+        const privateAccountNode = this.base.getPrivateMasterKey({rootNode})
+        const privateKey = this.base.getPrivateAddress({privateAccountNode})
         return buildTransaction({
             ..._props,
+            privateKey,
             source: this.getReceiveAddress({
                 walletName: _props.walletName ?? this.walletSelected,
             }),
             connector: this.connector,
             chainId: this.chain,
         });
+    }
+
+    /**
+     * Signs a transaction using the provided transaction and mnemonic.
+     *
+     * @param {TransactionEVM} transaction - The transaction to sign.
+     * @param {string} mnemonic - The mnemonic used for signing.
+     * @return {Promise<string>} A promise that resolves to the signed transaction.
+     */
+    async signTransaction({
+        transaction,
+        mnemonic
+    }:SignTransactionParams) : Promise<string>{
+        const rootNode = this.base.getRootNode(mnemonic)
+        const privateAccountNode = this.base.getPrivateMasterKey({rootNode})
+        const privateKey = this.base.getPrivateAddress({privateAccountNode})
+        return (await this.connector.eth.accounts.signTransaction(transaction, privateKey))?.rawTransaction;
+    }
+
+
+    signMessage({
+        mnemonic,
+        message
+    }: SignMessageParams): string {
+        const rootNode = this.base.getRootNode(mnemonic)
+        const privateAccountNode = this.base.getPrivateMasterKey({rootNode})
+        const privateKey = this.base.getPrivateAddress({privateAccountNode})
+        return this.connector.eth.accounts.sign(message, privateKey).signature;
     }
 
     /**
@@ -126,6 +162,7 @@ class EVMWallet extends CoinWallet {
         }
         this.connector = new Web3(PROVIDERS[this.chain]);
     }
+
 }
 
 export default EVMWallet;

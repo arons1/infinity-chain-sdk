@@ -37,6 +37,7 @@ abstract class BaseWallet {
     abstract getAccountBalances(_props: any): any;
     abstract loadConnector(): any;
     abstract getReceiveAddress(props: GetReceiveAddressParams): string;
+    abstract removeWallet(walletName: string): any;
 }
 
 export default BaseWallet;
