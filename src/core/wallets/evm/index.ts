@@ -91,6 +91,14 @@ class EVMWallet extends CoinWallet {
     }
 
 
+    /**
+     * Signs a message using the provided mnemonic and message.
+     *
+     * @param {SignMessageParams} param - The parameters for signing the message.
+     * @param {string} param.mnemonic - The mnemonic used for signing the message.
+     * @param {string} param.message - The message to sign.
+     * @return {string} The signature of the signed message.
+     */
     signMessage({
         mnemonic,
         message
