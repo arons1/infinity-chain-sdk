@@ -1,7 +1,6 @@
 import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 import {
     Coins,
-    DerivationName,
     Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks';
 import Coin from '@infinity/core-sdk/lib/commonjs/networks/coin';
@@ -10,7 +9,7 @@ import {
     LoadPublicNodesParams,
     LoadStorageParams,
 } from './types';
-import { CannotGeneratePublicAddress, NotInitizated } from '../errors/networks';
+import { CannotGeneratePublicAddress } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import BaseWallet from './base';
@@ -42,24 +41,11 @@ class CoinWallet extends BaseWallet {
         protocol,
         walletName,
     }: GetReceiveAddressParams): string {
-        if (!this.initializated) throw new Error(NotInitizated);
-        if (walletName && this.addresses[walletName] == undefined)
-            throw new Error(NotInitizated);
-        const derivations = config[this.id].derivations;
-        const derivation = derivations.find(
+        const derivation = config[this.id].derivations.find(
             d => d.name === derivationName && d.protocol === protocol,
         );
-
-        if (!derivation) {
-            if (derivations.length === 1)
-                return this.addresses[walletName ?? this.walletSelected][
-                    derivations[0].protocol
-                ][derivations[0].name][0][0];
-            throw new Error(CannotGeneratePublicAddress);
-        }
-        return this.addresses[walletName ?? this.walletSelected][
-            derivation.protocol
-        ][derivation.name][0][0];
+        if (!derivation) throw new Error(CannotGeneratePublicAddress);
+        return this.addresses[walletName ?? this.walletSelected][derivation.protocol][derivation.name][0][0];
     }
     /**
      * Loads data from storage into the wallet instance.
@@ -101,26 +87,19 @@ class CoinWallet extends BaseWallet {
      */
     addWallet(mnemonic: string, walletName: string) {
         const add = this.base.generateAddresses(mnemonic);
-        this.addresses[walletName] = initProtocols;
-        this.extendedPublicKeys[walletName] = initProtocols;
-        this.publicNode[walletName] = initProtocols;
-
-        for (let addressResult of add) {
-            if (addressResult.extendedPublicAddress) {
-                this.publicNode[walletName][addressResult.protocol] =
-                    this.base.importMaster(
-                        addressResult.extendedPublicAddress,
-                    ) as BIP32Interface;
-            }
+        for (const addressResult of add) {
             this.addresses[walletName][addressResult.protocol] = {
                 0: { 0: addressResult.publicAddress as string },
             };
             this.extendedPublicKeys[walletName][addressResult.protocol] =
                 addressResult.extendedPublicAddress as string;
-            if (this.id == Coins.TEZOS)
+            if (this.id === Coins.TEZOS || this.id === Coins.FIO)
                 this.account[walletName] = addressResult.account as string;
-            if (this.id == Coins.FIO)
-                this.account[walletName] = addressResult.account as string;
+            if (addressResult.extendedPublicAddress)
+                this.publicNode[walletName][addressResult.protocol] =
+                    this.base.importMaster(
+                        addressResult.extendedPublicAddress,
+                    ) as BIP32Interface;
         }
         this.initializated = true;
     }
@@ -149,20 +128,10 @@ class CoinWallet extends BaseWallet {
         index = 0,
         walletName,
     }: LoadPublicNodesParams) {
-        this.addresses[walletName] = initProtocols;
-        this.extendedPublicKeys[walletName] = initProtocols;
-        this.publicNode[walletName] = initProtocols;
-
-        this.publicNode[walletName][protocol] = this.base.importMaster(
-            publicMasterAddress,
-        ) as BIP32Interface;
-        if (!this.publicNode[protocol])
-            throw new Error(CannotGeneratePublicAddress);
+        this.publicNode[walletName][protocol] = this.base.importMaster(publicMasterAddress) as BIP32Interface;
         this.extendedPublicKeys[walletName][protocol] = publicMasterAddress;
-        this.addresses[walletName] = initProtocols;
-        const derivations = config[this.id].derivations.filter(
-            a => a.protocol == protocol,
-        );
+        this.addresses[walletName][protocol] = {};
+        const derivations = config[this.id].derivations.filter(d => d.protocol == protocol);
         for (let derivation of derivations) {
             const address = this.base.generatePublicAddresses({
                 publicAccountNode: this.publicNode[walletName][protocol],
@@ -171,22 +140,12 @@ class CoinWallet extends BaseWallet {
                 index,
             });
             if (address) {
-                if (!this.addresses[walletName][protocol])
-                    this.addresses[walletName][protocol] = {};
-                if (!this.addresses[walletName][protocol][derivation.name])
-                    this.addresses[walletName][protocol][derivation.name] = {};
-                if (
-                    !this.addresses[walletName][protocol][derivation.name][
-                        change
-                    ]
-                )
-                    this.addresses[walletName][protocol][derivation.name][
-                        change
-                    ] = {};
-                this.addresses[walletName][protocol][derivation.name][change][
-                    index
-                ] = address.publicAddress as string;
-                this.account[walletName] = address.account;
+                this.addresses[walletName][protocol][derivation.name] = {
+                    [change]: { [index]: address.publicAddress as string },
+                };
+                if (this.id == Coins.TEZOS || this.id == Coins.FIO) {
+                    this.account[walletName] = address.account;
+                }
             }
         }
         this.initializated = true;

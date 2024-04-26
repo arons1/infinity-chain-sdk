@@ -30,6 +30,7 @@ class EVMWallet extends CoinWallet {
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
         this.chain = config[id].chain as Chains;
+        this.loadConnector();
     }
     /**
      * Estimates the fee for a transaction using the provided parameters.
