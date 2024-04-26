@@ -40,7 +40,7 @@ class SolanaWallet extends CoinWallet {
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
-    loadConnector(_props: any) {
+    loadConnector() {
         throw new Error(NotImplemented);
     }
 }
