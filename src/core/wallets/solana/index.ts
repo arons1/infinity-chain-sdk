@@ -18,6 +18,8 @@ import {
     EstimateFeeResult,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
+import { API_RPCS } from '../../config';
+import { UnsupportedChainId } from '../../../errors/transactionParsers';
 
 class SolanaWallet extends CoinWallet {
     estimateFee(_props: any): Promise<EstimateFeeResult> {
@@ -41,7 +43,10 @@ class SolanaWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     loadConnector() {
-        throw new Error(NotImplemented);
+        if (API_RPCS[this.bipIdCoin] == undefined) {
+            throw new Error(UnsupportedChainId);
+        }
+        this.connector = new Web3(PROVIDERS[this.chain]);
     }
 }
 
