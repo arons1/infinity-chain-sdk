@@ -2,7 +2,7 @@ import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 import {
     Coins,
     DerivationName,
-    Protocol
+    Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks';
 import Coin from '@infinity/core-sdk/lib/commonjs/networks/coin';
 import {
@@ -17,14 +17,16 @@ import BaseWallet from './base';
 import { initProtocols } from './utils';
 
 class CoinWallet extends BaseWallet {
-
-    constructor(id: Coins, mnemonic?: string, walletName?:string) {
+    constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super();
         this.id = id;
         this.base = Coin(id);
-        this.bipIdCoin = this.base.bipIdCoin
-        if (mnemonic && walletName) this.addWallet(mnemonic,walletName);
-        else if(mnemonic || walletName) throw Error("You need to pass both mnemonic and walletName or none")
+        this.bipIdCoin = this.base.bipIdCoin;
+        if (mnemonic && walletName) this.addWallet(mnemonic, walletName);
+        else if (mnemonic || walletName)
+            throw Error(
+                'You need to pass both mnemonic and walletName or none',
+            );
     }
     /**
      * Retrieves the receive address based on the derivation name and protocol.
@@ -38,23 +40,26 @@ class CoinWallet extends BaseWallet {
     getReceiveAddress({
         derivationName,
         protocol,
-        walletName
+        walletName,
     }: GetReceiveAddressParams): string {
         if (!this.initializated) throw new Error(NotInitizated);
-        if(walletName && this.addresses[walletName] == undefined) throw new Error(NotInitizated)
+        if (walletName && this.addresses[walletName] == undefined)
+            throw new Error(NotInitizated);
         const derivations = config[this.id].derivations;
         const derivation = derivations.find(
             d => d.name === derivationName && d.protocol === protocol,
         );
-        
+
         if (!derivation) {
             if (derivations.length === 1)
-                return this.addresses[walletName ?? this.walletSelected][derivations[0].protocol][
-                    derivations[0].name
-                ][0][0];
+                return this.addresses[walletName ?? this.walletSelected][
+                    derivations[0].protocol
+                ][derivations[0].name][0][0];
             throw new Error(CannotGeneratePublicAddress);
         }
-        return this.addresses[walletName ?? this.walletSelected][derivation.protocol][derivation.name][0][0];
+        return this.addresses[walletName ?? this.walletSelected][
+            derivation.protocol
+        ][derivation.name][0][0];
     }
     /**
      * Loads data from storage into the wallet instance.
@@ -68,21 +73,23 @@ class CoinWallet extends BaseWallet {
         account,
         addresses,
         extendedPublicKeys,
-        walletName
+        walletName,
     }: LoadStorageParams) {
         if (account) this.account[walletName] = account;
-        if (extendedPublicKeys) this.extendedPublicKeys[walletName] = extendedPublicKeys;
+        if (extendedPublicKeys)
+            this.extendedPublicKeys[walletName] = extendedPublicKeys;
         this.addresses[walletName] = addresses;
-        this.publicNode[walletName] = initProtocols
+        this.publicNode[walletName] = initProtocols;
 
-        if(extendedPublicKeys){
-            for(let pb of Object.values(Protocol)){
-                this.publicNode[walletName][pb as Protocol] = this.base.importMaster(
+        if (extendedPublicKeys) {
+            for (let pb of Object.values(Protocol)) {
+                this.publicNode[walletName][pb as Protocol] =
+                    this.base.importMaster(
                         this.extendedPublicKeys[walletName][pb as Protocol],
-                ) as BIP32Interface;
+                    ) as BIP32Interface;
             }
         }
-        
+
         this.initializated = true;
     }
     /**
@@ -92,22 +99,24 @@ class CoinWallet extends BaseWallet {
      * @param {string} walletName - The ID of the wallet.
      * @return {void} This function does not return anything.
      */
-    addWallet(mnemonic: string, walletName:string) {
+    addWallet(mnemonic: string, walletName: string) {
         const add = this.base.generateAddresses(mnemonic);
-        this.addresses[walletName] = initProtocols
-        this.extendedPublicKeys[walletName] = initProtocols
-        this.publicNode[walletName] = initProtocols
+        this.addresses[walletName] = initProtocols;
+        this.extendedPublicKeys[walletName] = initProtocols;
+        this.publicNode[walletName] = initProtocols;
 
         for (let addressResult of add) {
-            if(addressResult.extendedPublicAddress){
-                this.publicNode[walletName][addressResult.protocol] = this.base.importMaster(
+            if (addressResult.extendedPublicAddress) {
+                this.publicNode[walletName][addressResult.protocol] =
+                    this.base.importMaster(
                         addressResult.extendedPublicAddress,
-                ) as BIP32Interface;
+                    ) as BIP32Interface;
             }
             this.addresses[walletName][addressResult.protocol] = {
-                0: { 0: addressResult.publicAddress as string }
-            }
-            this.extendedPublicKeys[walletName][addressResult.protocol] = addressResult.extendedPublicAddress as string
+                0: { 0: addressResult.publicAddress as string },
+            };
+            this.extendedPublicKeys[walletName][addressResult.protocol] =
+                addressResult.extendedPublicAddress as string;
             if (this.id == Coins.TEZOS)
                 this.account[walletName] = addressResult.account as string;
             if (this.id == Coins.FIO)
@@ -138,11 +147,11 @@ class CoinWallet extends BaseWallet {
         publicMasterAddress,
         change = 0,
         index = 0,
-        walletName
+        walletName,
     }: LoadPublicNodesParams) {
-        this.addresses[walletName] = initProtocols
-        this.extendedPublicKeys[walletName] = initProtocols
-        this.publicNode[walletName] = initProtocols
+        this.addresses[walletName] = initProtocols;
+        this.extendedPublicKeys[walletName] = initProtocols;
+        this.publicNode[walletName] = initProtocols;
 
         this.publicNode[walletName][protocol] = this.base.importMaster(
             publicMasterAddress,
@@ -150,7 +159,7 @@ class CoinWallet extends BaseWallet {
         if (!this.publicNode[protocol])
             throw new Error(CannotGeneratePublicAddress);
         this.extendedPublicKeys[walletName][protocol] = publicMasterAddress;
-        this.addresses[walletName] = initProtocols
+        this.addresses[walletName] = initProtocols;
         const derivations = config[this.id].derivations.filter(
             a => a.protocol == protocol,
         );
@@ -162,13 +171,21 @@ class CoinWallet extends BaseWallet {
                 index,
             });
             if (address) {
-                if (!this.addresses[walletName][protocol]) this.addresses[walletName][protocol] = {};
+                if (!this.addresses[walletName][protocol])
+                    this.addresses[walletName][protocol] = {};
                 if (!this.addresses[walletName][protocol][derivation.name])
                     this.addresses[walletName][protocol][derivation.name] = {};
-                if (!this.addresses[walletName][protocol][derivation.name][change])
-                    this.addresses[walletName][protocol][derivation.name][change] = {};
-                this.addresses[walletName][protocol][derivation.name][change][index] =
-                    address.publicAddress as string;
+                if (
+                    !this.addresses[walletName][protocol][derivation.name][
+                        change
+                    ]
+                )
+                    this.addresses[walletName][protocol][derivation.name][
+                        change
+                    ] = {};
+                this.addresses[walletName][protocol][derivation.name][change][
+                    index
+                ] = address.publicAddress as string;
                 this.account[walletName] = address.account;
             }
         }

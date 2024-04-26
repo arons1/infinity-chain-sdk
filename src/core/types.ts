@@ -10,26 +10,24 @@ export type LoadStorageParams = {
         Record<DerivationName, Record<number, Record<number, string>>>
     >;
     extendedPublicKeys?: Record<Protocol, string>;
-    walletName:string
+    walletName: string;
 };
 export type LoadPublicNodesParams = {
     protocol: Protocol;
     publicMasterAddress: string;
     change?: number;
     index?: number;
-    walletName:string
+    walletName: string;
 };
 
 export type GetReceiveAddressParams = {
     derivationName?: DerivationName;
     protocol?: Protocol;
-    walletName?:string
-
+    walletName?: string;
 };
 
 export type GetChangeAddressParams = {
     derivationName: DerivationName;
     protocol: Protocol;
     changeIndex: number;
-
 };

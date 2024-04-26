@@ -12,16 +12,23 @@ import { GetReceiveAddressParams } from './types';
 abstract class BaseWallet {
     base!: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id!: Coins;
-    publicNode: Record<string,Record<Protocol, BIP32Interface>> = {};
-    account: Record<string,string> = {};
-    addresses: Record<string, Record<
-        Protocol, Record<DerivationName | string, Record<number, Record<number, string>>>>
+    publicNode: Record<string, Record<Protocol, BIP32Interface>> = {};
+    account: Record<string, string> = {};
+    addresses: Record<
+        string,
+        Record<
+            Protocol,
+            Record<
+                DerivationName | string,
+                Record<number, Record<number, string>>
+            >
+        >
     > = {};
-    extendedPublicKeys: Record<string,Record<Protocol, string>> = {};
+    extendedPublicKeys: Record<string, Record<Protocol, string>> = {};
     initializated: boolean = false;
     bipIdCoin!: CoinIds;
-    walletSelected: string = "";
-    abstract selectWallet(walleName:string): any;
+    walletSelected: string = '';
+    abstract selectWallet(walleName: string): any;
     abstract estimateFee(_props: any): any;
     abstract buildTransaction(_props: any): any;
     abstract getBalance(_props: any): any;

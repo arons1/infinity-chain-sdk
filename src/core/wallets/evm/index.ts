@@ -16,16 +16,20 @@ import Web3 from 'web3';
 import { PROVIDERS } from '../../config';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
-import { BuildTransaction, EstimateGasParams, RPCBalancesParams } from './types';
+import {
+    BuildTransaction,
+    EstimateGasParams,
+    RPCBalancesParams,
+} from './types';
 import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
 
 class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
-    constructor(id: Coins, mnemonic?: string,walletName?:string) {
-        super(id,mnemonic,walletName);
-        this.chain = config[id].chain as Chains
+    constructor(id: Coins, mnemonic?: string, walletName?: string) {
+        super(id, mnemonic, walletName);
+        this.chain = config[id].chain as Chains;
     }
     /**
      * Estimates the fee for a transaction using the provided parameters.
@@ -36,7 +40,9 @@ class EVMWallet extends CoinWallet {
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ..._props,
-            source: this.getReceiveAddress({walletName:_props.walletName ?? this.walletSelected}),
+            source: this.getReceiveAddress({
+                walletName: _props.walletName ?? this.walletSelected,
+            }),
             connector: this.connector,
             chainId: this.chain,
         });
@@ -50,12 +56,14 @@ class EVMWallet extends CoinWallet {
     buildTransaction(_props: BuildTransaction): Promise<string> {
         return buildTransaction({
             ..._props,
-            source: this.getReceiveAddress({walletName:_props.walletName ?? this.walletSelected}),
+            source: this.getReceiveAddress({
+                walletName: _props.walletName ?? this.walletSelected,
+            }),
             connector: this.connector,
             chainId: this.chain,
         });
     }
-    
+
     /**
      * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
      *
@@ -70,7 +78,11 @@ class EVMWallet extends CoinWallet {
         return getAccountBalances({
             ..._props,
             connector: this.connector,
-            accounts:_props.accounts ?? Object.keys(this.addresses).map(walletName => this.getReceiveAddress({walletName}))
+            accounts:
+                _props.accounts ??
+                Object.keys(this.addresses).map(walletName =>
+                    this.getReceiveAddress({ walletName }),
+                ),
         });
     }
     /**
@@ -78,10 +90,12 @@ class EVMWallet extends CoinWallet {
      *
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
         return getBalance({
             connector: this.connector,
-            address: this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
         });
     }
     /**
@@ -90,7 +104,7 @@ class EVMWallet extends CoinWallet {
      * @param {string} rawTransaction - The raw transaction to send.
      * @return {Promise<string>} A promise that resolves to the transaction hash.
      */
-    sendTransaction(rawTransaction:string): Promise<string> {
+    sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction({
             rawTransaction,
             connector: this.connector,
@@ -106,10 +120,10 @@ class EVMWallet extends CoinWallet {
      * @throws {Error} If the chain is not supported.
      */
     loadConnector() {
-        if(PROVIDERS[this.chain] == undefined){
+        if (PROVIDERS[this.chain] == undefined) {
             throw new Error(UnsupportedChainId);
         }
-        this.connector = new Web3(PROVIDERS[this.chain])
+        this.connector = new Web3(PROVIDERS[this.chain]);
     }
 }
 
