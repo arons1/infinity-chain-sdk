@@ -100,9 +100,9 @@ export const getBalanceAfter = async (
     const accounts = await getAccounts({address:signer,connector});
     if ('message' in transaction)
         return await getBalanceAfterVersioned({
-            accounts: transaction.message.staticAccountKeys.map(a =>
+            accounts: Array.from(new Set([...transaction.message.staticAccountKeys.map(a =>
                 a.toString(),
-            ).filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),
+            ).filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
             connector,
             signer,
             transaction: transaction as VersionedTransaction,
@@ -114,7 +114,7 @@ export const getBalanceAfter = async (
             a.keys.map(b => accounts_insert.push(b.pubkey.toString())),
         );
         return await getBalanceAfterLegacy({
-            accounts:accounts_insert.filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),
+            accounts:Array.from(new Set([...accounts_insert.filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
             connector,
             signer,
             transaction: transaction as Transaction,
