@@ -105,19 +105,18 @@ export const getBalanceAfter = async (
             ).filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
             connector,
             signer,
-            transaction: transaction as VersionedTransaction,
+            transaction,
         });
     else {
         const accounts_insert: string[] = [];
-        const castTransaction = transaction as Transaction;
-        castTransaction.instructions.map(a =>
+        transaction.instructions.map(a =>
             a.keys.map(b => accounts_insert.push(b.pubkey.toString())),
         );
         return await getBalanceAfterLegacy({
             accounts:Array.from(new Set([...accounts_insert.filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
             connector,
             signer,
-            transaction: transaction as Transaction,
+            transaction,
         });
     }
 };
