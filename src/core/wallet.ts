@@ -37,9 +37,11 @@ class CoinWallet extends BaseWallet {
      */
     getReceiveAddress({
         derivationName,
-        protocol
+        protocol,
+        walletName
     }: GetReceiveAddressParams): string {
         if (!this.initializated) throw new Error(NotInitizated);
+        if(walletName && this.addresses[walletName] == undefined) throw new Error(NotInitizated)
         const derivations = config[this.id].derivations;
         const derivation = derivations.find(
             d => d.name === derivationName && d.protocol === protocol,
@@ -47,12 +49,12 @@ class CoinWallet extends BaseWallet {
         
         if (!derivation) {
             if (derivations.length === 1)
-                return this.addresses[this.walletSelected][derivations[0].protocol][
+                return this.addresses[walletName ?? this.walletSelected][derivations[0].protocol][
                     derivations[0].name
                 ][0][0];
             throw new Error(CannotGeneratePublicAddress);
         }
-        return this.addresses[this.walletSelected][derivation.protocol][derivation.name][0][0];
+        return this.addresses[walletName ?? this.walletSelected][derivation.protocol][derivation.name][0][0];
     }
     /**
      * Loads data from storage into the wallet instance.

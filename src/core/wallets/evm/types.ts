@@ -6,6 +6,8 @@ export type EstimateGasParams = {
     feeRatio?: number;
     priorityFee?: string;
     approve?: boolean;
+    walletName?:string
+
 }
 export type BuildTransaction = {
     destination: string;
@@ -16,8 +18,10 @@ export type BuildTransaction = {
     privateKey: Buffer;
     tokenContract?: string;
     approve?: boolean;
+    walletName?:string
 };
 
 export type RPCBalancesParams = {
     contracts: string[];
+    accounts?:string[]
 };

@@ -23,6 +23,7 @@ export type LoadPublicNodesParams = {
 export type GetReceiveAddressParams = {
     derivationName?: DerivationName;
     protocol?: Protocol;
+    walletName?:string
 
 };
 
