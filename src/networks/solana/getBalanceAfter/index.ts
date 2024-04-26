@@ -8,8 +8,6 @@ import {
     PublicKey,
     RpcResponseAndContext,
     SimulatedTransactionResponse,
-    Transaction,
-    VersionedTransaction,
 } from '@solana/web3.js';
 import { AccountLayout } from '@solana/spl-token';
 import { getBalanceAfterParametersChecker } from '../parametersChecker';

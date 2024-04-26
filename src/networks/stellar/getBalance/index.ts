@@ -3,15 +3,19 @@ import { GetBalanceParams } from './types';
 import { CurrencyBalanceResult } from '../../types';
 import { AccountResponse } from 'stellar-sdk';
 import { getBalanceParametersChecker } from '../parametersChecker';
-/*
-getBalance
-    Returns balance of the account
-    @param account: account to get the balance from
-    @param connector: Stellar api connector
-*/
-export const getBalance = async (
-    props: GetBalanceParams,
-): Promise<CurrencyBalanceResult> => {
+
+/**
+ * @function getBalance
+ *
+ * @description Returns balance of the account
+ *
+ * @param {GetBalanceParams} props
+ * @param {string} props.account - account to get the balance from
+ * @param {Server} props.connector - Stellar api connector
+ *
+ * @returns {Promise<CurrencyBalanceResult>}
+ */
+export const getBalance = async (props: GetBalanceParams): Promise<CurrencyBalanceResult> => {
     getBalanceParametersChecker(props);
     const accountBalances: AccountResponse = await props.connector.loadAccount(
         props.account,

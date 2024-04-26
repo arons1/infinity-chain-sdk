@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { sendTransactionParamsChecker } from '../parametersChecker';
 
-/* 
-sendTransaction
-    sends transaction
-    @param rawTransaction: raw transaction hex
-*/
+
+/**
+ * Send transaction
+ *
+ * @param {string} rawTransaction raw transaction hex
+ *
+ * @returns {Promise<string>} promise which will resolve with the transaction hash
+ */
 export const sendTransaction = (rawTransaction: string): Promise<string> => {
     sendTransactionParamsChecker(rawTransaction);
     return new Promise((resolve, reject) => {

@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import { FeeResult } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-/*
-estimateFee
-    Returns fee estimate
-*/
+
+/**
+ * Returns fee estimate
+ *
+ * @returns {Promise<EstimateFeeResult>} fee estimate result
+ */
 export const estimateFee = (): Promise<EstimateFeeResult> => {
     return new Promise((resolve, reject) => {
         axios

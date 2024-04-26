@@ -11,26 +11,22 @@ import { accountExists, makeAsset } from '../utils';
 import { BuildTransactionParams } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { builderParametersChecker } from '../parametersChecker';
-/*
-preparePayment
-    Returns prepared transaction
-    @param value: Value to transfer
-    @param source: Fee payer
-    @param destination: Address to transfer to
-    @param connector: Stellar api connector
-    @param code: Code issuer of the token to send to (optional)
-    @param issuer: Address issuer of the token to send to (optional)
-    @param memo: memo to place in the transaction (optional)
-*/
-export const preparePayment = async ({
-    value,
-    source,
-    destination,
-    connector,
-    code,
-    issuer,
-    memo,
-}: BuildTransactionParams): Promise<Transaction> => {
+
+/**
+ * Builds and returns a Stellar transaction
+ *
+ * @param {BuildTransactionParams} params Parameters object
+ * @param {string} params.value The amount of tokens to transfer
+ * @param {string} params.source The address of the account that pays the fee
+ * @param {string} params.destination The address to transfer the tokens to
+ * @param {Server} params.connector The StellarSdk connector
+ * @param {string} [params.code] The code of the token to send to (optional)
+ * @param {string} [params.issuer] The issuer of the token to send to (optional)
+ * @param {string} [params.memo] The memo to include in the transaction (optional)
+ *
+ * @returns {Promise<Transaction>} The prepared transaction
+ */
+export const preparePayment = async ({ value, source, destination, connector, code, issuer, memo }:BuildTransactionParams):Promise<Transaction> => {
     const account = await connector.loadAccount(source);
     var transaction: TransactionBuilder = new TransactionBuilder(account, {
         fee: new BigNumber((await estimateFee()).fee as string).toString(10),
@@ -64,18 +60,22 @@ export const preparePayment = async ({
     }
     return transaction.setTimeout(30).build();
 };
-/*
-buildTransaction
-    Returns prepared transaction
-    @param value: Value to transfer
-    @param source: Fee payer
-    @param destination: Address to transfer to
-    @param connector: Stellar api connector
-    @param code: Code issuer of the token to send to (optional)
-    @param issuer: Address issuer of the token to send to (optional)
-    @param memo: memo to place in the transaction (optional)
-    @param keyPair: Key pair to sign the transaction
-*/
+
+/**
+ * Returns a prepared transaction signed with the given keypair
+ *
+ * @param {BuildTransactionParams} props
+ * @param {string} props.value Value to transfer
+ * @param {string} props.source Fee payer
+ * @param {string} props.destination Address to transfer to
+ * @param {Server} props.connector Stellar api connector
+ * @param {string} [props.code] Code issuer of the token to send to (optional)
+ * @param {string} [props.issuer] Address issuer of the token to send to (optional)
+ * @param {string} [props.memo] Memo to place in the transaction (optional)
+ * @param {Keypair} props.keyPair Key pair to sign the transaction
+ *
+ * @returns {Promise<string>} The signed transaction in base64 XDR
+ */
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {

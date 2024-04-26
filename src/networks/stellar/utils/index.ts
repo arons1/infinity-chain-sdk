@@ -3,12 +3,15 @@ import { AccountExists, AssetExistsRequest } from './types';
 import StellarSdk, { Asset } from 'stellar-sdk';
 import { accountExistsParametersChecker } from '../parametersChecker';
 
-/* 
-assetExists
-    Checks if an asset account exists for the passed account
-    @param code: code of the asset
-    @param issuer: issuer od the asset
-*/
+
+/**
+ * Checks if an asset account exists for the passed account
+ *
+ * @param {string} code - code of the asset
+ * @param {string} issuer - issuer of the asset
+ *
+ * @returns {Promise<boolean>} - true if the asset exists, false otherwise
+ */
 export const assetExists = async (code: string, issuer: string) => {
     return new Promise(resolve => {
         axios
