@@ -5,19 +5,19 @@ import {
     getAccountBalances,
     getBalance,
     sendTransaction,
-} from '../../networks/solana';
-import { TransactionBuilderParams } from '../../networks/solana/builder/types';
+} from '../../../networks/solana';
+import { TransactionBuilderParams } from '../../../networks/solana/builder/types';
 import {
     GetAccountsTransactionsParams,
     GetBalanceParams,
-} from '../../networks/solana/getBalance/types';
-import { SendTransactionParams } from '../../networks/solana/sendTransaction/types';
+} from '../../../networks/solana/getBalance/types';
+import { SendTransactionParams } from '../../../networks/solana/sendTransaction/types';
 import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
-} from '../../networks/types';
-import CoinWallet from '../wallet';
+} from '../../../networks/types';
+import CoinWallet from '../../wallet';
 
 class SolanaWallet extends CoinWallet {
     estimateFee(_props: any): Promise<EstimateFeeResult> {

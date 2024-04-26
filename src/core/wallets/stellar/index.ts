@@ -5,18 +5,18 @@ import {
     getAccountBalances,
     getBalance,
     sendTransaction,
-} from '../../networks/stellar';
-import { BuildTransactionParams } from '../../networks/stellar/builder/types';
+} from '../../../networks/stellar';
+import { BuildTransactionParams } from '../../../networks/stellar/builder/types';
 import {
     GetAccountBalanceParams,
     GetBalanceParams,
-} from '../../networks/stellar/getBalance/types';
+} from '../../../networks/stellar/getBalance/types';
 import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
-} from '../../networks/types';
-import CoinWallet from '../wallet';
+} from '../../../networks/types';
+import CoinWallet from '../../wallet';
 
 class StellarWallet extends CoinWallet {
     estimateFee(): Promise<EstimateFeeResult> {

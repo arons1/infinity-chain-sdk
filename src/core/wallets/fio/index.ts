@@ -4,13 +4,13 @@ import {
     estimateFee,
     getBalance,
     sendTransaction,
-} from '../../networks/fio';
+} from '../../../networks/fio';
 import {
     BuildTransactionFIOResult,
     BuildTransactionParams,
-} from '../../networks/fio/builder/types';
-import { CurrencyBalanceResult, EstimateFeeResult } from '../../networks/types';
-import CoinWallet from '../wallet';
+} from '../../../networks/fio/builder/types';
+import { CurrencyBalanceResult, EstimateFeeResult } from '../../../networks/types';
+import CoinWallet from '../../wallet';
 
 class FIOWallet extends CoinWallet {
     estimateFee(source: string): Promise<EstimateFeeResult> {
@@ -34,8 +34,8 @@ class FIOWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
 
-    getAccount(): string {
-        return this.account;
+    getAccount(walletName?:string): string {
+        return this.account[walletName ?? this.walletSelected];
     }
 }
 

@@ -2,31 +2,31 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
-} from '../../networks/types';
+} from '../../../networks/types';
 import {
     buildTransaction,
     estimateFee,
     getAccountBalances,
     getBalance,
     sendTransaction,
-} from '../../networks/utxo';
+} from '../../../networks/utxo';
 import {
     BuildParameters,
     BuildTransactionResult,
-} from '../../networks/utxo/builder/types';
-import { EstimateFeeParams } from '../../networks/utxo/estimateFee/types';
-import { GetAccountBalancesParams } from '../../networks/utxo/getBalance/types';
-import { SendTransactionParams } from '../../networks/utxo/sendTransaction/types';
-import CoinWallet from '../wallet';
-import { getUTXO } from '../../networks/utxo/getUTXO/index';
-import { GetUTXOParams, UTXOResult } from '../../networks/utxo/getUTXO/types';
-import { getLastChangeIndex } from '../../networks/utxo/getLastChangeIndex/index';
+} from '../../../networks/utxo/builder/types';
+import { EstimateFeeParams } from '../../../networks/utxo/estimateFee/types';
+import { GetAccountBalancesParams } from '../../../networks/utxo/getBalance/types';
+import { SendTransactionParams } from '../../../networks/utxo/sendTransaction/types';
+import CoinWallet from '../../wallet';
+import { getUTXO } from '../../../networks/utxo/getUTXO/index';
+import { GetUTXOParams, UTXOResult } from '../../../networks/utxo/getUTXO/types';
+import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import {
     ChangeIndexResolve,
     LastChangeIndexParameters,
-} from '../../networks/utxo/getLastChangeIndex/types';
+} from '../../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
-import { GetChangeAddressParams } from '../types';
+import { GetChangeAddressParams } from '../../types';
 
 class UTXOWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {

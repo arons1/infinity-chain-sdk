@@ -1,16 +1,16 @@
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
-import { CurrencyBalanceResult, EstimateFeeResult } from '../../networks/types';
+import { CurrencyBalanceResult, EstimateFeeResult } from '../../../networks/types';
 import {
     buildTransaction,
     estimateFee,
     getBalance,
     sendTransaction,
-} from '../../networks/xrp';
-import { BuildTransactionParams } from '../../networks/xrp/builder/types';
-import { EstimateFeeParams } from '../../networks/xrp/estimateFee/types';
-import { GetBalanceParams } from '../../networks/xrp/getBalance/types';
-import { SendTransactionParams } from '../../networks/xrp/sendTransaction/types';
-import CoinWallet from '../wallet';
+} from '../../../networks/xrp';
+import { BuildTransactionParams } from '../../../networks/xrp/builder/types';
+import { EstimateFeeParams } from '../../../networks/xrp/estimateFee/types';
+import { GetBalanceParams } from '../../../networks/xrp/getBalance/types';
+import { SendTransactionParams } from '../../../networks/xrp/sendTransaction/types';
+import CoinWallet from '../../wallet';
 
 class XRPWallet extends CoinWallet {
     estimateFee(props: EstimateFeeParams): EstimateFeeResult {

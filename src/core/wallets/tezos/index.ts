@@ -5,22 +5,22 @@ import {
     getAccountBalances,
     getBalance,
     sendTransaction,
-} from '../../networks/tezos';
+} from '../../../networks/tezos';
 import {
     BuildTransactionParams,
     BuildTransactionResult,
-} from '../../networks/tezos/builder/types';
-import { EstimateFeeParams } from '../../networks/tezos/estimateFee/types';
+} from '../../../networks/tezos/builder/types';
+import { EstimateFeeParams } from '../../../networks/tezos/estimateFee/types';
 import {
     GetAccountBalancesParams,
     GetBalanceParams,
-} from '../../networks/tezos/getBalance/types';
+} from '../../../networks/tezos/getBalance/types';
 import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
-} from '../../networks/types';
-import CoinWallet from '../wallet';
+} from '../../../networks/types';
+import CoinWallet from '../../wallet';
 
 class TezosWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
@@ -49,8 +49,8 @@ class TezosWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
 
-    getPublickeyHash(): string {
-        return this.account;
+    getPublickeyHash(walletName?:string): string {
+        return this.account[walletName ?? this.walletSelected];
     }
 }
 
