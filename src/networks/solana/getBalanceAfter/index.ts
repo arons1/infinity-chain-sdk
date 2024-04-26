@@ -13,6 +13,7 @@ import {
 } from '@solana/web3.js';
 import { AccountLayout } from '@solana/spl-token';
 import { getBalanceAfterParametersChecker } from '../parametersChecker';
+import { getAccounts } from '../utils';
 
 const getBalanceAfterVersioned = async ({
     accounts,
@@ -96,23 +97,24 @@ export const getBalanceAfter = async (
 ): Promise<Record<string, DataBalance>> => {
     getBalanceAfterParametersChecker(props);
     const { connector, transaction, signer } = props;
+    const accounts = await getAccounts({address:signer,connector});
     if ('message' in transaction)
         return await getBalanceAfterVersioned({
             accounts: transaction.message.staticAccountKeys.map(a =>
                 a.toString(),
-            ),
+            ).filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),
             connector,
             signer,
             transaction: transaction as VersionedTransaction,
         });
     else {
-        const accounts: string[] = [];
+        const accounts_insert: string[] = [];
         const castTransaction = transaction as Transaction;
         castTransaction.instructions.map(a =>
-            a.keys.map(b => accounts.push(b.pubkey.toString())),
+            a.keys.map(b => accounts_insert.push(b.pubkey.toString())),
         );
         return await getBalanceAfterLegacy({
-            accounts,
+            accounts:accounts_insert.filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),
             connector,
             signer,
             transaction: transaction as Transaction,
