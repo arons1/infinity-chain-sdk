@@ -14,7 +14,7 @@ export type BuildParameters = {
     utxos?: UTXOResult[];
     feeRatio?: number;
 };
-type Account = {
+export type Account = {
     extendedPublicKey: string;
     node: BIP32Interface;
     useAsChange: boolean;

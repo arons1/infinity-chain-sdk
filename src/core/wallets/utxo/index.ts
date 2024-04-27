@@ -4,6 +4,7 @@ import {
     EstimateFeeResult,
 } from '../../../networks/types';
 import {
+    TrezorWebsocket,
     buildTransaction,
     estimateFee,
     getAccountBalances,
@@ -11,10 +12,9 @@ import {
     sendTransaction,
 } from '../../../networks/utxo';
 import {
-    BuildParameters,
+    Account,
     BuildTransactionResult,
 } from '../../../networks/utxo/builder/types';
-import { EstimateFeeParams } from '../../../networks/utxo/estimateFee/types';
 import { GetAccountBalancesParams } from '../../../networks/utxo/getBalance/types';
 import { SendTransactionParams } from '../../../networks/utxo/sendTransaction/types';
 import CoinWallet from '../../wallet';
@@ -30,13 +30,25 @@ import {
 } from '../../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
+import { BuildParameters, EstimateFeeParams } from './types';
 
 class UTXOWallet extends CoinWallet {
+    connector!:TrezorWebsocket;
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
-        return estimateFee(_props);
+        return estimateFee({
+            ..._props,
+            connector: this.connector,
+            coinId:this.id
+        });
     }
     buildTransaction(_props: BuildParameters): Promise<BuildTransactionResult> {
-        return buildTransaction(_props);
+        // TODO: Generate the accounts
+        const accounts:Account[] = []
+        return buildTransaction({
+            ..._props,
+            connector: this.connector,
+            accounts
+        });
     }
     getBalance(
         _props: GetAccountBalancesParams,
@@ -63,7 +75,8 @@ class UTXOWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
     loadConnector() {
-        throw new Error(NotImplemented);
+        this.connector = new TrezorWebsocket(this.id);
+        this.connector.connect()
     }
 
     getChangeAddress(_props: GetChangeAddressParams): string {
