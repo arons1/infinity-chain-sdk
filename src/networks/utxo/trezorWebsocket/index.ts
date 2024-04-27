@@ -30,6 +30,14 @@ export class TrezorWebsocket {
         this.wallets = {};
     }
 
+    /**
+     * Sends a message to the server via the WebSocket connection.
+     *
+     * @param {string} method - The method to be called on the server.
+     * @param {Record<string, any>} params - The parameters to be sent to the server.
+     * @param {(rs?: any) => void} callback - The callback function to be called after the message is sent.
+     * @return {string} The ID of the sent message.
+     */
     send(
         method: string,
         params: Record<string, any>,
@@ -62,6 +70,14 @@ export class TrezorWebsocket {
             callback();
         }
     }
+    /**
+     * Subscribes to a method on the server via WebSocket connection.
+     *
+     * @param {string} method - The method to be called on the server.
+     * @param {Record<string, any>} params - The parameters to be sent to the server.
+     * @param {(rs?: any) => void} callback - The callback function to be called after the message is sent.
+     * @return {string} The ID of the sent message.
+     */
     subscribe(
         method: string,
         params: Record<string, any>,
@@ -104,6 +120,15 @@ export class TrezorWebsocket {
             callback();
         }
     }
+    /**
+     * Unsubscribes from a method on the server via WebSocket connection.
+     *
+     * @param {string} method - The method to be called on the server.
+     * @param {string} id - The ID of the subscription to be unsubscribed.
+     * @param {Record<string, any>} params - The parameters to be sent to the server.
+     * @param {(rs?: any) => void} callback - The callback function to be called after the message is sent.
+     * @return {string} The ID of the sent message.
+     */
     unsubscribe(
         method: string,
         id: string,
@@ -141,6 +166,13 @@ export class TrezorWebsocket {
         }
     }
 
+    /**
+     * Subscribes to addresses for a given wallet.
+     *
+     * @param {string} wallet - The wallet to subscribe to.
+     * @param {string[]} accounts - The list of accounts to subscribe to.
+     * @param {(pr?: any) => void} callback - The callback function to be called after the subscription.
+     */
     subscribeAddresses(
         wallet: string,
         accounts: string[],
@@ -161,6 +193,15 @@ export class TrezorWebsocket {
         );
     }
 
+    /**
+     * Unsubscribes from addresses by sending an unsubscribe request to the server.
+     *
+     * This function sends an unsubscribe request to the server using the 'unsubscribeAddresses' method.
+     * The unsubscribe request is sent with the subscription ID stored in the 'subscribeAddressesId' property.
+     * After the unsubscribe request is sent, the 'subscribeAddressesId' property is set to an empty string.
+     *
+     * @return {void} This function does not return anything.
+     */
     unsubscribeAddresses() {
         var _ = this;
         this.unsubscribe(
@@ -186,6 +227,12 @@ export class TrezorWebsocket {
         this.subscribeAddresses(wallet, accounts, this.callbacks[wallet]);
     }
 
+    /**
+     * Connects to the WebSocket server, sets up event handlers for open, close, error, and message,
+     * and manages the connection status and messages.
+     *
+     * @return {void} No return value
+     */
     connect() {
         if (this.ws != undefined || this.connected) return;
         this.messageID = 0;

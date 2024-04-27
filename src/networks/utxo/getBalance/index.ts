@@ -1,12 +1,15 @@
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
-/*
-getAccountInfo
-    Returns balance of the extended public keys
-    @param connector: trezorWebsocket object
-    @param address: extended public key
-*/
+
+/**
+ * Retrieves account information from the given connector and address.
+ *
+ * @param {GetAccountInfoParams} params - The parameters for retrieving account info.
+ * @param {TrezorWebsocket} params.connector - The connector to use for retrieving account info.
+ * @param {string} params.address - The address of the account to retrieve info for.
+ * @return {Promise<string>} A promise that resolves to the combined balance of the account and its unconfirmed balance.
+ */
 const getAccountInfo = ({
     connector,
     address,
@@ -35,12 +38,14 @@ const getAccountInfo = ({
         );
     });
 };
-/*
-getAccountBalances
-    Returns balance addition of all extended public keys
-    @param connector: trezorWebsocket object
-    @param extendedPublicKeys: array extended public keys
-*/
+
+/**
+ * Retrieves the account balances for a list of extended public keys.
+ *
+ * @param {TrezorWebsocket} connector - The connector object.
+ * @param {GetAccountBalancesParams} extendedPublicKeys - The list of extended public keys.
+ * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
+ */
 export const getAccountBalances = async ({
     connector,
     extendedPublicKeys,
@@ -56,12 +61,14 @@ export const getAccountBalances = async ({
     }
     return result;
 };
-/*
-getBalance
-    Returns balance addition of all extended public keys
-    @param connector: trezorWebsocket object
-    @param extendedPublicKeys: array extended public keys
-*/
+
+/**
+ * Calculates the total balance for a list of extended public keys.
+ *
+ * @param {TrezorWebsocket} connector - The connector object used to retrieve account information.
+ * @param {string[]} extendedPublicKeys - The list of extended public keys.
+ * @return {Promise<CurrencyBalanceResult>} A promise that resolves to an object containing the total balance as a string.
+ */
 export const getBalance = async ({
     connector,
     extendedPublicKeys,

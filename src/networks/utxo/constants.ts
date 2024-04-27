@@ -24,6 +24,8 @@ export const DUST: Record<Coins, number> = {
     [Coins.ARB]: 0,
     [Coins.ETH_TESTNET]: 0,
     [Coins.BSC_TESTNET]: 0,
+    [Coins.OP]: 0,
+    [Coins.BASE]: 0
 };
 export const WEBSOCKETS: Record<Coins, string> = {
     [Coins.BTC]: 'https://btc1.trezor.io',
@@ -49,4 +51,6 @@ export const WEBSOCKETS: Record<Coins, string> = {
     [Coins.ARB]: '',
     [Coins.ETH_TESTNET]: '',
     [Coins.BSC_TESTNET]: '',
+    [Coins.OP]: '',
+    [Coins.BASE]: ''
 };

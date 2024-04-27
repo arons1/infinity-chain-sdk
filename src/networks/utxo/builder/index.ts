@@ -23,18 +23,25 @@ import {
 import { builderParametersChecker } from '../parametersChecker';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
-/*
-buildTransaction
-    Returns transaction build result
-    @param coinId: coin id
-    @param amount: amount to send
-    @param connector: trezorWebsocket object
-    @param accounts: array of Account objects
-    @param destination: where to send to
-    @param memo: memo string (optional)
-    @param utxos: utxo to use (optional)
-    @param feeRatio: Fee ratio
-*/
+
+/**
+ * Builds a transaction for a given set of parameters.
+ *
+ * @param {BuildParameters} props - The parameters for building the transaction.
+ * @param {string} props.coinId - The ID of the coin.
+ * @param {BigNumber} props.amount - The amount to be sent.
+ * @param {Connector} props.connector - The connector for fetching UTXOs.
+ * @param {Account[]} props.accounts - The accounts used for building the transaction.
+ * @param {string} props.destination - The destination address for the transaction.
+ * @param {string} [props.memo=''] - The memo for the transaction (optional).
+ * @param {UTXOResult[]} [props.utxos=[]] - The UTXOs to be used for the transaction (optional).
+ * @param {number} [props.feeRatio=0.5] - The fee ratio for the transaction (optional).
+ * @return {Promise<BuildTransactionResult>} The built transaction result.
+ * @throws {Error} CannotGetUTXO - If unable to get UTXOs.
+ * @throws {Error} CannotGetFeePerByte - If unable to get fee per byte.
+ * @throws {Error} ErrorBuildingUTXOTransaction - If there is an error building the UTXO transaction.
+ * @throws {Error} ProtocolNotSupported - If the protocol is not supported.
+ */
 export const buildTransaction = async (
     props: BuildParameters,
 ): Promise<BuildTransactionResult> => {

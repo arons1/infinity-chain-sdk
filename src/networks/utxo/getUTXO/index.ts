@@ -1,10 +1,12 @@
 import { GetUTXOParams, UTXOResult } from './types';
-/*
-getUTXO
-    Returns utxos
-    @param connector: trezorWebsocket object
-    @param extendedPublicKeys: array extended public keys
-*/
+
+/**
+ * Retrieves UTXO data based on the extended public key and connector.
+ *
+ * @param {GetUTXOParams} extendedPublicKey - The extended public key to fetch UTXO data.
+ * @param {Connector} connector - The connector object to send the request.
+ * @return {Promise<UTXOResult[]>} A promise that resolves with the UTXO data.
+ */
 export const getUTXO = ({
     extendedPublicKey,
     connector,
