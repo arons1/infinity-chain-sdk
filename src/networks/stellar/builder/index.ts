@@ -26,7 +26,15 @@ import { builderParametersChecker } from '../parametersChecker';
  *
  * @returns {Promise<Transaction>} The prepared transaction
  */
-export const preparePayment = async ({ value, source, destination, connector, code, issuer, memo }:BuildTransactionParams):Promise<Transaction> => {
+export const preparePayment = async ({
+    value,
+    source,
+    destination,
+    connector,
+    code,
+    issuer,
+    memo,
+}: BuildTransactionParams): Promise<Transaction> => {
     const account = await connector.loadAccount(source);
     var transaction: TransactionBuilder = new TransactionBuilder(account, {
         fee: new BigNumber((await estimateFee()).fee as string).toString(10),

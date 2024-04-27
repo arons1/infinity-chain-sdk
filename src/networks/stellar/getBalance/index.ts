@@ -15,7 +15,9 @@ import { getBalanceParametersChecker } from '../parametersChecker';
  *
  * @returns {Promise<CurrencyBalanceResult>}
  */
-export const getBalance = async (props: GetBalanceParams): Promise<CurrencyBalanceResult> => {
+export const getBalance = async (
+    props: GetBalanceParams,
+): Promise<CurrencyBalanceResult> => {
     getBalanceParametersChecker(props);
     const accountBalances: AccountResponse = await props.connector.loadAccount(
         props.account,

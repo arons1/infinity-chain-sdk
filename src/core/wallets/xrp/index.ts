@@ -1,5 +1,8 @@
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
-import { CurrencyBalanceResult, EstimateFeeResult } from '../../../networks/types';
+import {
+    CurrencyBalanceResult,
+    EstimateFeeResult,
+} from '../../../networks/types';
 import {
     buildTransaction,
     estimateFee,

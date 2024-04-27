@@ -1,6 +1,6 @@
 export type BuildTransactionParams = {
     value: string;
     destination: string;
-    mnemonic:string
-    walletName:string
+    mnemonic: string;
+    walletName: string;
 };

@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { sendTransactionParamsChecker } from '../parametersChecker';
 
-
 /**
  * Send transaction
  *

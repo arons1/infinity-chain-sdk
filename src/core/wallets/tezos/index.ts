@@ -49,7 +49,7 @@ class TezosWallet extends CoinWallet {
         throw new Error(NotImplemented);
     }
 
-    getPublickeyHash(walletName?:string): string {
+    getPublickeyHash(walletName?: string): string {
         return this.account[walletName ?? this.walletSelected];
     }
 }

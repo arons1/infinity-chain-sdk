@@ -1,4 +1,4 @@
-import { Transaction, VersionedTransaction } from "@solana/web3.js";
+import { Transaction, VersionedTransaction } from '@solana/web3.js';
 
 export type TransactionBuilderParams = {
     memo: string;
@@ -6,19 +6,19 @@ export type TransactionBuilderParams = {
     destination: string;
     decimalsToken?: number;
     value: string;
-    mnemonic:string;
+    mnemonic: string;
 };
 
 export type SignTransactionParams = {
-    transaction: VersionedTransaction | Transaction,
-    mnemonic:string
-}
+    transaction: VersionedTransaction | Transaction;
+    mnemonic: string;
+};
 
-export type SignMessageParams ={
-    mnemonic:string;
-    message:Buffer
-}
+export type SignMessageParams = {
+    mnemonic: string;
+    message: Buffer;
+};
 export type GetBalanceAfterParams = {
     transaction: Transaction | VersionedTransaction;
-    walletName?:string
+    walletName?: string;
 };

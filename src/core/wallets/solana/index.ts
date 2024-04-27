@@ -18,13 +18,20 @@ import { API_RPCS } from '../../config';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import { Connection, Transaction, VersionedTransaction } from '@solana/web3.js';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
-import { GetBalanceAfterParams, SignMessageParams, SignTransactionParams, TransactionBuilderParams } from './types';
-import { sign, signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
+import {
+    SignMessageParams,
+    SignTransactionParams,
+    TransactionBuilderParams,
+} from './types';
+import {
+    sign,
+    signTransaction,
+} from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 
 class SolanaWallet extends CoinWallet {
-    connector!:Connection;
+    connector!: Connection;
     base!: ED25519Coin;
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
@@ -36,29 +43,41 @@ class SolanaWallet extends CoinWallet {
      * @param {VersionedTransaction | Transaction} transaction - The transaction object.
      * @return {Promise<EstimateFeeResult>} A promise that resolves to the estimated fee.
      */
-    estimateFee(transaction: VersionedTransaction | Transaction): Promise<EstimateFeeResult> {
+    estimateFee(
+        transaction: VersionedTransaction | Transaction,
+    ): Promise<EstimateFeeResult> {
         return estimateFee({
             transaction,
-            connector: this.connector
+            connector: this.connector,
         });
     }
     /**
      * Builds a transaction using the provided parameters.
      *
-     * @param {TransactionBuilderParams} _props - The transaction parameters.
+     * @param {string} _props.memo - The transaction's memo.
+     * @param {PublicKey} _props.publicKey - The sender's public key.
+     * @param {string} _props.destination - The transaction's destination address.
+     * @param {string} _props.value - The transaction's value.
+     * @param {string} [_props.fee] - The transaction's fee.
+     * @param {string} [_props.gasPrice] - The transaction's gas price.
+     * @param {string} [_props.gasLimit] - The transaction's gas limit.
+     * @param {string} [_props.nonce] - The transaction's nonce.
+     * @param {string} [_props.data] - The transaction's data.
+     * @param {KeyPair} _props.keyPair - The key pair of the sender.
+     * @param {Connection} _props.connector - The Solana connection object.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
     buildTransaction(_props: TransactionBuilderParams): Promise<string> {
         const seed = this.base.getSeed({
-            mnemonic: _props.mnemonic
-        })
+            mnemonic: _props.mnemonic,
+        });
         const keyPair = this.base.getKeyPair({
-            seed
-        })
+            seed,
+        });
         return buildTransaction({
             ..._props,
             keyPair,
-            connector: this.connector
+            connector: this.connector,
         });
     }
     /**
@@ -67,12 +86,12 @@ class SolanaWallet extends CoinWallet {
      * @param {string} walletName - The name of the wallet for which to retrieve the balance.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
         return getBalance({
             connector: this.connector,
             address: this.getReceiveAddress({
                 walletName: walletName ?? this.walletSelected,
-            })
+            }),
         });
     }
     /**
@@ -81,12 +100,16 @@ class SolanaWallet extends CoinWallet {
      * @param {string[]} [accounts] - The accounts to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
-    getAccountBalances(accounts?:string[]): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances(
+        accounts?: string[],
+    ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
             connector: this.connector,
-            accounts: accounts ?? Object.keys(this.addresses).map(walletName =>
-                this.getReceiveAddress({ walletName }),
-            )
+            accounts:
+                accounts ??
+                Object.keys(this.addresses).map(walletName =>
+                    this.getReceiveAddress({ walletName }),
+                ),
         });
     }
     /**
@@ -95,10 +118,10 @@ class SolanaWallet extends CoinWallet {
      * @param {Buffer} rawTransaction - The raw transaction buffer to send.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
-    sendTransaction(rawTransaction:Buffer): Promise<string> {
+    sendTransaction(rawTransaction: Buffer): Promise<string> {
         return sendTransaction({
             rawTransaction,
-            connector: this.connector
+            connector: this.connector,
         });
     }
     getTransactions(_props: any) {
@@ -114,19 +137,19 @@ class SolanaWallet extends CoinWallet {
      */
     signTransaction({
         transaction,
-        mnemonic
-    }:SignTransactionParams): Promise<VersionedTransaction | Transaction> {
+        mnemonic,
+    }: SignTransactionParams): Promise<VersionedTransaction | Transaction> {
         const seed = this.base.getSeed({
-            mnemonic
-        })
+            mnemonic,
+        });
         const keyPair = this.base.getKeyPair({
-            seed
-        })
+            seed,
+        });
         return signTransaction({
             transaction,
             keyPair,
-            coinId:this.id
-        })
+            coinId: this.id,
+        });
     }
     /**
      * Signs a message using the provided mnemonic and message.
@@ -135,31 +158,34 @@ class SolanaWallet extends CoinWallet {
      * @param {string} mnemonic - The mnemonic used for signing.
      * @return {Uint8Array} The signed message.
      */
-    signMessage({
-        message,
-        mnemonic
-    }:SignMessageParams): Uint8Array {
+    signMessage({ message, mnemonic }: SignMessageParams): Uint8Array {
         const seed = this.base.getSeed({
-            mnemonic
-        })
+            mnemonic,
+        });
         const keyPair = this.base.getKeyPair({
-            seed
-        })
-        return sign({message,secretKey:keyPair.secretKey});
+            seed,
+        });
+        return sign({ message, secretKey: keyPair.secretKey });
     }
 
     /**
      * Retrieves the balance after a transaction.
      *
-     * @param {GetBalanceAfterParams} _props - The parameters for retrieving the balance after a transaction.
+     * @param {transaction} _props.transaction - The transaction to be confirmed.
+     * @param {string} _props.walletName - The name of the wallet to use for retrieving the balance after the transaction. If not specified, the wallet currently selected in the wallet store will be used.
      * @return {Promise<Record<string, DataBalance>>} A promise that resolves to a record of string keys and DataBalance values representing the balance after the transaction.
      */
-    getBalanceAfter(_props:GetBalanceAfterParams) : Promise<Record<string, DataBalance>>{
+    getBalanceAfter(_props: {
+        transaction: Transaction;
+        walletName?: string;
+    }): Promise<Record<string, DataBalance>> {
         return getBalanceAfter({
-            transaction:_props.transaction,
+            transaction: _props.transaction,
             connector: this.connector,
-            signer: this.getReceiveAddress({walletName:  _props.walletName ?? this.walletSelected})
-        })
+            signer: this.getReceiveAddress({
+                walletName: _props.walletName ?? this.walletSelected,
+            }),
+        });
     }
     /**
      * Checks if the API RPC for the specified bipIdCoin is defined, throws an error if not, and initializes the connector with the corresponding connection.

@@ -95,12 +95,21 @@ export const getBalanceAfter = async (
 ): Promise<Record<string, DataBalance>> => {
     getBalanceAfterParametersChecker(props);
     const { connector, transaction, signer } = props;
-    const accounts = await getAccounts({address:signer,connector});
+    const accounts = await getAccounts({ address: signer, connector });
     if ('message' in transaction)
         return await getBalanceAfterVersioned({
-            accounts: Array.from(new Set([...transaction.message.staticAccountKeys.map(a =>
-                a.toString(),
-            ).filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
+            accounts: Array.from(
+                new Set([
+                    ...transaction.message.staticAccountKeys
+                        .map(a => a.toString())
+                        .filter(a =>
+                            accounts.find(
+                                b => b.pubkey.toString() == a.toString(),
+                            ),
+                        ),
+                    signer,
+                ]),
+            ),
             connector,
             signer,
             transaction,
@@ -111,7 +120,14 @@ export const getBalanceAfter = async (
             a.keys.map(b => accounts_insert.push(b.pubkey.toString())),
         );
         return await getBalanceAfterLegacy({
-            accounts:Array.from(new Set([...accounts_insert.filter(a => accounts.find(b => b.pubkey.toString() == a.toString())),signer])),
+            accounts: Array.from(
+                new Set([
+                    ...accounts_insert.filter(a =>
+                        accounts.find(b => b.pubkey.toString() == a.toString()),
+                    ),
+                    signer,
+                ]),
+            ),
             connector,
             signer,
             transaction,

@@ -3,14 +3,16 @@ import { GetAccountBalanceParams } from './types';
 import { BalanceResult } from '../../types';
 import { AccountResponse, Horizon } from 'stellar-sdk';
 
-
 /**
  * Returns balances of tokens and stellar of the account
  * @param {string[]} accounts Array of accounts to get the balances from
  * @param {Server} connector Stellar api connector
  * @returns {Promise<Record<string, BalanceResult[]>>} Balances of tokens and stellar
  */
-export const getAccountBalances = async ({ accounts, connector }: GetAccountBalanceParams): Promise<Record<string, BalanceResult[]>> => {
+export const getAccountBalances = async ({
+    accounts,
+    connector,
+}: GetAccountBalanceParams): Promise<Record<string, BalanceResult[]>> => {
     const result: Record<string, BalanceResult[]> = {};
     for (let account of accounts) {
         const accountBalances: AccountResponse =

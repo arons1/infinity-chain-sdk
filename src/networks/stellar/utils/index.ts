@@ -3,7 +3,6 @@ import { AccountExists, AssetExistsRequest } from './types';
 import StellarSdk, { Asset } from 'stellar-sdk';
 import { accountExistsParametersChecker } from '../parametersChecker';
 
-
 /**
  * Checks if an asset account exists for the passed account
  *

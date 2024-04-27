@@ -19,7 +19,10 @@ import { GetAccountBalancesParams } from '../../../networks/utxo/getBalance/type
 import { SendTransactionParams } from '../../../networks/utxo/sendTransaction/types';
 import CoinWallet from '../../wallet';
 import { getUTXO } from '../../../networks/utxo/getUTXO/index';
-import { GetUTXOParams, UTXOResult } from '../../../networks/utxo/getUTXO/types';
+import {
+    GetUTXOParams,
+    UTXOResult,
+} from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import {
     ChangeIndexResolve,
