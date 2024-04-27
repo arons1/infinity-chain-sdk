@@ -15,23 +15,19 @@ import {
     Account,
     BuildTransactionResult,
 } from '../../../networks/utxo/builder/types';
-import { GetAccountBalancesParams } from '../../../networks/utxo/getBalance/types';
-import { SendTransactionParams } from '../../../networks/utxo/sendTransaction/types';
+
 import CoinWallet from '../../wallet';
 import { getUTXO } from '../../../networks/utxo/getUTXO/index';
 import {
-    GetUTXOParams,
     UTXOResult,
 } from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import {
     ChangeIndexResolve,
-    LastChangeIndexParameters,
 } from '../../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
-import { rawTransaction } from '../../../networks/solana/builder/index';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 
 class UTXOWallet extends CoinWallet {
