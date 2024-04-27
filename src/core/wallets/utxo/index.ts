@@ -31,9 +31,17 @@ import {
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
+import { rawTransaction } from '../../../networks/solana/builder/index';
+import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 
 class UTXOWallet extends CoinWallet {
     connector!:TrezorWebsocket;
+    /**
+     * Estimates the fee for a transaction based on the provided parameters.
+     *
+     * @param {EstimateFeeParams} _props - The parameters for estimating the fee.
+     * @return {Promise<EstimateFeeResult>} - A promise that resolves to the estimated fee.
+     */
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ..._props,
@@ -50,35 +58,93 @@ class UTXOWallet extends CoinWallet {
             accounts
         });
     }
-    getBalance(
-        _props: GetAccountBalancesParams,
-    ): Promise<CurrencyBalanceResult> {
-        return getBalance(_props);
+    /**
+     * Retrieves the balance for the specified wallet.
+     *
+     * @param {string} walletName - (Optional) The name of the wallet. If not provided, the default wallet will be used.
+     * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
+     */
+    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+        return getBalance({
+            extendedPublicKeys:Object.values(this.extendedPublicKeys[walletName ?? this.walletSelected]),
+            connector: this.connector
+        });
     }
-    getAccountBalances(
-        _props: GetAccountBalancesParams,
-    ): Promise<Record<string, BalanceResult[]>> {
-        return getAccountBalances(_props);
+    /**
+     * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
+     *
+     * @param {string} walletName - (Optional) The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
+     * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
+     */
+    getAccountBalances(walletName?:string): Promise<Record<string, BalanceResult[]>> {
+        return getAccountBalances({
+            extendedPublicKeys:Object.values(this.extendedPublicKeys[walletName ?? this.walletSelected]),
+            connector: this.connector
+        });
     }
-    sendTransaction(_props: SendTransactionParams): Promise<string> {
-        return sendTransaction(_props);
+    /**
+     * Sends a transaction with a raw string to the connected wallet.
+     *
+     * @param {string} rawTransaction - The raw string of the transaction to send.
+     * @return {Promise<string>} A promise that resolves to the transaction ID.
+     */
+    sendTransaction(rawTransaction:string): Promise<string> {
+        return sendTransaction({
+            rawTransaction,
+            connector: this.connector
+        });
     }
-    getUTXO(_props: GetUTXOParams): Promise<UTXOResult[]> {
-        return getUTXO(_props);
+    /**
+     * Retrieves the UTXO (Unspent Transaction Output) for a given protocol and wallet.
+     *
+     * @param {Protocol} protocol - The protocol for which to retrieve the UTXO.
+     * @param {string} [walletName] - (Optional) The name of the wallet. If not provided, the default wallet will be used.
+     * @return {Promise<UTXOResult[]>} A promise that resolves to an array of UTXOResult objects.
+     */
+    getUTXO(protocol:Protocol,walletName?:string): Promise<UTXOResult[]> {
+        return getUTXO({
+            extendedPublicKey:this.extendedPublicKeys[walletName ?? this.walletSelected][protocol],
+            connector: this.connector
+        });
     }
+    /**
+     * Retrieves the last change index for a given protocol and wallet.
+     *
+     * @param {Protocol} protocol - The protocol for which to retrieve the last change index.
+     * @param {string} [walletName] - (Optional) The name of the wallet to retrieve the last change index for. If not provided, the last change index for the selected wallet will be retrieved.
+     * @return {Promise<ChangeIndexResolve>} A promise that resolves to the last change index.
+     */
     getLastChangeIndex(
-        _props: LastChangeIndexParameters,
+        protocol:Protocol,walletName?:string
     ): Promise<ChangeIndexResolve> {
-        return getLastChangeIndex(_props);
+        return getLastChangeIndex({
+            extendedPublicKey:this.extendedPublicKeys[walletName ?? this.walletSelected][protocol],
+            connector: this.connector
+        });
     }
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
+    /**
+     * Loads the connector for the UTXO wallet.
+     *
+     * This function initializes a new instance of the TrezorWebsocket class with the provided id,
+     * and assigns it to the `connector` property of the UTXO wallet. It then calls the `connect`
+     * method on the `connector` object to establish a connection.
+     *
+     * @return {void} This function does not return a value.
+     */
     loadConnector() {
         this.connector = new TrezorWebsocket(this.id);
         this.connector.connect()
     }
 
+    /**
+     * Retrieves the change address for a transaction based on the provided parameters.
+     *
+     * @param {GetChangeAddressParams} _props - The parameters for retrieving the change address.
+     * @return {string} The change address for the transaction.
+     */
     getChangeAddress(_props: GetChangeAddressParams): string {
         throw new Error(NotImplemented);
     }
