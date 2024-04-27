@@ -49,6 +49,12 @@ class UTXOWallet extends CoinWallet {
             coinId:this.id
         });
     }
+    /**
+     * Builds a transaction using the provided parameters.
+     *
+     * @param {BuildParameters} _props - The parameters for building the transaction.
+     * @return {Promise<BuildTransactionResult>} - A promise that resolves to the built transaction.
+     */
     buildTransaction(_props: BuildParameters): Promise<BuildTransactionResult> {
         // TODO: Generate the accounts
         const accounts:Account[] = []
