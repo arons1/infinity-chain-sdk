@@ -7,12 +7,13 @@ import {
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 
 const LEDGER_OFFSET = 20;
-/*
-preparePayment
-    Returns prepared payment
-    @param connector: XRP api connector
-    @param tx:transaction to be prepared
-*/
+
+/**
+ * Prepares a payment by checking and setting transaction properties.
+ *
+ * @param {PreparePaymentParams} props - The parameters for the payment.
+ * @return {Promise<Transaction>} The prepared payment transaction.
+ */
 export const preparePayment = async (props: PreparePaymentParams) => {
     preparePaymentParametersChecker(props);
     const { tx, connector } = props;
@@ -36,16 +37,19 @@ export const preparePayment = async (props: PreparePaymentParams) => {
     }
     return tx;
 };
-/*
-buildTransaction
-    Returns prepared payment
-    @param connector: XRP api connector
-    @param amount: amount to send
-    @param from: source account
-    @param to: destination to send
-    @param keyPair: keypair
-    @param memo:memo string(optional)
-*/
+
+/**
+ * Builds a transaction based on the provided parameters and returns the signed transaction as a string.
+ *
+ * @param {BuildTransactionParams} props - An object containing the following properties:
+ *   - amount: The amount of the transaction in XRP.
+ *   - from: The sender's XRP address.
+ *   - to: The recipient's XRP address.
+ *   - keyPair: The sender's key pair.
+ *   - connector: The XRP connector.
+ *   - memo (optional): The memo for the transaction.
+ * @return {Promise<string>} A promise that resolves to the signed transaction as a string.
+ */
 export const buildTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {

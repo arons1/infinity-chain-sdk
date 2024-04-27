@@ -2,11 +2,13 @@ import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker/estimateFee';
-/*
-estimateFee
-    Returns estimated fee
-    @param connector: XRP api connector
-*/
+
+/**
+ * Estimates the fee based on the provided parameters.
+ *
+ * @param {EstimateFeeParams} props - The parameters for estimating the fee.
+ * @return {EstimateFeeResult} The estimated fee result.
+ */
 export const estimateFee = (props: EstimateFeeParams): EstimateFeeResult => {
     estimateFeeParametersChecker(props);
     return {

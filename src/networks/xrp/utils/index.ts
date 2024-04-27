@@ -1,11 +1,14 @@
 import { accountExistsParamsChecker } from '../parametersChecker';
 import { AccountExists } from './types';
-/*
-accountExists
-    Returns if an account exists
-    @param connector: XRP api connector
-    @param account: account to check if it exists
-*/
+
+/**
+ * Checks if an account exists.
+ *
+ * @param {AccountExists} props - The properties for checking if an account exists.
+ * @param {Connector} props.connector - The connector for sending requests.
+ * @param {string} props.account - The account to check.
+ * @return {Promise<boolean>} A promise that resolves to true if the account exists, false otherwise.
+ */
 export const accountExists = async (props: AccountExists) => {
     accountExistsParamsChecker(props);
     const { connector, account } = props;

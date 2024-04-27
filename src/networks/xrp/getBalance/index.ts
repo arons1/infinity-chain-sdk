@@ -2,12 +2,13 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { CurrencyBalanceResult } from '../../types';
 import { GetBalanceParams } from './types';
 import { getBalanceParamsChecker } from '../parametersChecker';
-/*
-getBalance
-    Returns balance
-    @param connector: XRP api connector
-    @param address: address to check balance from
-*/
+
+/**
+ * Retrieves the balance information for a given address.
+ *
+ * @param {GetBalanceParams} props - Parameters for fetching the balance, including connector and address.
+ * @return {Promise<CurrencyBalanceResult>} The balance information including total balance and available balance.
+ */
 export const getBalance = async (
     props: GetBalanceParams,
 ): Promise<CurrencyBalanceResult> => {
