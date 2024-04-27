@@ -163,7 +163,15 @@ class CoinWallet extends BaseWallet {
         }
         this.initializated = true;
     }
-
+    /**
+     * Checks if the given address is valid.
+     *
+     * @param {string} address - The address to be checked.
+     * @return {boolean} Returns true if the address is valid, false otherwise.
+     */
+    isValidAddress(address: string): boolean {
+        return this.base.isValidAddress(address);
+    }
     getAccountBalances(_props: any) {
         throw new Error(NotImplemented);
     }
@@ -186,6 +194,7 @@ class CoinWallet extends BaseWallet {
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
+    
 }
 
 export default CoinWallet;

@@ -9,6 +9,7 @@ import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
 import { GetReceiveAddressParams } from './types';
+import { isValidAddress } from '@infinity/core-sdk/lib/commonjs/networks/utils/evm';
 abstract class BaseWallet {
     base!: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id!: Coins;
@@ -38,6 +39,7 @@ abstract class BaseWallet {
     abstract loadConnector(): any;
     abstract getReceiveAddress(props: GetReceiveAddressParams): string;
     abstract removeWallet(walletName: string): any;
+    abstract isValidAddress(address: string): boolean;
 }
 
 export default BaseWallet;
