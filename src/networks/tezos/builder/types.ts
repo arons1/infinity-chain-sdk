@@ -2,8 +2,9 @@ import {
     TezosToolkit,
     TransactionOperation,
     BatchOperation,
-} from '@taquito/taquito';
-import { ContractMethod, ContractProvider } from '@taquito/taquito';
+    ContractMethod, 
+    ContractProvider } from '@taquito/taquito';
+
 
 export type BuildTransactionParams = {
     source: string;

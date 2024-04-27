@@ -5,12 +5,15 @@ import { Tezos, loadContract, isFA2Token } from './tez';
 import { toAsset } from './helpers';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
 import { GetAccountBalancesParams, GetBalanceParams } from './types';
-/*
-getAccountBalances
-    Returns get balance asset
-    @param account: source account
-    @param assetSlugs: assets slugs
-*/
+
+/**
+ * Retrieves the balances of multiple assets for a given account.
+ *
+ * @param {GetAccountBalancesParams} params - The parameters for retrieving the account balances.
+ * @param {string} params.account - The account to retrieve balances for.
+ * @param {string[]} params.assetSlugs - The slugs of the assets to retrieve balances for.
+ * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
+ */
 export const getAccountBalances = async ({
     account,
     assetSlugs,
@@ -24,12 +27,14 @@ export const getAccountBalances = async ({
     }
     return result;
 };
-/*
-getAssetBalance
-    Returns get balance asset
-    @param account: source account
-    @param assetSlug: asset slug
-*/
+/**
+ * Retrieves the balance of a specific asset for a given account.
+ *
+ * @param {Object} params - The parameters for retrieving the asset balance.
+ * @param {string} params.account - The account to retrieve the asset balance for.
+ * @param {string} params.assetSlug - The slug of the asset to retrieve the balance for.
+ * @return {Promise<BalanceResult>} A promise that resolves to the asset balance.
+ */
 export const getAssetBalance = async ({
     account,
     assetSlug,
@@ -86,11 +91,13 @@ export const getAssetBalance = async ({
         address: tokenContractAddress,
     };
 };
-/*
-getBalance
-    Returns get balance
-    @param address: source account
-*/
+
+/**
+ * Retrieves the balance of a given address.
+ *
+ * @param {GetBalanceParams} address - The address to retrieve the balance from.
+ * @return {Promise<CurrencyBalanceResult>} The balance of the given address.
+ */
 export const getBalance = async ({
     address,
 }: GetBalanceParams): Promise<CurrencyBalanceResult> => {

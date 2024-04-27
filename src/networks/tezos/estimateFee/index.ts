@@ -28,19 +28,20 @@ export const feeReveal = async (account: string, connector: TezosToolkit) => {
     }
     return 0;
 };
-/*
-estimateFee
-    Returns estimate fee
-    @param value: amount to transfer
-    @param source: source account
-    @param destination: destination account
-    @param idToken: Id of the token(optional)
-    @param mintToken: mint of the token to transfer(optional)
-    @param connector: Tezos api connector
-    @param pkHash: public hash of source account
-    @param decimalsToken: Decimals of the token to transfer(optional)
-    @param feeRatio: Ratio of fee
-*/
+/**
+ * Returns estimate fee
+ * @param {object} params
+ * @param {string} params.value - amount to transfer
+ * @param {string} params.source - source account
+ * @param {string} params.destination - destination account
+ * @param {number} [params.idToken=0] - Id of the token
+ * @param {string} [params.mintToken] - Mint of the token to transfer
+ * @param {TezosToolkit} params.connector - Tezos api connector
+ * @param {string} params.pkHash - Public hash of source account
+ * @param {number} [params.decimalsToken=0] - Decimals of the token to transfer
+ * @param {number} [params.feeRatio=0.5] - Ratio of fee
+ * @returns {Promise<EstimateFeeResult>}
+ */
 export const estimateFee = async ({
     value,
     source,
@@ -86,25 +87,49 @@ export const estimateFee = async ({
     }
 };
 
+/**
+ * Estimates the fee for a batch of operations.
+ *
+ * @param {EstimateOperation} params - The parameters for estimating the fee.
+ * @param {object[]} params.operations - The list of operations to estimate.
+ * @param {TezosToolkit} params.connector - The Tezos toolkit connector.
+ * @param {string} params.pkHash - The public hash of the source account.
+ * @param {string} params.source - The source account.
+ * @returns {Promise<EstimateFeeResult>} - The estimated fee.
+ */
 export const estimateOperation = async ({
     operations,
     connector,
     pkHash,
     source,
 }: EstimateOperation): Promise<EstimateFeeResult> => {
+    // Set the forger provider
     connector.setForgerProvider(
         new CompositeForger([connector.getFactory(RpcForger)(), localForger]),
     );
+
+    // Set the packer provider
     connector.setPackerProvider(michelEncoder);
+
+    // Set the signer provider
     connector.setSignerProvider(new ReadOnlySigner(source, pkHash));
-    var estimatedBaseFee = new BigNumber(0);
+
+    // Initialize the estimated base fee
+    let estimatedBaseFee = new BigNumber(0);
+
+    // Estimate the fees for each operation
     const transferFeesList = await connector.estimate.batch(
         operations.map(formatOpParamsBeforeSend),
     );
+
+    // Calculate the total estimated base fee
     for (let transferFees of transferFeesList) {
         estimatedBaseFee = estimatedBaseFee.plus(
             transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
         );
     }
+
+    // Return the estimated fee
     return { fee: estimatedBaseFee.toString(10) };
 };
+

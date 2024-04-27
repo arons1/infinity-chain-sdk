@@ -3,20 +3,22 @@ import {
     BuildOperationsParams,
     BuildTransactionParams,
 } from '../builder/types';
-/*
-sendTransaction
-    Returns transaction hash of the transaction broadcasted
-    @param source: source account
-    @param destination: destination account
-    @param pkHash: public hash of source account
-    @param value: value to send
-    @param mintToken: mint of the token to transfer(optional)
-    @param idToken: Id of the token(optional)
-    @param privateKey: Private key of the account
-    @param connector: Tezos api connector
-    @param decimalsToken: Decimals of the token to transfer(optional)
-    @param feeRatio: Ratio of fee
-*/
+
+/**
+ * @description Returns transaction hash of the transaction broadcasted
+ * @param {string} source - source account
+ * @param {string} destination - destination account
+ * @param {string} pkHash - public hash of source account
+ * @param {string|number|BigNumber} value - value to send
+ * @param {string} [mintToken] - mint of the token to transfer (optional)
+ * @param {string} [idToken] - Id of the token (optional)
+ * @param {Buffer} privateKey - Private key of the account
+ * @param {ContractProvider} connector - Tezos api connector
+ * @param {number} [decimalsToken] - Decimals of the token to transfer (optional)
+ * @param {number} [feeRatio] - Ratio of fee
+ * @returns {Promise<string>} - Transaction hash of the transaction broadcasted
+ */
+
 export const sendTransaction = async (
     props: BuildTransactionParams,
 ): Promise<string> => {
@@ -33,15 +35,16 @@ export const sendTransaction = async (
             });
     });
 };
-/*
-sendOperations
-    Returns hash of the operation transaction broadcasted
-    @param operations: Operations to build
-    @param privateKey: Buffer private key
-    @param connector: Tezos api connector
-    @param pkHash: public key hash
-    @param source: public address
-*/
+
+/**
+ * Build and broadcast operations transaction
+ * @param {object[]} operations - Operations to build
+ * @param {Buffer} privateKey - Buffer private key
+ * @param {ContractProvider} connector - Tezos api connector
+ * @param {string} pkHash - Public key hash
+ * @param {string} source - Public address
+ * @returns {Promise<string>} - Hash of the operation transaction broadcasted
+ */
 export const sendOperations = async (props: BuildOperationsParams) => {
     const built = await buildOperations(props);
     return new Promise((resolve, reject) => {

@@ -45,19 +45,19 @@ const buildTransferOperations = async ({
         return contract.methods.transfer(source, destination, value);
     }
 };
-/*
-buildOperations
-    Returns prepared transaction of operation
-    @param source: source account
-    @param destination: destination account
-    @param pkHash: public hash of source account
-    @param value: value to send
-    @param mintToken: mint of the token to transfer(optional)
-    @param idToken: Id of the token(optional)
-    @param connector: Tezos api connector
-    @param decimalsToken: Decimals of the token to transfer(optional)
-    @param feeRatio: Ratio of fee
-*/
+/**
+ * Returns prepared transaction of operation
+ * @param {string} source account
+ * @param {string} destination destination account
+ * @param {string} pkHash public hash of source account
+ * @param {number} value value to send
+ * @param {string} mintToken mint of the token to transfer(optional)
+ * @param {number} idToken Id of the token(optional)
+ * @param {ContractProvider} connector Tezos api connector
+ * @param {number} decimalsToken Decimals of the token to transfer(optional)
+ * @param {number} feeRatio Ratio of fee
+ * @returns {Promise<BuildTransferOperationResult>}
+ */
 export const buildOperation = async ({
     source,
     destination,
@@ -108,20 +108,23 @@ export const buildTransfer = async ({
     estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
     return estimatedBaseFeeb.toString(10);
 };
-/*
-buildTransaction
-    Returns prepared transaction
-    @param source: source account
-    @param destination: destination account
-    @param pkHash: public hash of source account
-    @param value: value to send
-    @param mintToken: mint of the token to transfer(optional)
-    @param idToken: Id of the token(optional)
-    @param privateKey: Private key of the account
-    @param connector: Tezos api connector
-    @param decimalsToken: Decimals of the token to transfer(optional)
-    @param feeRatio: Ratio of fee
-*/
+
+/**
+ * buildTransaction
+ * Returns prepared transaction
+ *
+ * @param {string} source Source account
+ * @param {string} destination Destination account
+ * @param {string} pkHash Public hash of source account
+ * @param {number} value Value to send
+ * @param {string} mintToken Mint of the token to transfer (optional)
+ * @param {number} idToken Id of the token (optional)
+ * @param {string} privateKey Private key of the account
+ * @param {ContractProvider} connector Tezos api connector
+ * @param {number} decimalsToken Decimals of the token to transfer (optional)
+ * @param {number} feeRatio Ratio of fee
+ * @returns {Promise<BuildTransactionResult>} Prepared transaction
+ */
 export const buildTransaction = async ({
     source,
     destination,
@@ -178,15 +181,16 @@ export const buildTransaction = async ({
         };
     }
 };
-/*
-buildOperations
-    Returns prepared transaction of operations
-    @param operations: Operations to build
-    @param privateKey: Buffer private key
-    @param connector: Tezos api connector
-    @param pkHash: public key hash
-    @param source: public address
-*/
+
+/**
+ * Returns prepared transaction of operations
+ * @param {Array<ContractMethod<ContractProvider>>} operations List of operations to build
+ * @param {Buffer} privateKey Private key of the account
+ * @param {ContractProvider} connector Tezos api connector
+ * @param {string} pkHash Public key hash
+ * @param {string} source Public address of the account
+ * @returns {Promise<BuildOperationResult>} Prepared transaction of operations
+ */
 export const buildOperations = async ({
     operations,
     connector,
