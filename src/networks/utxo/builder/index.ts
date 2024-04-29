@@ -45,7 +45,7 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 export const buildTransaction = async (
     props: BuildParameters,
 ): Promise<BuildTransactionResult> => {
-    var {
+    let {
         coinId,
         amount,
         connector,
@@ -74,10 +74,10 @@ export const buildTransaction = async (
     }
 
     utxos = utxos.sort((a, b) => (a.path > b.path ? -1 : 1));
-    var amountLeft = new BigNumber(amount);
+    let amountLeft = new BigNumber(amount);
     // 2º Select all UTXO necesary to fill the amount
     const utxosUsed: UTXOResult[] = [];
-    var feeAcc = new BigNumber(78);
+    let feeAcc = new BigNumber(78);
     if (memo.length > 0) feeAcc = feeAcc.plus(memo.length);
     let feePerByte;
     // 5º Get fee per byte
@@ -88,7 +88,7 @@ export const buildTransaction = async (
         throw new Error(CannotGetFeePerByte);
     }
 
-    var tx = new TransactionBuilder(network as Network);
+    let tx = new TransactionBuilder(network as Network);
     const feeByte = new BigNumber(feePerByte.low)
         .plus(feePerByte.high)
         .multipliedBy(feeRatio);
@@ -113,7 +113,7 @@ export const buildTransaction = async (
         if (v.protocol) return new BigNumber(68).plus(p);
         return new BigNumber(148).plus(p);
     }, new BigNumber(0));
-    var feeOutput = new BigNumber(34);
+    let feeOutput = new BigNumber(34);
 
     tx.addOutput(destination, new BigNumber(amount).toNumber());
     // 4º Add input if it needs a change address
@@ -125,14 +125,14 @@ export const buildTransaction = async (
             .multipliedBy(-1);
         if (changeAmount.isGreaterThan(DUST[coinId])) {
             feeOutput = feeOutput.plus(34);
-            var changeProtocol = Protocol.LEGACY;
+            let changeProtocol = Protocol.LEGACY;
             const { index, protocol } = await getLastChangeIndex({
                 extendedPublicKey: accounts.find(a => a.useAsChange)
                     ?.extendedPublicKey as string,
                 connector,
             });
             changeProtocol = protocol;
-            var lastChangeIndex = index;
+            let lastChangeIndex = index;
 
             let addressChange;
 
@@ -171,7 +171,7 @@ export const buildTransaction = async (
         tx.addOutput(script.compile([opcodes.OP_RETURN, Buffer.from(memo)]), 0);
     }
 
-    for (var k = 0; k < utxosUsed.length; k++) {
+    for (let k = 0; k < utxosUsed.length; k++) {
         const unspent = utxosUsed[k];
         const [change, index] = unspent.path.split('/').slice(4);
 
