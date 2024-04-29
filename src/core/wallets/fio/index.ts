@@ -13,6 +13,7 @@ import {
 import CoinWallet from '../../wallet';
 import { BuildTransactionParams } from './types';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
@@ -87,6 +88,14 @@ class FIOWallet extends CoinWallet {
      */
     getAccount(walletName?: string): string {
         return this.account[walletName ?? this.walletSelected];
+    }
+        /**
+     * Retrieves the minimum amount left from the configuration for the current wallet.
+     *
+     * @return {number} The minimum amount left as specified in the configuration.
+    */
+    async getMinimumAmountLeft() : Promise<number>{
+        return config[this.id].dust as number
     }
 }
 

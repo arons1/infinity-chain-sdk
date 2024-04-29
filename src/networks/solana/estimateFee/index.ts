@@ -6,6 +6,7 @@ import { estimateFeeParametersChecker } from '../parametersChecker';
 import { rawTransaction } from '../builder';
 import { getBalance } from '../getBalance';
 import { getBalanceAfter } from '../getBalanceAfter';
+import { addAssociatedCreation } from '../builder/token';
 
 
 /**
@@ -25,19 +26,17 @@ export const estimateFee = async (
     props: EstimateFeeParams,
 ): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(props);
+    let accountCreation = 0
+    if(props.mintToken){ 
+        const {extraFee} = await addAssociatedCreation({instructions:[],...props,mintToken:props.mintToken})
+        accountCreation = extraFee
+    }
     const transaction = await rawTransaction(props);
-    const currentBalance = await getBalance({
-        connector: props.connector,
-        address: props.publicKey.toString()
+    const { fee } = await estimateTransactionCost({
+        transaction,connector:props.connector
     })
-    const balanceAfter = await getBalanceAfter({
-        connector: props.connector,
-        transaction,
-        signer: props.publicKey.toString()
-    })
-    const finalFee = new BigNumber(currentBalance.balance).minus(props.mintToken ? 0 : props.value).minus(balanceAfter[props.publicKey.toString()].amount);
     return {
-        fee: finalFee.toString(10),
+        fee: new BigNumber(fee as string).plus(accountCreation).toString(10),
     }
 };
 

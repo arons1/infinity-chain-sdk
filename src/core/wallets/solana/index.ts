@@ -30,6 +30,7 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
+import pMemoize from 'p-memoize';
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -209,7 +210,18 @@ class SolanaWallet extends CoinWallet {
         this.connector = new Connection(API_RPCS[this.bipIdCoin]);
     }
 
-    
+    async getMinimumAmountLeftCall() : Promise<number> {
+        try{
+          return await this.connector.getMinimumBalanceForRentExemption(0)
+        }
+        catch(e){
+
+        }
+        return 890880
+    }
+    getMinimumAmountLeft=pMemoize(async () => await this.getMinimumAmountLeftCall(),{
+        maxAge:600_000
+    })
 }
 
 export default SolanaWallet;
