@@ -29,9 +29,14 @@ import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { BIP32Interface } from 'bitcoinjs-lib';
+import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
+import { WalletNotFound } from '../../../errors/networks';
 
 class UTXOWallet extends CoinWallet {
     connector!:TrezorWebsocket;
+    base!:SECP256K1Coin;
     /**
      * Estimates the fee for a transaction based on the provided parameters.
      *
@@ -52,8 +57,20 @@ class UTXOWallet extends CoinWallet {
      * @return {Promise<BuildTransactionResult>} - A promise that resolves to the built transaction.
      */
     buildTransaction(_props: BuildParameters): Promise<BuildTransactionResult> {
-        // TODO: Generate the accounts
+        const protocolAddress = _props.changeAddressProtocol ?? Protocol.SEGWIT
         const accounts:Account[] = []
+        for(let derivation of config[this.id].derivations) {
+            const privateAccountNode = this.base.getPrivateMasterKey({
+                rootNode: this.base.getRootNode(_props.mnemonic) as BIP32Interface,
+                protocol: derivation.protocol,
+            }) as BIP32Interface;
+            const account:Account = {
+                node: privateAccountNode,
+                extendedPublicKey : privateAccountNode.neutered().neutered().toBase58(),
+                useAsChange:protocolAddress == derivation.protocol
+            }
+            accounts.push(account)
+        }
         return buildTransaction({
             ..._props,
             connector: this.connector,
@@ -148,7 +165,15 @@ class UTXOWallet extends CoinWallet {
      * @return {string} The change address for the transaction.
      */
     getChangeAddress(_props: GetChangeAddressParams): string {
-        throw new Error(NotImplemented);
+        if(this.publicNode[_props.walletName ?? this.walletSelected][_props.protocol] === undefined) {
+            throw new Error(WalletNotFound)
+        }
+        return this.base.getPublicAddress({
+            index:_props.changeIndex,
+            change: 1,
+            publicAccountNode:this.publicNode[_props.walletName ?? this.walletSelected][_props.protocol],
+            protocol: _props.protocol
+        }) as string
     }
 }
 

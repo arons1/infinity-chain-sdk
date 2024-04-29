@@ -1,4 +1,4 @@
-import { Coins } from "@infinity/core-sdk/lib/commonjs/networks";
+import { Coins, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
 
 import { UTXOResult } from "../../../networks/utxo/getUTXO/types";
 
@@ -16,4 +16,5 @@ export type BuildParameters = {
     memo?: string;
     utxos?: UTXOResult[];
     feeRatio?: number;
+    changeAddressProtocol?: Protocol
 }

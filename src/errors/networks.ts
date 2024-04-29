@@ -32,3 +32,4 @@ export const NotInitizated = 'NOT_INITALIZATED';
 export const MissingParams = 'MISSING_PARAMS';
 export const MissingDerivationName = 'MISSING_DERIVATION_NAME';
 export const MissingProtocol = 'MISSING_PROTOCOL';
+export const WalletNotFound = "WALLET_NOT_FOUND"

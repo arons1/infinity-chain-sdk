@@ -30,4 +30,5 @@ export type GetChangeAddressParams = {
     derivationName: DerivationName;
     protocol: Protocol;
     changeIndex: number;
+    walletName?:string;
 };
