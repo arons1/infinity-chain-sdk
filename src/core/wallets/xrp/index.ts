@@ -9,30 +9,45 @@ import {
     getBalance,
     sendTransaction,
 } from '../../../networks/xrp';
-import { BuildTransactionParams } from '../../../networks/xrp/builder/types';
-import { EstimateFeeParams } from '../../../networks/xrp/estimateFee/types';
-import { GetBalanceParams } from '../../../networks/xrp/getBalance/types';
-import { SendTransactionParams } from '../../../networks/xrp/sendTransaction/types';
 import CoinWallet from '../../wallet';
+import { XrplClient } from 'xrpl-client';
+import { BuildTransactionParams } from './types';
+import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 
 class XRPWallet extends CoinWallet {
-    estimateFee(props: EstimateFeeParams): EstimateFeeResult {
-        return estimateFee(props);
+    connector!:XrplClient
+    base!:ED25519Coin
+    estimateFee(): EstimateFeeResult {
+        return estimateFee({
+            connector:this.connector
+        });
     }
     buildTransaction(_props: BuildTransactionParams): Promise<string> {
-        return buildTransaction(_props);
+        const seed = this.base.getSeed({mnemonic:_props.mnemonic})
+        const keyPair = this.base.getKeyPair({seed})
+        return buildTransaction({
+            ..._props,
+            connector:this.connector,
+            keyPair
+        });
     }
-    getBalance(_props: GetBalanceParams): Promise<CurrencyBalanceResult> {
-        return getBalance(_props);
+    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+        return getBalance({
+            address:this.getReceiveAddress({walletName: walletName ?? this.walletSelected}),
+            connector:this.connector
+        });
     }
-    sendTransaction(_props: SendTransactionParams): Promise<string> {
-        return sendTransaction(_props);
+    sendTransaction(rawTransaction:string): Promise<string> {
+        return sendTransaction({
+            rawTransaction,
+            connector:this.connector
+        });
     }
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
     loadConnector() {
-        throw new Error(NotImplemented);
+        this.connector = new XrplClient(this.id);
     }
 }
 

@@ -30,7 +30,6 @@ import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
-import { BIP32Interface } from 'bitcoinjs-lib';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
 import { WalletNotFound } from '../../../errors/networks';
 
@@ -44,10 +43,15 @@ class UTXOWallet extends CoinWallet {
      * @return {Promise<EstimateFeeResult>} - A promise that resolves to the estimated fee.
      */
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
+        const extendedPublicKeys:string[] = []
+        for(let derivation of config[this.id].derivations) {
+            extendedPublicKeys.push(this.extendedPublicKeys[_props.walletName ?? this.walletSelected][derivation.protocol]);
+        }
         return estimateFee({
             ..._props,
             connector: this.connector,
-            coinId:this.id
+            coinId:this.id,
+            extendedPublicKeys
         });
     }
     /**

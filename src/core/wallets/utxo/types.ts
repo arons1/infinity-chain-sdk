@@ -3,9 +3,9 @@ import { Coins, Protocol } from "@infinity/core-sdk/lib/commonjs/networks";
 import { UTXOResult } from "../../../networks/utxo/getUTXO/types";
 
 export type EstimateFeeParams = {
-    extendedPublicKeys: string[];
     amount: string;
     feeRatio?: number;
+    walletName?:string
 }
 
 export type BuildParameters = {
