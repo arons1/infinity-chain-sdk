@@ -7,11 +7,19 @@ import { rawTransaction } from '../builder';
 import { getBalance } from '../getBalance';
 import { getBalanceAfter } from '../getBalanceAfter';
 
+
 /**
- * Estimates fee for Solana transaction
- * @param {VersionedTransaction | Transaction} props.transaction Transaction object (VersionedTransaction or Transaction)
- * @param {Connection} props.connector solana web3 connector
- * @returns {Promise<EstimateFeeResult>} raw transaction
+ * Estimates the fee for a transaction on the Solana blockchain.
+ *
+ * @param {EstimateFeeParams} props - The parameters for estimating the fee.
+ * @param {Connection} props.connector - The Solana web3 connector.
+ * @param {PublicKey} props.publicKey - The public key of the sender.
+ * @param {PublicKey} props.destination - The public key of the receiver.
+ * @param {boolean} [props.mintToken] - Whether or not a new token is being minted.
+ * @param {string} [props.memo] - The memo to add to the transaction.
+ * @param {boolean} [props.decimalsToken] - The decimals of the token.
+ * @param {string} props.value - The value of the transaction.
+ * @return {Promise<EstimateFeeResult>} - A promise that resolves to the estimated fee result.
  */
 export const estimateFee = async (
     props: EstimateFeeParams,

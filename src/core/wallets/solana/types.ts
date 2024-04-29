@@ -22,3 +22,11 @@ export type GetBalanceAfterParams = {
     transaction: Transaction | VersionedTransaction;
     walletName?: string;
 };
+export type EstimateFeeParams = {
+    memo: string;
+    walletName?: string;
+    mintToken?: string;
+    destination: string;
+    decimalsToken?: number;
+    value: string;
+};

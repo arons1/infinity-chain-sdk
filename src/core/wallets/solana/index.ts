@@ -16,9 +16,10 @@ import {
 import CoinWallet from '../../wallet';
 import { API_RPCS } from '../../config';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
-import { Connection, Transaction, VersionedTransaction } from '@solana/web3.js';
+import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import {
+    EstimateFeeParams,
     SignMessageParams,
     SignTransactionParams,
     TransactionBuilderParams,
@@ -27,9 +28,8 @@ import {
     sign,
     signTransaction,
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
-import memoize from 'p-memoize'
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -45,6 +45,7 @@ class SolanaWallet extends CoinWallet {
         super(id, mnemonic, walletName);
         this.loadConnector();
     }
+    
     /**
      * Estimates the fee for a transaction.
      *
@@ -52,11 +53,12 @@ class SolanaWallet extends CoinWallet {
      * @return {Promise<EstimateFeeResult>} A promise that resolves to the estimated fee.
      */
     estimateFee(
-        transaction: VersionedTransaction | Transaction,
+        props: EstimateFeeParams
     ): Promise<EstimateFeeResult> {
         return estimateFee({
-            transaction,
+            ...props,
             connector: this.connector,
+            publicKey: new PublicKey(this.addresses[props.walletName ?? this.walletSelected][Protocol.LEGACY]),
         });
     }
     /**
