@@ -61,9 +61,9 @@ class UTXOWallet extends CoinWallet {
         const accounts:Account[] = []
         for(let derivation of config[this.id].derivations) {
             const privateAccountNode = this.base.getPrivateMasterKey({
-                rootNode: this.base.getRootNode(_props.mnemonic) as BIP32Interface,
+                rootNode: this.base.getRootNode(_props.mnemonic),
                 protocol: derivation.protocol,
-            }) as BIP32Interface;
+            });
             const account:Account = {
                 node: privateAccountNode,
                 extendedPublicKey : privateAccountNode.neutered().neutered().toBase58(),
@@ -158,11 +158,15 @@ class UTXOWallet extends CoinWallet {
         this.connector.connect()
     }
 
+
     /**
-     * Retrieves the change address for a transaction based on the provided parameters.
+     * Retrieves the change address for a given wallet and protocol.
      *
      * @param {GetChangeAddressParams} _props - The parameters for retrieving the change address.
-     * @return {string} The change address for the transaction.
+     * @param {string} _props.walletName - The name of the wallet.
+     * @param {string} _props.protocol - The protocol for the change address.
+     * @param {number} _props.changeIndex - The index of the change address.
+     * @return {string} The change address.
      */
     getChangeAddress(_props: GetChangeAddressParams): string {
         if(this.publicNode[_props.walletName ?? this.walletSelected][_props.protocol] === undefined) {
