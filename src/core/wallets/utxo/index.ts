@@ -28,7 +28,7 @@ import {
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
-import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
+import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
 import { WalletNotFound } from '../../../errors/networks';
@@ -36,6 +36,18 @@ import { WalletNotFound } from '../../../errors/networks';
 class UTXOWallet extends CoinWallet {
     connector!:TrezorWebsocket;
     base!:SECP256K1Coin;
+    
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} id - The ID of the instance.
+     * @param {string} [mnemonic] - The mnemonic phrase for the instance.
+     * @param {string} [walletName] - The name of the wallet.
+     */
+    constructor(id: Coins, mnemonic?: string, walletName?: string) {
+        super(id, mnemonic, walletName);
+        this.loadConnector();
+    }
     /**
      * Estimates the fee for a transaction based on the provided parameters.
      *

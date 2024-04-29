@@ -16,6 +16,7 @@ import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
+    
     /**
      * Estimates the fee for a transaction using the provided parameters.
      *

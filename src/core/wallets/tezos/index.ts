@@ -25,10 +25,23 @@ import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import { API_RPCS } from '../../config';
 
 import { getPrivateKey, getTezosPublicKeyHash, sign, signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 class TezosWallet extends CoinWallet {
     connector!: TezosToolkit;
     base!: ED25519Coin;
+    
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} id - The ID of the instance.
+     * @param {string} [mnemonic] - The mnemonic phrase for the instance.
+     * @param {string} [walletName] - The name of the wallet.
+     */
+    constructor(id: Coins, mnemonic?: string, walletName?: string) {
+        super(id, mnemonic, walletName);
+        this.loadConnector();
+    }
     /**
      * Estimates the fee for a transaction on the Tezos blockchain.
      *

@@ -23,6 +23,13 @@ import { UnsupportedChainId } from '../../../errors/transactionParsers';
 class StellarWallet extends CoinWallet {
     connector!: Server;
     base!: ED25519Coin;
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} id - The ID of the instance.
+     * @param {string} [mnemonic] - The mnemonic phrase for the instance.
+     * @param {string} [walletName] - The name of the wallet.
+     */
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
         this.loadConnector();

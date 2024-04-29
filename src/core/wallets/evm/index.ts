@@ -31,6 +31,13 @@ class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
     base!: ECDSACoin;
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} id - The ID of the instance.
+     * @param {string} [mnemonic] - The mnemonic phrase for the instance.
+     * @param {string} [walletName] - The name of the wallet.
+     */
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
         this.chain = config[id].chain as Chains;

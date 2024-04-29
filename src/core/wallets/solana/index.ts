@@ -33,6 +33,13 @@ import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
     base!: ED25519Coin;
+    /**
+     * Constructs a new instance of the SolanaWallet class.
+     *
+     * @param {Coins} id - The ID of the wallet.
+     * @param {string} [mnemonic] - The mnemonic phrase for the wallet.
+     * @param {string} [walletName] - The name of the wallet.
+     */
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super(id, mnemonic, walletName);
         this.loadConnector();
