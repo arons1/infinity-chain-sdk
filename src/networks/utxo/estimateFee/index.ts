@@ -8,11 +8,11 @@ import {
 } from '../../../errors/networks';
 import { MissingExtendedKey } from '../../../errors/transactionParsers';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { DUST } from '../constants';
 import { UTXOResult } from '../getUTXO/types';
 import { getUTXO } from '../getUTXO';
 import { EstimateFeeResult } from '../../types';
 import { TrezorWebsocket } from '../trezorWebsocket';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 /**
  * getFeePerByte
@@ -120,7 +120,7 @@ export const estimateFee = async ({
     // 4º Add input if it needs a change address
     if (!amountLeft.isGreaterThanOrEqualTo(0)) {
         const changeAmount = amountLeft.multipliedBy(-1);
-        if (changeAmount.isGreaterThan(DUST[coinId])) {
+        if (changeAmount.isGreaterThan(config[coinId].dust as number)) {
             feeOutput = feeOutput.plus(34);
         }
     }

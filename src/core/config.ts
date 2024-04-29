@@ -22,15 +22,15 @@ export const PROVIDERS: Record<Chains, string> = {
 };
 
 export const API_RPCS: Record<CoinIds, string> = {
-    [CoinIds.BTC]: '',
-    [CoinIds.LTC]: '',
-    [CoinIds.DOGE]: '',
+    [CoinIds.BTC]: 'https://btc1.trezor.io',
+    [CoinIds.LTC]: 'https://ltc1.trezor.io',
+    [CoinIds.DOGE]: 'https://doge1.trezor.io',
+    [CoinIds.GRS]: 'https://blockbook.groestlcoin.org',
     [CoinIds.FIO]: '',
     [CoinIds.STELLAR]: '',
     [CoinIds.XRP]: '',
     [CoinIds.ETH]: '',
     [CoinIds.BNB]: '',
-    [CoinIds.GRS]: '',
     [CoinIds.SOLANA]: 'https://mainnet-beta.solflare.network/',
     [CoinIds.TEZOS]: 'https://prod.tcinfra.net/rpc/mainnet',
 };

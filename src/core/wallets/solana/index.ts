@@ -29,6 +29,7 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
+import memoize from 'p-memoize'
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -205,6 +206,8 @@ class SolanaWallet extends CoinWallet {
         }
         this.connector = new Connection(API_RPCS[this.bipIdCoin]);
     }
+
+    
 }
 
 export default SolanaWallet;

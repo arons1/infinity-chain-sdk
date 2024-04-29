@@ -195,6 +195,8 @@ class TezosWallet extends CoinWallet {
             message:_props.message,
         });
     }
+
+
 }
 
 export default TezosWallet;

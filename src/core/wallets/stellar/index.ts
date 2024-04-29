@@ -19,6 +19,7 @@ import { Keypair, Server, Transaction } from 'stellar-sdk';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { API_RPCS } from '../../config';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 class StellarWallet extends CoinWallet {
     connector!: Server;
@@ -136,6 +137,16 @@ class StellarWallet extends CoinWallet {
             throw new Error(UnsupportedChainId);
         }
         this.connector = new Server(API_RPCS[this.bipIdCoin]);
+    }
+ 
+    /**
+     * Retrieves the minimum amount left from the configuration for the current wallet.
+     *
+     * @return {number} The minimum amount left as specified in the configuration.
+     */
+
+    async getMinimumAmountLeft() : Promise<number>{
+        return config[this.id].dust as number
     }
 }
 

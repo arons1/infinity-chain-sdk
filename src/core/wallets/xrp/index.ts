@@ -14,6 +14,7 @@ import { XrplClient } from 'xrpl-client';
 import { BuildTransactionParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 class XRPWallet extends CoinWallet {
     connector!:XrplClient
@@ -90,6 +91,15 @@ class XRPWallet extends CoinWallet {
      */
     loadConnector() {
         this.connector = new XrplClient();
+    }
+
+    /**
+     * Calculates the minimum balance required for the XRP wallet.
+     *
+     * @return {number} The minimum balance in XRP.
+     */
+    async getMinimumBalance() : Promise<number> {
+        return new BigNumber(this.connector.getState().reserve.base as number).plus(this.connector.getState().reserve.owner as number).shiftedBy(6).toNumber()
     }
 }
 

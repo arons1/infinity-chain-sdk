@@ -1,7 +1,8 @@
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
-import { WEBSOCKETS } from '../constants';
 import { WebSocket } from 'ws';
 import { UnsupportedTrezorWebsocket } from '../../../errors/networks';
+import { API_RPCS } from '../../../core/config';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 const no_op = () => {};
 export class TrezorWebsocket {
@@ -16,8 +17,14 @@ export class TrezorWebsocket {
     coin: string;
     timeOutInt: NodeJS.Timeout | undefined;
     callbacks: Record<string, any> = {};
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} coin - The coin for which the instance is created.
+     * @throws {Error} If the URL is not found or is empty.
+     */
     constructor(coin: Coins) {
-        this.url = WEBSOCKETS[coin];
+        this.url = API_RPCS[config[coin].bip44];
         if (!this.url || this.url.length == 0)
             throw new Error(UnsupportedTrezorWebsocket);
         this.messageID = 0;

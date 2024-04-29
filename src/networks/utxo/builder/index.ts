@@ -4,7 +4,6 @@ import {
     ErrorBuildingUTXOTransaction,
     ProtocolNotSupported,
 } from '../../../errors/networks';
-import { DUST } from '../constants';
 import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
@@ -123,7 +122,7 @@ export const buildTransaction = async (
         const changeAmount = amountLeft
             .plus(feeAcc.multipliedBy(feeByte))
             .multipliedBy(-1);
-        if (changeAmount.isGreaterThan(DUST[coinId])) {
+        if (changeAmount.isGreaterThan(config[coinId].dust as number)) {
             feeOutput = feeOutput.plus(34);
             let changeProtocol = Protocol.LEGACY;
             const { index, protocol } = await getLastChangeIndex({

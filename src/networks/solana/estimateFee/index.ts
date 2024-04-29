@@ -1,8 +1,11 @@
-import { VersionedTransaction } from '@solana/web3.js';
+import { Connection, Transaction, VersionedTransaction } from '@solana/web3.js';
 import { EstimateFeeParams } from './types';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
+import { rawTransaction } from '../builder';
+import { getBalance } from '../getBalance';
+import { getBalanceAfter } from '../getBalanceAfter';
 
 /**
  * Estimates fee for Solana transaction
@@ -14,11 +17,40 @@ export const estimateFee = async (
     props: EstimateFeeParams,
 ): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(props);
+    const transaction = await rawTransaction(props);
+    const currentBalance = await getBalance({
+        connector: props.connector,
+        address: props.publicKey.toString()
+    })
+    const balanceAfter = await getBalanceAfter({
+        connector: props.connector,
+        transaction,
+        signer: props.publicKey.toString()
+    })
+    const finalFee = new BigNumber(currentBalance.balance).minus(props.mintToken ? 0 : props.value).minus(balanceAfter[props.publicKey.toString()].amount);
+    return {
+        fee: finalFee.toString(10),
+    }
+};
+
+
+/**
+ * Estimates the transaction cost for a given Solana transaction.
+ *
+ * @param {EstimateFeeResult} props - The properties object.
+ * @param {VersionedTransaction | Transaction} props.transaction - The transaction object (VersionedTransaction or Transaction).
+ * @param {Connection} props.connector - The Solana web3 connector.
+ * @return {Promise<EstimateFeeResult>} - A promise that resolves to an object containing the estimated fee.
+ */
+export const estimateTransactionCost = async (props:{
+    transaction: VersionedTransaction | Transaction,
+    connector: Connection
+}): Promise<EstimateFeeResult> => {
     if ('message' in props.transaction)
         return {
             fee: (
                 await props.connector.getFeeForMessage(
-                    (props.transaction as VersionedTransaction).message,
+                    props.transaction.message,
                     'confirmed',
                 )
             ).value?.toString(10),
@@ -31,4 +63,4 @@ export const estimateFee = async (
                 )) as number,
             ).toString(10),
         };
-};
+}

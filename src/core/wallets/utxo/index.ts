@@ -195,6 +195,15 @@ class UTXOWallet extends CoinWallet {
             protocol: _props.protocol
         }) as string
     }
+
+    /**
+     * Retrieves the minimum amount left from the configuration for the current wallet.
+     *
+     * @return {number} The minimum amount left as specified in the configuration.
+     */
+    async getMinimumAmountLeft() : Promise<number>{
+        return config[this.id].dust as number
+    }
 }
 
 export default UTXOWallet;

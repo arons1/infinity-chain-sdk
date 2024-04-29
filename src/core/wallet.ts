@@ -13,6 +13,13 @@ import BaseWallet from './base';
 import { initProtocols } from './utils';
 
 class CoinWallet extends BaseWallet {
+    /**
+     * Constructs a new instance of the class.
+     *
+     * @param {Coins} id - The ID of the instance.
+     * @param {string} [mnemonic] - The mnemonic phrase for the instance.
+     * @param {string} [walletName] - The name of the wallet.
+     */
     constructor(id: Coins, mnemonic?: string, walletName?: string) {
         super();
         this.id = id;
@@ -171,6 +178,18 @@ class CoinWallet extends BaseWallet {
      */
     isValidAddress(address: string): boolean {
         return this.base.isValidAddress(address);
+    }
+    
+    /**
+     * Retrieves the minimum balance for a given wallet name.
+     *
+     * @return {number} The minimum balance for the wallet.
+     */
+    async getMinimumBalance(_props: any):Promise<number> {
+        return 0
+    }
+    async getMinimumAmountLeft(_props: any):Promise<number> {
+        return 0
     }
     getAccountBalances(_props: any) {
         throw new Error(NotImplemented);
