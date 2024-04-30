@@ -121,29 +121,16 @@ class UTXOWallet extends CoinWallet {
         walletName?: string,
     ): Promise<Record<string, BalanceResult[]>> {
         let extendedPublicKeys:string[] = []
-        if(walletName != undefined){
-            Object.values(
-                this.extendedPublicKeys[walletName],
-            ).map(a => {
-                extendedPublicKeys = [...extendedPublicKeys,...Object.values(a)]
-            })
-            return getAccountBalances({
-                extendedPublicKeys,
-                connector: this.connector,
-            });
-        }
-        else{
-            Object.keys(this.addresses).map(a => Object.values(
-                this.extendedPublicKeys[a],
-            )).map(a => {
-                extendedPublicKeys = [...extendedPublicKeys,...Object.values(a)]
-            })
-            return getAccountBalances({
-                extendedPublicKeys,
-                connector: this.connector,
-            });
-        }
-        
+        let accounts = walletName != undefined ? [walletName] : Object.keys(this.addresses)
+        accounts.map(a => Object.values(
+            this.extendedPublicKeys[a],
+        )).map(a => {
+            extendedPublicKeys = [...extendedPublicKeys,...Object.values(a)]
+        })
+        return getAccountBalances({
+            extendedPublicKeys,
+            connector: this.connector,
+        });
     }
     /**
      * Sends a transaction with a raw string to the connected wallet.
