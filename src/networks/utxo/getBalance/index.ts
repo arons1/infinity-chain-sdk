@@ -73,7 +73,7 @@ export const getBalance = async ({
     connector,
     extendedPublicKeys,
 }: GetAccountBalancesParams): Promise<CurrencyBalanceResult> => {
-    var balance = new BigNumber(0);
+    let balance = new BigNumber(0);
     for (let address of extendedPublicKeys) {
         const balances = await getAccountInfo({ address, connector });
         balance = balance.plus(balances);
