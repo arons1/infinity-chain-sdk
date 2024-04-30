@@ -6,9 +6,7 @@ import {
     getBalance,
     sendTransaction,
 } from '../../../networks/tezos';
-import {
-    BuildTransactionResult,
-} from '../../../networks/tezos/builder/types';
+import { BuildTransactionResult } from '../../../networks/tezos/builder/types';
 
 import {
     BalanceResult,
@@ -16,21 +14,30 @@ import {
     EstimateFeeResult,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
-import { BuildTransactionParams, EstimateFeeParams, GetAccountBalancesParams, SignMessageParams, SignTransactionParams } from './types';
 import {
-    TezosToolkit
-} from '@taquito/taquito';
+    BuildTransactionParams,
+    EstimateFeeParams,
+    GetAccountBalancesParams,
+    SignMessageParams,
+    SignTransactionParams,
+} from './types';
+import { TezosToolkit } from '@taquito/taquito';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import { API_RPCS } from '../../config';
 
-import { getPrivateKey, getTezosPublicKeyHash, sign, signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
+import {
+    getPrivateKey,
+    getTezosPublicKeyHash,
+    sign,
+    signTransaction,
+} from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 class TezosWallet extends CoinWallet {
     connector!: TezosToolkit;
     base!: ED25519Coin;
-    
+
     /**
      * Constructs a new instance of the class.
      *
@@ -52,11 +59,11 @@ class TezosWallet extends CoinWallet {
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ..._props,
-            pkHash:this.account[_props.walletName ?? this.walletSelected],
-            source:this.getReceiveAddress({
-                walletName: _props.walletName ?? this.walletSelected
+            pkHash: this.account[_props.walletName ?? this.walletSelected],
+            source: this.getReceiveAddress({
+                walletName: _props.walletName ?? this.walletSelected,
             }),
-            connector: this.connector
+            connector: this.connector,
         });
     }
     /**
@@ -68,8 +75,8 @@ class TezosWallet extends CoinWallet {
     buildTransaction(
         _props: BuildTransactionParams,
     ): Promise<BuildTransactionResult> {
-        const seed = this.base.getSeed({ mnemonic:_props.mnemonic });
-        const keyPair = this.base.getKeyPair({seed})
+        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
+        const keyPair = this.base.getKeyPair({ seed });
         const privateKey = getPrivateKey({ keyPair });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
@@ -80,7 +87,7 @@ class TezosWallet extends CoinWallet {
             pkHash,
             source,
             connector: this.connector,
-            privateKey
+            privateKey,
         });
     }
     /**
@@ -89,10 +96,12 @@ class TezosWallet extends CoinWallet {
      * @param {string} walletName - (Optional) The name of the wallet to retrieve the balance for. If not provided, the balance of the currently selected wallet will be retrieved.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
-        return getBalance({address:this.getReceiveAddress({
-            walletName: walletName ?? this.walletSelected
-        })});
+    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
+        return getBalance({
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+        });
     }
     /**
      * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
@@ -108,9 +117,9 @@ class TezosWallet extends CoinWallet {
     ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
             ..._props,
-            account:this.getReceiveAddress({
-                walletName: _props.walletName ?? this.walletSelected
-            })
+            account: this.getReceiveAddress({
+                walletName: _props.walletName ?? this.walletSelected,
+            }),
         });
     }
     /**
@@ -120,8 +129,8 @@ class TezosWallet extends CoinWallet {
      * @return {Promise<string>} - A promise that resolves to the transaction hash.
      */
     sendTransaction(_props: BuildTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({ mnemonic:_props.mnemonic });
-        const keyPair = this.base.getKeyPair({seed})
+        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
+        const keyPair = this.base.getKeyPair({ seed });
         const privateKey = getPrivateKey({ keyPair });
         const pkHash = getTezosPublicKeyHash({
             keyPair,
@@ -132,7 +141,7 @@ class TezosWallet extends CoinWallet {
             pkHash,
             source,
             connector: this.connector,
-            privateKey
+            privateKey,
         });
     }
     getTransactions(_props: any) {
@@ -168,13 +177,13 @@ class TezosWallet extends CoinWallet {
      * @return {Promise<string>} - A promise that resolves to the signed transaction.
      */
     signTransaction(_props: SignTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({ mnemonic:_props.mnemonic });
-        const keyPair = this.base.getKeyPair({seed})
+        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
+        const keyPair = this.base.getKeyPair({ seed });
         return signTransaction({
             ..._props,
             keyPair,
-            coinId:this.id
-        })
+            coinId: this.id,
+        });
     }
 
     /**
@@ -186,17 +195,15 @@ class TezosWallet extends CoinWallet {
      * @return {Uint8Array} The signed message.
      */
     signMessage(_props: SignMessageParams): Uint8Array {
-        const seed = this.base.getSeed({ mnemonic:_props.mnemonic });
+        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
         const secretKey = this.base.getSecretKey({
             seed,
         });
         return sign({
             secretKey,
-            message:_props.message,
+            message: _props.message,
         });
     }
-
-
 }
 
 export default TezosWallet;

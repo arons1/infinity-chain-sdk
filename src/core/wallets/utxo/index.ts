@@ -18,13 +18,9 @@ import {
 
 import CoinWallet from '../../wallet';
 import { getUTXO } from '../../../networks/utxo/getUTXO/index';
-import {
-    UTXOResult,
-} from '../../../networks/utxo/getUTXO/types';
+import { UTXOResult } from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
-import {
-    ChangeIndexResolve,
-} from '../../../networks/utxo/getLastChangeIndex/types';
+import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import { BuildParameters, EstimateFeeParams } from './types';
@@ -34,9 +30,9 @@ import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256
 import { WalletNotFound } from '../../../errors/networks';
 
 class UTXOWallet extends CoinWallet {
-    connector!:TrezorWebsocket;
-    base!:SECP256K1Coin;
-    
+    connector!: TrezorWebsocket;
+    base!: SECP256K1Coin;
+
     /**
      * Constructs a new instance of the class.
      *
@@ -55,15 +51,19 @@ class UTXOWallet extends CoinWallet {
      * @return {Promise<EstimateFeeResult>} - A promise that resolves to the estimated fee.
      */
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
-        const extendedPublicKeys:string[] = []
-        for(let derivation of config[this.id].derivations) {
-            extendedPublicKeys.push(this.extendedPublicKeys[_props.walletName ?? this.walletSelected][derivation.protocol]);
+        const extendedPublicKeys: string[] = [];
+        for (let derivation of config[this.id].derivations) {
+            extendedPublicKeys.push(
+                this.extendedPublicKeys[
+                    _props.walletName ?? this.walletSelected
+                ][derivation.protocol],
+            );
         }
         return estimateFee({
             ..._props,
             connector: this.connector,
-            coinId:this.id,
-            extendedPublicKeys
+            coinId: this.id,
+            extendedPublicKeys,
         });
     }
     /**
@@ -73,24 +73,27 @@ class UTXOWallet extends CoinWallet {
      * @return {Promise<BuildTransactionResult>} - A promise that resolves to the built transaction.
      */
     buildTransaction(_props: BuildParameters): Promise<BuildTransactionResult> {
-        const protocolAddress = _props.changeAddressProtocol ?? Protocol.SEGWIT
-        const accounts:Account[] = []
-        for(let derivation of config[this.id].derivations) {
+        const protocolAddress = _props.changeAddressProtocol ?? Protocol.SEGWIT;
+        const accounts: Account[] = [];
+        for (let derivation of config[this.id].derivations) {
             const privateAccountNode = this.base.getPrivateMasterKey({
                 rootNode: this.base.getRootNode(_props.mnemonic),
                 protocol: derivation.protocol,
             });
-            const account:Account = {
+            const account: Account = {
                 node: privateAccountNode,
-                extendedPublicKey : privateAccountNode.neutered().neutered().toBase58(),
-                useAsChange:protocolAddress == derivation.protocol
-            }
-            accounts.push(account)
+                extendedPublicKey: privateAccountNode
+                    .neutered()
+                    .neutered()
+                    .toBase58(),
+                useAsChange: protocolAddress == derivation.protocol,
+            };
+            accounts.push(account);
         }
         return buildTransaction({
             ..._props,
             connector: this.connector,
-            accounts
+            accounts,
         });
     }
     /**
@@ -99,10 +102,12 @@ class UTXOWallet extends CoinWallet {
      * @param {string} walletName - (Optional) The name of the wallet. If not provided, the default wallet will be used.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
         return getBalance({
-            extendedPublicKeys:Object.values(this.extendedPublicKeys[walletName ?? this.walletSelected]),
-            connector: this.connector
+            extendedPublicKeys: Object.values(
+                this.extendedPublicKeys[walletName ?? this.walletSelected],
+            ),
+            connector: this.connector,
         });
     }
     /**
@@ -111,10 +116,14 @@ class UTXOWallet extends CoinWallet {
      * @param {string} walletName - (Optional) The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
-    getAccountBalances(walletName?:string): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances(
+        walletName?: string,
+    ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
-            extendedPublicKeys:Object.values(this.extendedPublicKeys[walletName ?? this.walletSelected]),
-            connector: this.connector
+            extendedPublicKeys: Object.values(
+                this.extendedPublicKeys[walletName ?? this.walletSelected],
+            ),
+            connector: this.connector,
         });
     }
     /**
@@ -123,10 +132,10 @@ class UTXOWallet extends CoinWallet {
      * @param {string} rawTransaction - The raw string of the transaction to send.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
-    sendTransaction(rawTransaction:string): Promise<string> {
+    sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction({
             rawTransaction,
-            connector: this.connector
+            connector: this.connector,
         });
     }
     /**
@@ -136,10 +145,13 @@ class UTXOWallet extends CoinWallet {
      * @param {string} [walletName] - (Optional) The name of the wallet. If not provided, the default wallet will be used.
      * @return {Promise<UTXOResult[]>} A promise that resolves to an array of UTXOResult objects.
      */
-    getUTXO(protocol:Protocol,walletName?:string): Promise<UTXOResult[]> {
+    getUTXO(protocol: Protocol, walletName?: string): Promise<UTXOResult[]> {
         return getUTXO({
-            extendedPublicKey:this.extendedPublicKeys[walletName ?? this.walletSelected][protocol],
-            connector: this.connector
+            extendedPublicKey:
+                this.extendedPublicKeys[walletName ?? this.walletSelected][
+                    protocol
+                ],
+            connector: this.connector,
         });
     }
     /**
@@ -150,11 +162,15 @@ class UTXOWallet extends CoinWallet {
      * @return {Promise<ChangeIndexResolve>} A promise that resolves to the last change index.
      */
     getLastChangeIndex(
-        protocol:Protocol,walletName?:string
+        protocol: Protocol,
+        walletName?: string,
     ): Promise<ChangeIndexResolve> {
         return getLastChangeIndex({
-            extendedPublicKey:this.extendedPublicKeys[walletName ?? this.walletSelected][protocol],
-            connector: this.connector
+            extendedPublicKey:
+                this.extendedPublicKeys[walletName ?? this.walletSelected][
+                    protocol
+                ],
+            connector: this.connector,
         });
     }
     getTransactions(_props: any) {
@@ -171,9 +187,8 @@ class UTXOWallet extends CoinWallet {
      */
     loadConnector() {
         this.connector = new TrezorWebsocket(this.id);
-        this.connector.connect()
+        this.connector.connect();
     }
-
 
     /**
      * Retrieves the change address for a given wallet and protocol.
@@ -185,15 +200,22 @@ class UTXOWallet extends CoinWallet {
      * @return {string} The change address.
      */
     getChangeAddress(_props: GetChangeAddressParams): string {
-        if(this.publicNode[_props.walletName ?? this.walletSelected][_props.protocol] === undefined) {
-            throw new Error(WalletNotFound)
+        if (
+            this.publicNode[_props.walletName ?? this.walletSelected][
+                _props.protocol
+            ] === undefined
+        ) {
+            throw new Error(WalletNotFound);
         }
         return this.base.getPublicAddress({
-            index:_props.changeIndex,
+            index: _props.changeIndex,
             change: 1,
-            publicAccountNode:this.publicNode[_props.walletName ?? this.walletSelected][_props.protocol],
-            protocol: _props.protocol
-        }) as string
+            publicAccountNode:
+                this.publicNode[_props.walletName ?? this.walletSelected][
+                    _props.protocol
+                ],
+            protocol: _props.protocol,
+        }) as string;
     }
 
     /**
@@ -201,8 +223,11 @@ class UTXOWallet extends CoinWallet {
      *
      * @return {number} The minimum amount left as specified in the configuration.
      */
-    async getMinimumAmountLeft() : Promise<number>{
-        return config[this.id].dust as number
+    async getMinimumAmountLeft(): Promise<number> {
+        return config[this.id].dust as number;
+    }
+    async getMinimumAmountSend(_props: any): Promise<number> {
+        return config[this.id].dust as number;
     }
 }
 

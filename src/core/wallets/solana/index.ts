@@ -16,7 +16,12 @@ import {
 import CoinWallet from '../../wallet';
 import { API_RPCS } from '../../config';
 import { UnsupportedChainId } from '../../../errors/transactionParsers';
-import { Connection, PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
+import {
+    Connection,
+    PublicKey,
+    Transaction,
+    VersionedTransaction,
+} from '@solana/web3.js';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import {
     EstimateFeeParams,
@@ -46,20 +51,22 @@ class SolanaWallet extends CoinWallet {
         super(id, mnemonic, walletName);
         this.loadConnector();
     }
-    
+
     /**
      * Estimates the fee for a transaction.
      *
      * @param {VersionedTransaction | Transaction} transaction - The transaction object.
      * @return {Promise<EstimateFeeResult>} A promise that resolves to the estimated fee.
      */
-    estimateFee(
-        props: EstimateFeeParams
-    ): Promise<EstimateFeeResult> {
+    estimateFee(props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ...props,
             connector: this.connector,
-            publicKey: new PublicKey(this.addresses[props.walletName ?? this.walletSelected][Protocol.LEGACY]),
+            publicKey: new PublicKey(
+                this.addresses[props.walletName ?? this.walletSelected][
+                    Protocol.LEGACY
+                ],
+            ),
         });
     }
     /**
@@ -210,18 +217,18 @@ class SolanaWallet extends CoinWallet {
         this.connector = new Connection(API_RPCS[this.bipIdCoin]);
     }
 
-    async getMinimumAmountLeftCall() : Promise<number> {
-        try{
-          return await this.connector.getMinimumBalanceForRentExemption(0)
-        }
-        catch(e){
-
-        }
-        return 890880
+    async getMinimumAmountLeftCall(): Promise<number> {
+        try {
+            return await this.connector.getMinimumBalanceForRentExemption(0);
+        } catch (e) {}
+        return 890880;
     }
-    getMinimumAmountLeft=pMemoize(async () => await this.getMinimumAmountLeftCall(),{
-        maxAge:600_000
-    })
+    getMinimumAmountLeft = pMemoize(
+        async () => await this.getMinimumAmountLeftCall(),
+        {
+            maxAge: 600_000,
+        },
+    );
 }
 
 export default SolanaWallet;

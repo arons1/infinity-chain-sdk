@@ -132,4 +132,3 @@ export const estimateOperation = async ({
     // Return the estimated fee
     return { fee: estimatedBaseFee.toString(10) };
 };
-

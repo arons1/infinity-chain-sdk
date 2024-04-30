@@ -5,9 +5,12 @@ import {
     InvalidMemo,
     InvalidNumber,
     MissingMintTokenOrDecimalsTokens,
-    MissingOrInvalidConnector
+    MissingOrInvalidConnector,
 } from '../../../errors/networks';
-import { isValidAddress, isValidMemo } from '@infinity/core-sdk/lib/commonjs/networks/utils/solana';
+import {
+    isValidAddress,
+    isValidMemo,
+} from '@infinity/core-sdk/lib/commonjs/networks/utils/solana';
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 
 export const estimateFeeParametersChecker = (props: EstimateFeeParams) => {

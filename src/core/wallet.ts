@@ -179,17 +179,20 @@ class CoinWallet extends BaseWallet {
     isValidAddress(address: string): boolean {
         return this.base.isValidAddress(address);
     }
-    
+
     /**
      * Retrieves the minimum balance for a given wallet name.
      *
      * @return {number} The minimum balance for the wallet.
      */
-    async getMinimumBalance(_props: any):Promise<number> {
-        return 0
+    async getMinimumBalance(_props: any): Promise<number> {
+        return 0;
     }
-    async getMinimumAmountLeft(_props: any):Promise<number> {
-        return 0
+    async getMinimumAmountLeft(_props: any): Promise<number> {
+        return 0;
+    }
+    async getMinimumAmountSend(_props: any): Promise<number> {
+        return 0;
     }
     getAccountBalances(_props: any) {
         throw new Error(NotImplemented);
@@ -213,7 +216,6 @@ class CoinWallet extends BaseWallet {
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
-    
 }
 
 export default CoinWallet;

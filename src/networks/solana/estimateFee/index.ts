@@ -8,7 +8,6 @@ import { getBalance } from '../getBalance';
 import { getBalanceAfter } from '../getBalanceAfter';
 import { addAssociatedCreation } from '../builder/token';
 
-
 /**
  * Estimates the fee for a transaction on the Solana blockchain.
  *
@@ -26,20 +25,24 @@ export const estimateFee = async (
     props: EstimateFeeParams,
 ): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(props);
-    let accountCreation = 0
-    if(props.mintToken){ 
-        const {extraFee} = await addAssociatedCreation({instructions:[],...props,mintToken:props.mintToken})
-        accountCreation = extraFee
+    let accountCreation = 0;
+    if (props.mintToken) {
+        const { extraFee } = await addAssociatedCreation({
+            instructions: [],
+            ...props,
+            mintToken: props.mintToken,
+        });
+        accountCreation = extraFee;
     }
     const transaction = await rawTransaction(props);
     const { fee } = await estimateTransactionCost({
-        transaction,connector:props.connector
-    })
+        transaction,
+        connector: props.connector,
+    });
     return {
         fee: new BigNumber(fee as string).plus(accountCreation).toString(10),
-    }
+    };
 };
-
 
 /**
  * Estimates the transaction cost for a given Solana transaction.
@@ -49,9 +52,9 @@ export const estimateFee = async (
  * @param {Connection} props.connector - The Solana web3 connector.
  * @return {Promise<EstimateFeeResult>} - A promise that resolves to an object containing the estimated fee.
  */
-export const estimateTransactionCost = async (props:{
-    transaction: VersionedTransaction | Transaction,
-    connector: Connection
+export const estimateTransactionCost = async (props: {
+    transaction: VersionedTransaction | Transaction;
+    connector: Connection;
 }): Promise<EstimateFeeResult> => {
     if ('message' in props.transaction)
         return {
@@ -70,4 +73,4 @@ export const estimateTransactionCost = async (props:{
                 )) as number,
             ).toString(10),
         };
-}
+};

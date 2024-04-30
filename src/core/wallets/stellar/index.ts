@@ -138,15 +138,15 @@ class StellarWallet extends CoinWallet {
         }
         this.connector = new Server(API_RPCS[this.bipIdCoin]);
     }
- 
+
     /**
      * Retrieves the minimum amount left from the configuration for the current wallet.
      *
      * @return {number} The minimum amount left as specified in the configuration.
      */
 
-    async getMinimumAmountLeft() : Promise<number>{
-        return config[this.id].dust as number
+    async getMinimumAmountLeft(): Promise<number> {
+        return config[this.id].dust as number;
     }
 }
 

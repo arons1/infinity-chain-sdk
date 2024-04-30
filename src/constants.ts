@@ -25,6 +25,6 @@ export const PROVIDER_TREZOR: Record<Coins, string> = {
     [Coins.ETH_TESTNET]: '',
     [Coins.BSC_TESTNET]: '',
     [Coins.OP]: '',
-    [Coins.BASE]: ''
+    [Coins.BASE]: '',
 };
 export const SLEEP_BETWEEN_CALLS = 500;

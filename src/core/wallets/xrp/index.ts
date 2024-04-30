@@ -17,9 +17,9 @@ import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 class XRPWallet extends CoinWallet {
-    connector!:XrplClient
-    base!:ED25519Coin
-    
+    connector!: XrplClient;
+    base!: ED25519Coin;
+
     /**
      * Constructs a new instance of the class.
      *
@@ -38,7 +38,7 @@ class XRPWallet extends CoinWallet {
      */
     estimateFee(): EstimateFeeResult {
         return estimateFee({
-            connector:this.connector
+            connector: this.connector,
         });
     }
     /**
@@ -48,12 +48,12 @@ class XRPWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the built transaction.
      */
     buildTransaction(_props: BuildTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({mnemonic:_props.mnemonic})
-        const keyPair = this.base.getKeyPair({seed})
+        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
+        const keyPair = this.base.getKeyPair({ seed });
         return buildTransaction({
             ..._props,
-            connector:this.connector,
-            keyPair
+            connector: this.connector,
+            keyPair,
         });
     }
     /**
@@ -62,10 +62,12 @@ class XRPWallet extends CoinWallet {
      * @param {string} walletName - (Optional) The name of the wallet to retrieve the balance for. If not provided, the balance of the currently selected wallet will be retrieved.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?:string): Promise<CurrencyBalanceResult> {
+    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
         return getBalance({
-            address:this.getReceiveAddress({walletName: walletName ?? this.walletSelected}),
-            connector:this.connector
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            connector: this.connector,
         });
     }
     /**
@@ -74,10 +76,10 @@ class XRPWallet extends CoinWallet {
      * @param {string} rawTransaction - The raw string of the transaction to send.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
-    sendTransaction(rawTransaction:string): Promise<string> {
+    sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction({
             rawTransaction,
-            connector:this.connector
+            connector: this.connector,
         });
     }
     getTransactions(_props: any) {
@@ -86,7 +88,7 @@ class XRPWallet extends CoinWallet {
     /**
      * Initializes the connector for the current object.
      *
-     * @param {} 
+     * @param {}
      * @return {}
      */
     loadConnector() {
@@ -98,8 +100,11 @@ class XRPWallet extends CoinWallet {
      *
      * @return {number} The minimum balance in XRP.
      */
-    async getMinimumBalance() : Promise<number> {
-        return new BigNumber(this.connector.getState().reserve.base as number).plus(this.connector.getState().reserve.owner as number).shiftedBy(6).toNumber()
+    async getMinimumBalance(): Promise<number> {
+        return new BigNumber(this.connector.getState().reserve.base as number)
+            .plus(this.connector.getState().reserve.owner as number)
+            .shiftedBy(6)
+            .toNumber();
     }
 }
 

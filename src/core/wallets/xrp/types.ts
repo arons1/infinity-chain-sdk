@@ -3,5 +3,5 @@ export type BuildTransactionParams = {
     from: string;
     to: string;
     memo?: string | undefined;
-    mnemonic:string;
-}
+    mnemonic: string;
+};

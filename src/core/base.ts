@@ -39,9 +39,9 @@ abstract class BaseWallet {
     abstract getReceiveAddress(props: GetReceiveAddressParams): string;
     abstract removeWallet(walletName: string): any;
     abstract isValidAddress(address: string): boolean;
-    abstract getMinimumBalance(_props: any):any;
-    abstract getMinimumAmountLeft(_props: any):any;
-
+    abstract getMinimumBalance(_props: any): any;
+    abstract getMinimumAmountLeft(_props: any): any;
+    abstract getMinimumAmountSend(_props: any): any;
 }
 
 export default BaseWallet;
