@@ -23,7 +23,6 @@ import {
     SignTransactionParams,
 } from './types';
 import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
-import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 
 class EVMWallet extends CoinWallet {

@@ -4,8 +4,6 @@ import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
 import { rawTransaction } from '../builder';
-import { getBalance } from '../getBalance';
-import { getBalanceAfter } from '../getBalanceAfter';
 import { addAssociatedCreation } from '../builder/token';
 
 /**

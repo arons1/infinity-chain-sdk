@@ -5,4 +5,3 @@ export * from './getLastChangeIndex';
 export * from './getUTXO';
 export * from './getBalance';
 export * from './trezorWebsocket';
-export * from './constants';
