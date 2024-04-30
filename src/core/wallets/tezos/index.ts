@@ -102,13 +102,13 @@ class TezosWallet extends CoinWallet {
             }),
         });
     }
+   
     /**
      * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
      *
      * @param {GetAccountBalancesParams} _props - The parameters for retrieving account balances.
-     * @param {string} _props.walletName - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @param {string[]} _props.accounts - The accounts to retrieve balances for.
-     * @param {string[]} _props.contracts - The contracts of the tokens to retrieve balances for.
+     * @param {string} _props.walletName - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
     getAccountBalances(
@@ -116,9 +116,11 @@ class TezosWallet extends CoinWallet {
     ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
             ..._props,
-            account: this.getReceiveAddress({
+            accounts: _props.walletName != undefined ? [this.getReceiveAddress({
                 walletName: _props.walletName ?? this.walletSelected,
-            }),
+            })] : Object.keys(this.addresses).map(walletName => this.getReceiveAddress({
+                walletName
+            })),
         });
     }
     /**

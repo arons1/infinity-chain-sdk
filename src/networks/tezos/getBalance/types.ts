@@ -3,6 +3,6 @@ export type GetBalanceParams = {
 };
 
 export type GetAccountBalancesParams = {
-    account: string;
+    accounts: string[];
     assetSlugs: string[];
 };

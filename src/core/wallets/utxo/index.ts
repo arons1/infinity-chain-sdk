@@ -110,21 +110,36 @@ class UTXOWallet extends CoinWallet {
             connector: this.connector,
         });
     }
+ 
     /**
-     * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
+     * Retrieves the account balances for a given wallet name or all wallets if no wallet name is provided.
      *
-     * @param {string} walletName - (Optional) The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
+     * @param {string} [walletName] - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
     getAccountBalances(
         walletName?: string,
     ): Promise<Record<string, BalanceResult[]>> {
-        return getAccountBalances({
-            extendedPublicKeys: Object.values(
-                this.extendedPublicKeys[walletName ?? this.walletSelected],
-            ),
-            connector: this.connector,
-        });
+        if(walletName != undefined)
+            return getAccountBalances({
+                extendedPublicKeys: Object.values(
+                    this.extendedPublicKeys[walletName],
+                ),
+                connector: this.connector,
+            });
+        else{
+            let extendedPublicKeys:string[] = []
+            Object.keys(this.addresses).map(a => Object.values(
+                this.extendedPublicKeys[a],
+            )).map(a => {
+                extendedPublicKeys = [...extendedPublicKeys,...Object.values(a)]
+            })
+            return getAccountBalances({
+                extendedPublicKeys,
+                connector: this.connector,
+            });
+        }
+        
     }
     /**
      * Sends a transaction with a raw string to the connected wallet.

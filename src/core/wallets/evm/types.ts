@@ -27,7 +27,7 @@ export type SignTransactionParams = {
 };
 export type RPCBalancesParams = {
     contracts: string[];
-    accounts?: string[];
+    walletName?: string
 };
 export type SignMessageParams = {
     mnemonic: string;

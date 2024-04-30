@@ -10,21 +10,25 @@ import { GetAccountBalancesParams, GetBalanceParams } from './types';
  * Retrieves the balances of multiple assets for a given account.
  *
  * @param {GetAccountBalancesParams} params - The parameters for retrieving the account balances.
- * @param {string} params.account - The account to retrieve balances for.
+ * @param {string[]} params.accounts - The account to retrieve balances for.
  * @param {string[]} params.assetSlugs - The slugs of the assets to retrieve balances for.
  * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
  */
 export const getAccountBalances = async ({
-    account,
+    accounts,
     assetSlugs,
 }: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> => {
-    var result: Record<string, BalanceResult[]> = {
-        [account]: [],
-    };
-    for (let assetSlug of assetSlugs) {
-        const bal_res = await getAssetBalance({ account, assetSlug });
-        result[account].push(bal_res);
+    let result: Record<string, BalanceResult[]> = {};
+    for(let account of accounts){
+        result = {
+            [account]: [],
+        };
+        for (let assetSlug of assetSlugs) {
+            const bal_res = await getAssetBalance({ account, assetSlug });
+            result[account].push(bal_res);
+        }
     }
+    
     return result;
 };
 /**

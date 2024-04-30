@@ -130,7 +130,7 @@ class EVMWallet extends CoinWallet {
             ..._props,
             connector: this.connector,
             accounts:
-                _props.accounts ??
+                _props.walletName != undefined ? [this.getReceiveAddress({ walletName:_props.walletName })] :
                 Object.keys(this.addresses).map(walletName =>
                     this.getReceiveAddress({ walletName }),
                 ),

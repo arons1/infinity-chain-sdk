@@ -118,14 +118,14 @@ class SolanaWallet extends CoinWallet {
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
     getAccountBalances(
-        accounts?: string[],
+        walletName?: string,
     ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
             connector: this.connector,
             accounts:
-                accounts ??
-                Object.keys(this.addresses).map(walletName =>
-                    this.getReceiveAddress({ walletName }),
+                walletName != undefined ? [this.getReceiveAddress({ walletName })] :
+                Object.keys(this.addresses).map(a =>
+                    this.getReceiveAddress({ walletName:a }),
                 ),
         });
     }
