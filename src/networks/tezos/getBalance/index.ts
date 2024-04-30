@@ -19,7 +19,7 @@ export const getAccountBalances = async ({
     assetSlugs,
 }: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> => {
     let result: Record<string, BalanceResult[]> = {};
-    for(let account of accounts){
+    for (let account of accounts) {
         result = {
             [account]: [],
         };
@@ -28,7 +28,7 @@ export const getAccountBalances = async ({
             result[account].push(bal_res);
         }
     }
-    
+
     return result;
 };
 /**

@@ -6,7 +6,10 @@ import {
     LoadPublicNodesParams,
     LoadStorageParams,
 } from './types';
-import { CannotGeneratePublicAddress, WalletAndNameNotFound } from '../errors/networks';
+import {
+    CannotGeneratePublicAddress,
+    WalletAndNameNotFound,
+} from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import BaseWallet from './base';
@@ -26,10 +29,7 @@ class CoinWallet extends BaseWallet {
         this.base = Coin(id);
         this.bipIdCoin = this.base.bipIdCoin;
         if (mnemonic && walletName) this.addWallet(mnemonic, walletName);
-        else if (mnemonic || walletName)
-            throw Error(
-                WalletAndNameNotFound,
-            );
+        else if (mnemonic || walletName) throw Error(WalletAndNameNotFound);
     }
     /**
      * Retrieves the receive address based on the derivation name and protocol.

@@ -123,10 +123,11 @@ class SolanaWallet extends CoinWallet {
         return getAccountBalances({
             connector: this.connector,
             accounts:
-                walletName != undefined ? [this.getReceiveAddress({ walletName })] :
-                Object.keys(this.addresses).map(a =>
-                    this.getReceiveAddress({ walletName:a }),
-                ),
+                walletName != undefined
+                    ? [this.getReceiveAddress({ walletName })]
+                    : Object.keys(this.addresses).map(a =>
+                          this.getReceiveAddress({ walletName: a }),
+                      ),
         });
     }
     /**

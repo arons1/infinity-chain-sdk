@@ -87,10 +87,11 @@ class StellarWallet extends CoinWallet {
     ): Promise<Record<string, BalanceResult[]>> {
         return getAccountBalances({
             accounts:
-                walletName != undefined ? [this.getReceiveAddress({ walletName })] :
-                Object.keys(this.addresses).map(a =>
-                    this.getReceiveAddress({ walletName:a }),
-                ),
+                walletName != undefined
+                    ? [this.getReceiveAddress({ walletName })]
+                    : Object.keys(this.addresses).map(a =>
+                          this.getReceiveAddress({ walletName: a }),
+                      ),
             connector: this.connector,
         });
     }
