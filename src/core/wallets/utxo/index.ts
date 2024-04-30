@@ -120,15 +120,19 @@ class UTXOWallet extends CoinWallet {
     getAccountBalances(
         walletName?: string,
     ): Promise<Record<string, BalanceResult[]>> {
-        if(walletName != undefined)
+        let extendedPublicKeys:string[] = []
+        if(walletName != undefined){
+            Object.values(
+                this.extendedPublicKeys[walletName],
+            ).map(a => {
+                extendedPublicKeys = [...extendedPublicKeys,...Object.values(a)]
+            })
             return getAccountBalances({
-                extendedPublicKeys: Object.values(
-                    this.extendedPublicKeys[walletName],
-                ),
+                extendedPublicKeys,
                 connector: this.connector,
             });
+        }
         else{
-            let extendedPublicKeys:string[] = []
             Object.keys(this.addresses).map(a => Object.values(
                 this.extendedPublicKeys[a],
             )).map(a => {
