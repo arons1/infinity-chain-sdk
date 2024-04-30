@@ -33,3 +33,4 @@ export const MissingParams = 'MISSING_PARAMS';
 export const MissingDerivationName = 'MISSING_DERIVATION_NAME';
 export const MissingProtocol = 'MISSING_PROTOCOL';
 export const WalletNotFound = 'WALLET_NOT_FOUND';
+export const WalletAndNameNotFound = 'WALLET_NAME_NOT_FOUND'

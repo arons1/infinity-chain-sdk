@@ -6,7 +6,7 @@ import {
     LoadPublicNodesParams,
     LoadStorageParams,
 } from './types';
-import { CannotGeneratePublicAddress } from '../errors/networks';
+import { CannotGeneratePublicAddress, WalletAndNameNotFound } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import BaseWallet from './base';
@@ -28,7 +28,7 @@ class CoinWallet extends BaseWallet {
         if (mnemonic && walletName) this.addWallet(mnemonic, walletName);
         else if (mnemonic || walletName)
             throw Error(
-                'You need to pass both mnemonic and walletName or none',
+                WalletAndNameNotFound,
             );
     }
     /**
