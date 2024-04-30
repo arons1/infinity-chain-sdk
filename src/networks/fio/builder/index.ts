@@ -5,6 +5,8 @@ import { estimateFee } from '../estimateFee';
 import { getFIOAccount } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { builderParametersChecker } from '../parametersChecker';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 const fetchJson = async (uri: string, opts = {}) => {
     return fetch(uri, opts);
@@ -27,7 +29,7 @@ export const buildTransaction = async (
     var user = new FIOSDK(
         props.privateKey,
         props.source,
-        'https://fio.blockpane.com/v1/',
+        config[Coins.FIO].rpc[0],
         fetchJson,
     );
     user.setSignedTrxReturnOption(true);

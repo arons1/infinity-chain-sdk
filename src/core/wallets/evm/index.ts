@@ -13,7 +13,6 @@ import {
     EstimateFeeResult,
 } from '../../../networks/types';
 import Web3 from 'web3';
-import { PROVIDERS } from '../../config';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import {
@@ -173,10 +172,7 @@ class EVMWallet extends CoinWallet {
      * @throws {Error} If the chain is not supported.
      */
     loadConnector() {
-        if (PROVIDERS[this.chain] == undefined) {
-            throw new Error(UnsupportedChainId);
-        }
-        this.connector = new Web3(PROVIDERS[this.chain]);
+        this.connector = new Web3(config[this.id].rpc[0]);
     }
 }
 

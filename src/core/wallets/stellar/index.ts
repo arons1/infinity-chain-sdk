@@ -17,8 +17,7 @@ import { BuildTransactionParams, SignTransactionParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Keypair, Server, Transaction } from 'stellar-sdk';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
-import { API_RPCS } from '../../config';
-import { UnsupportedChainId } from '../../../errors/transactionParsers';
+
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 class StellarWallet extends CoinWallet {
@@ -133,10 +132,7 @@ class StellarWallet extends CoinWallet {
      * @throws {Error} If the API RPC for the BIP ID coin is not defined.
      */
     loadConnector() {
-        if (API_RPCS[this.bipIdCoin] == undefined) {
-            throw new Error(UnsupportedChainId);
-        }
-        this.connector = new Server(API_RPCS[this.bipIdCoin]);
+        this.connector = new Server(config[this.id].rpc[0]);
     }
 
     /**

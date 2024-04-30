@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { SendTransactionResult } from './types';
 import { sendTransactionParametersChecker } from '../parametersChecker';
 import { BuildTransactionFIOResult } from '../builder/types';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 /**
  * sendTransaction
@@ -18,7 +20,7 @@ export const sendTransaction = async (
     return new Promise((resolve, reject) => {
         axios
             .post(
-                'https://fio.blockpane.com/v1/chain/push_transaction',
+                config[Coins.FIO].rpc[0] + '/chain/push_transaction',
                 transaction,
             )
             .then((result: AxiosResponse<SendTransactionResult>) => {

@@ -14,8 +14,6 @@ import {
     EstimateFeeResult,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
-import { API_RPCS } from '../../config';
-import { UnsupportedChainId } from '../../../errors/transactionParsers';
 import {
     Connection,
     PublicKey,
@@ -36,6 +34,7 @@ import {
 import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 import pMemoize from 'p-memoize';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -211,10 +210,7 @@ class SolanaWallet extends CoinWallet {
      * @return {void} This function does not return anything.
      */
     loadConnector() {
-        if (API_RPCS[this.bipIdCoin] == undefined) {
-            throw new Error(UnsupportedChainId);
-        }
-        this.connector = new Connection(API_RPCS[this.bipIdCoin]);
+        this.connector = new Connection(config[this.id].rpc[0]);
     }
 
     async getMinimumAmountLeftCall(): Promise<number> {

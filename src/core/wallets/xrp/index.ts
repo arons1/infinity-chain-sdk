@@ -15,6 +15,7 @@ import { BuildTransactionParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
@@ -92,7 +93,7 @@ class XRPWallet extends CoinWallet {
      * @return {}
      */
     loadConnector() {
-        this.connector = new XrplClient();
+        this.connector = new XrplClient(config[this.id].rpc);
     }
 
     /**

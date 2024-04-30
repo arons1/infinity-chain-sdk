@@ -4,6 +4,8 @@ import { FIOSDK } from '@fioprotocol/fiosdk';
 import { EstimateFeeResult } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 const DEFAULT_FEE = FIOSDK.SUFUnit * 10;
 
@@ -18,7 +20,7 @@ export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(source);
     return new Promise(resolve => {
         axios
-            .post('https://fio.blockpane.com/v1/chain/get_fee', {
+            .post(config[Coins.FIO].rpc[0] + '/chain/get_fee', {
                 fio_public_key: source,
                 end_point: 'transfer_tokens_pub_key',
             })

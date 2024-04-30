@@ -1,7 +1,6 @@
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import { WebSocket } from 'ws';
 import { UnsupportedTrezorWebsocket } from '../../../errors/networks';
-import { API_RPCS } from '../../../core/config';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 const no_op = () => {};
@@ -24,7 +23,7 @@ export class TrezorWebsocket {
      * @throws {Error} If the URL is not found or is empty.
      */
     constructor(coin: Coins) {
-        this.url = API_RPCS[config[coin].bip44];
+        this.url = config[coin].rpc[0];
         if (!this.url || this.url.length == 0)
             throw new Error(UnsupportedTrezorWebsocket);
         this.messageID = 0;
