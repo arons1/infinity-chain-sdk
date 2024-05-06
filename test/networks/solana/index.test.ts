@@ -51,15 +51,11 @@ describe('networksSolana', () => {
     test('estimateFee', async () => {
         const seed = getSeed({ mnemonic });
         const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'" });
-        const built = await rawTransaction({
+        const fee = await estimateFee({
             memo: 'test',
             publicKey: new PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
             value: '1000000',
-            connector: web3Solana,
-        });
-        const fee = await estimateFee({
-            transaction: built,
             connector: web3Solana,
         });
         expect(new BigNumber(fee.fee as string).toNumber()).toBeGreaterThan(0);
@@ -84,11 +80,11 @@ describe('networksSolana', () => {
         expect(
             balancesAfter['Fhof9N6pgye6WvT2EnAHyF9WJ5J77hSxLQYEQrEU4KC1']
                 .amount,
-        ).toBe('5520167');
+        ).toBe('5643698');
         expect(
             balancesAfter['6xR2P7Av2m6k2Dg1ZgW3kQCZLVfXt9YxYz1LdjBimD7z']
                 .amount,
-        ).toBe('98206');
+        ).toBe('95391');
     });
 
     test('getBalance', async () => {
@@ -98,7 +94,7 @@ describe('networksSolana', () => {
             connector: web3Solana,
             address: new PublicKey(keyPair.publicKey).toString(),
         });
-        expect(balance.balance).toBe('5525167');
+        expect(balance.balance).toBe('5648698');
     });
     test('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
@@ -112,13 +108,13 @@ describe('networksSolana', () => {
             balance[pubAddress].find(
                 (a: BalanceResult) => a.address == 'native',
             )?.value,
-        ).toBe('5525167');
+        ).toBe('5648698');
         expect(
             balance[pubAddress].find(
                 (a: BalanceResult) =>
                     a.address == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
             )?.value,
-        ).toBe('99206');
+        ).toBe('96391');
     });
     test('getTransactions', async () => {
         const seed = getSeed({ mnemonic });

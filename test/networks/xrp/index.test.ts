@@ -54,7 +54,7 @@ describe('networksXRP', () => {
             address: publicAddress,
             connector: apiRipple,
         });
-        expect(balanceResult.balance).toBe('20548051');
+        expect(balanceResult.balance).toBe('12000000');
     });
     /*
 

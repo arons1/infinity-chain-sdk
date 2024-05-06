@@ -98,7 +98,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
         const balanceResult = await (0, getBalance_1.getAccountBalances)({
-            account: publicAddress,
+            accounts: [publicAddress],
             assetSlugs: ['tez', 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn_0'],
         });
         (0, globals_1.expect)(balanceResult[publicAddress]?.find(a => a.address == 'native')

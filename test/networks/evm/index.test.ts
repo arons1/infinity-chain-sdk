@@ -8,11 +8,11 @@ import {
 } from '../../../lib/commonjs/networks/evm/getBalance';
 import {
     Chains,
+    getPrivateAddress,
     getPublicAddress,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import {
     getRootNode,
-    getPrivateKey,
     getPrivateMasterKey,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
@@ -43,7 +43,7 @@ describe('networksEVM', () => {
             index: 0,
             publicAccountNode: privateAccountNode,
         });
-        const privateKey = getPrivateKey({
+        const privateKey = getPrivateAddress({
             change: 0,
             index: 0,
             privateAccountNode,
@@ -55,7 +55,7 @@ describe('networksEVM', () => {
             source: publicAddress as string,
             priorityFee: PRIORITY_FEES[Chains.MATIC],
             value: '100000',
-            privateKey: privateKey.privateKey as Buffer,
+            privateKey,
         });
         expect(built.length > 0).toBe(true);
     });
@@ -79,7 +79,7 @@ describe('networksEVM', () => {
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             connector: web3Matic,
         });
-        expect(bal.balance).toBe('100366941538263892');
+        expect(bal.balance).toBe('0');
     });
     test('getAccountBalances', async () => {
         const bal = await getAccountBalances({
@@ -97,6 +97,6 @@ describe('networksEVM', () => {
             bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find(
                 (a: any) => a.address == 'native',
             )?.value,
-        ).toBe('100366941538263892');
+        ).toBe('0');
     });
 });

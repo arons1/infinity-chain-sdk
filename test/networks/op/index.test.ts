@@ -5,7 +5,6 @@ import { web3Op } from '../../utils';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getPublicAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm/address';
 import {
-    getPrivateKey,
     getPrivateMasterKey,
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
@@ -15,6 +14,7 @@ import {
     Coins,
     Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import { getPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/utxo';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksOP', () => {
@@ -33,15 +33,16 @@ describe('networksOP', () => {
             index: 0,
             publicAccountNode: privateAccountNode,
         });
-        const privateKey = getPrivateKey({
+        const privateKey = getPrivateAddress({
             change: 0,
             index: 0,
+            network: networks[Coins.ETH],
             privateAccountNode,
         });
         const built = await buildTransaction({
             connector: web3Op,
             chainId: 10,
-            privateKey: privateKey.privateKey as Buffer,
+            privateKey,
             destination: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             source: publicAddress as string,
             feeRatio: 0.5,

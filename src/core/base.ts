@@ -20,7 +20,7 @@ abstract class BaseWallet {
             Protocol,
             Record<
                 DerivationName | string,
-                Record<number, Record<number, string>>
+                Record<string, Record<string, string>>
             >
         >
     > = {};

@@ -12,6 +12,7 @@ const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address"
 const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1");
 const networks_1 = __importDefault(require("@infinity/core-sdk/lib/commonjs/networks/networks"));
 const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
+const utxo_1 = require("@infinity/core-sdk/lib/commonjs/networks/utxo");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksOP', () => {
     (0, globals_1.test)('estimateL1Cost', async () => {
@@ -29,15 +30,16 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             index: 0,
             publicAccountNode: privateAccountNode,
         });
-        const privateKey = (0, secp256k1_1.getPrivateKey)({
+        const privateKey = (0, utxo_1.getPrivateAddress)({
             change: 0,
             index: 0,
+            network: networks_1.default[registry_1.Coins.ETH],
             privateAccountNode,
         });
         const built = await (0, builder_1.buildTransaction)({
             connector: utils_1.web3Op,
             chainId: 10,
-            privateKey: privateKey.privateKey,
+            privateKey,
             destination: '0xfF8996c5961D138bd01a75c2DDa2d6944658F685',
             source: publicAddress,
             feeRatio: 0.5,

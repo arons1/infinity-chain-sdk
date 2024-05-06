@@ -7,7 +7,7 @@ export const pull = ({
     address,
     page,
     limit,
-    startblock = 1,
+    startblock = '1',
 }: GeneralApiParams) => {
     const selected = PROVIDER[chainId as number] as string;
     if (!selected) throw new Error('Not integrated chain');

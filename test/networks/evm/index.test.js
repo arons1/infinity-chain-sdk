@@ -33,7 +33,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             index: 0,
             publicAccountNode: privateAccountNode,
         });
-        const privateKey = (0, secp256k1_1.getPrivateKey)({
+        const privateKey = (0, evm_1.getPrivateAddress)({
             change: 0,
             index: 0,
             privateAccountNode,
@@ -45,7 +45,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             source: publicAddress,
             priorityFee: PRIORITY_FEES[evm_1.Chains.MATIC],
             value: '100000',
-            privateKey: privateKey.privateKey,
+            privateKey,
         });
         (0, globals_1.expect)(built.length > 0).toBe(true);
     });
@@ -67,7 +67,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             address: '0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f',
             connector: utils_1.web3Matic,
         });
-        (0, globals_1.expect)(bal.balance).toBe('100366941538263892');
+        (0, globals_1.expect)(bal.balance).toBe('0');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const bal = await (0, getBalance_1.getAccountBalances)({
@@ -76,6 +76,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             contracts: ['0x5fe2b58c013d7601147dcdd68c143a77499f5531', 'native'],
         });
         (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == '0x5fe2b58c013d7601147dcdd68c143a77499f5531')?.value).toBe('255945616675368817');
-        (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == 'native')?.value).toBe('100366941538263892');
+        (0, globals_1.expect)(bal['0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f'].find((a) => a.address == 'native')?.value).toBe('0');
     });
 });

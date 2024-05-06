@@ -43,15 +43,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     (0, globals_1.test)('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
         const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
-        const built = await (0, builder_1.rawTransaction)({
+        const fee = await (0, estimateFee_1.estimateFee)({
             memo: 'test',
             publicKey: new web3_js_1.PublicKey(keyPair.publicKey),
             destination: 'GBVrsjDxyFTfAJEvuRmJBD4r9hwBs5HGu6Y6BYDcLA7K',
             value: '1000000',
-            connector: utils_1.web3Solana,
-        });
-        const fee = await (0, estimateFee_1.estimateFee)({
-            transaction: built,
             connector: utils_1.web3Solana,
         });
         (0, globals_1.expect)(new core_1.BigNumber(fee.fee).toNumber()).toBeGreaterThan(0);
@@ -74,9 +70,9 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             signer: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
         });
         (0, globals_1.expect)(balancesAfter['Fhof9N6pgye6WvT2EnAHyF9WJ5J77hSxLQYEQrEU4KC1']
-            .amount).toBe('5520167');
+            .amount).toBe('5643698');
         (0, globals_1.expect)(balancesAfter['6xR2P7Av2m6k2Dg1ZgW3kQCZLVfXt9YxYz1LdjBimD7z']
-            .amount).toBe('98206');
+            .amount).toBe('95391');
     });
     (0, globals_1.test)('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
@@ -85,7 +81,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             connector: utils_1.web3Solana,
             address: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
         });
-        (0, globals_1.expect)(balance.balance).toBe('5525167');
+        (0, globals_1.expect)(balance.balance).toBe('5648698');
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
@@ -95,8 +91,8 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             connector: utils_1.web3Solana,
             accounts: [pubAddress],
         });
-        (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'native')?.value).toBe('5525167');
-        (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')?.value).toBe('99206');
+        (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'native')?.value).toBe('5648698');
+        (0, globals_1.expect)(balance[pubAddress].find((a) => a.address == 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v')?.value).toBe('96391');
     });
     (0, globals_1.test)('getTransactions', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });

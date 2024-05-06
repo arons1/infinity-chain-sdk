@@ -1,22 +1,29 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UTXOResult } from './utxo/getUTXO/types';
 export type Transaction = {
-    blockNumber: string;
-    timeStamp: string;
+    blockNumber?: string;
+    timeStamp?: string;
     hash: string;
-    from: string;
-    to: string;
+    from?: string;
+    to?: string;
     value?: string;
-    isError: boolean;
+    isError?: boolean;
     fee?: string;
-    confirmations: string;
+    confirmations?: string;
     tokenTransfers?: TokenTransfer[];
+    internalTransactions?: InternalTransaction[];
     gasUsed?: string;
     extraId?: string;
     vIn?: vIn[];
     vOut?: vOut[];
-    type: string;
+    type?: string;
     contractAddress?: string;
+};
+export type InternalTransaction = {
+    from: string;
+    to: string;
+    value?: string;
+    extraId?: string;
 };
 export type EstimateFeeResult = {
     fee?: string;

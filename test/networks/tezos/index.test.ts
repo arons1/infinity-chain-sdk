@@ -116,7 +116,7 @@ describe('networksTezos', () => {
         });
         const balanceResult: Record<string, BalanceResult[]> =
             await getAccountBalances({
-                account: publicAddress,
+                accounts: [publicAddress],
                 assetSlugs: ['tez', 'KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn_0'],
             });
         expect(

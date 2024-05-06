@@ -83,7 +83,7 @@ class FIOWallet extends CoinWallet {
     /**
      * Retrieves the account associated with the given wallet name.
      *
-     * @param {string} walletName - The name of the wallet. If not provided, the currently selected wallet will be used.
+     * @param {string} [walletName] - The name of the wallet. If not provided, the currently selected wallet will be used.
      * @return {string} The account associated with the given wallet name.
      */
     getAccount(walletName?: string): string {

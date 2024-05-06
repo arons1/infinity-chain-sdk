@@ -2,7 +2,7 @@ Arguments:
   C:\Program Files\nodejs\node.exe C:\Users\Haru\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add D:/trabajo/infinity-core-sdk
 
 PATH: 
-  C:\Program Files\Git\bin\;C:\Program Files\Git\bin\;C:\Program Files\Git\bin\;C:\WINDOWS\System32;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;C:\Users\Haru\.local\share\solana\install\active_release\bin;C:\Users\Haru\.windows-build-tools\python27\;node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\Haru\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\Haru\AppData\Roaming\npm\node_modules\.bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\PuTTY\;C:\Program Files\OpenVPN\bin;C:\Program Files\AutoFirma\AutoFirma;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps;C:\Users\Haru\AppData\Local\atom\bin;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\Java\jdk1.8.0_241\bin;C:\Users\Haru\AppData\Local\Programs\Fiddler;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps;C:\Users\Haru\AppData\Local\Yarn\bin;C:\Users\Haru\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Haru\AppData\Roaming\Composer\vendor\bin;C:\ffmpeg\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Users\Haru\.dotnet\tools;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Haru\AppData\Roaming\npm;D:\android-sdk\platform-tools;
+  C:\Program Files\Eclipse Adoptium\jdk-21.0.3.9-hotspot\bin;C:\Program Files\Git\bin\;C:\Program Files\Eclipse Adoptium\jdk-21.0.3.9-hotspot\bin;C:\Program Files\Git\bin\;C:\Program Files\Eclipse Adoptium\jdk-21.0.3.9-hotspot\bin;C:\Program Files\Git\bin\;C:\WINDOWS\System32;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;;C:\ffmpeg\bin\;C:\Users\Haru\miniconda3\condabin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\dotnet\;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;D:\android-sdk\platform-tools;C:\Users\Haru\.local\share\solana\install\active_release\bin;C:\Users\Haru\.windows-build-tools\python27\;node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin;C:\Users\Haru\AppData\Roaming\npm\node_modules\windows-build-tools\node_modules\.bin;C:\Users\Haru\AppData\Roaming\npm\node_modules\.bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\PuTTY\;C:\Program Files\OpenVPN\bin;C:\Program Files\AutoFirma\AutoFirma;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps;C:\Users\Haru\AppData\Local\atom\bin;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\Java\jdk1.8.0_241\bin;C:\Users\Haru\AppData\Local\Programs\Fiddler;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps;C:\Users\Haru\AppData\Local\Yarn\bin;C:\Users\Haru\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Haru\AppData\Roaming\Composer\vendor\bin;C:\ffmpeg\bin;D:\depot_tools;C:\Users\Haru\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0;C:\Users\Haru\.dotnet\tools;C:\Users\Haru\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Haru\AppData\Roaming\npm;D:\android-sdk\platform-tools;
 
 Yarn version: 
   1.17.3
@@ -14,12 +14,12 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile 'D:\trabajo\infinity-core-sdk\lib\commonjs\networks\evm\sdk\ethereumjs-tx\legacyTransaction.d.ts' -> 'C:\Users\Haru\AppData\Local\Yarn\Cache\v4\npm-@infinity-core-sdk-1.0.35-68234d5d-3f8a-4681-902c-931b97387144-1711470883766\node_modules\@infinity\core-sdk\lib\commonjs\networks\evm\sdk\ethereumjs-tx\legacyTransaction.d.ts'
+  Error: ENOSPC: no space left on device, copyfile 'D:\trabajo\infinity-core-sdk\node_modules\@typescript-eslint\eslint-plugin\dist\rules\prefer-as-const.js' -> 'C:\Users\Haru\AppData\Local\Yarn\Cache\v4\npm-@infinity-core-sdk-1.0.78-cd568b96-dcb7-4317-96a5-475432a4a516-1714682578451\node_modules\@infinity\core-sdk\node_modules\@typescript-eslint\eslint-plugin\dist\rules\prefer-as-const.js'
 
 npm manifest: 
   {
     "name": "@infinity/chain-sdk",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "",
     "main": "./lib/commonjs/index.js",
     "types": "./lib/commonjs/index.d.ts",
@@ -531,7 +531,7 @@ Lockfile:
     integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
   
   "@infinity/core-sdk@D:/trabajo/infinity-core-sdk":
-    version "1.0.33"
+    version "1.0.74"
     dependencies:
       "@harmony-js/crypto" "^0.1.56"
       "@noble/ed25519" "github:harusurv/noble-ed25519.git"
@@ -561,7 +561,7 @@ Lockfile:
       xrpl-sign-keypairs "^2.5.0"
   
   "@infinity/core-sdk@file:../infinity-core-sdk":
-    version "1.0.33"
+    version "1.0.74"
     dependencies:
       "@harmony-js/crypto" "^0.1.56"
       "@noble/ed25519" "github:harusurv/noble-ed25519.git"
