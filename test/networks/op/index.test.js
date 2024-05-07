@@ -12,7 +12,7 @@ const address_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm/address"
 const secp256k1_1 = require("@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1");
 const networks_1 = __importDefault(require("@infinity/core-sdk/lib/commonjs/networks/networks"));
 const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
-const utxo_1 = require("@infinity/core-sdk/lib/commonjs/networks/utxo");
+const evm_1 = require("@infinity/core-sdk/lib/commonjs/networks/evm");
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('networksOP', () => {
     (0, globals_1.test)('estimateL1Cost', async () => {
@@ -30,10 +30,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             index: 0,
             publicAccountNode: privateAccountNode,
         });
-        const privateKey = (0, utxo_1.getPrivateAddress)({
-            change: 0,
-            index: 0,
-            network: networks_1.default[registry_1.Coins.ETH],
+        const privateKey = (0, evm_1.getPrivateAddress)({
             privateAccountNode,
         });
         const built = await (0, builder_1.buildTransaction)({

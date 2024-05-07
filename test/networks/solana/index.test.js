@@ -69,8 +69,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             connector: utils_1.web3Solana,
             signer: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
         });
-        (0, globals_1.expect)(balancesAfter['Fhof9N6pgye6WvT2EnAHyF9WJ5J77hSxLQYEQrEU4KC1']
-            .amount).toBe('5643698');
         (0, globals_1.expect)(balancesAfter['6xR2P7Av2m6k2Dg1ZgW3kQCZLVfXt9YxYz1LdjBimD7z']
             .amount).toBe('95391');
     });

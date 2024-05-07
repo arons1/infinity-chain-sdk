@@ -14,7 +14,7 @@ import {
     Coins,
     Protocol,
 } from '@infinity/core-sdk/lib/commonjs/networks/registry';
-import { getPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/utxo';
+import { getPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('networksOP', () => {
@@ -34,9 +34,6 @@ describe('networksOP', () => {
             publicAccountNode: privateAccountNode,
         });
         const privateKey = getPrivateAddress({
-            change: 0,
-            index: 0,
-            network: networks[Coins.ETH],
             privateAccountNode,
         });
         const built = await buildTransaction({

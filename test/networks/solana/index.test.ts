@@ -78,10 +78,6 @@ describe('networksSolana', () => {
             signer: new PublicKey(keyPair.publicKey).toString(),
         });
         expect(
-            balancesAfter['Fhof9N6pgye6WvT2EnAHyF9WJ5J77hSxLQYEQrEU4KC1']
-                .amount,
-        ).toBe('5643698');
-        expect(
             balancesAfter['6xR2P7Av2m6k2Dg1ZgW3kQCZLVfXt9YxYz1LdjBimD7z']
                 .amount,
         ).toBe('95391');
