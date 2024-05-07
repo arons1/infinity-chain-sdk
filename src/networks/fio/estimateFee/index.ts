@@ -20,7 +20,7 @@ export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
     estimateFeeParametersChecker(source);
     return new Promise(resolve => {
         axios
-            .post(config[Coins.FIO].rpc[0] + '/chain/get_fee', {
+            .post(config[Coins.FIO].rpc[0] + 'chain/get_fee', {
                 fio_public_key: source,
                 end_point: 'transfer_tokens_pub_key',
             })

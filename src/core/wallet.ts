@@ -114,7 +114,6 @@ class CoinWallet extends BaseWallet {
         this.publicNode[walletName] = { ...initProtocols };
         this.extendedPublicKeys[walletName] = { ...initProtocols };
         const add = this.base.generateAddresses(mnemonic);
-        console.log(add);
         for (let addressResult of add) {
             if (addressResult.publicAddress != undefined)
                 this.addresses[walletName][addressResult.protocol] = {
@@ -124,7 +123,6 @@ class CoinWallet extends BaseWallet {
                         },
                     },
                 };
-
             this.extendedPublicKeys[walletName][addressResult.protocol] =
                 addressResult.extendedPublicAddress as string;
             if (this.id === Coins.TEZOS || this.id === Coins.FIO)
@@ -139,7 +137,6 @@ class CoinWallet extends BaseWallet {
                         extendedKeys;
             }
         }
-        console.log(this.addresses);
         this.initializated = true;
     }
     /**

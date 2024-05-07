@@ -20,7 +20,7 @@ export const encode = ({
     return {
         blockNumber: transaction.blockNumber as string,
         timeStamp: new Date(
-            transaction.timeStamp ?? transaction.time,
+            parseInt(transaction.timeStamp ?? transaction.time) * 1000,
         ).toISOString(),
         hash: (transaction.hash ?? transaction.transactionHash) as string,
         from: transaction.from,
@@ -28,7 +28,6 @@ export const encode = ({
         value: transaction.value,
         fee: new BigNumber(transaction.gasUsed ?? transaction.gasLimit)
             .multipliedBy(transaction.gasPrice)
-            .shiftedBy(-18)
             .toString(10),
         tokenTransfers,
         confirmations: transaction.confirmations,

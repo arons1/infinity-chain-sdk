@@ -20,7 +20,7 @@ export const sendTransaction = async (
     return new Promise((resolve, reject) => {
         axios
             .post(
-                config[Coins.FIO].rpc[0] + '/chain/push_transaction',
+                config[Coins.FIO].rpc[0] + 'chain/push_transaction',
                 transaction,
             )
             .then((result: AxiosResponse<SendTransactionResult>) => {

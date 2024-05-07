@@ -16,6 +16,7 @@ export type Transaction = {
     extraId?: string;
     vIn?: vIn[];
     vOut?: vOut[];
+    methodId?: string;
     type?: string;
     contractAddress?: string;
 };

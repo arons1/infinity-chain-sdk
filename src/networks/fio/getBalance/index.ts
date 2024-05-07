@@ -15,7 +15,7 @@ export const getBalance = (address: string): Promise<CurrencyBalanceResult> => {
     getBalanceParametersChecker(address);
     return new Promise((resolve, reject) => {
         axios
-            .post(config[Coins.FIO].rpc[0] + '/chain/get_fio_balance', {
+            .post(config[Coins.FIO].rpc[0] + 'chain/get_fio_balance', {
                 fio_public_key: address,
             })
             .then((a: AxiosResponse<FIOBalanceResponse>) => {

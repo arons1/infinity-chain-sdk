@@ -7,6 +7,10 @@ export const encode = ({
     transaction: InternalTransactionEncode;
 }): Transaction => {
     return {
+        blockNumber: transaction.blockNumber as string,
+        timeStamp: new Date(
+            parseInt(transaction.timeStamp ?? transaction.time) * 1000,
+        ).toISOString(),
         hash: (transaction.hash ??
             transaction.transactionHash ??
             transaction.txid) as string,
