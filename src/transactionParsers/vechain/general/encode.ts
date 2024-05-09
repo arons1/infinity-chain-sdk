@@ -5,11 +5,9 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 export const encode = ({
     transaction,
     account,
-    tokens,
 }: {
     transaction: GeneralTransactionEncode;
     account: string;
-    tokens: Record<string, string>;
 }): Transaction => {
     const valueSum = transaction.clauses.reduce(
         (last, current) =>
@@ -18,14 +16,9 @@ export const encode = ({
                 : new BigNumber(last).minus(current.value),
         new BigNumber(0),
     );
-    let contractAddress;
-    if (transaction.symbol) {
-        contractAddress = tokens[transaction.symbol];
-    }
     return {
         blockNumber: transaction.blockRef,
         timeStamp: new Date(transaction.meta.blockTimestamp).toISOString(),
-        contractAddress,
         hash: transaction.txID,
         from: transaction.origin,
         to:
@@ -45,7 +38,7 @@ export const encode = ({
             : transaction?.meta?.blockID != undefined
               ? '6'
               : '0',
-        extraId: transaction.meta.txIndex,
+        extraId: transaction.delegator,
         type: 'vechain',
     };
 };

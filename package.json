@@ -1,6 +1,6 @@
 {
   "name": "@infinity/chain-sdk",
-  "version": "1.0.17",
+  "version": "1.0.19",
   "description": "",
   "main": "./lib/commonjs/index.js",
   "types": "./lib/commonjs/index.d.ts",

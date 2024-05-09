@@ -2,6 +2,7 @@ export type GeneralTransactionEncode = {
     blockRef: string;
     txID: string;
     origin: string;
+    delegator?: string;
     meta: Meta;
     clauses: Clauses[];
     receipt: Receipt;

@@ -45,7 +45,7 @@ export const encode = ({
         value,
         fee: transaction['tx']['Fee'],
         confirmations,
-        isError: false,
+        isError: transaction['meta']['TransactionResult'] != 'tesSUCCESS',
         type: 'xrp',
     };
 };
