@@ -34,8 +34,8 @@ export const getAccountsHashes = async ({
     signatures,
     limit,
 }: GetAccountsHashesParams) => {
-    var numberLast = -1;
-    var transactionHashes = [];
+    let numberLast = -1;
+    let transactionHashes = [];
     for (;;) {
         transactionHashes = await getAccountsTransactionsHashes({
             connector,
@@ -64,8 +64,8 @@ export const getTransactions = async ({
     pendingTransactions,
     connector,
 }: GetTransactionsParams) => {
-    var transactionsRes: ParsedTransactionWithMeta[] = [];
-    var hashes: Record<string, boolean> = {};
+    let transactionsRes: ParsedTransactionWithMeta[] = [];
+    let hashes: Record<string, boolean> = {};
     while (pendingTransactions.length > 0) {
         for (let i = 0; i < pendingTransactions.length; i += LIMIT_BATCH) {
             const hashesPending = pendingTransactions.slice(i, i + LIMIT_BATCH);
@@ -121,7 +121,7 @@ export const getAccountsTransactions = async (
         limit,
     });
 
-    var pendingTransactions: string[] = [];
+    let pendingTransactions: string[] = [];
     transactionHashes.map(
         a => (pendingTransactions = [...pendingTransactions, ...a.result]),
     );
@@ -130,7 +130,7 @@ export const getAccountsTransactions = async (
         pendingTransactions,
         connector,
     });
-    var hashes: Record<string, HashesDetails> = {};
+    let hashes: Record<string, HashesDetails> = {};
     transactionHashes.map(accountHashes => {
         accountHashes.result.map(hash => {
             hashes[hash] = {
@@ -165,7 +165,7 @@ const getAccountsTransactionsHashes = async ({
         address: address,
     });
     const pagination = {};
-    var result: any[] = [];
+    let result: any[] = [];
     for (let i = 0; i < acc_array.length; i += LIMIT_BATCH) {
         const accounts = acc_array.slice(i, i + LIMIT_BATCH);
         const resultBatchs = await getBatchAddressesWithPagination({
@@ -201,11 +201,11 @@ const getBatchAddressesWithPagination = async ({
             result: a.map(b => b.signature),
         };
     });
-    var needRecall = false;
-    for (var p = 0; p < resultBatchs.length; p++) {
-        const address = resultBatchs[p].address;
-        if (resultBatchs[p].result.length == LIMIT_CALLS) {
-            pagination[address] = resultBatchs[p].result[LIMIT_CALLS - 1];
+    let needRecall = false;
+    for (const element of resultBatchs) {
+        const address = element.address;
+        if (element.result.length == LIMIT_CALLS) {
+            pagination[address] = element.result[LIMIT_CALLS - 1];
             needRecall = true;
         } else {
             if (pagination[address] != undefined) delete pagination[address];
@@ -220,12 +220,12 @@ const getBatchAddressesWithPagination = async ({
             pagination,
             limit,
         });
-        for (var i = 0; i < resultBatchsAux.length; i++) {
-            for (var j = 0; j < resultBatchs.length; j++) {
-                if (resultBatchs[j].address == resultBatchsAux[i].address) {
+        for (const element of resultBatchsAux) {
+            for (let j = 0; j < resultBatchs.length; j++) {
+                if (resultBatchs[j].address == element.address) {
                     resultBatchs[j].result = [
                         ...resultBatchs[j].result,
-                        ...resultBatchsAux[i].result,
+                        ...element.result,
                     ];
                     break;
                 }

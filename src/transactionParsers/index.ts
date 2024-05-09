@@ -6,3 +6,4 @@ export * as stellar from './stellar';
 export * as xrp from './xrp';
 export * as trezor from './trezor';
 export * as vechain from './vechain';
+export * as tezos from './tezos';

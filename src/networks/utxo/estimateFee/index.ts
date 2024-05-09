@@ -40,7 +40,7 @@ export const getFeePerByte = ({
                 ) {
                     const finalResult = result
                         .reduce((l, n) => {
-                            var feeUsed = new BigNumber(n.feePerUnit);
+                            let feeUsed = new BigNumber(n.feePerUnit);
                             if (!feeUsed.isGreaterThan(0))
                                 feeUsed = feeUsed.multipliedBy(-1);
                             return l.plus(feeUsed);
@@ -88,7 +88,7 @@ export const estimateFee = async ({
     if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
     if (amount.includes('.')) throw new Error(InvalidAmount);
     // 1º Get UTXOs
-    var utxos: UTXOResult[] = [];
+    let utxos: UTXOResult[] = [];
     for (let extendedPublicKey of extendedPublicKeys)
         try {
             const utxos_address = await getUTXO({
@@ -101,7 +101,7 @@ export const estimateFee = async ({
             throw new Error(CannotGetUTXO);
         }
     utxos = utxos.sort((a, b) => (a.path > b.path ? -1 : 1));
-    var amountLeft = new BigNumber(amount);
+    let amountLeft = new BigNumber(amount);
     // 2º Select all UTXO necesary to fill the amount
     const utxosUsed: UTXOResult[] = [];
     for (let utxo of utxos) {
@@ -116,7 +116,7 @@ export const estimateFee = async ({
         if (v.protocol == 84) return new BigNumber(68).plus(p);
         return new BigNumber(148).plus(p);
     }, new BigNumber(0));
-    var feeOutput = new BigNumber(34);
+    let feeOutput = new BigNumber(34);
     // 4º Add input if it needs a change address
     if (!amountLeft.isGreaterThanOrEqualTo(0)) {
         const changeAmount = amountLeft.multipliedBy(-1);

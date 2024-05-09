@@ -15,7 +15,7 @@ export const encode = ({
     const tr = transaction.transaction;
     const fee = tr.fee_charged;
     const from = tr.source_account;
-    var to = tr.source_account;
+    let to = tr.source_account;
     const tokenTransfers: TokenTransfer[] = [];
     for (let op_id in operations) {
         const op = operations[op_id];
@@ -24,7 +24,7 @@ export const encode = ({
                 const from = op.source_account;
                 const out = op.account == account ? 0 : 1;
                 if (from != account && op.account != account) continue;
-                var _value = new BigNumber(
+                let _value = new BigNumber(
                     op.starting_balance as string,
                 ).shiftedBy(7);
                 if (out == 1 && tr.source_account == account) {
@@ -140,7 +140,7 @@ export const encode = ({
                         new BigNumber(a.id).toNumber(),
                 );
                 for (let ef of effects_op) {
-                    var value = new BigNumber(ef.amount)
+                    let value = new BigNumber(ef.amount)
                         .shiftedBy(7)
                         .toString(10);
                     tokenTransfers.push({

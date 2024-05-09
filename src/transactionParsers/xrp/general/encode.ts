@@ -12,9 +12,9 @@ export const encode = ({
         transaction['tx']['TransactionType'] != 'TrustSet'
     )
         return;
-    var value = transaction['tx']['Amount'];
-    var from = transaction['tx']['Account'];
-    var to = transaction['tx']['Destination'];
+    let value = transaction['tx']['Amount'];
+    let from = transaction['tx']['Account'];
+    let to = transaction['tx']['Destination'];
     if (transaction['tx']['TransactionType'] == 'AccountDelete') {
         value = transaction['meta']['DeliveredAmount'];
     }
@@ -22,7 +22,7 @@ export const encode = ({
         value = '0';
         to = transaction['tx']['Account'];
     }
-    var confirmations = '7';
+    let confirmations = '7';
     if (
         transaction['validated'] != undefined &&
         transaction['validated'] == false

@@ -48,7 +48,7 @@ export const getAssetBalance = async ({
 }): Promise<BalanceResult> => {
     const asset = await toAsset(assetSlug);
 
-    var nat = new BigNumber(0);
+    let nat = new BigNumber(0);
 
     if (asset === 'tez') {
         nat = await retry(() => Tezos.tz.getBalance(account), { retries: 5 });

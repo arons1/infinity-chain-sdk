@@ -1,22 +1,31 @@
-import { GeneralTransactionEncode } from './types';
 import { TokenTransfer, Transaction } from '../../../networks/types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
+import { HashesDetails } from '../../../networks/solana/getTransactions/types';
 export const encode = ({
     transaction,
     account,
     accounts,
     hash,
 }: {
-    transaction: GeneralTransactionEncode;
+    transaction: HashesDetails;
     account: string;
     accounts: string[];
     hash: string;
 }): Transaction | undefined => {
     // account index
-    var accountsIndexes = transaction.details.transaction.message.accountKeys;
-    var accountIndex = -1;
-    var out = 0;
-    for (var i = 0; i < accountsIndexes.length; i++) {
+    if (
+        !transaction.details ||
+        !transaction.details.meta ||
+        !transaction.details.meta.fee ||
+        !transaction.details.meta.preTokenBalances ||
+        !transaction.details.meta.postTokenBalances ||
+        !transaction.details.blockTime
+    )
+        return;
+    let accountsIndexes = transaction.details.transaction.message.accountKeys;
+    let accountIndex = -1;
+    let out = 0;
+    for (let i = 0; i < accountsIndexes.length; i++) {
         if (accountsIndexes[i].pubkey.toString() == account) {
             accountIndex = i;
             if (accountsIndexes[i].signer) out = 1;
@@ -24,20 +33,20 @@ export const encode = ({
         }
     }
 
-    var fee = transaction.details.meta.fee;
+    let fee = transaction.details.meta.fee;
 
     // balanceChanges
 
-    var balanceBefore =
+    let balanceBefore =
         accountIndex == -1
             ? 0
             : transaction.details.meta.preBalances[accountIndex];
-    var balanceAfter =
+    let balanceAfter =
         accountIndex == -1
             ? 0
             : transaction.details.meta.postBalances[accountIndex];
-    var blockheight = transaction.details.slot;
-    var time = transaction.details.blockTime * 1000;
+    let blockheight = transaction.details.slot;
+    let time = transaction.details.blockTime * 1000;
     const filteredPreTokens = transaction.details.meta.preTokenBalances.filter(
         a => a.owner == account,
     );
@@ -61,21 +70,22 @@ export const encode = ({
             a => a.owner == account && a.mint == preBalance.mint,
         )[0];
         if (postBalance == undefined) continue;
-        var valueToken = new BigNumber(postBalance.uiTokenAmount.amount).minus(
+        let valueToken = new BigNumber(postBalance.uiTokenAmount.amount).minus(
             preBalance.uiTokenAmount.amount,
         );
-        var outToken = 0;
+        let outToken = 0;
         if (!valueToken.isGreaterThanOrEqualTo(0)) {
             outToken = 1;
             valueToken = valueToken.multipliedBy(-1);
         }
 
-        var otherSender = transaction.details.meta.postTokenBalances.filter(
+        let otherSender = transaction.details.meta.postTokenBalances.filter(
             a => a.owner != account && a.mint == preBalance.mint,
         )[0];
-        const from = outToken == 0 && otherSender ? otherSender.owner : account;
+        const from =
+            outToken == 0 && otherSender?.owner ? otherSender.owner : account;
         const to =
-            outToken == 0 || otherSender == undefined
+            outToken == 0 || otherSender?.owner == undefined
                 ? account
                 : otherSender.owner;
         const mint = preBalance.mint;
@@ -89,7 +99,7 @@ export const encode = ({
         tokenTransfers.push(tokenTransfer);
     }
 
-    var value = new BigNumber(balanceBefore).minus(balanceAfter);
+    let value = new BigNumber(balanceBefore).minus(balanceAfter);
     if (!value.isGreaterThanOrEqualTo(0)) {
         value = value.multipliedBy(-1);
         if (out == 1) {
@@ -99,17 +109,13 @@ export const encode = ({
     if (out == 1) {
         value = value.minus(fee);
     }
-    var confirmations = '0';
-    if (
-        transaction.details.meta.status != undefined &&
-        Object.keys(transaction.details.meta.status).includes('Ok')
-    )
-        confirmations = '6';
+    let confirmations = '0';
+    if (transaction.details.blockTime != undefined) confirmations = '6';
     let from;
     let to;
     if (out == 1) {
         from = account;
-        var auxSending =
+        let auxSending =
             transaction.details.transaction.message.accountKeys.filter(
                 a => !a.signer && !accounts.includes(a.pubkey.toString()),
             );
@@ -128,16 +134,16 @@ export const encode = ({
     }
 
     return {
-        blockNumber: blockheight,
+        blockNumber: blockheight + '',
         timeStamp: new Date(time).toISOString(),
         hash,
         from,
         to,
         value: value.toString(10),
-        fee,
+        fee: fee + '',
         confirmations,
         tokenTransfers,
-        isError: transaction.details.meta.status.Err != undefined,
+        isError: transaction.details.meta.err != undefined,
         type: 'solana',
     };
 };

@@ -26,7 +26,7 @@ export const buildTransaction = async (
 ): Promise<BuildTransactionFIOResult> => {
     builderParametersChecker(props);
     const address = await convertPubKeyToAccount(props.destination);
-    var user = new FIOSDK(
+    let user = new FIOSDK(
         props.privateKey,
         props.source,
         config[Coins.FIO].rpc[0],

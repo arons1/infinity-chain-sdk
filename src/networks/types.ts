@@ -3,9 +3,11 @@ import { UTXOResult } from './utxo/getUTXO/types';
 export type Transaction = {
     blockNumber?: string;
     timeStamp?: string;
-    hash: string;
+    hash?: string;
     from?: string;
+    fromAlias?: string;
     to?: string;
+    toAlias?: string;
     value?: string;
     isError?: boolean;
     fee?: string;
@@ -22,7 +24,9 @@ export type Transaction = {
 };
 export type InternalTransaction = {
     from: string;
+    fromAlias?: string;
     to: string;
+    toAlias?: string;
     value?: string;
     extraId?: string;
 };
@@ -55,7 +59,9 @@ export type TokenTransfer = {
     tokenDecimal?: number;
     value: string;
     from: string;
+    fromAlias?: string;
     to: string;
+    toAlias?: string;
     id?: string;
     type?: string;
 };

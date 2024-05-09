@@ -28,8 +28,8 @@ export const getLastChangeIndex = async ({
                     reject();
                     return;
                 }
-                var changeIndex = 0;
-                var protocol = 44;
+                let changeIndex = 0;
+                let protocol = 44;
                 for (let d of data.tokens) {
                     if (d.transfers > 0) {
                         const [index] = d.path.split('/').slice(5);

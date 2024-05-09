@@ -1,8 +1,7 @@
-import { pull, initPosition } from './pull';
+import { pull } from './pull';
 import { encode } from './encode';
 
 export default {
     pull,
     encode,
-    initPosition,
 };

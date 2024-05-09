@@ -15,7 +15,7 @@ export const encode = ({
         return;
     }
     const jsonAux = JSON.parse(transaction.action_trace.receipt.response);
-    var confirmations = transaction.block_num < last_block ? '7' : '0';
+    let confirmations = transaction.block_num < last_block ? '7' : '0';
     return {
         blockNumber: transaction.block_num + '',
         timeStamp: transaction.block_time + '',

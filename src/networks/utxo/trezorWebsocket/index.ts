@@ -53,13 +53,13 @@ export class TrezorWebsocket {
             if (!this.connected) {
                 callback();
             } else {
-                var id = this.messageID.toString();
+                let id = this.messageID.toString();
                 this.messageID++;
                 this.pendingMessages[id] = callback;
                 setTimeout(() => {
                     if (this.pendingMessages[id]) callback();
                 }, 5000);
-                var req = {
+                let req = {
                     id,
                     method,
                     params,
@@ -89,17 +89,17 @@ export class TrezorWebsocket {
         params: Record<string, any>,
         callback: (rs?: any) => void,
     ) {
-        var ts = this;
+        let ts = this;
 
         try {
             if (!this.connected) {
                 this.connect();
                 return;
             }
-            var id = this.messageID.toString();
+            let id = this.messageID.toString();
             this.messageID++;
             this.subscriptions[id] = callback;
-            var req = {
+            let req = {
                 id,
                 method,
                 params,
@@ -141,12 +141,12 @@ export class TrezorWebsocket {
         params: Record<string, any>,
         callback: (rs?: any) => void,
     ) {
-        var ts = this;
+        let ts = this;
 
         try {
             delete this.subscriptions[id];
             this.pendingMessages[id] = callback;
-            var req = {
+            let req = {
                 id,
                 method,
                 params,
@@ -209,7 +209,7 @@ export class TrezorWebsocket {
      * @return {void} This function does not return anything.
      */
     unsubscribeAddresses() {
-        var _ = this;
+        let _ = this;
         this.unsubscribe(
             'unsubscribeAddresses',
             this.subscribeAddressesId,
@@ -221,7 +221,7 @@ export class TrezorWebsocket {
     }
 
     get listAddresses() {
-        var allAddresses: string[] = [];
+        let allAddresses: string[] = [];
         for (let wallet of Object.keys(this.wallets)) {
             allAddresses = [...allAddresses, ...this.wallets[wallet]];
         }
@@ -246,9 +246,9 @@ export class TrezorWebsocket {
         this.subscriptions = {};
         this.connected = false;
 
-        var pusher = this;
+        let pusher = this;
         this.subscribeAddressesId = '';
-        var server = this.url;
+        let server = this.url;
         if (server.startsWith('http')) {
             server = server.replace('http', 'ws');
         }
@@ -292,8 +292,8 @@ export class TrezorWebsocket {
             console.log('[ERROR] ' + pusher.coin + ' websockets: ');
         };
         this.ws.onmessage = async function (e: any) {
-            var resp = JSON.parse(e.data);
-            var f = pusher.pendingMessages[resp.id];
+            let resp = JSON.parse(e.data);
+            let f = pusher.pendingMessages[resp.id];
             if (f != undefined) {
                 delete pusher.pendingMessages[resp.id];
                 f(resp.data);

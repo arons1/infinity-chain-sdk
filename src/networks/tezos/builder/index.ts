@@ -25,7 +25,7 @@ const buildTransferOperations = async ({
     connector,
 }: BuildTransferOperationsParams) => {
     const contract = await connector.contract.at(mintToken);
-    var isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
+    let isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
     if (isFA2) {
         return contract.methods.transfer([
             {
@@ -83,7 +83,7 @@ export const buildOperation = async ({
     const transferFees = await connector.estimate.transfer(
         operation.toTransferParams(),
     );
-    var estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
+    let estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
     estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
     return {
         operation,
@@ -104,7 +104,7 @@ export const buildTransfer = async ({
         to: destination,
         amount,
     });
-    var estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
+    let estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
     estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
     return estimatedBaseFeeb.toString(10);
 };
