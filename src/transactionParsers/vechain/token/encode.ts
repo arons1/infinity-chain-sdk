@@ -8,18 +8,18 @@ export const encode = ({
 }): Transaction => {
     const tokenTransfers: TokenTransfer[] = [
         {
-            tokenName: transaction.name,
+            tokenName: transaction.symbol,
             tokenSymbol: transaction.symbol,
-            tokenDecimal: transaction.decimals,
+            tokenDecimal: parseInt(transaction.decimals),
             value: transaction.amount,
             from: transaction.sender,
             to: transaction.recipient,
         },
     ];
     return {
-        blockNumber: transaction.meta.blockNumber as string,
+        blockNumber: transaction.meta.blockNumber + '',
         timeStamp: new Date(
-            parseInt(transaction.meta.blockTimestamp) * 1000,
+            transaction.meta.blockTimestamp * 1000,
         ).toISOString(),
         hash: transaction.txID,
         tokenTransfers,
