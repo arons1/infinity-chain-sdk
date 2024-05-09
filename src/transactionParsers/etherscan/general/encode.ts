@@ -21,7 +21,7 @@ export const encode = ({
             .toString(10),
         isError: transaction.isError == '1',
         confirmations: transaction.confirmations,
-        methodId: transaction.methodId,
+        methodId: transaction.functionName,
         type: 'evm',
     };
 };
