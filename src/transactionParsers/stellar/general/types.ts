@@ -1,6 +1,7 @@
 export type GeneralTransactionEncode = {
     transaction: Transaction;
     operations: Operation[];
+    id:string;
 };
 export type EffectsEncode = {
     id: string;
