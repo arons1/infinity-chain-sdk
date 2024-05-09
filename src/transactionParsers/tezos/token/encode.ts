@@ -24,6 +24,7 @@ export const encode = ({
             },
         ],
         extraId: transaction.transactionId + '',
+        timeStamp:transaction.timestamp,
         type: 'tezos',
     };
 };
