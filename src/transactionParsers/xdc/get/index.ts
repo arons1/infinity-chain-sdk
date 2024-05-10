@@ -9,7 +9,7 @@ const LIMIT = 100;
 const getTransactionsGlobal = async ({
     coinId,
     address,
-    startblock,
+    lastTransactionHash,
     page = 1,
 }: EtherscanParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
@@ -19,7 +19,6 @@ const getTransactionsGlobal = async ({
             address,
             page,
             limit: LIMIT,
-            startblock,
         }).url;
         const result: any = await request.get({
             url,
@@ -31,18 +30,18 @@ const getTransactionsGlobal = async ({
             console.error(result);
             return transactions;
         }
-        if (Array.isArray(result.result)) {
-            for (let tr of result.result) {
+        if (Array.isArray(result.items)) {
+            for (let tr of result.items) {
                 const decoded = general.encode({
                     transaction: tr,
                 });
                 transactions.push(decoded);
             }
-            if (result.result.length == LIMIT) {
+            if (result.items.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsGlobal({
                     coinId,
                     address,
-                    startblock,
+                    lastTransactionHash,
                     page: page + 1,
                 });
                 return transactions.concat(newTransactions);
@@ -60,7 +59,7 @@ const getTransactionsGlobal = async ({
 const getTransactionsToken = async ({
     coinId,
     address,
-    startblock,
+    lastTransactionHash,
     page = 1,
 }: EtherscanParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
@@ -71,7 +70,6 @@ const getTransactionsToken = async ({
             address,
             page,
             limit: LIMIT,
-            startblock,
         }).url;
         const result: any = await request.get({
             url,
@@ -88,11 +86,11 @@ const getTransactionsToken = async ({
                 const decoded = token.encode({ transaction: tr });
                 transactions.push(decoded);
             }
-            if (result.result.length == LIMIT) {
+            if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsToken({
                     coinId,
                     address,
-                    startblock,
+                    lastTransactionHash,
                     page: page + 1,
                 });
                 return transactions.concat(newTransactions);
@@ -110,7 +108,7 @@ const getTransactionsToken = async ({
 const getTransactionsInternal = async ({
     coinId,
     address,
-    startblock,
+    lastTransactionHash,
     page = 1,
 }: EtherscanParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
@@ -120,7 +118,6 @@ const getTransactionsInternal = async ({
             address,
             page,
             limit: LIMIT,
-            startblock,
         }).url;
         const result: any = await request.get({
             url,
@@ -139,11 +136,11 @@ const getTransactionsInternal = async ({
                 });
                 transactions.push(decoded);
             }
-            if (result.result.length == LIMIT) {
+            if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsInternal({
                     coinId,
                     address,
-                    startblock,
+                    lastTransactionHash,
                     page: page + 1,
                 });
                 return transactions.concat(newTransactions);
@@ -165,23 +162,23 @@ const getTransactionsInternal = async ({
  * @param {EtherscanParams} param - The parameters for the transaction retrieval.
  * @param {number} param.coinId - The ID of the chain.
  * @param {string} param.address - The address to retrieve transactions for.
- * @param {number} param.startblock - The start block to retrieve transactions from.
+ * @param {number} param.lastTransactionHash - The start block to retrieve transactions from.
  * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
  */
 export const getTransactions = async ({
     coinId,
     address,
-    startblock,
+    lastTransactionHash,
 }: EtherscanParams): Promise<Transaction[]> => {
     const general = await getTransactionsGlobal({
         coinId,
         address,
-        startblock,
+        lastTransactionHash,
     });
     const tokens = await getTransactionsToken({
         coinId,
         address,
-        startblock,
+        lastTransactionHash,
     });
     tokens.map(a => {
         const transactionToEdit = general.find(b => b.hash == a.hash);
@@ -196,7 +193,7 @@ export const getTransactions = async ({
     const internal = await getTransactionsInternal({
         coinId,
         address,
-        startblock,
+        lastTransactionHash,
     });
     internal.map(a => {
         const transactionToEdit = general.find(b => b.hash == a.hash);

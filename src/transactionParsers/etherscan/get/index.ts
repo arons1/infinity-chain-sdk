@@ -171,7 +171,7 @@ const getTransactionsInternal = async ({
 export const getTransactions = async ({
     coinId,
     address,
-    startblock,
+    startblock = "0",
 }: EtherscanParams): Promise<Transaction[]> => {
     const general = await getTransactionsGlobal({
         coinId,

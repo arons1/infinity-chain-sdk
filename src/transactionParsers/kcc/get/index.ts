@@ -163,7 +163,7 @@ const getTransactionsInternal = async ({
  */
 export const getTransactions = async ({
     address,
-    startblock,
+    startblock = "0",
 }: KCCParams): Promise<Transaction[]> => {
     const general = await getTransactionsGlobal({
         address,

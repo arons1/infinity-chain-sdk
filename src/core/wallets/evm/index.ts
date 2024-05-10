@@ -18,13 +18,16 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import {
     BuildTransaction,
     EstimateGasParams,
+    GetTransactionParams,
     RPCBalancesParams,
     SignMessageParams,
     SignTransactionParams,
 } from './types';
 import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
-
+import { getTransactions as getTransactionsXDC } from '../../../transactionParsers/xdc/get';
+import { getTransactions as getTransactionsKCC } from '../../../transactionParsers/kcc/get';
+import { getTransactions } from '../../../transactionParsers/etherscan/get';
 class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
@@ -166,8 +169,26 @@ class EVMWallet extends CoinWallet {
             connector: this.connector,
         });
     }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionParams} params - The parameters for retrieving transactions.
+     * @param {number} params.coinId - The ID of the coin.
+     * @param {string} params.address - The address to retrieve transactions for.
+     * @param {string} [params.lastTransactionHash] - The hash of the last transaction.
+     * @param {number} [params.startblock] - The start block to retrieve transactions from.
+     * @return {Promise<any>} A promise that resolves to the transactions.
+     */
+    async getTransactions({ coinId, address, lastTransactionHash, startblock }: GetTransactionParams) {
+        if(this.id == Coins.XDC){
+            return await getTransactionsXDC({ coinId, address, lastTransactionHash });
+        }
+        else if(this.id == Coins.KCC){
+            return await getTransactionsKCC({ address, startblock });
+        }
+        else{
+            return await getTransactions({ coinId, address, startblock });
+        }
     }
     /**
      * Loads the EVM connector for the specified chain.
