@@ -43,14 +43,13 @@ export const getTransactions = async ({
                 lastTransactionHash) &&
         result.transactions.length == LIMIT
     ) {
-        transactions.concat(
-            await getTransactions({
-                connector,
-                address,
-                lastTransactionHash,
-                cursor: result.marker,
-            }),
-        );
+        const newTransactions = await getTransactions({
+            connector,
+            address,
+            lastTransactionHash,
+            cursor: result.marker,
+        })
+        newTransactions.map(a => transactions.push(a));
     }
     return transactions;
 };

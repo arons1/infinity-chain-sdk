@@ -28,19 +28,18 @@ const getTransactionsRequest = async ({
     const finalResults: GeneralTransactionEncode[] = [];
     if (resultTransactions != undefined) {
         const trs: GeneralTransactionEncode[] = resultTransactions;
-        finalResults.concat(trs);
+        trs.map(a => finalResults.push(a));
         if (
             trs.length == LIMIT &&
             (trs.find(a => a.id + '' == lastTransactionHash) == undefined ||
                 trs[trs.length - 1].id + '' == lastTransactionHash)
         ) {
-            finalResults.concat(
-                await getTransactionsRequest({
-                    address,
-                    lastTransactionHash,
-                    cursor: trs[trs.length - 1].id + '',
-                }),
-            );
+            const newTransactions = await getTransactionsRequest({
+                address,
+                lastTransactionHash,
+                cursor: trs[trs.length - 1].id + '',
+            })
+            newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;
     }
@@ -64,20 +63,19 @@ const getTransactionsTokenRequest = async ({
     const finalResults: TokenTransactionEncode[] = [];
     if (resultTransactions != undefined) {
         const trs: TokenTransactionEncode[] = resultTransactions;
-        finalResults.concat(trs);
+        trs.map(a => finalResults.push(a));
         if (
             trs.length == LIMIT &&
             (!lastTransactionHash ||
                 trs.find(a => a.id + '' == lastTransactionHash) == undefined ||
                 trs[trs.length - 1].id + '' == lastTransactionHash)
         ) {
-            finalResults.concat(
-                await getTransactionsTokenRequest({
-                    address,
-                    lastTransactionHash,
-                    cursor: trs[trs.length - 1].id + '',
-                }),
-            );
+            const newTransactions = await getTransactionsTokenRequest({
+                address,
+                lastTransactionHash,
+                cursor: trs[trs.length - 1].id + '',
+            })
+            newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;
     }

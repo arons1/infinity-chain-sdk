@@ -1,5 +1,4 @@
 export * as etherscan from './etherscan';
-export * as kcc from './kcc';
 export * as fio from './fio';
 export * as solana from './solana';
 export * as stellar from './stellar';

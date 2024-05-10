@@ -45,7 +45,7 @@ const getTransactionsGlobal = async ({
                     startblock,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             console.log(result);
@@ -95,7 +95,7 @@ const getTransactionsToken = async ({
                     startblock,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             console.log(result);
@@ -146,7 +146,7 @@ const getTransactionsInternal = async ({
                     startblock,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             console.log(result);

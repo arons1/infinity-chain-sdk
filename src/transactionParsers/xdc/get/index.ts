@@ -45,7 +45,7 @@ const getTransactionsGlobal = async ({
                     lastTransactionHash,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             console.log(result);
@@ -80,13 +80,13 @@ const getTransactionsToken = async ({
             console.error(result);
             return transactions;
         }
-        if (Array.isArray(result.result)) {
-            for (let tr of result.result) {
+        if (Array.isArray(result.items)) {
+            for (let tr of result.items) {
                 const decoded = token.encode({ transaction: tr });
                 transactions.push(decoded);
             }
             if (
-                result.result.length == LIMIT &&
+                result.items.length == LIMIT &&
                 result.items.find((b: any) => b.hash == lastTransactionHash) ==
                     undefined
             ) {
@@ -95,10 +95,9 @@ const getTransactionsToken = async ({
                     lastTransactionHash,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
-            console.log(result);
             return transactions;
         }
     } catch (e) {
@@ -129,15 +128,15 @@ const getTransactionsInternal = async ({
             console.error(result);
             return transactions;
         }
-        if (Array.isArray(result.result)) {
-            for (let tr of result.result) {
+        if (Array.isArray(result.items)) {
+            for (let tr of result.items) {
                 const decoded = internal.encode({
                     transaction: tr,
                 });
                 transactions.push(decoded);
             }
             if (
-                result.result.length == LIMIT &&
+                result.items.length == LIMIT &&
                 result.items.find((b: any) => b.hash == lastTransactionHash) ==
                     undefined
             ) {
@@ -146,10 +145,9 @@ const getTransactionsInternal = async ({
                     lastTransactionHash,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
-            console.log(result);
             return transactions;
         }
     } catch (e) {

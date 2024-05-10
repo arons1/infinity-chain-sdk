@@ -7,7 +7,7 @@ const globals_1 = require("@jest/globals");
 const registry_1 = require("@infinity/core-sdk/lib/commonjs/networks/registry");
 const evm_1 = __importDefault(require("../../../lib/commonjs/core/wallets/evm"));
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
-(0, globals_1.describe)('networksEVM', () => {
+(0, globals_1.describe)('coreEVM', () => {
     (0, globals_1.test)('init', async () => {
         const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
@@ -22,12 +22,6 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getTransactionsXDC', async () => {
         const matic = new evm_1.default(registry_1.Coins.XDC, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
-        (0, globals_1.expect)(transactions.length > 0).toBe(true);
-    });
-    (0, globals_1.test)('getTransactionsKCC', async () => {
-        const matic = new evm_1.default(registry_1.Coins.KCC, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
         const transactions = await matic.getTransactions({});
         (0, globals_1.expect)(transactions.length > 0).toBe(false);

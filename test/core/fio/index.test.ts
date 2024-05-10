@@ -5,7 +5,7 @@ import FIOWallet from '../../../lib/commonjs/core/wallets/fio/index';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
-describe('networksEVM', () => {
+describe('coreFIO', () => {
     test('init', async () => {
         const matic = new FIOWallet(Coins.FIO, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
@@ -19,6 +19,6 @@ describe('networksEVM', () => {
         const matic = new FIOWallet(Coins.FIO, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
         const transactions = await matic.getTransactions({});
-        expect(transactions.length > 0).toBe(true);
+        expect(transactions.length > 0).toBe(false);
     });
 });

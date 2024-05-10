@@ -28,6 +28,7 @@ export const getTransactions = async ({
             page,
             limit: LIMIT,
         }).url;
+        console.log(url);
         const result: any = await request.get({
             url,
             no_wait: false,
@@ -60,10 +61,9 @@ export const getTransactions = async ({
                     page: page + 1,
                     lastBlockHeight,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
-            console.log(result);
             return transactions;
         }
     } catch (e) {

@@ -26,7 +26,6 @@ import {
 import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import { getTransactions as getTransactionsXDC } from '../../../transactionParsers/xdc/get';
-import { getTransactions as getTransactionsKCC } from '../../../transactionParsers/kcc/get';
 import { getTransactions } from '../../../transactionParsers/etherscan/get';
 class EVMWallet extends CoinWallet {
     connector!: Web3;
@@ -189,13 +188,6 @@ class EVMWallet extends CoinWallet {
                     walletName: walletName ?? this.walletSelected,
                 }),
                 lastTransactionHash,
-            });
-        } else if (this.id == Coins.KCC) {
-            return getTransactionsKCC({
-                address: this.getReceiveAddress({
-                    walletName: walletName ?? this.walletSelected,
-                }),
-                startblock,
             });
         } else {
             return getTransactions({

@@ -11,7 +11,7 @@ export const encode = ({
 
     transaction.vin.map(a =>
         vIns.push({
-            address: a.accounts[0],
+            address: a.addresses[0],
             n: a.n,
             hex: a.hex,
             sequence: a.sequence,
@@ -23,7 +23,7 @@ export const encode = ({
 
     transaction.vout.map(a =>
         vOuts.push({
-            address: a.scriptPubKey.accounts[0],
+            address: a.scriptPubKey.addresses[0],
             n: a.n,
             hex: a.scriptPubKey.hex,
             spent: a.spent,
@@ -51,8 +51,8 @@ export const encode = ({
             (transaction.blocktime ?? transaction.blockTime) as string,
         ).toISOString(),
         hash: transaction.txid,
-        from: transaction.vin[0].accounts[0],
-        to: transaction.vout[0].scriptPubKey.accounts[0],
+        from: transaction.vin[0].addresses[0],
+        to: transaction.vout[0].scriptPubKey.addresses[0],
         fee: transaction.fees,
         vIn: vIns,
         tokenTransfers,

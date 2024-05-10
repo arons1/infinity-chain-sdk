@@ -48,7 +48,7 @@ const getTransactionsGlobal = async ({
                     lastTransactionHash,
                     page: page + 1,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             console.log(result);
@@ -104,7 +104,7 @@ const getTransactionsToken = async ({
                     page: page + 1,
                     lastTransactionHash,
                 });
-                return transactions.concat(newTransactions);
+                newTransactions.map(a => transactions.push(a));
             }
         } else {
             return transactions;

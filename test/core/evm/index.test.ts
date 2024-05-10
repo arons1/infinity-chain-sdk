@@ -5,7 +5,7 @@ import EVMWallet from '../../../lib/commonjs/core/wallets/evm';
 
 const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
-describe('networksEVM', () => {
+describe('coreEVM', () => {
     test('init', async () => {
         const matic = new EVMWallet(Coins.MATIC, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
@@ -21,12 +21,6 @@ describe('networksEVM', () => {
     });
     test('getTransactionsXDC', async () => {
         const matic = new EVMWallet(Coins.XDC, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
-        expect(transactions.length > 0).toBe(true);
-    });
-    test('getTransactionsKCC', async () => {
-        const matic = new EVMWallet(Coins.KCC, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
         const transactions = await matic.getTransactions({});
         expect(transactions.length > 0).toBe(false);

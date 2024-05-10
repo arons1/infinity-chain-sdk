@@ -25,18 +25,18 @@ const getTransactionsRequest = async ({
     if (resultTransactions?._embedded?.records != undefined) {
         const trs: GeneralTransactionEncode[] =
             resultTransactions?._embedded?.records;
-        finalResults.concat(trs);
+        trs.map(a => finalResults.push(a));
         if (
             trs.length == LIMIT &&
             trs.find(a => a.transaction.id == lastTransactionHash) == undefined
         ) {
-            finalResults.concat(
-                await getTransactionsRequest({
+            const newTransactions = await getTransactionsRequest({
                     address,
                     lastTransactionHash,
                     cursor: trs[trs.length - 1].id,
-                }),
-            );
+                })
+            newTransactions.map(a => finalResults.push(a));
+
         }
         return finalResults;
     }
@@ -60,7 +60,7 @@ const getEffectsRequest = async ({
     const finalResults: EffectsEncode[] = [];
     if (resultTransactions?._embedded?.records != undefined) {
         const trs: EffectsEncode[] = resultTransactions?._embedded?.records;
-        finalResults.concat(trs);
+        trs.map(a => finalResults.push(a));
         if (
             trs.length == LIMIT &&
             (!lastTransactionHash ||
@@ -68,13 +68,12 @@ const getEffectsRequest = async ({
                     undefined ||
                 trs[trs.length - 1].id.split('-')[0] == lastTransactionHash)
         ) {
-            finalResults.concat(
-                await getEffectsRequest({
-                    address,
-                    lastTransactionHash,
-                    cursor: trs[trs.length - 1].id,
-                }),
-            );
+            const newTransactions = await getEffectsRequest({
+                address,
+                lastTransactionHash,
+                cursor: trs[trs.length - 1].id,
+            })
+            newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;
     }

@@ -204,20 +204,22 @@ class UTXOWallet extends CoinWallet {
         const results: TransactionNetwork[] = [];
         const xpubs = Object.values(
             this.extendedPublicKeys[walletName ?? this.walletSelected],
-        );
+        ).filter(a => a.length > 0);
         for (let xpub of xpubs) {
             const txs = await getTransactions({
                 address: xpub,
                 lastBlockHeight,
                 coinId: this.id,
             });
-            results.concat(
-                txs.filter(
-                    b => results.find(t => t.hash === b.hash) === undefined,
-                ),
-            );
+            txs.filter(
+                b => results.find(t => t.hash === b.hash) == undefined,
+            ).map(a => results.push(a));
         }
-        return results;
+        return results.sort((a, b) =>
+            parseInt(a.blockNumber + '') > parseInt(b.blockNumber + '')
+                ? -1
+                : 1,
+        );
     }
     /**
      * Loads the connector for the UTXO wallet.

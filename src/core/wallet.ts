@@ -51,14 +51,16 @@ class CoinWallet extends BaseWallet {
         walletName,
     }: GetReceiveAddressParams): string {
         let derivation;
-        if (config[this.id].derivations.length > 0) {
+        if (config[this.id].derivations.length > 1) {
             derivation = config[this.id].derivations.find(
                 d => d.name === derivationName && d.protocol === protocol,
             );
         } else {
             derivation = config[this.id].derivations[0];
         }
-        if (!derivation) throw new Error(CannotGeneratePublicAddress);
+
+        if (derivation == undefined)
+            throw new Error(CannotGeneratePublicAddress);
         return this.addresses[walletName ?? this.walletSelected][
             derivation.protocol
         ][derivation.name][0][0];
@@ -89,7 +91,11 @@ class CoinWallet extends BaseWallet {
     }: LoadStorageParams) {
         this.addresses[walletName] = { ...initProtocols };
         this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = { ...initProtocols };
+        this.extendedPublicKeys[walletName] = {
+            [Protocol.LEGACY]: '',
+            [Protocol.SEGWIT]: '',
+            [Protocol.WRAPPED_SEGWIT]: '',
+        };
         if (account) this.account[walletName] = account;
         if (extendedPublicKeys)
             this.extendedPublicKeys[walletName] = extendedPublicKeys;
@@ -116,7 +122,11 @@ class CoinWallet extends BaseWallet {
     addWallet(mnemonic: string, walletName: string) {
         this.addresses[walletName] = { ...initProtocols };
         this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = { ...initProtocols };
+        this.extendedPublicKeys[walletName] = {
+            [Protocol.LEGACY]: '',
+            [Protocol.SEGWIT]: '',
+            [Protocol.WRAPPED_SEGWIT]: '',
+        };
         const add = this.base.generateAddresses(mnemonic);
         for (let addressResult of add) {
             if (addressResult.publicAddress != undefined)
@@ -171,7 +181,11 @@ class CoinWallet extends BaseWallet {
     }: LoadPublicNodesParams) {
         this.addresses[walletName] = { ...initProtocols };
         this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = { ...initProtocols };
+        this.extendedPublicKeys[walletName] = {
+            [Protocol.LEGACY]: '',
+            [Protocol.SEGWIT]: '',
+            [Protocol.WRAPPED_SEGWIT]: '',
+        };
         this.publicNode[walletName][protocol] = this.base.importMaster(
             publicMasterAddress,
         ) as BIP32Interface;
