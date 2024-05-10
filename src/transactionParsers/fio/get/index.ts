@@ -58,7 +58,8 @@ const getTransactionsFio = async ({
         }
         if (
             position > 0 &&
-            (transactions.find(a => a.blockNumber == endBlock) == undefined || transactions[transactions.length-1].blockNumber == endBlock)
+            (transactions.find(a => a.blockNumber == endBlock) == undefined ||
+                transactions[transactions.length - 1].blockNumber == endBlock)
         ) {
             const posResult = getOffset(position);
             const nextResult = await getTransactionsFio({

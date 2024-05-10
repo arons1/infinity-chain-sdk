@@ -6,7 +6,7 @@ export const pull = ({ address, page, limit }: GeneralApiParams) => {
     const coinConfig = config[Coins.FIO];
     return {
         url:
-        coinConfig.apiUrlSecundary +
+            coinConfig.apiUrlSecundary +
             '/api/kcs/address/calltrans/' +
             address +
             '/' +

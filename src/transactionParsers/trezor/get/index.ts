@@ -15,12 +15,18 @@ const LIMIT = 100;
  * @return {Promise<Transaction[]>} A promise that resolves to an array of Transaction objects.
  */
 export const getTransactions = async ({
-    coinId, address, lastBlockHeight,page = 1
+    coinId,
+    address,
+    lastBlockHeight,
+    page = 1,
 }: TrezorParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
     try {
         const url = general.pull({
-            coinId, address, page, limit:LIMIT
+            coinId,
+            address,
+            page,
+            limit: LIMIT,
         }).url;
         const result: any = await request.get({
             url,
@@ -39,11 +45,20 @@ export const getTransactions = async ({
                 });
                 transactions.push(decoded);
             }
-            if (result.txs.length == LIMIT &&
-                (!lastBlockHeight || result.txs.find((a:any) => parseInt((a.blockheight ??
-                    a.blockHeight) + '') < parseInt(lastBlockHeight)) == undefined)) {
+            if (
+                result.txs.length == LIMIT &&
+                (!lastBlockHeight ||
+                    result.txs.find(
+                        (a: any) =>
+                            parseInt((a.blockheight ?? a.blockHeight) + '') <
+                            parseInt(lastBlockHeight),
+                    ) == undefined)
+            ) {
                 const newTransactions = await getTransactions({
-                    coinId, address, page:page+1, lastBlockHeight
+                    coinId,
+                    address,
+                    page: page + 1,
+                    lastBlockHeight,
                 });
                 return transactions.concat(newTransactions);
             }

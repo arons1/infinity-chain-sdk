@@ -1,4 +1,3 @@
-
 import { request } from '@infinity/core-sdk/lib/commonjs/utils';
 import { TokenTransfer, Transaction } from '../../../networks/types';
 import { VechainParams } from './types';
@@ -31,11 +30,19 @@ const getTransactionsGlobal = async ({
             for (let tr of result.txs) {
                 const decoded = general.encode({
                     transaction: tr,
-                    account:address,
+                    account: address,
                 });
                 transactions.push(decoded);
             }
-            if (result.txs.length == LIMIT && (!lastTransactionHash || result.txs.find((a:any) => a.txID == lastTransactionHash) == undefined || result.txs[result.txs.length-1].txID == lastTransactionHash)) {
+            if (
+                result.txs.length == LIMIT &&
+                (!lastTransactionHash ||
+                    result.txs.find(
+                        (a: any) => a.txID == lastTransactionHash,
+                    ) == undefined ||
+                    result.txs[result.txs.length - 1].txID ==
+                        lastTransactionHash)
+            ) {
                 const newTransactions = await getTransactionsGlobal({
                     address,
                     lastTransactionHash,
@@ -78,16 +85,24 @@ const getTransactionsToken = async ({
         if (Array.isArray(result.transfers)) {
             for (let tr of result.transfers) {
                 const decoded = token.encode({
-                    transaction: tr
+                    transaction: tr,
                 });
                 transactions.push(decoded);
             }
 
-            if (result.transfers.length == LIMIT && (!lastTransactionHash || result.transfers.find((a:any) => a.txID == lastTransactionHash) == undefined || result.transfers[result.transfers.length-1].txID == lastTransactionHash)) {
+            if (
+                result.transfers.length == LIMIT &&
+                (!lastTransactionHash ||
+                    result.transfers.find(
+                        (a: any) => a.txID == lastTransactionHash,
+                    ) == undefined ||
+                    result.transfers[result.transfers.length - 1].txID ==
+                        lastTransactionHash)
+            ) {
                 const newTransactions = await getTransactionsToken({
                     address,
                     page: page + 1,
-                    lastTransactionHash
+                    lastTransactionHash,
                 });
                 return transactions.concat(newTransactions);
             }
@@ -99,9 +114,6 @@ const getTransactionsToken = async ({
     }
     return transactions;
 };
-
-
-
 
 /**
  * Retrieves transactions for a given Vechain address and last transaction hash.
@@ -128,12 +140,12 @@ export const getTransactions = async ({
         if (transactionToEdit) {
             transactionToEdit.tokenTransfers?.push({
                 ...a,
-                contractAddress:transactionToEdit.extraId
+                contractAddress: transactionToEdit.extraId,
             } as TokenTransfer);
         } else {
             general.push(a);
         }
     });
-   
+
     return general;
 };

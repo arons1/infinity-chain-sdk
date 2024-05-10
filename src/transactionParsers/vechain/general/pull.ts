@@ -10,4 +10,3 @@ export const pull = ({ address, page, limit }: GeneralApiParams) => {
         url: `${coinConfig.apiUrl}/api/accounts/${address.toLowerCase()}/transactions?limit=${limit}${'&offset=' + (page ?? 0)}`,
     };
 };
-

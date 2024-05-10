@@ -63,8 +63,10 @@ const getEffectsRequest = async ({
         finalResults.concat(trs);
         if (
             trs.length == LIMIT &&
-            (!lastTransactionHash || trs.find(a => a.id.split('-')[0] == lastTransactionHash) ==
-                undefined || trs[trs.length - 1].id.split('-')[0] == lastTransactionHash)
+            (!lastTransactionHash ||
+                trs.find(a => a.id.split('-')[0] == lastTransactionHash) ==
+                    undefined ||
+                trs[trs.length - 1].id.split('-')[0] == lastTransactionHash)
         ) {
             finalResults.concat(
                 await getEffectsRequest({

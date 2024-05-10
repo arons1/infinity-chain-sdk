@@ -36,7 +36,7 @@ export const encode = ({
                     from: op.source_account,
                     to: op.account,
                     value: _value.toString(10),
-                    type: op.type
+                    type: op.type,
                 });
                 break;
             case 'manage_buy_offer':

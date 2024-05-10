@@ -1,5 +1,8 @@
 import { request } from '@infinity/core-sdk/lib/commonjs/utils';
-import { GeneralTransactionEncode, TokenTransactionEncode } from '../general/types';
+import {
+    GeneralTransactionEncode,
+    TokenTransactionEncode,
+} from '../general/types';
 import { TezosParams, TezosRequestParams } from './types';
 import general from '../general';
 import { Transaction } from '../../../networks/types';
@@ -28,7 +31,8 @@ const getTransactionsRequest = async ({
         finalResults.concat(trs);
         if (
             trs.length == LIMIT &&
-            (trs.find(a => a.id + '' == lastTransactionHash) == undefined || trs[trs.length-1].id + '' == lastTransactionHash)
+            (trs.find(a => a.id + '' == lastTransactionHash) == undefined ||
+                trs[trs.length - 1].id + '' == lastTransactionHash)
         ) {
             finalResults.concat(
                 await getTransactionsRequest({
@@ -63,7 +67,9 @@ const getTransactionsTokenRequest = async ({
         finalResults.concat(trs);
         if (
             trs.length == LIMIT &&
-            (!lastTransactionHash || trs.find(a => a.id + '' == lastTransactionHash) == undefined || trs[trs.length-1].id + '' == lastTransactionHash)
+            (!lastTransactionHash ||
+                trs.find(a => a.id + '' == lastTransactionHash) == undefined ||
+                trs[trs.length - 1].id + '' == lastTransactionHash)
         ) {
             finalResults.concat(
                 await getTransactionsTokenRequest({

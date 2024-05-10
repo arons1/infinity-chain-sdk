@@ -16,7 +16,9 @@ export const pull = ({
         url:
             selected +
             '/api?module=account' +
-            (coinConfig.apiKey != undefined ? "&apikey=" + coinConfig.apiKey : "") +
+            (coinConfig.apiKey != undefined
+                ? '&apikey=' + coinConfig.apiKey
+                : '') +
             '&action=txlistinternal&address=' +
             address +
             '&startblock=' +
