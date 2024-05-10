@@ -83,7 +83,6 @@ class SolanaWallet extends CoinWallet {
      * @param {string} [_props.nonce] - The transaction's nonce.
      * @param {string} [_props.data] - The transaction's data.
      * @param {KeyPair} _props.keyPair - The key pair of the sender.
-     * @param {Connection} _props.connector - The Solana connection object.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
     buildTransaction(_props: TransactionBuilderParams): Promise<string> {
