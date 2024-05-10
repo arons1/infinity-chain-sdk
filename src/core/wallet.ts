@@ -137,6 +137,7 @@ class CoinWallet extends BaseWallet {
                         extendedKeys;
             }
         }
+        if (this.walletSelected.length == 0) this.walletSelected = walletName;
         this.initializated = true;
     }
     /**

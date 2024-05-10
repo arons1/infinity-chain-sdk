@@ -1,7 +1,5 @@
 import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
-import { PROVIDER_TREZOR } from '../../../constants';
 import {
-    CoinNotIntegrated,
     InvalidAddress,
     InvalidAmount,
     InvalidExtenedPublicKey,
@@ -25,14 +23,12 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
     utxos?: UTXOResult[] | undefined;
 */
 export const builderParametersChecker = (props: BuildParameters) => {
-    const selected = PROVIDER_TREZOR[props.coinId] as string;
     const network = config[props.coinId].network;
     if (
         Array.isArray(props.accounts) &&
         props.accounts.find(a => a.useAsChange) == undefined
     )
         throw new Error(SpecifyChangePublic);
-    if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
     if (!isValidNumber(props.amount)) throw new Error(InvalidAmount);
     if (!network) throw new Error(InvalidNetworkVersion);
     if (props.feeRatio && (props.feeRatio < 0 || props.feeRatio > 1))

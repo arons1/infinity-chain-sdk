@@ -6,7 +6,6 @@ import {
     getBalance,
     sendTransaction,
 } from '../../../networks/evm';
-import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import {
     BalanceResult,
     CurrencyBalanceResult,

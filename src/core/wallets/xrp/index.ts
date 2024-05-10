@@ -1,4 +1,3 @@
-import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import {
     CurrencyBalanceResult,
     EstimateFeeResult,

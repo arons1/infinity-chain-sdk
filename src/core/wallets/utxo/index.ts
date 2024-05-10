@@ -22,7 +22,6 @@ import { getUTXO } from '../../../networks/utxo/getUTXO/index';
 import { UTXOResult } from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
-import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
 import {
     BuildParameters,

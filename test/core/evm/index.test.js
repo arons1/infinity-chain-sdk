@@ -14,13 +14,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
         const address = matic.getReceiveAddress({});
         (0, globals_1.expect)(address).toBe('0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f');
     });
-    (0, globals_1.test)('estimateFee', async () => {
-        (0, globals_1.expect)(true).toBe(true);
-    });
-    (0, globals_1.test)('getBalance', async () => {
-        (0, globals_1.expect)(true).toBe(true);
-    });
-    (0, globals_1.test)('getAccountBalances', async () => {
-        (0, globals_1.expect)(true).toBe(true);
+    (0, globals_1.test)('getTransactions', async () => {
+        const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet');
+        matic.selectWallet('my_wallet');
+        const transactions = await matic.getTransactions({});
+        console.log(transactions);
+        (0, globals_1.expect)(transactions.length > 0).toBe(true);
     });
 });

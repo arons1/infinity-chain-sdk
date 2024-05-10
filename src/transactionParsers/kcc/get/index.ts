@@ -1,6 +1,5 @@
 import { KCCParams } from './types';
 
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { TokenTransfer, Transaction } from '../../../networks/types';
 import token from '../token';
 import { request } from '@infinity/core-sdk/lib/commonjs/utils';

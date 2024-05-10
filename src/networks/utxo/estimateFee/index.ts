@@ -1,8 +1,6 @@
-import { PROVIDER_TREZOR } from '../../../constants';
 import { EstimateFeeParams, FeeResult } from './types';
 import {
     CannotGetUTXO,
-    CoinNotIntegrated,
     InvalidAmount,
     CannotGetFeePerByte,
 } from '../../../errors/networks';
@@ -84,8 +82,7 @@ export const estimateFee = async ({
 }: EstimateFeeParams): Promise<EstimateFeeResult> => {
     if (extendedPublicKeys == undefined || extendedPublicKeys.length == 0)
         throw new Error(MissingExtendedKey);
-    const selected = PROVIDER_TREZOR[coinId] as string;
-    if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
+
     if (amount.includes('.')) throw new Error(InvalidAmount);
     // 1º Get UTXOs
     let utxos: UTXOResult[] = [];
