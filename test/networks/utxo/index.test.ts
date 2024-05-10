@@ -79,7 +79,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const estimate = await estimateFee({
             amount: '10000',
@@ -103,7 +103,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const balance = await getBalance({
             extendedPublicKeys: [xpub],
@@ -123,7 +123,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const balance = await getAccountBalances({
             extendedPublicKeys: [xpub],
@@ -145,7 +145,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const utxo = await getUTXO({
             extendedPublicKey: xpub,
@@ -165,7 +165,7 @@ describe('networksUTXO', () => {
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
-            Encoding.XPUB,
+            Encoding.LTUB,
         );
         const { index, protocol } = await getLastChangeIndex({
             extendedPublicKey: xpub,

@@ -17,7 +17,18 @@ describe('networksEVM', () => {
         const matic = new EVMWallet(Coins.MATIC, mnemonic, 'my_wallet');
         matic.selectWallet('my_wallet');
         const transactions = await matic.getTransactions({});
-        console.log(transactions);
         expect(transactions.length > 0).toBe(true);
+    });
+    test('getTransactionsXDC', async () => {
+        const matic = new EVMWallet(Coins.XDC, mnemonic, 'my_wallet');
+        matic.selectWallet('my_wallet');
+        const transactions = await matic.getTransactions({});
+        expect(transactions.length > 0).toBe(true);
+    });
+    test('getTransactionsKCC', async () => {
+        const matic = new EVMWallet(Coins.KCC, mnemonic, 'my_wallet');
+        matic.selectWallet('my_wallet');
+        const transactions = await matic.getTransactions({});
+        expect(transactions.length > 0).toBe(false);
     });
 });

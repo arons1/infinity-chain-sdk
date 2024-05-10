@@ -3,7 +3,7 @@ import { GeneralApiParams } from '../../types';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, page, limit }: GeneralApiParams) => {
-    const coinConfig = config[Coins.FIO];
+    const coinConfig = config[Coins.KCC];
     return {
         url:
             coinConfig.apiUrlSecundary +

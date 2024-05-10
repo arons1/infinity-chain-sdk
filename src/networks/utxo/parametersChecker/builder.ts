@@ -2,7 +2,6 @@ import { isValidNumber } from '@infinity/core-sdk/lib/commonjs/utils';
 import {
     InvalidAddress,
     InvalidAmount,
-    InvalidExtenedPublicKey,
     InvalidFeeRatio,
     InvalidUTXO,
     MissingOrInvalidConnector,
@@ -40,12 +39,6 @@ export const builderParametersChecker = (props: BuildParameters) => {
         !isValidAddress(props.destination, network as Network)
     )
         throw new Error(InvalidAddress);
-    if (
-        props.accounts.find(
-            a => !isValidExtendedKey(a.extendedPublicKey, network as Network),
-        ) != undefined
-    )
-        throw new Error(InvalidExtenedPublicKey);
     if (
         props.utxos &&
         props.utxos.find(

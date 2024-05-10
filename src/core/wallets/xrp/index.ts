@@ -58,6 +58,7 @@ class XRPWallet extends CoinWallet {
             keyPair,
         });
     }
+
     /**
      * Retrieves the balance for the specified wallet.
      *

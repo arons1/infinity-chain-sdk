@@ -50,10 +50,14 @@ class CoinWallet extends BaseWallet {
         protocol = Protocol.LEGACY,
         walletName,
     }: GetReceiveAddressParams): string {
-        const derivation = config[this.id].derivations.find(
-            d => d.name === derivationName && d.protocol === protocol,
-        );
-        console.log(this.addresses);
+        let derivation;
+        if (config[this.id].derivations.length > 0) {
+            derivation = config[this.id].derivations.find(
+                d => d.name === derivationName && d.protocol === protocol,
+            );
+        } else {
+            derivation = config[this.id].derivations[0];
+        }
         if (!derivation) throw new Error(CannotGeneratePublicAddress);
         return this.addresses[walletName ?? this.walletSelected][
             derivation.protocol
