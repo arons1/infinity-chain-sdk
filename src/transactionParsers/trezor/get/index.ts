@@ -28,7 +28,6 @@ export const getTransactions = async ({
             page,
             limit: LIMIT,
         }).url;
-        console.log(url);
         const result: any = await request.get({
             url,
             no_wait: false,
