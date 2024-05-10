@@ -1,12 +1,13 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, page, limit }: GeneralApiParams) => {
+    const coinConfig = config[Coins.VET];
+
     return {
         method: 'GET',
-        url: `${PROVIDER}/api/accounts/${address.toLowerCase()}/transactions?limit=${limit}${'&offset=' + (page ?? 0)}`,
+        url: `${coinConfig.apiUrl}/api/accounts/${address.toLowerCase()}/transactions?limit=${limit}${'&offset=' + (page ?? 0)}`,
     };
 };
 
-export const pullTransactionInfo = (transactionHash: string) =>
-    `${PROVIDER}/api/transactions/${transactionHash}`;

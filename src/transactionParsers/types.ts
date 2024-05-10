@@ -6,7 +6,5 @@ export type GeneralApiParams = {
     page?: number;
     limit?: number;
     cursor?: string;
-    chainId?: number;
-    apiKey?: string;
     startblock?: string;
 };

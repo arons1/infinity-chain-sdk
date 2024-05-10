@@ -1,4 +1,3 @@
-import { PROVIDER_TREZOR } from '../../../constants';
 import { GeneralApiParams } from '../../types';
 import {
     MissingAddress,
@@ -6,6 +5,7 @@ import {
     MissingExtendedKey,
 } from '../../../errors/transactionParsers';
 import { CoinNotIntegrated } from '../../../errors/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ coinId, address, page, limit }: GeneralApiParams) => {
     if (!coinId) throw new Error(MissingCoinId);
@@ -14,7 +14,9 @@ export const pull = ({ coinId, address, page, limit }: GeneralApiParams) => {
     } else {
         if (!address) throw new Error(MissingAddress);
     }
-    const selected = PROVIDER_TREZOR[coinId] as string;
+    const coinConfig = config[coinId];
+
+    const selected = coinConfig.apiUrl;
     if (!selected || selected.length == 0) throw new Error(CoinNotIntegrated);
     if (coinId == 'eth') {
         return {

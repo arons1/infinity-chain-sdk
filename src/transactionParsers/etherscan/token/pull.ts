@@ -1,21 +1,22 @@
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 export const pull = ({
-    chainId,
-    apiKey,
+    coinId,
     address,
     page,
     limit,
     startblock = '1',
 }: GeneralApiParams) => {
-    const selected = PROVIDER[chainId as number] as string;
+    const coinConfig = config[coinId as Coins];
+    const selected = coinConfig.apiKey;
     if (!selected) throw new Error('Not integrated chain');
     return {
         url:
             selected +
-            '/api?module=account&apikey=' +
-            apiKey +
+            '/api?module=account' +
+            (coinConfig.apiKey != undefined ? "&apikey=" + coinConfig.apiKey : "") +
             '&action=tokentx&address=' +
             address +
             '&startblock=' +

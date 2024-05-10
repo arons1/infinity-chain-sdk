@@ -1,9 +1,12 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, limit, cursor }: GeneralApiParams) => {
+    const coinConfig = config[Coins.STELLAR];
+
     return {
         method: 'GET',
-        url: `${PROVIDER}/v1/tokens/transfers?anyof.from.to=${address}&sort.desc=id&limit=${limit}${cursor != undefined ? '&lastId=' + cursor : ''}`,
+        url: `${coinConfig.apiUrl}/v1/tokens/transfers?anyof.from.to=${address}&sort.desc=id&limit=${limit}${cursor != undefined ? '&lastId=' + cursor : ''}`,
     };
 };

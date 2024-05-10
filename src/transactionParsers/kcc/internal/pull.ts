@@ -1,10 +1,12 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER_INTERNAL } from '../constants';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, page, limit }: GeneralApiParams) => {
+    const coinConfig = config[Coins.FIO];
     return {
         url:
-            PROVIDER_INTERNAL +
+        coinConfig.apiUrlSecundary +
             '/api/kcs/address/calltrans/' +
             address +
             '/' +

@@ -1,8 +1,10 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 export const pull = ({ address, page, limit }: GeneralApiParams) => {
+    const coinConfig = config[Coins.FIO];
     return {
-        url: PROVIDER + '/v1/history/get_actions',
+        url: coinConfig.apiKey + '/v1/history/get_actions',
         method: 'POST',
         body: {
             account_name: address,
@@ -13,8 +15,9 @@ export const pull = ({ address, page, limit }: GeneralApiParams) => {
 };
 
 export const initPosition = ({ address }: GeneralApiParams) => {
+    const coinConfig = config[Coins.FIO];
     return {
-        url: PROVIDER + '/v1/history/get_actions',
+        url: coinConfig.apiKey + '/v1/history/get_actions',
         method: 'POST',
         body: {
             account_name: address,

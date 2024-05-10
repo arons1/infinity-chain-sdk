@@ -1,9 +1,11 @@
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { GeneralApiParams } from '../../types';
-import { PROVIDER } from '../constants';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, limit, cursor }: GeneralApiParams) => {
+    const coinConfig = config[Coins.XRP];
     return {
-        url: PROVIDER,
+        url: coinConfig.apiUrl,
         method: 'POST',
         body: {
             market: cursor,
