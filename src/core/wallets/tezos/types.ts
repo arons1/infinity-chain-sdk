@@ -19,6 +19,11 @@ export type BuildTransactionParams = {
     feeRatio?: number;
 };
 
+export type GetTransactionsParams = {
+    walletName?:string;
+    lastTransactionHash?:string
+}
+
 export type GetAccountBalancesParams = {
     assetSlugs: string[];
     walletName?: string;

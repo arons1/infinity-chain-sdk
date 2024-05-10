@@ -1,4 +1,5 @@
 import { Transaction, VersionedTransaction } from '@solana/web3.js';
+import { GetAccountsResult } from '../../../networks/solana/utils/types';
 
 export type TransactionBuilderParams = {
     memo: string;
@@ -13,6 +14,12 @@ export type SignTransactionParams = {
     transaction: VersionedTransaction | Transaction;
     mnemonic: string;
 };
+
+export type GetTransactionsParams = {
+    walletName?:string,
+    signatures?:Record<string,string>,
+    accounts?:GetAccountsResult[]
+}
 
 export type SignMessageParams = {
     mnemonic: string;

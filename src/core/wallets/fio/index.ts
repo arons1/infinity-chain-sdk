@@ -9,11 +9,13 @@ import { BuildTransactionFIOResult } from '../../../networks/fio/builder/types';
 import {
     CurrencyBalanceResult,
     EstimateFeeResult,
+    Transaction,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
-import { BuildTransactionParams } from './types';
+import { BuildTransactionParams, GetTransactionsParams } from './types';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { getTransactions } from '../../../transactionParsers/fio/get';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
@@ -73,8 +75,16 @@ class FIOWallet extends CoinWallet {
     sendTransaction(_props: BuildTransactionFIOResult): Promise<string> {
         return sendTransaction(_props);
     }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
+     * @param {string} params.walletName - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
+     * @param {string} params.endBlock - The end block to retrieve transactions until.
+     * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
+     */
+    getTransactions({walletName,endBlock}: GetTransactionsParams): Promise<Transaction[]> {
+        return getTransactions({address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),endBlock})
     }
     loadConnector() {
         throw new Error(NotImplemented);

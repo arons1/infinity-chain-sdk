@@ -12,12 +12,14 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    Transaction,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
 import {
     BuildTransactionParams,
     EstimateFeeParams,
     GetAccountBalancesParams,
+    GetTransactionsParams,
     SignMessageParams,
     SignTransactionParams,
 } from './types';
@@ -32,6 +34,7 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { getTransactions } from '../../../transactionParsers/tezos/get';
 
 class TezosWallet extends CoinWallet {
     connector!: TezosToolkit;
@@ -153,8 +156,16 @@ class TezosWallet extends CoinWallet {
             privateKey,
         });
     }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
+     * @param {string} params.walletName - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
+     * @param {string} params.lastTransactionHash - The hash of the last transaction.
+     * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
+     */
+    getTransactions({walletName,lastTransactionHash}: GetTransactionsParams): Promise<Transaction[]> {
+        return getTransactions({ address: this.getReceiveAddress({ walletName: walletName ?? this.walletSelected }), lastTransactionHash });
     }
     /**
      * Loads the connector for the Tezos wallet based on the specified BIP ID coin.

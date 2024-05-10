@@ -7,7 +7,10 @@ export type EstimateFeeParams = {
     feeRatio?: number;
     walletName?: string;
 };
-
+export type GetTransactionsParams = {
+    walletName?:string, 
+    lastBlockHeight?:string
+}
 export type BuildParameters = {
     coinId: Coins;
     amount: string;

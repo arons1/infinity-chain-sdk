@@ -13,3 +13,7 @@ export type SignTransactionParams = {
     mnemonic: string;
     transaction: Transaction;
 };
+export type GetTransactionsParams = {
+    walletName?:string,
+    lastTransactionHash?:string
+}

@@ -11,11 +11,12 @@ import {
 } from '../../../networks/xrp';
 import CoinWallet from '../../wallet';
 import { XrplClient } from 'xrpl-client';
-import { BuildTransactionParams } from './types';
+import { BuildTransactionParams, GetTransactionsParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { getTransactions } from '../../../transactionParsers/xrp/get';
 
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
@@ -83,8 +84,20 @@ class XRPWallet extends CoinWallet {
             connector: this.connector,
         });
     }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
+     * @param {string} params.walletName - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
+     * @param {string} params.lastTransactionHash - The hash of the last transaction.
+     * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
+     */
+    getTransactions({ walletName, lastTransactionHash }: GetTransactionsParams) {
+        return getTransactions({
+            connector:this.connector,
+            address:this.getReceiveAddress({ walletName: walletName ?? this.walletSelected }),
+            lastTransactionHash
+        });
     }
     /**
      * Initializes the connector for the current object.

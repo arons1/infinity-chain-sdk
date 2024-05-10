@@ -4,3 +4,7 @@ export type BuildTransactionParams = {
     mnemonic: string;
     walletName: string;
 };
+export type GetTransactionsParams = {
+    walletName?:string,
+    endBlock:string
+}

@@ -12,6 +12,7 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    Transaction as TransactionNetwork,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
 import {
@@ -23,6 +24,7 @@ import {
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import {
     EstimateFeeParams,
+    GetTransactionsParams,
     SignMessageParams,
     SignTransactionParams,
     TransactionBuilderParams,
@@ -35,6 +37,7 @@ import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 import pMemoize from 'p-memoize';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { getTransactions } from '../../../transactionParsers/solana/get';
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -142,8 +145,17 @@ class SolanaWallet extends CoinWallet {
             connector: this.connector,
         });
     }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
+     * @param {string} [params.walletName] - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
+     * @param {string[]} [params.signatures] - (Optional) An array of transaction signatures.
+     * @param {string[]} [params.accounts] - (Optional) An array of account addresses.
+     * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
+     */
+    getTransactions({walletName,signatures,accounts} : GetTransactionsParams): Promise<TransactionNetwork[]> {
+        return getTransactions({address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),connector:this.connector,signatures,accounts})
     }
     /**
      * Signs a transaction using the provided transaction and mnemonic.

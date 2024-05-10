@@ -13,7 +13,7 @@ export type EstimateGasParams = {
 };
 export type GetTransactionParams = {
     coinId: Coins, 
-    address: string, 
+    walletName?: string, 
     lastTransactionHash?: string
     startblock?:string
 }

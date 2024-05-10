@@ -5,3 +5,7 @@ export type BuildTransactionParams = {
     memo?: string | undefined;
     mnemonic: string;
 };
+export type GetTransactionsParams = {
+    walletName?:string, 
+    lastTransactionHash?:string
+}

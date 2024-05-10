@@ -1,4 +1,4 @@
-import { EtherscanParams } from './types';
+import { XDCParams } from './types';
 import { TokenTransfer, Transaction } from '../../../networks/types';
 import general from '../general';
 import token from '../token';
@@ -7,15 +7,13 @@ import { request } from '@infinity/core-sdk/lib/commonjs/utils';
 
 const LIMIT = 100;
 const getTransactionsGlobal = async ({
-    coinId,
     address,
     lastTransactionHash,
     page = 1,
-}: EtherscanParams): Promise<Transaction[]> => {
+}: XDCParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
     try {
         const url = general.pull({
-            coinId,
             address,
             page,
             limit: LIMIT,
@@ -39,7 +37,6 @@ const getTransactionsGlobal = async ({
             }
             if (result.items.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsGlobal({
-                    coinId,
                     address,
                     lastTransactionHash,
                     page: page + 1,
@@ -57,16 +54,14 @@ const getTransactionsGlobal = async ({
     return transactions;
 };
 const getTransactionsToken = async ({
-    coinId,
     address,
     lastTransactionHash,
     page = 1,
-}: EtherscanParams): Promise<Transaction[]> => {
+}: XDCParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
 
     try {
         const url = token.pull({
-            coinId,
             address,
             page,
             limit: LIMIT,
@@ -88,7 +83,6 @@ const getTransactionsToken = async ({
             }
             if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsToken({
-                    coinId,
                     address,
                     lastTransactionHash,
                     page: page + 1,
@@ -106,15 +100,13 @@ const getTransactionsToken = async ({
 };
 
 const getTransactionsInternal = async ({
-    coinId,
     address,
     lastTransactionHash,
     page = 1,
-}: EtherscanParams): Promise<Transaction[]> => {
+}: XDCParams): Promise<Transaction[]> => {
     const transactions: Transaction[] = [];
     try {
         const url = internal.pull({
-            coinId,
             address,
             page,
             limit: LIMIT,
@@ -138,7 +130,6 @@ const getTransactionsInternal = async ({
             }
             if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
                 const newTransactions = await getTransactionsInternal({
-                    coinId,
                     address,
                     lastTransactionHash,
                     page: page + 1,
@@ -159,24 +150,21 @@ const getTransactionsInternal = async ({
 /**
  * Retrieves transactions from Etherscan for a given chain, address, and start block.
  *
- * @param {EtherscanParams} param - The parameters for the transaction retrieval.
+ * @param {XDCParams} param - The parameters for the transaction retrieval.
  * @param {number} param.coinId - The ID of the chain.
  * @param {string} param.address - The address to retrieve transactions for.
  * @param {number} param.lastTransactionHash - The start block to retrieve transactions from.
  * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
  */
 export const getTransactions = async ({
-    coinId,
     address,
     lastTransactionHash,
-}: EtherscanParams): Promise<Transaction[]> => {
+}: XDCParams): Promise<Transaction[]> => {
     const general = await getTransactionsGlobal({
-        coinId,
         address,
         lastTransactionHash,
     });
     const tokens = await getTransactionsToken({
-        coinId,
         address,
         lastTransactionHash,
     });
@@ -191,7 +179,6 @@ export const getTransactions = async ({
         }
     });
     const internal = await getTransactionsInternal({
-        coinId,
         address,
         lastTransactionHash,
     });
