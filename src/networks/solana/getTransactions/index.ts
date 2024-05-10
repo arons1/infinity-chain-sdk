@@ -18,15 +18,18 @@ import { sleep } from '../utils';
 import { getTransactionsParametersChecker } from '../parametersChecker';
 const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
-/* 
-getAccountsHashes
-    Returns hashes of the transactions of the accounts passed
-    @param connector: solana web3 connector
-    @param address: string of the account to get the hashes from
-    @param accounts: accounts to get the hashes from
-    @param signatures: last transaction of each account
-    @param limit: limit per call requests
-*/
+
+/**
+ * Retrieves the hashes of accounts from the specified Solana network.
+ *
+ * @param {GetAccountsHashesParams} params - The parameters for retrieving the account hashes.
+ * @param {Connector} params.connector - The Solana web3 connector.
+ * @param {string} params.address - The address to retrieve the account hashes from.
+ * @param {string[]} params.accounts - The accounts of the tokens.
+ * @param {string[]} params.signatures - The signatures of the transactions already saved in the wallet.
+ * @param {number} [params.limit=1000] - The limit of transactions per batch (optional).
+ * @returns {Promise<HashesResult[]>} - The account hashes.
+ */
 export const getAccountsHashes = async ({
     connector,
     address,
@@ -54,12 +57,15 @@ export const getAccountsHashes = async ({
     }
     return transactionHashes;
 };
-/* 
-getTransactions
-    Returns transtions details of the hashes passed
-    @param connector: solana web3 connector
-    @param pendingTransactions: transactions hashes to get the details from
-*/
+
+/**
+ * Retrieves the details of transactions based on their hashes.
+ *
+ * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
+ * @param {string[]} params.pendingTransactions - The array of transaction hashes to retrieve details for.
+ * @param {Connector} params.connector - The Solana web3 connector.
+ * @return {Promise<ParsedTransactionWithMeta[]>} A promise that resolves to an array of parsed transaction details.
+ */
 export const getTransactions = async ({
     pendingTransactions,
     connector,
