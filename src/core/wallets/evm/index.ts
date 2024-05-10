@@ -11,6 +11,7 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    Transaction,
 } from '../../../networks/types';
 import Web3 from 'web3';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
@@ -182,7 +183,7 @@ class EVMWallet extends CoinWallet {
         walletName,
         lastTransactionHash,
         startblock,
-    }: GetTransactionParams) {
+    }: GetTransactionParams): Promise<Transaction[]> {
         if (this.id == Coins.XDC) {
             return getTransactionsXDC({
                 address: this.getReceiveAddress({

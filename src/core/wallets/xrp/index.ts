@@ -2,6 +2,7 @@ import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import {
     CurrencyBalanceResult,
     EstimateFeeResult,
+    Transaction,
 } from '../../../networks/types';
 import {
     buildTransaction,
@@ -90,12 +91,12 @@ class XRPWallet extends CoinWallet {
      * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
      * @param {string} params.walletName - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
      * @param {string} params.lastTransactionHash - The hash of the last transaction.
-     * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
+     * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
     getTransactions({
         walletName,
         lastTransactionHash,
-    }: GetTransactionsParams) {
+    }: GetTransactionsParams): Promise<Transaction[]> {
         return getTransactions({
             connector: this.connector,
             address: this.getReceiveAddress({
