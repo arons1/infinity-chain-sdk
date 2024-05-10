@@ -1,0 +1,20 @@
+export type InternalTransactionEncode = {
+    blockNumber: string;
+    timestamp: string;
+    hash?: string;
+    txid?: string;
+    time: string;
+    transactionHash?: string;
+    from: string;
+    to: string;
+    value: string;
+    index?: string;
+    contractAddress: string;
+    input: string;
+    type: string;
+    gas: string;
+    gasUsed: string;
+    _id: string;
+    isError: number;
+    errCode: string;
+};

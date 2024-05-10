@@ -8,9 +8,9 @@ export const encode = ({
 }): Transaction => {
     const tokenTransfers: TokenTransfer[] = [
         {
-            contractAddress: transaction.contractAddress,
+            contractAddress: transaction.address,
             tokenName: transaction.tokenName,
-            tokenSymbol: transaction.tokenSymbol,
+            tokenSymbol: transaction.symbol,
             tokenDecimal: transaction.tokenDecimal,
             value: transaction.value,
             from: transaction.from,
@@ -18,20 +18,18 @@ export const encode = ({
         },
     ];
     return {
-        blockNumber: transaction.blockNumber as string,
-        timeStamp: new Date(
-            parseInt(transaction.timeStamp ?? transaction.time) * 1000,
-        ).toISOString(),
-        hash: (transaction.hash ?? transaction.transactionHash) as string,
+        blockNumber: transaction.blockNumber,
+        timeStamp: new Date(parseInt(transaction.timestamp)).toISOString(),
+        hash: transaction.hash ?? transaction.transactionHash,
         from: transaction.from,
-        to: transaction.contractAddress,
-        value: transaction.value,
+        to: transaction.address,
+        value: '0',
         fee: new BigNumber(transaction.gasUsed ?? transaction.gasLimit)
             .multipliedBy(transaction.gasPrice)
             .toString(10),
         tokenTransfers,
         confirmations: transaction.confirmations,
         isError: false,
-        type: 'evm',
+        type: 'xdc',
     };
 };

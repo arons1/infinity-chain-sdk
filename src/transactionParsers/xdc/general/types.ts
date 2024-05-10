@@ -1,0 +1,24 @@
+export type GeneralTransactionEncode = {
+    blockNumber: string;
+    timestamp: string;
+    time: string;
+    hash: string;
+    transactionHash?: string;
+    nonce: string;
+    blockHash: string;
+    transactionIndex: string;
+    from: string;
+    to: string;
+    value: string;
+    gas: string;
+    gasPrice: string;
+    error: string;
+    txreceipt_status: string;
+    input: string;
+    contractAddress: string;
+    cumulativeGasUsed: string;
+    gasUsed: string;
+    confirmations: string;
+    methodId: string;
+    functionName: string;
+};

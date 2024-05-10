@@ -10,7 +10,7 @@ export const pull = ({
     startblock = '1',
 }: GeneralApiParams) => {
     const coinConfig = config[coinId as Coins];
-    const selected = coinConfig.apiKey;
+    const selected = coinConfig.apiUrl;
     if (!selected) throw new Error('Not integrated chain');
     return {
         url:
