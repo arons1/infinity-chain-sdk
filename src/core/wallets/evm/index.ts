@@ -174,8 +174,8 @@ class EVMWallet extends CoinWallet {
      *
      * @param {GetTransactionParams} params - The parameters for retrieving transactions.
      * @param {string} params.address - The address to retrieve transactions for.
-     * @param {string} [params.lastTransactionHash] - The hash of the last transaction.
-     * @param {number} [params.startblock] - The start block to retrieve transactions from.
+     * @param {string} [params.lastTransactionHash] - The hash of the last transaction. Just for XDC
+     * @param {number} [params.startblock] - The start block to retrieve transactions from. Any but for XDC
      * @return {Promise<any>} A promise that resolves to the transactions.
      */
     getTransactions({ walletName, lastTransactionHash, startblock }: GetTransactionParams) {

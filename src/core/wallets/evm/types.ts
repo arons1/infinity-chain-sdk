@@ -1,4 +1,3 @@
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 export type EstimateGasParams = {
@@ -12,7 +11,6 @@ export type EstimateGasParams = {
     walletName?: string;
 };
 export type GetTransactionParams = {
-    coinId: Coins, 
     walletName?: string, 
     lastTransactionHash?: string
     startblock?:string
