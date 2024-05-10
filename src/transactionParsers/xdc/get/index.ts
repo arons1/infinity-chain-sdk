@@ -35,7 +35,11 @@ const getTransactionsGlobal = async ({
                 });
                 transactions.push(decoded);
             }
-            if (result.items.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
+            if (
+                result.items.length == LIMIT &&
+                result.items.find((b: any) => b.hash == lastTransactionHash) ==
+                    undefined
+            ) {
                 const newTransactions = await getTransactionsGlobal({
                     address,
                     lastTransactionHash,
@@ -81,7 +85,11 @@ const getTransactionsToken = async ({
                 const decoded = token.encode({ transaction: tr });
                 transactions.push(decoded);
             }
-            if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
+            if (
+                result.result.length == LIMIT &&
+                result.items.find((b: any) => b.hash == lastTransactionHash) ==
+                    undefined
+            ) {
                 const newTransactions = await getTransactionsToken({
                     address,
                     lastTransactionHash,
@@ -128,7 +136,11 @@ const getTransactionsInternal = async ({
                 });
                 transactions.push(decoded);
             }
-            if (result.result.length == LIMIT && result.items.find((b:any) => b.hash == lastTransactionHash) == undefined) {
+            if (
+                result.result.length == LIMIT &&
+                result.items.find((b: any) => b.hash == lastTransactionHash) ==
+                    undefined
+            ) {
                 const newTransactions = await getTransactionsInternal({
                     address,
                     lastTransactionHash,

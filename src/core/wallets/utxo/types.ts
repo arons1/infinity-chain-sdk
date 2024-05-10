@@ -8,9 +8,9 @@ export type EstimateFeeParams = {
     walletName?: string;
 };
 export type GetTransactionsParams = {
-    walletName?:string, 
-    lastBlockHeight?:string
-}
+    walletName?: string;
+    lastBlockHeight?: string;
+};
 export type BuildParameters = {
     coinId: Coins;
     amount: string;

@@ -2,7 +2,7 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
-    Transaction as TransactionNetwork
+    Transaction as TransactionNetwork,
 } from '../../../networks/types';
 import {
     TrezorWebsocket,
@@ -24,7 +24,11 @@ import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/in
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import { GetChangeAddressParams } from '../../types';
-import { BuildParameters, EstimateFeeParams, GetTransactionsParams } from './types';
+import {
+    BuildParameters,
+    EstimateFeeParams,
+    GetTransactionsParams,
+} from './types';
 import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
@@ -194,18 +198,27 @@ class UTXOWallet extends CoinWallet {
      * @param {string} lastBlockHeight - The last block height.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
-    async getTransactions({walletName, lastBlockHeight}: GetTransactionsParams): Promise<TransactionNetwork[]> {
-        const results:TransactionNetwork[] = []
-        const xpubs = Object.values(this.extendedPublicKeys[walletName ?? this.walletSelected])
-        for(let xpub of xpubs){
+    async getTransactions({
+        walletName,
+        lastBlockHeight,
+    }: GetTransactionsParams): Promise<TransactionNetwork[]> {
+        const results: TransactionNetwork[] = [];
+        const xpubs = Object.values(
+            this.extendedPublicKeys[walletName ?? this.walletSelected],
+        );
+        for (let xpub of xpubs) {
             const txs = await getTransactions({
                 address: xpub,
                 lastBlockHeight,
-                coinId:this.id
-            })
-            results.concat(txs.filter(b => results.find(t => t.hash === b.hash) === undefined))
+                coinId: this.id,
+            });
+            results.concat(
+                txs.filter(
+                    b => results.find(t => t.hash === b.hash) === undefined,
+                ),
+            );
         }
-        return results
+        return results;
     }
     /**
      * Loads the connector for the UTXO wallet.

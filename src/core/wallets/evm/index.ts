@@ -178,15 +178,33 @@ class EVMWallet extends CoinWallet {
      * @param {number} [params.startblock] - The start block to retrieve transactions from. Any but for XDC
      * @return {Promise<any>} A promise that resolves to the transactions.
      */
-    getTransactions({ walletName, lastTransactionHash, startblock }: GetTransactionParams) {
-        if(this.id == Coins.XDC){
-            return getTransactionsXDC({ address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}), lastTransactionHash });
-        }
-        else if(this.id == Coins.KCC){
-            return getTransactionsKCC({ address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}), startblock });
-        }
-        else{
-            return getTransactions({ coinId:this.id, address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}), startblock });
+    getTransactions({
+        walletName,
+        lastTransactionHash,
+        startblock,
+    }: GetTransactionParams) {
+        if (this.id == Coins.XDC) {
+            return getTransactionsXDC({
+                address: this.getReceiveAddress({
+                    walletName: walletName ?? this.walletSelected,
+                }),
+                lastTransactionHash,
+            });
+        } else if (this.id == Coins.KCC) {
+            return getTransactionsKCC({
+                address: this.getReceiveAddress({
+                    walletName: walletName ?? this.walletSelected,
+                }),
+                startblock,
+            });
+        } else {
+            return getTransactions({
+                coinId: this.id,
+                address: this.getReceiveAddress({
+                    walletName: walletName ?? this.walletSelected,
+                }),
+                startblock,
+            });
         }
     }
     /**

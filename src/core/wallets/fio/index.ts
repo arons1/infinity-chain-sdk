@@ -83,8 +83,16 @@ class FIOWallet extends CoinWallet {
      * @param {string} params.endBlock - The end block to retrieve transactions until.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({walletName,endBlock}: GetTransactionsParams): Promise<Transaction[]> {
-        return getTransactions({address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),endBlock})
+    getTransactions({
+        walletName,
+        endBlock,
+    }: GetTransactionsParams): Promise<Transaction[]> {
+        return getTransactions({
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            endBlock,
+        });
     }
     loadConnector() {
         throw new Error(NotImplemented);

@@ -16,10 +16,10 @@ export type SignTransactionParams = {
 };
 
 export type GetTransactionsParams = {
-    walletName?:string,
-    signatures?:Record<string,string>,
-    accounts?:GetAccountsResult[]
-}
+    walletName?: string;
+    signatures?: Record<string, string>;
+    accounts?: GetAccountsResult[];
+};
 
 export type SignMessageParams = {
     mnemonic: string;

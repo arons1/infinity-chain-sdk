@@ -154,8 +154,19 @@ class SolanaWallet extends CoinWallet {
      * @param {string[]} [params.accounts] - (Optional) An array of account addresses.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({walletName,signatures,accounts} : GetTransactionsParams): Promise<TransactionNetwork[]> {
-        return getTransactions({address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),connector:this.connector,signatures,accounts})
+    getTransactions({
+        walletName,
+        signatures,
+        accounts,
+    }: GetTransactionsParams): Promise<TransactionNetwork[]> {
+        return getTransactions({
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            connector: this.connector,
+            signatures,
+            accounts,
+        });
     }
     /**
      * Signs a transaction using the provided transaction and mnemonic.

@@ -5,6 +5,6 @@ export type BuildTransactionParams = {
     walletName: string;
 };
 export type GetTransactionsParams = {
-    walletName?:string,
-    endBlock:string
-}
+    walletName?: string;
+    endBlock: string;
+};

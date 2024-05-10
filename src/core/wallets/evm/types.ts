@@ -11,10 +11,10 @@ export type EstimateGasParams = {
     walletName?: string;
 };
 export type GetTransactionParams = {
-    walletName?: string, 
-    lastTransactionHash?: string
-    startblock?:string
-}
+    walletName?: string;
+    lastTransactionHash?: string;
+    startblock?: string;
+};
 export type BuildTransaction = {
     destination: string;
     value?: string;

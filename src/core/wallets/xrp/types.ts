@@ -6,6 +6,6 @@ export type BuildTransactionParams = {
     mnemonic: string;
 };
 export type GetTransactionsParams = {
-    walletName?:string, 
-    lastTransactionHash?:string
-}
+    walletName?: string;
+    lastTransactionHash?: string;
+};

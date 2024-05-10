@@ -20,9 +20,9 @@ export type BuildTransactionParams = {
 };
 
 export type GetTransactionsParams = {
-    walletName?:string;
-    lastTransactionHash?:string
-}
+    walletName?: string;
+    lastTransactionHash?: string;
+};
 
 export type GetAccountBalancesParams = {
     assetSlugs: string[];

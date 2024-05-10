@@ -14,6 +14,6 @@ export type SignTransactionParams = {
     transaction: Transaction;
 };
 export type GetTransactionsParams = {
-    walletName?:string,
-    lastTransactionHash?:string
-}
+    walletName?: string;
+    lastTransactionHash?: string;
+};

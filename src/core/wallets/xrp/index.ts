@@ -92,11 +92,16 @@ class XRPWallet extends CoinWallet {
      * @param {string} params.lastTransactionHash - The hash of the last transaction.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({ walletName, lastTransactionHash }: GetTransactionsParams) {
+    getTransactions({
+        walletName,
+        lastTransactionHash,
+    }: GetTransactionsParams) {
         return getTransactions({
-            connector:this.connector,
-            address:this.getReceiveAddress({ walletName: walletName ?? this.walletSelected }),
-            lastTransactionHash
+            connector: this.connector,
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            lastTransactionHash,
         });
     }
     /**

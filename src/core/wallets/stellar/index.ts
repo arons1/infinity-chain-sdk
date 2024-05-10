@@ -14,7 +14,11 @@ import {
     Transaction as TransactionNetwork,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
-import { BuildTransactionParams, GetTransactionsParams, SignTransactionParams } from './types';
+import {
+    BuildTransactionParams,
+    GetTransactionsParams,
+    SignTransactionParams,
+} from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Keypair, Server, Transaction } from 'stellar-sdk';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
@@ -113,8 +117,16 @@ class StellarWallet extends CoinWallet {
      * @param {string} walletName - The name of the wallet.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({lastTransactionHash,walletName}: GetTransactionsParams): Promise<TransactionNetwork[]> {
-        return getTransactions({address:this.getReceiveAddress({walletName:walletName ?? this.walletSelected}),lastTransactionHash})
+    getTransactions({
+        lastTransactionHash,
+        walletName,
+    }: GetTransactionsParams): Promise<TransactionNetwork[]> {
+        return getTransactions({
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            lastTransactionHash,
+        });
     }
     /**
      * Signs a transaction using the provided transaction and mnemonic.

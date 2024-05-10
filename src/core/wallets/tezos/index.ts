@@ -164,8 +164,16 @@ class TezosWallet extends CoinWallet {
      * @param {string} params.lastTransactionHash - The hash of the last transaction.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({walletName,lastTransactionHash}: GetTransactionsParams): Promise<Transaction[]> {
-        return getTransactions({ address: this.getReceiveAddress({ walletName: walletName ?? this.walletSelected }), lastTransactionHash });
+    getTransactions({
+        walletName,
+        lastTransactionHash,
+    }: GetTransactionsParams): Promise<Transaction[]> {
+        return getTransactions({
+            address: this.getReceiveAddress({
+                walletName: walletName ?? this.walletSelected,
+            }),
+            lastTransactionHash,
+        });
     }
     /**
      * Loads the connector for the Tezos wallet based on the specified BIP ID coin.
