@@ -52,8 +52,11 @@ export enum TransactionType {
     TRADE = 'TRADE',
     WITHDRAW = 'WITHDRAW',
     DEPOSIT = 'DEPOSIT',
-    STACKING = 'STACKING',
+    STAKING = 'STAKING',
+    ADD_LIQUIDY = 'ADD_LIQUIDY',
+    REMOVE_LIQUIDY = 'REMOVE_LIQUIDY',
     BUYSELL = 'BUYSELL',
+    APPROVE = 'APPROVE'
 }
 export enum StatusSwap {
     WAITING = 'Waiting',

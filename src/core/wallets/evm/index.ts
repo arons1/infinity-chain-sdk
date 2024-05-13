@@ -253,11 +253,20 @@ class EVMWallet extends CoinWallet {
                 if(tr.methodId?.toLowerCase()?.includes('withdraw')){
                     tr.transactionType = TransactionType.WITHDRAW
                 }
-                else if(tr.methodId?.toLowerCase()?.includes('stack')){
-                    tr.transactionType = TransactionType.STACKING
+                else if(tr.methodId?.toLowerCase()?.includes('stak')){
+                    tr.transactionType = TransactionType.STAKING
                 }
                 else if(tr.methodId?.toLowerCase()?.includes('deposit') || tr.methodId?.toLowerCase()?.includes('topup')){
                     tr.transactionType = TransactionType.DEPOSIT
+                }
+                else if(tr.methodId?.toLowerCase()?.includes('addliquid')){
+                    tr.transactionType = TransactionType.ADD_LIQUIDY
+                }
+                else if(tr.methodId?.toLowerCase()?.includes('removeliquid')){
+                    tr.transactionType = TransactionType.REMOVE_LIQUIDY
+                }
+                else if(tr.methodId?.toLowerCase()?.includes('approve')){
+                    tr.transactionType = TransactionType.APPROVE
                 }
                 else{
                     tr.transactionType = TransactionType.TRADE
