@@ -2,7 +2,9 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    SwapDetails,
     Transaction as TransactionNetwork,
+    TransactionType,
 } from '../../../networks/types';
 import {
     TrezorWebsocket,
@@ -22,7 +24,7 @@ import { getUTXO } from '../../../networks/utxo/getUTXO/index';
 import { UTXOResult } from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
-import { GetChangeAddressParams } from '../../types';
+import { GetChangeAddressParams, SetTransactionFormatParams } from '../../types';
 import {
     BuildParameters,
     EstimateFeeParams,
@@ -200,6 +202,7 @@ class UTXOWallet extends CoinWallet {
     async getTransactions({
         walletName,
         lastBlockHeight,
+        swapHistorical
     }: GetTransactionsParams): Promise<TransactionNetwork[]> {
         const results: TransactionNetwork[] = [];
         const xpubs = Object.values(
@@ -215,11 +218,17 @@ class UTXOWallet extends CoinWallet {
                 b => results.find(t => t.hash === b.hash) == undefined,
             ).map(a => results.push(a));
         }
-        return results.sort((a, b) =>
+        const transactions = results.sort((a, b) =>
             parseInt(a.blockNumber + '') > parseInt(b.blockNumber + '')
                 ? -1
                 : 1,
         );
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletName
+        })
+        return transactions
     }
     /**
      * Loads the connector for the UTXO wallet.
@@ -273,6 +282,41 @@ class UTXOWallet extends CoinWallet {
     }
     async getMinimumAmountSend(_props: any): Promise<number> {
         return config[this.id].dust as number;
+    }
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletName
+    }: SetTransactionFormatParams) {
+        const addresses=[]
+        for(let p of Object.keys(this.extendedPublicKeys[walletName ?? this.walletSelected])){
+            addresses.push(this.getReceiveAddress({walletName:walletName ?? this.walletSelected,protocol:p as unknown as Protocol}))
+        }
+        for(let tr of transactions){
+            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            if(isSwap){
+                tr.transactionType = TransactionType.SWAP
+                tr.swapDetails= {
+                    exchange:isSwap.exchange,
+                    fromAmount:isSwap.amount,
+                    toAmount:isSwap.amount_des,
+                    fromCoin:isSwap.from,
+                    toCoin:isSwap.to,
+                    fromAddress:isSwap.sender_address,
+                    toAddress:isSwap.receive_address,
+                    hashTo:isSwap.hash_to,
+                    hash:isSwap.hash
+                } as SwapDetails
+            }
+            else{
+                const voutReceive = addresses.find(a => tr.vOut?.find(b => b.address == a))
+                if(voutReceive)
+                    tr.transactionType = TransactionType.RECEIVE
+                else
+                    tr.transactionType = TransactionType.SEND
+            }
+        }
+
     }
 }
 

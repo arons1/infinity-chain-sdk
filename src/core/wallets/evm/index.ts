@@ -10,7 +10,10 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    SwapDetails,
+    TokenTransfer,
     Transaction,
+    TransactionType,
 } from '../../../networks/types';
 import Web3 from 'web3';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
@@ -27,6 +30,8 @@ import { Chains } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import { getTransactions as getTransactionsXDC } from '../../../transactionParsers/xdc/get';
 import { getTransactions } from '../../../transactionParsers/etherscan/get';
+import { SetTransactionFormatParams } from '../../types';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
@@ -177,20 +182,22 @@ class EVMWallet extends CoinWallet {
      * @param {number} [params.startblock] - The start block to retrieve transactions from. Any but for XDC
      * @return {Promise<any>} A promise that resolves to the transactions.
      */
-    getTransactions({
+    async getTransactions({
         walletName,
         lastTransactionHash,
         startblock,
+        swapHistorical
     }: GetTransactionParams): Promise<Transaction[]> {
+        let transactions;
         if (this.id == Coins.XDC) {
-            return getTransactionsXDC({
+            transactions = await getTransactionsXDC({
                 address: this.getReceiveAddress({
                     walletName: walletName ?? this.walletSelected,
                 }),
                 lastTransactionHash,
             });
         } else {
-            return getTransactions({
+            transactions = await getTransactions({
                 coinId: this.id,
                 address: this.getReceiveAddress({
                     walletName: walletName ?? this.walletSelected,
@@ -198,6 +205,8 @@ class EVMWallet extends CoinWallet {
                 startblock,
             });
         }
+        this.setTransactionFormat({ swapHistorical, transactions, walletName });
+        return transactions
     }
     /**
      * Loads the EVM connector for the specified chain.
@@ -207,6 +216,56 @@ class EVMWallet extends CoinWallet {
      */
     loadConnector() {
         this.connector = new Web3(config[this.id].rpc[0]);
+    }
+
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletName
+    }: SetTransactionFormatParams) {
+        const address=this.getReceiveAddress({
+            walletName:walletName ?? this.walletSelected
+        })
+        for(let tr of transactions){
+            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            if(isSwap){
+                tr.transactionType = TransactionType.SWAP
+                tr.swapDetails= {
+                    exchange:isSwap.exchange,
+                    fromAmount:isSwap.amount,
+                    toAmount:isSwap.amount_des,
+                    fromCoin:isSwap.from,
+                    toCoin:isSwap.to,
+                    fromAddress:isSwap.sender_address,
+                    toAddress:isSwap.receive_address,
+                    hashTo:isSwap.hash_to,
+                    hash:isSwap.hash
+                } as SwapDetails
+            }
+            else if(tr.tokenTransfers && tr.tokenTransfers?.length >1){
+                if(tr.methodId?.toLowerCase()?.includes('withdraw')){
+                    tr.transactionType = TransactionType.WITHDRAW
+                }
+                else if(tr.methodId?.toLowerCase()?.includes('stack')){
+                    tr.transactionType = TransactionType.STACKING
+                }
+                else if(tr.methodId?.toLowerCase()?.includes('deposit') || tr.methodId?.toLowerCase()?.includes('topup')){
+                    tr.transactionType = TransactionType.DEPOSIT
+                }
+                else{
+                    tr.transactionType = TransactionType.TRADE
+                }
+            }
+            else{
+                if(tr.from?.toLowerCase()==address.toLowerCase()){
+                    tr.transactionType = TransactionType.SEND
+                }
+                else{
+                    tr.transactionType = TransactionType.RECEIVE
+                }
+            }
+        }
+
     }
 }
 

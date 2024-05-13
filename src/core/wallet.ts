@@ -20,6 +20,7 @@ import BaseWallet from './base';
 import { initProtocols } from './utils';
 
 class CoinWallet extends BaseWallet {
+
     /**
      * Constructs a new instance of the class.
      *
@@ -259,6 +260,9 @@ class CoinWallet extends BaseWallet {
         throw new Error(NotImplemented);
     }
     getTransactions(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    setTransactionFormat(_props: any) {
         throw new Error(NotImplemented);
     }
 }

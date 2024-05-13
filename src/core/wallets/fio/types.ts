@@ -1,3 +1,5 @@
+import { SwapHistoricalTransaction } from "../../types";
+
 export type BuildTransactionParams = {
     value: string;
     destination: string;
@@ -7,4 +9,5 @@ export type BuildTransactionParams = {
 export type GetTransactionsParams = {
     walletName?: string;
     endBlock?: string;
+    swapHistorical?: SwapHistoricalTransaction[];
 };

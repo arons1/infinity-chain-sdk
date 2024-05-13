@@ -9,13 +9,16 @@ import { BuildTransactionFIOResult } from '../../../networks/fio/builder/types';
 import {
     CurrencyBalanceResult,
     EstimateFeeResult,
+    SwapDetails,
     Transaction,
+    TransactionType,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
 import { BuildTransactionParams, GetTransactionsParams } from './types';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/fio/get';
+import { SetTransactionFormatParams } from '../../types';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
@@ -83,16 +86,24 @@ class FIOWallet extends CoinWallet {
      * @param {string} params.endBlock - The end block to retrieve transactions until.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({
+    async getTransactions({
         walletName,
         endBlock,
+        swapHistorical
     }: GetTransactionsParams): Promise<Transaction[]> {
-        return getTransactions({
+        const transactions = await getTransactions({
             address: this.getReceiveAddress({
                 walletName: walletName ?? this.walletSelected,
             }),
             endBlock,
         });
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletName
+        })
+            
+        return transactions
     }
     loadConnector() {
         throw new Error(NotImplemented);
@@ -114,6 +125,41 @@ class FIOWallet extends CoinWallet {
      */
     async getMinimumAmountLeft(): Promise<number> {
         return config[this.id].dust as number;
+    }
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletName
+    }: SetTransactionFormatParams) {
+        const address=this.getReceiveAddress({
+            walletName:walletName ?? this.walletSelected
+        })
+        for(let tr of transactions){
+            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            if(isSwap){
+                tr.transactionType = TransactionType.SWAP
+                tr.swapDetails= {
+                    exchange:isSwap.exchange,
+                    fromAmount:isSwap.amount,
+                    toAmount:isSwap.amount_des,
+                    fromCoin:isSwap.from,
+                    toCoin:isSwap.to,
+                    fromAddress:isSwap.sender_address,
+                    toAddress:isSwap.receive_address,
+                    hashTo:isSwap.hash_to,
+                    hash:isSwap.hash
+                } as SwapDetails
+            }
+            else{
+                if(tr.from?.toLowerCase()==address.toLowerCase()){
+                    tr.transactionType = TransactionType.SEND
+                }
+                else{
+                    tr.transactionType = TransactionType.RECEIVE
+                }
+            }
+        }
+
     }
 }
 

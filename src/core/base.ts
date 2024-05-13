@@ -42,6 +42,7 @@ abstract class BaseWallet {
     abstract getMinimumBalance(_props: any): any;
     abstract getMinimumAmountLeft(_props: any): any;
     abstract getMinimumAmountSend(_props: any): any;
+    abstract setTransactionFormat(_props: any): any;
 }
 
 export default BaseWallet;

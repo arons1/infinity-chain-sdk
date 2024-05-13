@@ -11,7 +11,9 @@ import {
     BalanceResult,
     CurrencyBalanceResult,
     EstimateFeeResult,
+    SwapDetails,
     Transaction as TransactionNetwork,
+    TransactionType,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
 import {
@@ -37,6 +39,8 @@ import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 import pMemoize from 'p-memoize';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/solana/get';
+import { SetTransactionFormatParams } from '../../types';
+import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
@@ -152,12 +156,13 @@ class SolanaWallet extends CoinWallet {
      * @param {string[]} [params.accounts] - (Optional) An array of account addresses.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({
+    async getTransactions({
         walletName,
         signatures,
         accounts,
+        swapHistorical
     }: GetTransactionsParams): Promise<TransactionNetwork[]> {
-        return getTransactions({
+        const transactions = await getTransactions({
             address: this.getReceiveAddress({
                 walletName: walletName ?? this.walletSelected,
             }),
@@ -165,6 +170,12 @@ class SolanaWallet extends CoinWallet {
             signatures,
             accounts,
         });
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletName
+        })
+        return transactions
     }
     /**
      * Signs a transaction using the provided transaction and mnemonic.
@@ -247,6 +258,54 @@ class SolanaWallet extends CoinWallet {
             maxAge: 600_000,
         },
     );
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletName
+    }: SetTransactionFormatParams) {
+        const address=this.getReceiveAddress({
+            walletName:walletName ?? this.walletSelected
+        })
+        for(let tr of transactions){
+            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            if(isSwap){
+                tr.transactionType = TransactionType.SWAP
+                tr.swapDetails= {
+                    exchange:isSwap.exchange,
+                    fromAmount:isSwap.amount,
+                    toAmount:isSwap.amount_des,
+                    fromCoin:isSwap.from,
+                    toCoin:isSwap.to,
+                    fromAddress:isSwap.sender_address,
+                    toAddress:isSwap.receive_address,
+                    hashTo:isSwap.hash_to,
+                    hash:isSwap.hash
+                } as SwapDetails
+            }
+            else if(tr.tokenTransfers && tr.tokenTransfers?.length >1){
+                const outAmount = tr.tokenTransfers.find(a => a.from == address && new  BigNumber(a.value).isGreaterThan(0)) != undefined
+                const inAmount = tr.tokenTransfers.find(a => a.to == address && new  BigNumber(a.value).isGreaterThan(0)) != undefined
+                if(outAmount && inAmount) {
+                    tr.transactionType = TransactionType.TRADE
+                }
+                else if(outAmount){
+                    tr.transactionType = TransactionType.DEPOSIT
+                }
+                else {
+                    tr.transactionType = TransactionType.WITHDRAW
+                }
+            }
+            else{
+                if(tr.from?.toLowerCase()==address.toLowerCase()){
+                    tr.transactionType = TransactionType.SEND
+                }
+                else{
+                    tr.transactionType = TransactionType.RECEIVE
+                }
+            }
+        }
+
+    }
 }
 
 export default SolanaWallet;

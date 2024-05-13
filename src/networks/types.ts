@@ -21,7 +21,50 @@ export type Transaction = {
     methodId?: string;
     type?: string;
     contractAddress?: string;
+    swapDetails?:SwapDetails;
+    dexDetails?:DexDetails;
+    transactionType:TransactionType
 };
+export enum TransactionType {
+    RECEIVE = 'RECEIVE',
+    SEND = 'SEND',
+    DEX = 'DEX',
+    SWAP = 'SWAP',
+    TRADE = 'TRADE',
+    WITHDRAW = 'WITHDRAW',
+    DEPOSIT = 'DEPOSIT',
+    STACKING = 'STACKING',
+}
+export enum StatusSwap {
+    WAITING = 'Waiting',
+    FAILED = 'Failed',
+    COMPLETED = 'Completed',
+    IN_PROCESS = 'In progress',
+    KYC = "KYC",
+}
+export type SwapDetails = {
+    idTransaction:string;
+    fromCoin:string;
+    toCoin:string;
+    fromAmount:number;
+    toAmount:number;
+    exchange:string;
+    status:StatusSwap;
+    hashTo:string;
+    hash:string;
+    exchangeIcon?:string;
+    exchangeName?:string;
+    fromAddress:string;
+    toAddress:string;
+}
+export type DexDetails = {
+    exchangeIcon?:string;
+    exchangeName?:string;
+    fromAmount:string;
+    toAmount:string;
+    fromCoin:string;
+    toCoin:string;
+}
 export type InternalTransaction = {
     from: string;
     fromAlias?: string;

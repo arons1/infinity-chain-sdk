@@ -1,5 +1,6 @@
 import { Transaction, VersionedTransaction } from '@solana/web3.js';
 import { GetAccountsResult } from '../../../networks/solana/utils/types';
+import { SwapHistoricalTransaction } from '../../types';
 
 export type TransactionBuilderParams = {
     memo: string;
@@ -19,6 +20,7 @@ export type GetTransactionsParams = {
     walletName?: string;
     signatures?: Record<string, string>;
     accounts?: GetAccountsResult[];
+    swapHistorical?: SwapHistoricalTransaction[];
 };
 
 export type SignMessageParams = {

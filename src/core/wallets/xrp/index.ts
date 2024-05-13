@@ -1,7 +1,9 @@
 import {
     CurrencyBalanceResult,
     EstimateFeeResult,
+    SwapDetails,
     Transaction,
+    TransactionType,
 } from '../../../networks/types';
 import {
     buildTransaction,
@@ -17,6 +19,7 @@ import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/xrp/get';
+import { SetTransactionFormatParams } from '../../types';
 
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
@@ -93,17 +96,24 @@ class XRPWallet extends CoinWallet {
      * @param {string} params.lastTransactionHash - The hash of the last transaction.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
-    getTransactions({
+    async getTransactions({
         walletName,
         lastTransactionHash,
+        swapHistorical
     }: GetTransactionsParams): Promise<Transaction[]> {
-        return getTransactions({
+        const transactions = await getTransactions({
             connector: this.connector,
             address: this.getReceiveAddress({
                 walletName: walletName ?? this.walletSelected,
             }),
             lastTransactionHash,
         });
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletName
+        })
+        return transactions
     }
     /**
      * Initializes the connector for the current object.
@@ -125,6 +135,41 @@ class XRPWallet extends CoinWallet {
             .plus(this.connector.getState().reserve.owner as number)
             .shiftedBy(6)
             .toNumber();
+    }
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletName
+    }: SetTransactionFormatParams) {
+        const address=this.getReceiveAddress({
+            walletName:walletName ?? this.walletSelected
+        })
+        for(let tr of transactions){
+            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            if(isSwap){
+                tr.transactionType = TransactionType.SWAP
+                tr.swapDetails= {
+                    exchange:isSwap.exchange,
+                    fromAmount:isSwap.amount,
+                    toAmount:isSwap.amount_des,
+                    fromCoin:isSwap.from,
+                    toCoin:isSwap.to,
+                    fromAddress:isSwap.sender_address,
+                    toAddress:isSwap.receive_address,
+                    hashTo:isSwap.hash_to,
+                    hash:isSwap.hash
+                } as SwapDetails
+            }
+            else{
+                if(tr.from?.toLowerCase()==address.toLowerCase()){
+                    tr.transactionType = TransactionType.SEND
+                }
+                else{
+                    tr.transactionType = TransactionType.RECEIVE
+                }
+            }
+        }
+
     }
 }
 

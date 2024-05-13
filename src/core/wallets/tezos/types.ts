@@ -1,4 +1,5 @@
 import { Transaction } from 'stellar-sdk';
+import { SwapHistoricalTransaction } from '../../types';
 
 export type EstimateFeeParams = {
     value: string;
@@ -22,6 +23,7 @@ export type BuildTransactionParams = {
 export type GetTransactionsParams = {
     walletName?: string;
     lastTransactionHash?: string;
+    swapHistorical?: SwapHistoricalTransaction[];
 };
 
 export type GetAccountBalancesParams = {
