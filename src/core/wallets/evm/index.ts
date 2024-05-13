@@ -8,6 +8,7 @@ import {
 } from '../../../networks/evm';
 import {
     BalanceResult,
+    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
     SwapDetails,
@@ -221,13 +222,15 @@ class EVMWallet extends CoinWallet {
     setTransactionFormat({
         swapHistorical,
         transactions,
-        walletName
+        walletName,
+        buysellHistorical
     }: SetTransactionFormatParams) {
         const address=this.getReceiveAddress({
             walletName:walletName ?? this.walletSelected
         })
         for(let tr of transactions){
             const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
             if(isSwap){
                 tr.transactionType = TransactionType.SWAP
                 tr.swapDetails= {
@@ -241,6 +244,10 @@ class EVMWallet extends CoinWallet {
                     hashTo:isSwap.hash_to,
                     hash:isSwap.hash
                 } as SwapDetails
+            }
+            else if(isBuySell){
+                tr.transactionType = TransactionType.BUYSELL
+                tr.buySellDetails= { ... isBuySell } as BuySellDetails
             }
             else if(tr.tokenTransfers && tr.tokenTransfers?.length >1){
                 if(tr.methodId?.toLowerCase()?.includes('withdraw')){

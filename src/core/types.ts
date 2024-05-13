@@ -54,9 +54,26 @@ export type SwapHistoricalTransaction = {
     hash_to: string;
     is_fixed: boolean;
 };
-
+export type BuySellHistoricalTransaction = {
+    idService: string;
+    walletAddress: string;
+    createdAt: string;
+    status: string;
+    fiatCurrency: string;
+    userId: string;
+    cryptoCurrency: string;
+    isBuyOrSell: string;
+    fiatAmount: number;
+    cryptoAmount: number;
+    network: string;
+    txid: string;
+    provider: string;
+    coinId: string;
+    fiatTransactionId: string;
+}
 export type SetTransactionFormatParams = {
     transactions:Transaction[];
     swapHistorical?:SwapHistoricalTransaction[];
     walletName?:string
+    buysellHistorical?:BuySellHistoricalTransaction[]
 }

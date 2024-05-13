@@ -1,5 +1,23 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UTXOResult } from './utxo/getUTXO/types';
+
+export type BuySellDetails ={
+    idService: string;
+    walletAddress: string;
+    createdAt: string;
+    status: string;
+    fiatCurrency: string;
+    userId: string;
+    cryptoCurrency: string;
+    isBuyOrSell: string;
+    fiatAmount: number;
+    cryptoAmount: number;
+    network: string;
+    txid: string;
+    provider: string;
+    coinId: string;
+    fiatTransactionId: string;
+}
 export type Transaction = {
     blockNumber?: string;
     timeStamp?: string;
@@ -23,7 +41,8 @@ export type Transaction = {
     contractAddress?: string;
     swapDetails?:SwapDetails;
     dexDetails?:DexDetails;
-    transactionType:TransactionType
+    transactionType:TransactionType;
+    buySellDetails?:BuySellDetails;
 };
 export enum TransactionType {
     RECEIVE = 'RECEIVE',
@@ -34,6 +53,7 @@ export enum TransactionType {
     WITHDRAW = 'WITHDRAW',
     DEPOSIT = 'DEPOSIT',
     STACKING = 'STACKING',
+    BUYSELL = 'BUYSELL',
 }
 export enum StatusSwap {
     WAITING = 'Waiting',

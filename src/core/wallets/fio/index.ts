@@ -7,6 +7,7 @@ import {
 } from '../../../networks/fio';
 import { BuildTransactionFIOResult } from '../../../networks/fio/builder/types';
 import {
+    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
     SwapDetails,
@@ -129,13 +130,16 @@ class FIOWallet extends CoinWallet {
     setTransactionFormat({
         swapHistorical,
         transactions,
-        walletName
+        walletName,
+        buysellHistorical
     }: SetTransactionFormatParams) {
         const address=this.getReceiveAddress({
             walletName:walletName ?? this.walletSelected
         })
         for(let tr of transactions){
             const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+            const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
+
             if(isSwap){
                 tr.transactionType = TransactionType.SWAP
                 tr.swapDetails= {
@@ -149,6 +153,10 @@ class FIOWallet extends CoinWallet {
                     hashTo:isSwap.hash_to,
                     hash:isSwap.hash
                 } as SwapDetails
+            }
+            else if(isBuySell){
+                tr.transactionType = TransactionType.BUYSELL
+                tr.buySellDetails= { ... isBuySell } as BuySellDetails
             }
             else{
                 if(tr.from?.toLowerCase()==address.toLowerCase()){
