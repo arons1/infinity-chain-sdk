@@ -259,6 +259,14 @@ class SolanaWallet extends CoinWallet {
             maxAge: 600_000,
         },
     );
+    /**
+     * Sets the transaction format based on historical swap and buy/sell data.
+     *
+     * @param {Array<SwapHistorical>} swapHistorical - The historical swap data.
+     * @param {Array<Transaction>} transactions - The list of transactions to format.
+     * @param {string} walletName - The name of the wallet.
+     * @param {Array<BuySellHistorical>} buysellHistorical - The historical buy/sell data.
+     */
     setTransactionFormat({
         swapHistorical,
         transactions,

@@ -178,6 +178,15 @@ class StellarWallet extends CoinWallet {
         return config[this.id].dust as number;
     }
 
+    /**
+     * Sets the transaction format for the given transactions based on the provided parameters.
+     *
+     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
+     * @param {SwapHistoricalTransaction[]} params.swapHistorical - The historical swap transactions.
+     * @param {Transaction[]} params.transactions - The transactions to set the format for.
+     * @param {string} [params.walletName] - The name of the wallet. If not provided, the currently selected wallet will be used.
+     * @param {BuySellHistoricalTransaction[]} [params.buysellHistorical] - The historical buy/sell transactions.
+     */
     setTransactionFormat({
         swapHistorical,
         transactions,

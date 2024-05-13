@@ -240,6 +240,14 @@ class TezosWallet extends CoinWallet {
             message: _props.message,
         });
     }
+    /**
+     * Sets the transaction format based on historical swap, buy/sell data, and token transfers.
+     *
+     * @param {Transaction[]} transactions - The array of transactions to set the format for.
+     * @param {string} walletName - The name of the wallet used for the transactions.
+     * @param {Transaction[]} swapHistorical - The historical swap transactions.
+     * @param {Transaction[]} buysellHistorical - The historical buy/sell transactions.
+     */
     setTransactionFormat({
         swapHistorical,
         transactions,

@@ -217,6 +217,15 @@ class EVMWallet extends CoinWallet {
         this.connector = new Web3(config[this.id].rpc[0]);
     }
 
+    /**
+     * Sets the transaction format for a list of transactions based on their properties and the provided historical data.
+     *
+     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
+     * @param {Array<Transaction>} params.transactions - The list of transactions to set the format for.
+     * @param {string} [params.walletName] - The name of the wallet. If not provided, the currently selected wallet is used.
+     * @param {Array<SwapHistorical>} [params.swapHistorical] - The historical data for swaps.
+     * @param {Array<BuySellHistorical>} [params.buysellHistorical] - The historical data for buys and sells.
+     */
     setTransactionFormat({
         swapHistorical,
         transactions,

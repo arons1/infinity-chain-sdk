@@ -287,6 +287,15 @@ class UTXOWallet extends CoinWallet {
     async getMinimumAmountSend(_props: any): Promise<number> {
         return config[this.id].dust as number;
     }
+    /**
+     * Sets the transaction format for a given set of transactions.
+     *
+     * @param {SetTransactionFormatParams} swapHistorical - An array of historical swaps.
+     * @param {Transaction[]} transactions - An array of transactions to format.
+     * @param {string} walletName - The name of the wallet.
+     * @param {BuySellHistorical[]} buysellHistorical - An array of historical buys and sells.
+     * @return {void} This function does not return anything.
+     */
     setTransactionFormat({
         swapHistorical,
         transactions,
