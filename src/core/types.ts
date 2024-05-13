@@ -34,7 +34,6 @@ export type GetChangeAddressParams = {
     walletName?: string;
 };
 
-
 export type SwapHistoricalTransaction = {
     id: number;
     id_transaction: string;
@@ -70,10 +69,10 @@ export type BuySellHistoricalTransaction = {
     provider: string;
     coinId: string;
     fiatTransactionId: string;
-}
+};
 export type SetTransactionFormatParams = {
-    transactions:Transaction[];
-    swapHistorical?:SwapHistoricalTransaction[];
-    walletName?:string
-    buysellHistorical?:BuySellHistoricalTransaction[]
-}
+    transactions: Transaction[];
+    swapHistorical?: SwapHistoricalTransaction[];
+    walletName?: string;
+    buysellHistorical?: BuySellHistoricalTransaction[];
+};

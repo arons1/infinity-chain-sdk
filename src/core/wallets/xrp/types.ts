@@ -1,4 +1,4 @@
-import { SwapHistoricalTransaction } from "../../types";
+import { SwapHistoricalTransaction } from '../../types';
 
 export type BuildTransactionParams = {
     amount: string;

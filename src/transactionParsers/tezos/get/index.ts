@@ -38,7 +38,7 @@ const getTransactionsRequest = async ({
                 address,
                 lastTransactionHash,
                 cursor: trs[trs.length - 1].id + '',
-            })
+            });
             newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;
@@ -74,7 +74,7 @@ const getTransactionsTokenRequest = async ({
                 address,
                 lastTransactionHash,
                 cursor: trs[trs.length - 1].id + '',
-            })
+            });
             newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;

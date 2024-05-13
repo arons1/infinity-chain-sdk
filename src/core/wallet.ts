@@ -20,7 +20,6 @@ import BaseWallet from './base';
 import { initProtocols } from './utils';
 
 class CoinWallet extends BaseWallet {
-
     /**
      * Constructs a new instance of the class.
      *

@@ -1,7 +1,6 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { SwapHistoricalTransaction } from '../../types';
 
-
 export type EstimateGasParams = {
     tokenContract?: string;
     destination?: string;

@@ -90,7 +90,7 @@ class FIOWallet extends CoinWallet {
     async getTransactions({
         walletName,
         endBlock,
-        swapHistorical
+        swapHistorical,
     }: GetTransactionsParams): Promise<Transaction[]> {
         const transactions = await getTransactions({
             address: this.getReceiveAddress({
@@ -101,10 +101,10 @@ class FIOWallet extends CoinWallet {
         this.setTransactionFormat({
             swapHistorical,
             transactions,
-            walletName
-        })
-            
-        return transactions
+            walletName,
+        });
+
+        return transactions;
     }
     loadConnector() {
         throw new Error(NotImplemented);
@@ -131,43 +131,41 @@ class FIOWallet extends CoinWallet {
         swapHistorical,
         transactions,
         walletName,
-        buysellHistorical
+        buysellHistorical,
     }: SetTransactionFormatParams) {
-        const address=this.getReceiveAddress({
-            walletName:walletName ?? this.walletSelected
-        })
-        for(let tr of transactions){
-            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        const address = this.getReceiveAddress({
+            walletName: walletName ?? this.walletSelected,
+        });
+        for (let tr of transactions) {
+            const isSwap = swapHistorical?.find(
+                b => b.hash == tr.hash || b.hash_to == tr.hash,
+            );
             const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if(isSwap){
-                tr.transactionType = TransactionType.SWAP
-                tr.swapDetails= {
-                    exchange:isSwap.exchange,
-                    fromAmount:isSwap.amount,
-                    toAmount:isSwap.amount_des,
-                    fromCoin:isSwap.from,
-                    toCoin:isSwap.to,
-                    fromAddress:isSwap.sender_address,
-                    toAddress:isSwap.receive_address,
-                    hashTo:isSwap.hash_to,
-                    hash:isSwap.hash
-                } as SwapDetails
-            }
-            else if(isBuySell){
-                tr.transactionType = TransactionType.BUYSELL
-                tr.buySellDetails= { ... isBuySell } as BuySellDetails
-            }
-            else{
-                if(tr.from?.toLowerCase()==address.toLowerCase()){
-                    tr.transactionType = TransactionType.SEND
-                }
-                else{
-                    tr.transactionType = TransactionType.RECEIVE
+            if (isSwap) {
+                tr.transactionType = TransactionType.SWAP;
+                tr.swapDetails = {
+                    exchange: isSwap.exchange,
+                    fromAmount: isSwap.amount,
+                    toAmount: isSwap.amount_des,
+                    fromCoin: isSwap.from,
+                    toCoin: isSwap.to,
+                    fromAddress: isSwap.sender_address,
+                    toAddress: isSwap.receive_address,
+                    hashTo: isSwap.hash_to,
+                    hash: isSwap.hash,
+                } as SwapDetails;
+            } else if (isBuySell) {
+                tr.transactionType = TransactionType.BUYSELL;
+                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+            } else {
+                if (tr.from?.toLowerCase() == address.toLowerCase()) {
+                    tr.transactionType = TransactionType.SEND;
+                } else {
+                    tr.transactionType = TransactionType.RECEIVE;
                 }
             }
         }
-
     }
 }
 

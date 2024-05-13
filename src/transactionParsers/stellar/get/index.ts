@@ -31,12 +31,11 @@ const getTransactionsRequest = async ({
             trs.find(a => a.transaction.id == lastTransactionHash) == undefined
         ) {
             const newTransactions = await getTransactionsRequest({
-                    address,
-                    lastTransactionHash,
-                    cursor: trs[trs.length - 1].id,
-                })
+                address,
+                lastTransactionHash,
+                cursor: trs[trs.length - 1].id,
+            });
             newTransactions.map(a => finalResults.push(a));
-
         }
         return finalResults;
     }
@@ -72,7 +71,7 @@ const getEffectsRequest = async ({
                 address,
                 lastTransactionHash,
                 cursor: trs[trs.length - 1].id,
-            })
+            });
             newTransactions.map(a => finalResults.push(a));
         }
         return finalResults;

@@ -48,7 +48,7 @@ export const getTransactions = async ({
             address,
             lastTransactionHash,
             cursor: result.marker,
-        })
+        });
         newTransactions.map(a => transactions.push(a));
     }
     return transactions;

@@ -171,7 +171,7 @@ class TezosWallet extends CoinWallet {
     async getTransactions({
         walletName,
         lastTransactionHash,
-        swapHistorical
+        swapHistorical,
     }: GetTransactionsParams): Promise<Transaction[]> {
         const transactions = await getTransactions({
             address: this.getReceiveAddress({
@@ -182,9 +182,9 @@ class TezosWallet extends CoinWallet {
         this.setTransactionFormat({
             swapHistorical,
             transactions,
-            walletName
-        })
-        return transactions
+            walletName,
+        });
+        return transactions;
     }
     /**
      * Loads the connector for the Tezos wallet based on the specified BIP ID coin.
@@ -244,56 +244,61 @@ class TezosWallet extends CoinWallet {
         swapHistorical,
         transactions,
         walletName,
-        buysellHistorical
+        buysellHistorical,
     }: SetTransactionFormatParams) {
-        const address=this.getReceiveAddress({
-            walletName:walletName ?? this.walletSelected
-        })
-        for(let tr of transactions){
-            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        const address = this.getReceiveAddress({
+            walletName: walletName ?? this.walletSelected,
+        });
+        for (let tr of transactions) {
+            const isSwap = swapHistorical?.find(
+                b => b.hash == tr.hash || b.hash_to == tr.hash,
+            );
             const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if(isSwap){
-                tr.transactionType = TransactionType.SWAP
-                tr.swapDetails= {
-                    exchange:isSwap.exchange,
-                    fromAmount:isSwap.amount,
-                    toAmount:isSwap.amount_des,
-                    fromCoin:isSwap.from,
-                    toCoin:isSwap.to,
-                    fromAddress:isSwap.sender_address,
-                    toAddress:isSwap.receive_address,
-                    hashTo:isSwap.hash_to,
-                    hash:isSwap.hash
-                } as SwapDetails
-            }
-            else if(isBuySell){
-                tr.transactionType = TransactionType.BUYSELL
-                tr.buySellDetails= { ... isBuySell } as BuySellDetails
-            }
-            else if(tr.tokenTransfers && tr.tokenTransfers?.length >1){
-                const outAmount = tr.tokenTransfers.find(a => a.from == address && new  BigNumber(a.value).isGreaterThan(0)) != undefined
-                const inAmount = tr.tokenTransfers.find(a => a.to == address && new  BigNumber(a.value).isGreaterThan(0)) != undefined
-                if(outAmount && inAmount) {
-                    tr.transactionType = TransactionType.TRADE
+            if (isSwap) {
+                tr.transactionType = TransactionType.SWAP;
+                tr.swapDetails = {
+                    exchange: isSwap.exchange,
+                    fromAmount: isSwap.amount,
+                    toAmount: isSwap.amount_des,
+                    fromCoin: isSwap.from,
+                    toCoin: isSwap.to,
+                    fromAddress: isSwap.sender_address,
+                    toAddress: isSwap.receive_address,
+                    hashTo: isSwap.hash_to,
+                    hash: isSwap.hash,
+                } as SwapDetails;
+            } else if (isBuySell) {
+                tr.transactionType = TransactionType.BUYSELL;
+                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+            } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
+                const outAmount =
+                    tr.tokenTransfers.find(
+                        a =>
+                            a.from == address &&
+                            new BigNumber(a.value).isGreaterThan(0),
+                    ) != undefined;
+                const inAmount =
+                    tr.tokenTransfers.find(
+                        a =>
+                            a.to == address &&
+                            new BigNumber(a.value).isGreaterThan(0),
+                    ) != undefined;
+                if (outAmount && inAmount) {
+                    tr.transactionType = TransactionType.TRADE;
+                } else if (outAmount) {
+                    tr.transactionType = TransactionType.DEPOSIT;
+                } else {
+                    tr.transactionType = TransactionType.WITHDRAW;
                 }
-                else if(outAmount){
-                    tr.transactionType = TransactionType.DEPOSIT
-                }
-                else {
-                    tr.transactionType = TransactionType.WITHDRAW
-                }
-            }
-            else{
-                if(tr.from?.toLowerCase()==address.toLowerCase()){
-                    tr.transactionType = TransactionType.SEND
-                }
-                else{
-                    tr.transactionType = TransactionType.RECEIVE
+            } else {
+                if (tr.from?.toLowerCase() == address.toLowerCase()) {
+                    tr.transactionType = TransactionType.SEND;
+                } else {
+                    tr.transactionType = TransactionType.RECEIVE;
                 }
             }
         }
-
     }
 }
 

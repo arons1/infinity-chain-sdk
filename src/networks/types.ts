@@ -1,7 +1,7 @@
 import { TransactionEVM } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { UTXOResult } from './utxo/getUTXO/types';
 
-export type BuySellDetails ={
+export type BuySellDetails = {
     idService: string;
     walletAddress: string;
     createdAt: string;
@@ -17,7 +17,7 @@ export type BuySellDetails ={
     provider: string;
     coinId: string;
     fiatTransactionId: string;
-}
+};
 export type Transaction = {
     blockNumber?: string;
     timeStamp?: string;
@@ -39,10 +39,10 @@ export type Transaction = {
     methodId?: string;
     type?: string;
     contractAddress?: string;
-    swapDetails?:SwapDetails;
-    dexDetails?:DexDetails;
-    transactionType:TransactionType;
-    buySellDetails?:BuySellDetails;
+    swapDetails?: SwapDetails;
+    dexDetails?: DexDetails;
+    transactionType: TransactionType;
+    buySellDetails?: BuySellDetails;
 };
 export enum TransactionType {
     RECEIVE = 'RECEIVE',
@@ -56,38 +56,38 @@ export enum TransactionType {
     ADD_LIQUIDY = 'ADD_LIQUIDY',
     REMOVE_LIQUIDY = 'REMOVE_LIQUIDY',
     BUYSELL = 'BUYSELL',
-    APPROVE = 'APPROVE'
+    APPROVE = 'APPROVE',
 }
 export enum StatusSwap {
     WAITING = 'Waiting',
     FAILED = 'Failed',
     COMPLETED = 'Completed',
     IN_PROCESS = 'In progress',
-    KYC = "KYC",
+    KYC = 'KYC',
 }
 export type SwapDetails = {
-    idTransaction:string;
-    fromCoin:string;
-    toCoin:string;
-    fromAmount:number;
-    toAmount:number;
-    exchange:string;
-    status:StatusSwap;
-    hashTo:string;
-    hash:string;
-    exchangeIcon?:string;
-    exchangeName?:string;
-    fromAddress:string;
-    toAddress:string;
-}
+    idTransaction: string;
+    fromCoin: string;
+    toCoin: string;
+    fromAmount: number;
+    toAmount: number;
+    exchange: string;
+    status: StatusSwap;
+    hashTo: string;
+    hash: string;
+    exchangeIcon?: string;
+    exchangeName?: string;
+    fromAddress: string;
+    toAddress: string;
+};
 export type DexDetails = {
-    exchangeIcon?:string;
-    exchangeName?:string;
-    fromAmount:string;
-    toAmount:string;
-    fromCoin:string;
-    toCoin:string;
-}
+    exchangeIcon?: string;
+    exchangeName?: string;
+    fromAmount: string;
+    toAmount: string;
+    fromCoin: string;
+    toCoin: string;
+};
 export type InternalTransaction = {
     from: string;
     fromAlias?: string;

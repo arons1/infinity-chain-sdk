@@ -25,7 +25,10 @@ import { getUTXO } from '../../../networks/utxo/getUTXO/index';
 import { UTXOResult } from '../../../networks/utxo/getUTXO/types';
 import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/index';
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
-import { GetChangeAddressParams, SetTransactionFormatParams } from '../../types';
+import {
+    GetChangeAddressParams,
+    SetTransactionFormatParams,
+} from '../../types';
 import {
     BuildParameters,
     EstimateFeeParams,
@@ -203,7 +206,7 @@ class UTXOWallet extends CoinWallet {
     async getTransactions({
         walletName,
         lastBlockHeight,
-        swapHistorical
+        swapHistorical,
     }: GetTransactionsParams): Promise<TransactionNetwork[]> {
         const results: TransactionNetwork[] = [];
         const xpubs = Object.values(
@@ -227,9 +230,9 @@ class UTXOWallet extends CoinWallet {
         this.setTransactionFormat({
             swapHistorical,
             transactions,
-            walletName
-        })
-        return transactions
+            walletName,
+        });
+        return transactions;
     }
     /**
      * Loads the connector for the UTXO wallet.
@@ -288,43 +291,49 @@ class UTXOWallet extends CoinWallet {
         swapHistorical,
         transactions,
         walletName,
-        buysellHistorical
+        buysellHistorical,
     }: SetTransactionFormatParams) {
-        const addresses=[]
-        for(let p of Object.keys(this.extendedPublicKeys[walletName ?? this.walletSelected])){
-            addresses.push(this.getReceiveAddress({walletName:walletName ?? this.walletSelected,protocol:p as unknown as Protocol}))
+        const addresses = [];
+        for (let p of Object.keys(
+            this.extendedPublicKeys[walletName ?? this.walletSelected],
+        )) {
+            addresses.push(
+                this.getReceiveAddress({
+                    walletName: walletName ?? this.walletSelected,
+                    protocol: p as unknown as Protocol,
+                }),
+            );
         }
-        for(let tr of transactions){
-            const isSwap = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        for (let tr of transactions) {
+            const isSwap = swapHistorical?.find(
+                b => b.hash == tr.hash || b.hash_to == tr.hash,
+            );
             const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if(isSwap){
-                tr.transactionType = TransactionType.SWAP
-                tr.swapDetails= {
-                    exchange:isSwap.exchange,
-                    fromAmount:isSwap.amount,
-                    toAmount:isSwap.amount_des,
-                    fromCoin:isSwap.from,
-                    toCoin:isSwap.to,
-                    fromAddress:isSwap.sender_address,
-                    toAddress:isSwap.receive_address,
-                    hashTo:isSwap.hash_to,
-                    hash:isSwap.hash
-                } as SwapDetails
-            }
-            else if(isBuySell){
-                tr.transactionType = TransactionType.BUYSELL
-                tr.buySellDetails= { ... isBuySell } as BuySellDetails
-            }
-            else{
-                const voutReceive = addresses.find(a => tr.vOut?.find(b => b.address == a))
-                if(voutReceive)
-                    tr.transactionType = TransactionType.RECEIVE
-                else
-                    tr.transactionType = TransactionType.SEND
+            if (isSwap) {
+                tr.transactionType = TransactionType.SWAP;
+                tr.swapDetails = {
+                    exchange: isSwap.exchange,
+                    fromAmount: isSwap.amount,
+                    toAmount: isSwap.amount_des,
+                    fromCoin: isSwap.from,
+                    toCoin: isSwap.to,
+                    fromAddress: isSwap.sender_address,
+                    toAddress: isSwap.receive_address,
+                    hashTo: isSwap.hash_to,
+                    hash: isSwap.hash,
+                } as SwapDetails;
+            } else if (isBuySell) {
+                tr.transactionType = TransactionType.BUYSELL;
+                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+            } else {
+                const voutReceive = addresses.find(a =>
+                    tr.vOut?.find(b => b.address == a),
+                );
+                if (voutReceive) tr.transactionType = TransactionType.RECEIVE;
+                else tr.transactionType = TransactionType.SEND;
             }
         }
-
     }
 }
 
