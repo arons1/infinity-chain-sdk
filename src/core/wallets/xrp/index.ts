@@ -54,12 +54,9 @@ class XRPWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the built transaction.
      */
     buildTransaction(_props: BuildTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
-        const keyPair = this.base.getKeyPair({ seed });
         return buildTransaction({
             ..._props,
-            connector: this.connector,
-            keyPair,
+            connector: this.connector
         });
     }
 

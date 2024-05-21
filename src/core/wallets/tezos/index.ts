@@ -81,13 +81,11 @@ class TezosWallet extends CoinWallet {
     buildTransaction(
         _props: BuildTransactionParams,
     ): Promise<BuildTransactionResult> {
-        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
-        const keyPair = this.base.getKeyPair({ seed });
-        const privateKey = getPrivateKey({ keyPair });
+        const privateKey = getPrivateKey({ keyPair: _props.keyPair });
         const pkHash = getTezosPublicKeyHash({
-            keyPair,
+            keyPair: _props.keyPair,
         });
-        const source = this.base.getPublicAddress({ keyPair });
+        const source = this.base.getPublicAddress({ keyPair: _props.keyPair });
         return buildTransaction({
             ..._props,
             pkHash,
@@ -145,13 +143,11 @@ class TezosWallet extends CoinWallet {
      * @return {Promise<string>} - A promise that resolves to the transaction hash.
      */
     sendTransaction(_props: BuildTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
-        const keyPair = this.base.getKeyPair({ seed });
-        const privateKey = getPrivateKey({ keyPair });
+        const privateKey = getPrivateKey({ keyPair: _props.keyPair });
         const pkHash = getTezosPublicKeyHash({
-            keyPair,
+            keyPair: _props.keyPair,
         });
-        const source = this.base.getPublicAddress({ keyPair });
+        const source = this.base.getPublicAddress({ keyPair: _props.keyPair });
         return sendTransaction({
             ..._props,
             pkHash,
@@ -209,34 +205,27 @@ class TezosWallet extends CoinWallet {
      * Signs a transaction using the provided parameters.
      *
      * @param {SignTransactionParams} _props - The parameters for signing the transaction.
-     * @param {string} _props.mnemonic - The mnemonic used for signing.
+     * @param {any} _props.keyPair - The keyPair used for signing.
      * @return {Promise<string>} - A promise that resolves to the signed transaction.
      */
     signTransaction(_props: SignTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
-        const keyPair = this.base.getKeyPair({ seed });
         return signTransaction({
             ..._props,
-            keyPair,
             coinId: this.id,
         });
     }
 
     /**
-     * Signs a message using the provided mnemonic and message.
+     * Signs a message using the provided secretKey and message.
      *
      * @param {SignMessageParams} _props - The parameters for signing the message.
-     * @param {string} _props.mnemonic - The mnemonic used for signing.
+     * @param {Buffer} _props.secretKey - The secretKey used for signing.
      * @param {string} _props.message - The message to sign.
      * @return {Uint8Array} The signed message.
      */
     signMessage(_props: SignMessageParams): Uint8Array {
-        const seed = this.base.getSeed({ mnemonic: _props.mnemonic });
-        const secretKey = this.base.getSecretKey({
-            seed,
-        });
         return sign({
-            secretKey,
+            secretKey:_props.secretKey,
             message: _props.message,
         });
     }

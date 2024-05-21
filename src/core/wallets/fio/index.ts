@@ -46,15 +46,11 @@ class FIOWallet extends CoinWallet {
     buildTransaction(
         _props: BuildTransactionParams,
     ): Promise<BuildTransactionFIOResult> {
-        const rootNode = this.base.getRootNode(_props.mnemonic);
-        const privateAccountNode = this.base.getPrivateMasterKey({ rootNode });
-        const privateKey = this.base.getPrivateAddress({ privateAccountNode });
         return buildTransaction({
             ..._props,
             source: this.getReceiveAddress({
                 walletName: _props.walletName ?? this.walletSelected,
             }),
-            privateKey,
         });
     }
     /**

@@ -1,4 +1,4 @@
-import { Transaction, VersionedTransaction } from '@solana/web3.js';
+import { Keypair, Transaction, VersionedTransaction } from '@solana/web3.js';
 import { GetAccountsResult } from '../../../networks/solana/utils/types';
 import { SwapHistoricalTransaction } from '../../types';
 
@@ -8,12 +8,12 @@ export type TransactionBuilderParams = {
     destination: string;
     decimalsToken?: number;
     value: string;
-    mnemonic: string;
+    keyPair: Keypair;
 };
 
 export type SignTransactionParams = {
     transaction: VersionedTransaction | Transaction;
-    mnemonic: string;
+    keyPair: Keypair;
 };
 
 export type GetTransactionsParams = {
@@ -24,7 +24,7 @@ export type GetTransactionsParams = {
 };
 
 export type SignMessageParams = {
-    mnemonic: string;
+    keyPair: Keypair;
     message: Buffer;
 };
 export type GetBalanceAfterParams = {

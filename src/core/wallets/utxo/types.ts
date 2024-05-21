@@ -2,6 +2,7 @@ import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 
 import { UTXOResult } from '../../../networks/utxo/getUTXO/types';
 import { SwapHistoricalTransaction } from '../../types';
+import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 
 export type EstimateFeeParams = {
     amount: string;
@@ -16,7 +17,7 @@ export type GetTransactionsParams = {
 export type BuildParameters = {
     coinId: Coins;
     amount: string;
-    mnemonic: string;
+    rootNode: BIP32Interface;
     destination: string;
     memo?: string;
     utxos?: UTXOResult[];

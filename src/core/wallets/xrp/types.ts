@@ -1,3 +1,4 @@
+import { BIP32Interface } from 'bitcoinjs-lib';
 import { SwapHistoricalTransaction } from '../../types';
 
 export type BuildTransactionParams = {
@@ -5,7 +6,7 @@ export type BuildTransactionParams = {
     from: string;
     to: string;
     memo?: string | undefined;
-    mnemonic: string;
+    keyPair: BIP32Interface;
 };
 export type GetTransactionsParams = {
     walletName?: string;

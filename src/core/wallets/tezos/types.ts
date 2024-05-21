@@ -14,7 +14,7 @@ export type BuildTransactionParams = {
     destination: string;
     value: string;
     mintToken?: string;
-    mnemonic: string;
+    keyPair: any;
     idToken?: number;
     decimalsToken?: number;
     feeRatio?: number;
@@ -32,10 +32,10 @@ export type GetAccountBalancesParams = {
 };
 
 export type SignTransactionParams = {
-    mnemonic: string;
+    keyPair: any;
     transaction: Transaction;
 };
 export type SignMessageParams = {
-    mnemonic: string;
+    secretKey: Buffer;
     message: Buffer;
 };

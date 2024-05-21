@@ -88,7 +88,7 @@ class UTXOWallet extends CoinWallet {
         const accounts: Account[] = [];
         for (let derivation of config[this.id].derivations) {
             const privateAccountNode = this.base.getPrivateMasterKey({
-                rootNode: this.base.getRootNode(_props.mnemonic),
+                rootNode: _props.rootNode,
                 protocol: derivation.protocol,
             });
             const account: Account = {

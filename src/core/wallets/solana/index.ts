@@ -91,15 +91,8 @@ class SolanaWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
     buildTransaction(_props: TransactionBuilderParams): Promise<string> {
-        const seed = this.base.getSeed({
-            mnemonic: _props.mnemonic,
-        });
-        const keyPair = this.base.getKeyPair({
-            seed,
-        });
         return buildTransaction({
             ..._props,
-            keyPair,
             connector: this.connector,
         });
     }
@@ -179,23 +172,17 @@ class SolanaWallet extends CoinWallet {
         return transactions;
     }
     /**
-     * Signs a transaction using the provided transaction and mnemonic.
+     * Signs a transaction using the provided transaction and keyPair.
      *
      * @param {SignTransactionParams} params - The parameters for signing the transaction.
      * @param {Transaction} params.transaction - The transaction to sign.
-     * @param {string} params.mnemonic - The mnemonic used for signing.
+     * @param {string} params.keyPair - The keyPair used for signing.
      * @return {Promise<VersionedTransaction | Transaction>} A promise that resolves to the signed transaction.
      */
     signTransaction({
         transaction,
-        mnemonic,
+        keyPair,
     }: SignTransactionParams): Promise<VersionedTransaction | Transaction> {
-        const seed = this.base.getSeed({
-            mnemonic,
-        });
-        const keyPair = this.base.getKeyPair({
-            seed,
-        });
         return signTransaction({
             transaction,
             keyPair,
@@ -203,20 +190,17 @@ class SolanaWallet extends CoinWallet {
         });
     }
     /**
-     * Signs a message using the provided mnemonic and message.
+     * Signs a message using the provided keyPair and message.
      *
      * @param {string} message - The message to sign.
-     * @param {string} mnemonic - The mnemonic used for signing.
+     * @param {string} secretKey - The secretKey used for signing.
      * @return {Uint8Array} The signed message.
      */
-    signMessage({ message, mnemonic }: SignMessageParams): Uint8Array {
-        const seed = this.base.getSeed({
-            mnemonic,
+    signMessage(props: SignMessageParams): Uint8Array {
+        return sign({
+            message: props.message,
+            secretKey: props.keyPair.secretKey
         });
-        const keyPair = this.base.getKeyPair({
-            seed,
-        });
-        return sign({ message, secretKey: keyPair.secretKey });
     }
 
     /**

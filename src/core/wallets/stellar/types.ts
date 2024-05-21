@@ -1,17 +1,17 @@
-import { Transaction } from 'stellar-sdk';
+import { Keypair, Transaction } from 'stellar-sdk';
 import { SwapHistoricalTransaction } from '../../types';
 
 export type BuildTransactionParams = {
     value: string;
     destination: string;
-    mnemonic: string;
+    keyPair: Keypair;
     memo?: string;
     code?: string;
     issuer?: string;
 };
 
 export type SignTransactionParams = {
-    mnemonic: string;
+    secretKey: string;
     transaction: Transaction;
 };
 export type GetTransactionsParams = {

@@ -70,12 +70,8 @@ class EVMWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
     buildTransaction(_props: BuildTransaction): Promise<string> {
-        const rootNode = this.base.getRootNode(_props.mnemonic);
-        const privateAccountNode = this.base.getPrivateMasterKey({ rootNode });
-        const privateKey = this.base.getPrivateAddress({ privateAccountNode });
         return buildTransaction({
             ..._props,
-            privateKey,
             source: this.getReceiveAddress({
                 walletName: _props.walletName ?? this.walletSelected,
             }),
@@ -85,19 +81,16 @@ class EVMWallet extends CoinWallet {
     }
 
     /**
-     * Signs a transaction using the provided transaction and mnemonic.
+     * Signs a transaction using the provided transaction and privateKey.
      *
      * @param {TransactionEVM} transaction - The transaction to sign.
-     * @param {string} mnemonic - The mnemonic used for signing.
+     * @param {string} privateKey - The privateKey used for signing.
      * @return {Promise<string>} A promise that resolves to the signed transaction.
      */
     async signTransaction({
         transaction,
-        mnemonic,
+        privateKey,
     }: SignTransactionParams): Promise<string> {
-        const rootNode = this.base.getRootNode(mnemonic);
-        const privateAccountNode = this.base.getPrivateMasterKey({ rootNode });
-        const privateKey = this.base.getPrivateAddress({ privateAccountNode });
         return (
             await this.connector.eth.accounts.signTransaction(
                 transaction,
@@ -107,17 +100,14 @@ class EVMWallet extends CoinWallet {
     }
 
     /**
-     * Signs a message using the provided mnemonic and message.
+     * Signs a message using the provided privateKey and message.
      *
      * @param {SignMessageParams} param - The parameters for signing the message.
-     * @param {string} param.mnemonic - The mnemonic used for signing the message.
+     * @param {string} param.privateKey - The privateKey used for signing the message.
      * @param {string} param.message - The message to sign.
      * @return {string} The signature of the signed message.
      */
-    signMessage({ mnemonic, message }: SignMessageParams): string {
-        const rootNode = this.base.getRootNode(mnemonic);
-        const privateAccountNode = this.base.getPrivateMasterKey({ rootNode });
-        const privateKey = this.base.getPrivateAddress({ privateAccountNode });
+    signMessage({ privateKey, message }: SignMessageParams): string {
         return this.connector.eth.accounts.sign(message, privateKey).signature;
     }
 

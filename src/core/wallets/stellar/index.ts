@@ -59,16 +59,10 @@ class StellarWallet extends CoinWallet {
      * @return {Promise<string>} A promise that resolves to the built transaction.
      */
     buildTransaction(_props: BuildTransactionParams): Promise<string> {
-        const seed = this.base.getSeed({
-            mnemonic: _props.mnemonic,
-        });
-        const keyPair = this.base.getKeyPair({
-            seed,
-        });
+
         return buildTransaction({
             ..._props,
-            source: this.base.getPublicAddress({ keyPair }),
-            keyPair,
+            source: this.base.getPublicAddress({ keyPair:_props.keyPair }),
             connector: this.connector,
         });
     }
@@ -140,21 +134,15 @@ class StellarWallet extends CoinWallet {
         return transactions;
     }
     /**
-     * Signs a transaction using the provided transaction and mnemonic.
+     * Signs a transaction using the provided transaction and keyPair.
      *
      * @param {SignTransactionParams} _props - The parameters for signing the transaction.
-     * @param {string} _props.mnemonic - The mnemonic used for signing.
+     * @param {string} _props.secretKey - The secretKey used for signing.
      * @param {Transaction} _props.transaction - The transaction to sign.
      * @return {Transaction} The signed transaction.
      */
     signTransaction(_props: SignTransactionParams): Transaction {
-        const seed = this.base.getSeed({
-            mnemonic: _props.mnemonic,
-        });
-        const keyPair = this.base.getKeyPair({
-            seed,
-        });
-        const key_pair = Keypair.fromSecret(keyPair.secret());
+        const key_pair = Keypair.fromSecret(_props.secretKey);
         _props.transaction.sign(key_pair);
         return _props.transaction;
     }

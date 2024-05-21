@@ -3,7 +3,7 @@ import { SwapHistoricalTransaction } from '../../types';
 export type BuildTransactionParams = {
     value: string;
     destination: string;
-    mnemonic: string;
+    privateKey: string;
     walletName: string;
 };
 export type GetTransactionsParams = {

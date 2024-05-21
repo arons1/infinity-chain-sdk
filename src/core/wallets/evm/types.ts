@@ -23,20 +23,20 @@ export type BuildTransaction = {
     feeRatio?: number;
     priorityFee?: string;
     gasPrice?: string;
-    mnemonic: string;
+    privateKey: string;
     tokenContract?: string;
     approve?: boolean;
     walletName?: string;
 };
 export type SignTransactionParams = {
     transaction: TransactionEVM;
-    mnemonic: string;
+    privateKey: string;
 };
 export type RPCBalancesParams = {
     contracts: string[];
     walletName?: string;
 };
 export type SignMessageParams = {
-    mnemonic: string;
+    privateKey: string;
     message: string;
 };
