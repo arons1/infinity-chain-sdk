@@ -40,10 +40,15 @@ class EVMWallet extends CoinWallet {
      *
      * @param {Coins} id - The ID of the instance.
      * @param {string} [mnemonic] - The mnemonic phrase for the instance.
-     * @param {string} [walletName] - The name of the wallet.
+     * @param {string} [walletAccount] - The ID of the wallet.
      */
-    constructor(id: Coins, mnemonic?: string, walletName?: string) {
-        super(id, mnemonic, walletName);
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
+        super(id, mnemonic, walletName, walletAccount);
         this.chain = config[id].chain as Chains;
         this.loadConnector();
     }
@@ -57,7 +62,8 @@ class EVMWallet extends CoinWallet {
         return estimateFee({
             ..._props,
             source: this.getReceiveAddress({
-                walletName: _props.walletName ?? this.walletSelected,
+                walletAccount: _props.walletAccount,
+                walletName: _props.walletName,
             }),
             connector: this.connector,
             chainId: this.chain,
@@ -73,7 +79,8 @@ class EVMWallet extends CoinWallet {
         return buildTransaction({
             ..._props,
             source: this.getReceiveAddress({
-                walletName: _props.walletName ?? this.walletSelected,
+                walletAccount: _props.walletAccount,
+                walletName: _props.walletName,
             }),
             connector: this.connector,
             chainId: this.chain,
@@ -122,31 +129,56 @@ class EVMWallet extends CoinWallet {
     getAccountBalances(
         _props: RPCBalancesParams,
     ): Promise<Record<string, BalanceResult[]>> {
+        var addresses: string[] = [];
+        if (
+            _props.walletAccount != undefined &&
+            _props.walletName != undefined
+        ) {
+            addresses = [
+                this.getReceiveAddress({
+                    walletAccount: _props.walletAccount,
+                    walletName: _props.walletName,
+                }),
+            ];
+        } else {
+            Object.keys(this.addresses).map(walletName => {
+                Object.keys(this.addresses[walletName]).map(walletAccount => {
+                    addresses.push(
+                        this.getReceiveAddress({
+                            walletAccount: parseInt(walletAccount),
+                            walletName,
+                        }),
+                    );
+                });
+            });
+        }
         return getAccountBalances({
             ..._props,
             connector: this.connector,
-            accounts:
-                _props.walletName != undefined
-                    ? [
-                          this.getReceiveAddress({
-                              walletName: _props.walletName,
-                          }),
-                      ]
-                    : Object.keys(this.addresses).map(walletName =>
-                          this.getReceiveAddress({ walletName }),
-                      ),
+            accounts: addresses,
         });
     }
+
     /**
-     * Retrieves the balance for the wallet.
+     * Retrieves the balance for a given wallet account and wallet name.
      *
+     * @param {Object} options - The options for retrieving the balance.
+     * @param {number} options.walletAccount - The account number of the wallet.
+     * @param {string} options.walletName - The name of the wallet.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
+    getBalance({
+        walletAccount,
+        walletName,
+    }: {
+        walletAccount: number;
+        walletName: string;
+    }): Promise<CurrencyBalanceResult> {
         return getBalance({
             connector: this.connector,
             address: this.getReceiveAddress({
-                walletName: walletName ?? this.walletSelected,
+                walletAccount,
+                walletName,
             }),
         });
     }
@@ -172,16 +204,18 @@ class EVMWallet extends CoinWallet {
      * @return {Promise<any>} A promise that resolves to the transactions.
      */
     async getTransactions({
-        walletName,
+        walletAccount,
         lastTransactionHash,
         startblock,
         swapHistorical,
+        walletName,
     }: GetTransactionParams): Promise<Transaction[]> {
         let transactions;
         if (this.id == Coins.XDC) {
             transactions = await getTransactionsXDC({
                 address: this.getReceiveAddress({
-                    walletName: walletName ?? this.walletSelected,
+                    walletAccount,
+                    walletName,
                 }),
                 lastTransactionHash,
             });
@@ -189,12 +223,18 @@ class EVMWallet extends CoinWallet {
             transactions = await getTransactions({
                 coinId: this.id,
                 address: this.getReceiveAddress({
-                    walletName: walletName ?? this.walletSelected,
+                    walletAccount,
+                    walletName,
                 }),
                 startblock,
             });
         }
-        this.setTransactionFormat({ swapHistorical, transactions, walletName });
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletAccount,
+            walletName,
+        });
         return transactions;
     }
     /**
@@ -212,18 +252,20 @@ class EVMWallet extends CoinWallet {
      *
      * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
      * @param {Array<Transaction>} params.transactions - The list of transactions to set the format for.
-     * @param {string} [params.walletName] - The name of the wallet. If not provided, the currently selected wallet is used.
+     * @param {string} [params.walletAccount] - The name of the wallet. If not provided, the currently selected wallet is used.
      * @param {Array<SwapHistorical>} [params.swapHistorical] - The historical data for swaps.
      * @param {Array<BuySellHistorical>} [params.buysellHistorical] - The historical data for buys and sells.
      */
     setTransactionFormat({
         swapHistorical,
         transactions,
-        walletName,
+        walletAccount,
         buysellHistorical,
+        walletName,
     }: SetTransactionFormatParams) {
         const address = this.getReceiveAddress({
-            walletName: walletName ?? this.walletSelected,
+            walletAccount,
+            walletName,
         });
         for (let tr of transactions) {
             const isSwap = swapHistorical?.find(

@@ -7,11 +7,13 @@ import { BIP32Interface } from '@infinity/core-sdk/lib/commonjs/core/bip32';
 export type EstimateFeeParams = {
     amount: string;
     feeRatio?: number;
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
     lastBlockHeight?: string;
+    walletName: string;
     swapHistorical?: SwapHistoricalTransaction[];
 };
 export type BuildParameters = {
@@ -20,6 +22,7 @@ export type BuildParameters = {
     rootNode: BIP32Interface;
     destination: string;
     memo?: string;
+    walletAccount: number;
     utxos?: UTXOResult[];
     feeRatio?: number;
     changeAddressProtocol?: Protocol;

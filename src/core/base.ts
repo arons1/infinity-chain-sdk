@@ -12,23 +12,32 @@ import { GetReceiveAddressParams } from './types';
 abstract class BaseWallet {
     base!: ED25519Coin | SECP256K1Coin | ECDSACoin;
     id!: Coins;
-    publicNode: Record<string, Record<Protocol, BIP32Interface>> = {};
-    account: Record<string, string> = {};
+    publicNode: Record<
+        string,
+        Record<number, Record<Protocol, BIP32Interface>>
+    > = {};
+    account: Record<string, Record<number, string>> = {};
     addresses: Record<
         string,
         Record<
-            Protocol,
+            number,
             Record<
-                DerivationName | string,
-                Record<string, Record<string, string>>
+                Protocol,
+                Record<
+                    DerivationName | string,
+                    Record<string, Record<string, string>>
+                >
             >
         >
     > = {};
-    extendedPublicKeys: Record<string, Record<Protocol, string>> = {};
+    extendedPublicKeys: Record<
+        string,
+        Record<number, Record<Protocol, string>>
+    > = {};
     initializated: boolean = false;
     bipIdCoin!: CoinIds;
-    walletSelected: string = '';
-    abstract selectWallet(walleName: string): any;
+    walletSelected: number = 0;
+    abstract selectWallet(walletAccount: number): any;
     abstract estimateFee(_props: any): any;
     abstract buildTransaction(_props: any): any;
     abstract getBalance(_props: any): any;
@@ -37,7 +46,7 @@ abstract class BaseWallet {
     abstract getAccountBalances(_props: any): any;
     abstract loadConnector(): any;
     abstract getReceiveAddress(props: GetReceiveAddressParams): string;
-    abstract removeWallet(walletName: string): any;
+    abstract removeWallet(walletAccount: number): any;
     abstract isValidAddress(address: string): boolean;
     abstract getMinimumBalance(_props: any): any;
     abstract getMinimumAmountLeft(_props: any): any;

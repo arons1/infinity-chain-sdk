@@ -9,7 +9,8 @@ export type BuildTransactionParams = {
     keyPair: BIP32Interface;
 };
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
     lastTransactionHash?: string;
     swapHistorical?: SwapHistoricalTransaction[];
 };

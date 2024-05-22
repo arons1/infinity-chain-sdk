@@ -49,25 +49,31 @@ class TezosWallet extends CoinWallet {
      *
      * @param {Coins} id - The ID of the instance.
      * @param {string} [mnemonic] - The mnemonic phrase for the instance.
-     * @param {string} [walletName] - The name of the wallet.
+     * @param {string} [walletAccount] - The name of the wallet.
      */
-    constructor(id: Coins, mnemonic?: string, walletName?: string) {
-        super(id, mnemonic, walletName);
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
+        super(id, mnemonic, walletName, walletAccount);
         this.loadConnector();
     }
     /**
      * Estimates the fee for a transaction on the Tezos blockchain.
      *
      * @param {EstimateFeeParams} _props - The parameters for estimating the fee.
-     * @param {string} _props.walletName - The name of the wallet to use for estimation.
+     * @param {string} _props.walletAccount - The name of the wallet to use for estimation.
      * @returns {Promise<EstimateFeeResult>} - A promise that resolves to the estimated fee result.
      */
     estimateFee(_props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ..._props,
-            pkHash: this.account[_props.walletName ?? this.walletSelected],
+            pkHash: this.account[_props.walletName][_props.walletAccount],
             source: this.getReceiveAddress({
-                walletName: _props.walletName ?? this.walletSelected,
+                walletAccount: _props.walletAccount,
+                walletName: _props.walletName,
             }),
             connector: this.connector,
         });
@@ -97,13 +103,20 @@ class TezosWallet extends CoinWallet {
     /**
      * Retrieves the balance for the specified wallet.
      *
-     * @param {string} walletName - (Optional) The name of the wallet to retrieve the balance for. If not provided, the balance of the currently selected wallet will be retrieved.
+     * @param {string} walletAccount - (Optional) The name of the wallet to retrieve the balance for. If not provided, the balance of the currently selected wallet will be retrieved.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
+    getBalance({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): Promise<CurrencyBalanceResult> {
         return getBalance({
             address: this.getReceiveAddress({
-                walletName: walletName ?? this.walletSelected,
+                walletAccount,
+                walletName,
             }),
         });
     }
@@ -113,27 +126,38 @@ class TezosWallet extends CoinWallet {
      *
      * @param {GetAccountBalancesParams} _props - The parameters for retrieving account balances.
      * @param {string[]} _props.accounts - The accounts to retrieve balances for.
-     * @param {string} _props.walletName - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
+     * @param {string} _props.walletAccount - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
     getAccountBalances(
         _props: GetAccountBalancesParams,
     ): Promise<Record<string, BalanceResult[]>> {
+        var addresses: string[] = [];
+        if (
+            _props.walletAccount != undefined &&
+            _props.walletName != undefined
+        ) {
+            addresses = [
+                this.getReceiveAddress({
+                    walletAccount: _props.walletAccount,
+                    walletName: _props.walletName,
+                }),
+            ];
+        } else {
+            Object.keys(this.addresses).map(walletName => {
+                Object.keys(this.addresses[walletName]).map(walletAccount => {
+                    addresses.push(
+                        this.getReceiveAddress({
+                            walletAccount: parseInt(walletAccount),
+                            walletName,
+                        }),
+                    );
+                });
+            });
+        }
         return getAccountBalances({
             ..._props,
-            accounts:
-                _props.walletName != undefined
-                    ? [
-                          this.getReceiveAddress({
-                              walletName:
-                                  _props.walletName ?? this.walletSelected,
-                          }),
-                      ]
-                    : Object.keys(this.addresses).map(walletName =>
-                          this.getReceiveAddress({
-                              walletName,
-                          }),
-                      ),
+            accounts: addresses,
         });
     }
     /**
@@ -160,24 +184,27 @@ class TezosWallet extends CoinWallet {
      * Retrieves transactions based on the specified parameters.
      *
      * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
-     * @param {string} params.walletName - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
+     * @param {string} params.walletAccount - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
      * @param {string} params.lastTransactionHash - The hash of the last transaction.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
     async getTransactions({
-        walletName,
+        walletAccount,
         lastTransactionHash,
         swapHistorical,
+        walletName,
     }: GetTransactionsParams): Promise<Transaction[]> {
         const transactions = await getTransactions({
             address: this.getReceiveAddress({
-                walletName: walletName ?? this.walletSelected,
+                walletAccount,
+                walletName,
             }),
             lastTransactionHash,
         });
         this.setTransactionFormat({
             swapHistorical,
             transactions,
+            walletAccount,
             walletName,
         });
         return transactions;
@@ -192,13 +219,21 @@ class TezosWallet extends CoinWallet {
     }
 
     /**
-     * Retrieves the public key hash for a given wallet name.
+     * Retrieves the public key hash for a given wallet account and wallet name.
      *
-     * @param {string} walletName - (Optional) The name of the wallet to retrieve the public key hash for.
-     * @return {string} The public key hash for the specified wallet name.
+     * @param {Object} options - The options for retrieving the public key hash.
+     * @param {string} options.walletName - The name of the wallet.
+     * @param {number} options.walletAccount - The account number of the wallet.
+     * @return {string} The public key hash associated with the wallet account and wallet name.
      */
-    getPublickeyHash(walletName?: string): string {
-        return this.account[walletName ?? this.walletSelected];
+    getPublickeyHash({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): string {
+        return this.account[walletName][walletAccount];
     }
 
     /**
@@ -225,7 +260,7 @@ class TezosWallet extends CoinWallet {
      */
     signMessage(_props: SignMessageParams): Uint8Array {
         return sign({
-            secretKey:_props.secretKey,
+            secretKey: _props.secretKey,
             message: _props.message,
         });
     }
@@ -233,18 +268,20 @@ class TezosWallet extends CoinWallet {
      * Sets the transaction format based on historical swap, buy/sell data, and token transfers.
      *
      * @param {Transaction[]} transactions - The array of transactions to set the format for.
-     * @param {string} walletName - The name of the wallet used for the transactions.
+     * @param {string} walletAccount - The name of the wallet used for the transactions.
      * @param {Transaction[]} swapHistorical - The historical swap transactions.
      * @param {Transaction[]} buysellHistorical - The historical buy/sell transactions.
      */
     setTransactionFormat({
         swapHistorical,
         transactions,
-        walletName,
+        walletAccount,
         buysellHistorical,
+        walletName,
     }: SetTransactionFormatParams) {
         const address = this.getReceiveAddress({
-            walletName: walletName ?? this.walletSelected,
+            walletAccount,
+            walletName,
         });
         for (let tr of transactions) {
             const isSwap = swapHistorical?.find(

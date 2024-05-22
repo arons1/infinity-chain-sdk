@@ -25,16 +25,22 @@ class CoinWallet extends BaseWallet {
      *
      * @param {Coins} id - The ID of the instance.
      * @param {string} [mnemonic] - The mnemonic phrase for the instance.
-     * @param {string} [walletName] - The name of the wallet.
+     * @param {string} [walletAccount] - The ID of the wallet.
      */
-    constructor(id: Coins, mnemonic?: string, walletName?: string) {
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
         super();
         this.id = id;
         this.base = Coin(id);
         this.bipIdCoin = this.base.bipIdCoin;
 
-        if (mnemonic && walletName) this.addWallet(mnemonic, walletName);
-        else if (mnemonic || walletName) throw Error(WalletAndNameNotFound);
+        if (mnemonic && walletAccount && walletName)
+            this.addWallet(mnemonic, walletName, walletAccount);
+        else if (mnemonic || walletAccount) throw Error(WalletAndNameNotFound);
     }
     /**
      * Retrieves the receive address based on the derivation name and protocol.
@@ -48,6 +54,7 @@ class CoinWallet extends BaseWallet {
     getReceiveAddress({
         derivationName = DerivationName.LEGACY,
         protocol = Protocol.LEGACY,
+        walletAccount,
         walletName,
     }: GetReceiveAddressParams): string {
         let derivation;
@@ -61,19 +68,19 @@ class CoinWallet extends BaseWallet {
 
         if (derivation == undefined)
             throw new Error(CannotGeneratePublicAddress);
-        return this.addresses[walletName ?? this.walletSelected][
+        return this.addresses[walletName][walletAccount ?? this.walletSelected][
             derivation.protocol
         ][derivation.name][0][0];
     }
     /**
      * Removes a wallet from the addresses, publicNode, and extendedPublicKeys objects.
      *
-     * @param {string} walletName - The name of the wallet to remove.
+     * @param {string} walletAccount - The name of the wallet to remove.
      */
-    removeWallet(walletName: string) {
-        delete this.addresses[walletName];
-        delete this.publicNode[walletName];
-        delete this.extendedPublicKeys[walletName];
+    removeWallet(walletAccount: number) {
+        delete this.addresses[walletAccount];
+        delete this.publicNode[walletAccount];
+        delete this.extendedPublicKeys[walletAccount];
     }
     /**
      * Loads data from storage into the wallet instance.
@@ -87,25 +94,34 @@ class CoinWallet extends BaseWallet {
         account,
         addresses,
         extendedPublicKeys,
+        walletAccount,
         walletName,
     }: LoadStorageParams) {
-        this.addresses[walletName] = { ...initProtocols };
-        this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = {
+        if (!this.addresses[walletName]) this.addresses[walletName] = {};
+        this.addresses[walletName][walletAccount] = { ...initProtocols };
+        if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
+        this.publicNode[walletName][walletAccount] = { ...initProtocols };
+        if (!this.extendedPublicKeys[walletName])
+            this.extendedPublicKeys[walletName] = {};
+        this.extendedPublicKeys[walletName][walletAccount] = {
             [Protocol.LEGACY]: '',
             [Protocol.SEGWIT]: '',
             [Protocol.WRAPPED_SEGWIT]: '',
         };
-        if (account) this.account[walletName] = account;
+        if (!this.account[walletName]) this.account[walletName] = {};
+        if (account) this.account[walletName][walletAccount] = account;
         if (extendedPublicKeys)
-            this.extendedPublicKeys[walletName] = extendedPublicKeys;
-        this.addresses[walletName] = addresses;
+            this.extendedPublicKeys[walletName][walletAccount] =
+                extendedPublicKeys;
+        this.addresses[walletName][walletAccount] = addresses;
 
         if (extendedPublicKeys) {
             for (let pb of Object.values(Protocol)) {
-                this.publicNode[walletName][pb as Protocol] =
+                this.publicNode[walletName][walletAccount][pb as Protocol] =
                     this.base.importMaster(
-                        this.extendedPublicKeys[walletName][pb as Protocol],
+                        this.extendedPublicKeys[walletName][walletAccount][
+                            pb as Protocol
+                        ],
                     ) as BIP32Interface;
             }
         }
@@ -116,51 +132,58 @@ class CoinWallet extends BaseWallet {
      * Initializes addresses for the wallet using the provided mnemonic.
      *
      * @param {string} mnemonic - The mnemonic used to generate addresses.
-     * @param {string} walletName - The ID of the wallet.
+     * @param {number} walletAccount - The ID of the wallet.
      * @return {void} This function does not return anything.
      */
-    addWallet(mnemonic: string, walletName: string) {
-        this.addresses[walletName] = { ...initProtocols };
-        this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = {
+    addWallet(mnemonic: string, walletName: string, walletAccount: number) {
+        if (!this.addresses[walletName]) this.addresses[walletName] = {};
+        this.addresses[walletName][walletAccount] = { ...initProtocols };
+        if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
+        this.publicNode[walletName][walletAccount] = { ...initProtocols };
+        if (!this.extendedPublicKeys[walletName])
+            this.extendedPublicKeys[walletName] = {};
+        this.extendedPublicKeys[walletName][walletAccount] = {
             [Protocol.LEGACY]: '',
             [Protocol.SEGWIT]: '',
             [Protocol.WRAPPED_SEGWIT]: '',
         };
-        const add = this.base.generateAddresses(mnemonic);
+        const add = this.base.generateAddresses(mnemonic, walletAccount);
         for (let addressResult of add) {
             if (addressResult.publicAddress != undefined)
-                this.addresses[walletName][addressResult.protocol] = {
+                this.addresses[walletName][walletAccount][
+                    addressResult.protocol
+                ] = {
                     [addressResult.derivationName]: {
                         0: {
                             0: addressResult.publicAddress,
                         },
                     },
                 };
-            this.extendedPublicKeys[walletName][addressResult.protocol] =
-                addressResult.extendedPublicAddress as string;
+            this.extendedPublicKeys[walletName][walletAccount][
+                addressResult.protocol
+            ] = addressResult.extendedPublicAddress as string;
             if (this.id === Coins.TEZOS || this.id === Coins.FIO)
-                this.account[walletName] = addressResult.account as string;
+                this.account[walletAccount] = addressResult.account as string;
             if (addressResult.extendedPublicAddress != undefined) {
                 const extendedKeys: BIP32Interface | void =
                     this.base.importMaster(
                         addressResult.extendedPublicAddress + '',
                     );
                 if (extendedKeys)
-                    this.publicNode[walletName][addressResult.protocol] =
-                        extendedKeys;
+                    this.publicNode[walletName][walletAccount][
+                        addressResult.protocol
+                    ] = extendedKeys;
             }
         }
-        if (this.walletSelected.length == 0) this.walletSelected = walletName;
         this.initializated = true;
     }
     /**
      * Sets the selected wallet to the specified wallet name.
      *
-     * @param {string} walletName - The name of the wallet to select.
+     * @param {number} walletAccount - The ID of the wallet to select.
      */
-    selectWallet(walletName: string) {
-        this.walletSelected = walletName;
+    selectWallet(walletAccount: number) {
+        this.walletSelected = walletAccount;
     }
     /**
      * Loads public nodes for a given protocol and generates public addresses.
@@ -177,39 +200,48 @@ class CoinWallet extends BaseWallet {
         publicMasterAddress,
         change = 0,
         index = 0,
+        walletAccount,
         walletName,
     }: LoadPublicNodesParams) {
-        this.addresses[walletName] = { ...initProtocols };
-        this.publicNode[walletName] = { ...initProtocols };
-        this.extendedPublicKeys[walletName] = {
+        if (!this.addresses[walletName]) this.addresses[walletName] = {};
+        this.addresses[walletName][walletAccount] = { ...initProtocols };
+        if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
+        this.publicNode[walletName][walletAccount] = { ...initProtocols };
+        if (!this.extendedPublicKeys[walletName])
+            this.extendedPublicKeys[walletName] = {};
+        this.extendedPublicKeys[walletName][walletAccount] = {
             [Protocol.LEGACY]: '',
             [Protocol.SEGWIT]: '',
             [Protocol.WRAPPED_SEGWIT]: '',
         };
-        this.publicNode[walletName][protocol] = this.base.importMaster(
-            publicMasterAddress,
-        ) as BIP32Interface;
-        this.extendedPublicKeys[walletName][protocol] = publicMasterAddress;
-        this.addresses[walletName][protocol] = {};
+        this.publicNode[walletName][walletAccount][protocol] =
+            this.base.importMaster(publicMasterAddress) as BIP32Interface;
+        this.extendedPublicKeys[walletName][walletAccount][protocol] =
+            publicMasterAddress;
+        this.addresses[walletName][walletAccount][protocol] = {};
         const derivations = config[this.id].derivations.filter(
             d => d.protocol == protocol,
         );
         for (let derivation of derivations) {
             const address = this.base.generatePublicAddresses({
-                publicAccountNode: this.publicNode[walletName][protocol],
+                publicAccountNode:
+                    this.publicNode[walletName][walletAccount][protocol],
                 derivation: derivation.name,
                 change,
                 index,
             });
             if (address) {
-                this.addresses[walletName][protocol][derivation.name] = {};
-                this.addresses[walletName][protocol][derivation.name][change] =
-                    {};
-                this.addresses[walletName][protocol][derivation.name][change][
-                    index
-                ] = address.publicAddress as string;
+                this.addresses[walletName][walletAccount][protocol][
+                    derivation.name
+                ] = {};
+                this.addresses[walletName][walletAccount][protocol][
+                    derivation.name
+                ][change] = {};
+                this.addresses[walletName][walletAccount][protocol][
+                    derivation.name
+                ][change][index] = address.publicAddress as string;
                 if (this.id == Coins.TEZOS || this.id == Coins.FIO) {
-                    this.account[walletName] = address.account;
+                    this.account[walletAccount] = address.account;
                 }
             }
         }

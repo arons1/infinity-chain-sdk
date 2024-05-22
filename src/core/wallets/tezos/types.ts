@@ -8,7 +8,8 @@ export type EstimateFeeParams = {
     mintToken?: string;
     decimalsToken?: number;
     feeRatio?: number;
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 export type BuildTransactionParams = {
     destination: string;
@@ -21,14 +22,16 @@ export type BuildTransactionParams = {
 };
 
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
     lastTransactionHash?: string;
     swapHistorical?: SwapHistoricalTransaction[];
 };
 
 export type GetAccountBalancesParams = {
     assetSlugs: string[];
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 
 export type SignTransactionParams = {

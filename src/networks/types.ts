@@ -41,7 +41,7 @@ export type Transaction = {
     contractAddress?: string;
     swapDetails?: SwapDetails;
     dexDetails?: DexDetails;
-    transactionType: TransactionType;
+    transactionType?: TransactionType;
     buySellDetails?: BuySellDetails;
 };
 export enum TransactionType {

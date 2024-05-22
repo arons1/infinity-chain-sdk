@@ -7,18 +7,16 @@ const mnemonic =
     'derive lab over dragon nothing pioneer until deputy inherit help next release';
 describe('coreStellar', () => {
     test('init', async () => {
-        const matic = new StellarWallet(Coins.STELLAR, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const address = matic.getReceiveAddress({});
+        const matic = new StellarWallet(Coins.STELLAR, mnemonic, 'my_wallet',0);
+        const address = matic.getReceiveAddress({walletName:'my_wallet',walletAccount:0});
 
         expect(address).toBe(
             'GCYKH5F7TTFCKPB25N6ZMA6NUYE62P4QOBZ5WCQGEAQPEZEMNW7F3TOO',
         );
     });
     test('getTransactions', async () => {
-        const matic = new StellarWallet(Coins.STELLAR, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
+        const matic = new StellarWallet(Coins.STELLAR, mnemonic, 'my_wallet',0);
+        const transactions = await matic.getTransactions({walletName:'my_wallet',walletAccount:0});
         expect(transactions.length > 0).toBe(false);
     });
 });

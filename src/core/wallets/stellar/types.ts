@@ -15,7 +15,8 @@ export type SignTransactionParams = {
     transaction: Transaction;
 };
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
     lastTransactionHash?: string;
     swapHistorical?: SwapHistoricalTransaction[];
 };

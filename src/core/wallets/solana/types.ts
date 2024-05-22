@@ -17,7 +17,8 @@ export type SignTransactionParams = {
 };
 
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
     signatures?: Record<string, string>;
     accounts?: GetAccountsResult[];
     swapHistorical?: SwapHistoricalTransaction[];
@@ -29,11 +30,11 @@ export type SignMessageParams = {
 };
 export type GetBalanceAfterParams = {
     transaction: Transaction | VersionedTransaction;
-    walletName?: string;
+    walletAccount: number;
 };
 export type EstimateFeeParams = {
     memo: string;
-    walletName?: string;
+    walletAccount: number;
     mintToken?: string;
     destination: string;
     decimalsToken?: number;

@@ -4,10 +4,12 @@ export type BuildTransactionParams = {
     value: string;
     destination: string;
     privateKey: string;
+    walletAccount: number;
     walletName: string;
 };
 export type GetTransactionsParams = {
-    walletName?: string;
+    walletAccount: number;
     endBlock?: string;
+    walletName: string;
     swapHistorical?: SwapHistoricalTransaction[];
 };

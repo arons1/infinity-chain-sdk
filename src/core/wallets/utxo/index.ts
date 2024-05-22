@@ -49,10 +49,15 @@ class UTXOWallet extends CoinWallet {
      *
      * @param {Coins} id - The ID of the instance.
      * @param {string} [mnemonic] - The mnemonic phrase for the instance.
-     * @param {string} [walletName] - The name of the wallet.
+     * @param {string} [walletAccount] - The name of the wallet.
      */
-    constructor(id: Coins, mnemonic?: string, walletName?: string) {
-        super(id, mnemonic, walletName);
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
+        super(id, mnemonic, walletName, walletAccount);
         this.loadConnector();
     }
     /**
@@ -65,8 +70,8 @@ class UTXOWallet extends CoinWallet {
         const extendedPublicKeys: string[] = [];
         for (let derivation of config[this.id].derivations) {
             extendedPublicKeys.push(
-                this.extendedPublicKeys[
-                    _props.walletName ?? this.walletSelected
+                this.extendedPublicKeys[_props.walletName][
+                    _props.walletAccount
                 ][derivation.protocol],
             );
         }
@@ -90,6 +95,7 @@ class UTXOWallet extends CoinWallet {
             const privateAccountNode = this.base.getPrivateMasterKey({
                 rootNode: _props.rootNode,
                 protocol: derivation.protocol,
+                walletAccount: _props.walletAccount,
             });
             const account: Account = {
                 node: privateAccountNode,
@@ -110,13 +116,21 @@ class UTXOWallet extends CoinWallet {
     /**
      * Retrieves the balance for the specified wallet.
      *
-     * @param {string} walletName - (Optional) The name of the wallet. If not provided, the default wallet will be used.
+     * @param {string} walletAccount - (Optional) The name of the wallet. If not provided, the default wallet will be used.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance(walletName?: string): Promise<CurrencyBalanceResult> {
+    getBalance({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): Promise<CurrencyBalanceResult> {
         return getBalance({
             extendedPublicKeys: Object.values(
-                this.extendedPublicKeys[walletName ?? this.walletSelected],
+                this.extendedPublicKeys[walletName][
+                    walletAccount ?? this.walletSelected
+                ],
             ),
             connector: this.connector,
         });
@@ -125,25 +139,26 @@ class UTXOWallet extends CoinWallet {
     /**
      * Retrieves the account balances for a given wallet name or all wallets if no wallet name is provided.
      *
-     * @param {string} [walletName] - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
+     * @param {string} [walletAccount] - The name of the wallet to retrieve balances for. If not provided, balances for all wallets will be retrieved.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
-    getAccountBalances(
-        walletName?: string,
-    ): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): Promise<Record<string, BalanceResult[]>> {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount]
+        ) {
+            throw new Error('Wallet not found');
+        }
         let extendedPublicKeys: string[] = [];
-        let accounts =
-            walletName != undefined
-                ? [walletName]
-                : Object.keys(this.addresses);
-        accounts
-            .map(a => Object.values(this.extendedPublicKeys[a]))
-            .map(a => {
-                extendedPublicKeys = [
-                    ...extendedPublicKeys,
-                    ...Object.values(a),
-                ];
-            });
+        Object.values(this.extendedPublicKeys[walletName][walletAccount]).map(
+            a => Object.values(a).map(b => extendedPublicKeys.push(b)),
+        );
         return getAccountBalances({
             extendedPublicKeys,
             connector: this.connector,
@@ -165,15 +180,24 @@ class UTXOWallet extends CoinWallet {
      * Retrieves the UTXO (Unspent Transaction Output) for a given protocol and wallet.
      *
      * @param {Protocol} protocol - The protocol for which to retrieve the UTXO.
-     * @param {string} [walletName] - (Optional) The name of the wallet. If not provided, the default wallet will be used.
+     * @param {string} [walletAccount] - (Optional) The name of the wallet. If not provided, the default wallet will be used.
      * @return {Promise<UTXOResult[]>} A promise that resolves to an array of UTXOResult objects.
      */
-    getUTXO(protocol: Protocol, walletName?: string): Promise<UTXOResult[]> {
+    getUTXO(
+        protocol: Protocol,
+        walletName: string,
+        walletAccount: number,
+    ): Promise<UTXOResult[]> {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount] ||
+            !this.extendedPublicKeys[walletName][walletAccount][protocol]
+        ) {
+            throw new Error('Wallet not found');
+        }
         return getUTXO({
             extendedPublicKey:
-                this.extendedPublicKeys[walletName ?? this.walletSelected][
-                    protocol
-                ],
+                this.extendedPublicKeys[walletName][walletAccount][protocol],
             connector: this.connector,
         });
     }
@@ -181,36 +205,49 @@ class UTXOWallet extends CoinWallet {
      * Retrieves the last change index for a given protocol and wallet.
      *
      * @param {Protocol} protocol - The protocol for which to retrieve the last change index.
-     * @param {string} [walletName] - (Optional) The name of the wallet to retrieve the last change index for. If not provided, the last change index for the selected wallet will be retrieved.
+     * @param {string} [walletAccount] - (Optional) The name of the wallet to retrieve the last change index for. If not provided, the last change index for the selected wallet will be retrieved.
      * @return {Promise<ChangeIndexResolve>} A promise that resolves to the last change index.
      */
     getLastChangeIndex(
         protocol: Protocol,
-        walletName?: string,
+        walletAccount: number,
+        walletName: string,
     ): Promise<ChangeIndexResolve> {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount] ||
+            !this.extendedPublicKeys[walletName][walletAccount][protocol]
+        ) {
+            throw new Error('Wallet not found');
+        }
         return getLastChangeIndex({
             extendedPublicKey:
-                this.extendedPublicKeys[walletName ?? this.walletSelected][
-                    protocol
-                ],
+                this.extendedPublicKeys[walletName][walletAccount][protocol],
             connector: this.connector,
         });
     }
     /**
      * Retrieves transactions based on the specified parameters.
      *
-     * @param {string} walletName - The name of the wallet.
+     * @param {string} walletAccount - The name of the wallet.
      * @param {string} lastBlockHeight - The last block height.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
     async getTransactions({
-        walletName,
+        walletAccount,
         lastBlockHeight,
         swapHistorical,
+        walletName,
     }: GetTransactionsParams): Promise<TransactionNetwork[]> {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount]
+        ) {
+            throw new Error('Wallet not found');
+        }
         const results: TransactionNetwork[] = [];
         const xpubs = Object.values(
-            this.extendedPublicKeys[walletName ?? this.walletSelected],
+            this.extendedPublicKeys[walletName][walletAccount],
         ).filter(a => a.length > 0);
         for (let xpub of xpubs) {
             const txs = await getTransactions({
@@ -230,6 +267,7 @@ class UTXOWallet extends CoinWallet {
         this.setTransactionFormat({
             swapHistorical,
             transactions,
+            walletAccount,
             walletName,
         });
         return transactions;
@@ -252,16 +290,14 @@ class UTXOWallet extends CoinWallet {
      * Retrieves the change address for a given wallet and protocol.
      *
      * @param {GetChangeAddressParams} _props - The parameters for retrieving the change address.
-     * @param {string} _props.walletName - The name of the wallet.
+     * @param {string} _props.walletAccount - The name of the wallet.
      * @param {string} _props.protocol - The protocol for the change address.
      * @param {number} _props.changeIndex - The index of the change address.
      * @return {string} The change address.
      */
     getChangeAddress(_props: GetChangeAddressParams): string {
         if (
-            this.publicNode[_props.walletName ?? this.walletSelected][
-                _props.protocol
-            ] === undefined
+            this.publicNode[_props.walletAccount][_props.protocol] === undefined
         ) {
             throw new Error(WalletNotFound);
         }
@@ -269,7 +305,7 @@ class UTXOWallet extends CoinWallet {
             index: _props.changeIndex,
             change: 1,
             publicAccountNode:
-                this.publicNode[_props.walletName ?? this.walletSelected][
+                this.publicNode[_props.walletName][_props.walletAccount][
                     _props.protocol
                 ],
             protocol: _props.protocol,
@@ -292,23 +328,25 @@ class UTXOWallet extends CoinWallet {
      *
      * @param {SetTransactionFormatParams} swapHistorical - An array of historical swaps.
      * @param {Transaction[]} transactions - An array of transactions to format.
-     * @param {string} walletName - The name of the wallet.
+     * @param {string} walletAccount - The name of the wallet.
      * @param {BuySellHistorical[]} buysellHistorical - An array of historical buys and sells.
      * @return {void} This function does not return anything.
      */
     setTransactionFormat({
         swapHistorical,
         transactions,
-        walletName,
+        walletAccount,
         buysellHistorical,
+        walletName,
     }: SetTransactionFormatParams) {
         const addresses = [];
         for (let p of Object.keys(
-            this.extendedPublicKeys[walletName ?? this.walletSelected],
+            this.extendedPublicKeys[walletAccount ?? this.walletSelected],
         )) {
             addresses.push(
                 this.getReceiveAddress({
-                    walletName: walletName ?? this.walletSelected,
+                    walletAccount,
+                    walletName,
                     protocol: p as unknown as Protocol,
                 }),
             );

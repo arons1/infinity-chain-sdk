@@ -9,10 +9,12 @@ export type EstimateGasParams = {
     feeRatio?: number;
     priorityFee?: string;
     approve?: boolean;
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 export type GetTransactionParams = {
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
     lastTransactionHash?: string;
     startblock?: string;
     swapHistorical?: SwapHistoricalTransaction[];
@@ -26,7 +28,8 @@ export type BuildTransaction = {
     privateKey: string;
     tokenContract?: string;
     approve?: boolean;
-    walletName?: string;
+    walletName: string;
+    walletAccount: number;
 };
 export type SignTransactionParams = {
     transaction: TransactionEVM;
@@ -34,7 +37,8 @@ export type SignTransactionParams = {
 };
 export type RPCBalancesParams = {
     contracts: string[];
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 export type SignMessageParams = {
     privateKey: string;

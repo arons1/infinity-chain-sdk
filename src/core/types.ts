@@ -11,6 +11,7 @@ export type LoadStorageParams = {
         Record<DerivationName, Record<number, Record<number, string>>>
     >;
     extendedPublicKeys?: Record<Protocol, string>;
+    walletAccount: number;
     walletName: string;
 };
 export type LoadPublicNodesParams = {
@@ -18,20 +19,23 @@ export type LoadPublicNodesParams = {
     publicMasterAddress: string;
     change?: number;
     index?: number;
+    walletAccount: number;
     walletName: string;
 };
 
 export type GetReceiveAddressParams = {
     derivationName?: DerivationName;
     protocol?: Protocol;
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 
 export type GetChangeAddressParams = {
     derivationName: DerivationName;
     protocol: Protocol;
     changeIndex: number;
-    walletName?: string;
+    walletAccount: number;
+    walletName: string;
 };
 
 export type SwapHistoricalTransaction = {
@@ -72,7 +76,8 @@ export type BuySellHistoricalTransaction = {
 };
 export type SetTransactionFormatParams = {
     transactions: Transaction[];
+    walletName: string;
     swapHistorical?: SwapHistoricalTransaction[];
-    walletName?: string;
+    walletAccount: number;
     buysellHistorical?: BuySellHistoricalTransaction[];
 };

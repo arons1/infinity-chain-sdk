@@ -7,16 +7,14 @@ const mnemonic =
     'double enlist lobster also layer face muffin parade direct famous notice kite';
 describe('coreXRP', () => {
     test('init', async () => {
-        const matic = new XRPWallet(Coins.XRP, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const address = matic.getReceiveAddress({});
+        const matic = new XRPWallet(Coins.XRP, mnemonic, 'my_wallet',0);
+        const address = matic.getReceiveAddress({walletName:'my_wallet',walletAccount:0});
 
         expect(address).toBe('rMmewYFjHmtrVo8Fjrfb1eJJnVAsMR5KPL');
     });
     test('getTransactions', async () => {
-        const matic = new XRPWallet(Coins.XRP, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
+        const matic = new XRPWallet(Coins.XRP, mnemonic, 'my_wallet',0);
+        const transactions = await matic.getTransactions({walletName:'my_wallet',walletAccount:0});
         expect(transactions.length > 0).toBe(false);
     });
 });
