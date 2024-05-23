@@ -33,7 +33,7 @@ export const getAddressFromAccount = (account: string) => {
                 }
             })
 
-            .catch((error) => {
+            .catch(error => {
                 console.error(error);
                 reject();
             });

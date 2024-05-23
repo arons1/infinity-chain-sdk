@@ -31,7 +31,7 @@ export const estimateFee = async (
     props: EstimateGasParams,
 ): Promise<EstimateFeeResult> => {
     estimateParametersChecker(props);
-    try{
+    try {
         let resultEstimate;
         if (props.tokenContract && props.tokenContract.length > 0) {
             resultEstimate = await estimateTokenFee(
@@ -56,17 +56,15 @@ export const estimateFee = async (
                 .plus(fee)
                 .toString(10);
         }
-    
+
         return {
             fee,
             transaction: resultEstimate.transaction,
         };
-    }
-    catch(error:any){
+    } catch (error: any) {
         console.error(error);
         throw new Error(error.code ?? CannotEstimateTransaction);
     }
-    
 };
 
 export * from './currency';

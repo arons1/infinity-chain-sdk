@@ -25,20 +25,18 @@ export const buildTransaction = async (
     props: BuildTransaction,
 ): Promise<string> => {
     builderParametersChecker(props);
-    try{
+    try {
         const gaslimit = await estimateFee(props);
         const { rawTransaction } =
-        await props.connector.eth.accounts.signTransaction(
-            gaslimit.transaction as TransactionEVM,
-            props.privateKey,
-        );
+            await props.connector.eth.accounts.signTransaction(
+                gaslimit.transaction as TransactionEVM,
+                props.privateKey,
+            );
         return rawTransaction;
-    }
-    catch(error:any){
+    } catch (error: any) {
         console.error(error);
         throw new Error(error.code ?? CannotBuildTransaction);
     }
-    
 };
 
 export * from './types';

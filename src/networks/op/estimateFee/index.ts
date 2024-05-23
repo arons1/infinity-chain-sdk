@@ -19,14 +19,14 @@ export const estimateL1Cost = async (
         feeAbi,
         '0x420000000000000000000000000000000000000F',
     );
-    try{
+    try {
         return new BigNumber(
-            await gpo.methods.getL1Fee(Buffer.from(rawTransaction, 'hex')).call(),
+            await gpo.methods
+                .getL1Fee(Buffer.from(rawTransaction, 'hex'))
+                .call(),
         ).toString(10);
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotEstimateTransaction);
     }
-    catch(e){
-        console.error(e)
-        throw new Error(CannotEstimateTransaction)
-    }
-
 };

@@ -14,17 +14,15 @@ export const getBalance = async (
     props: BalanceParams,
 ): Promise<CurrencyBalanceResult> => {
     getBalanceParamsChecker(props);
-    try{
+    try {
         return {
             balance: (
                 await props.connector.eth.getBalance(props.address, 'latest')
             ).toString(10),
         } as CurrencyBalanceResult;
-    }
-    catch(error:any){
+    } catch (error: any) {
         throw new Error(error.code ?? CannotGetBalance);
     }
-
 };
 export * from './tokens';
 export * from './types';
