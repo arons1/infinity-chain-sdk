@@ -1,12 +1,10 @@
-const XRPCodes = [
+export const XRPErrorCodes = [
     "tefALREADY", // "The same exact transaction has already been applied."
-    "tefBAD_ADD_AUTH", // "DEPRECATED."
     "tefBAD_AUTH", // "The key used to sign this account is not authorized to modify this account. (It could be authorized if the account had the same key set as the Regular Key.)"
     "tefBAD_AUTH_MASTER", // "The single signature provided to authorize this transaction does not match the master key, but no regular key is associated with this address."
     "tefBAD_LEDGER", // "While processing the transaction, the ledger was discovered in an unexpected state. If you can reproduce this error, please report an issue to get it fixed."
     "tefBAD_QUORUM", // "The transaction was multi-signed, but the total weights of all included signatures did not meet the quorum."
     "tefBAD_SIGNATURE", // "The transaction was multi-signed, but contained a signature for an address not part of a SignerList associated with the sending account."
-    "tefCREATED", // "DEPRECATED."
     "tefEXCEPTION", // "While processing the transaction, the server entered an unexpected state. This may be caused by unexpected inputs, for example if the binary data for the transaction is grossly malformed. If you can reproduce this error, please report an issue to get it fixed."
     "tefFAILURE", // "Unspecified failure in applying the transaction."
     "tefINTERNAL", // "When trying to apply the transaction, the server entered an unexpected state. If you can reproduce this error, please report an issue to get it fixed."
@@ -69,7 +67,6 @@ const XRPCodes = [
     "tecPATH_PARTIAL",//	101	The transaction failed because the provided paths did not have enough liquidity to send the full amount.
     "tecTOO_SOON",//	152	The AccountDelete transaction failed because the account to be deleted had a Sequence number that is too high. The current ledger index must be at least 256 higher than the account's sequence number.
     "tecUNFUNDED",//	129	The transaction failed because the account does not hold enough XRP to pay the amount in the transaction and satisfy the additional reserve necessary to execute this transaction.
-    "tecUNFUNDED_ADD",//	102	DEPRECATED.
     "tecUNFUNDED_PAYMENT",//	104	The transaction failed because the sending account is trying to send more XRP than it holds, not counting the reserve.
     "tecUNFUNDED_OFFER",//	103	The OfferCreate transaction failed because the account creating the offer does not have any of the TakerGets currency.
     "telBAD_DOMAIN",//	The transaction specified a domain value (for example, the Domain field of an AccountSet transaction) that cannot be used, probably because it is too long to store in the ledger.
@@ -125,7 +122,6 @@ const XRPCodes = [
     "temUNCERTAIN",//	Used internally only. This code should never be returned.
     "temUNKNOWN",//	Used internally only. This code should never be returned.
     "temDISABLED",//	The transaction requires logic that is disabled. Typically this means you are trying to use an amendment that is not enabled for the current ledger.
-    "terFUNDS_SPENT",//	DEPRECATED.
     "terINSUF_FEE_B",//	The account sending the transaction does not have enough XRP to pay the Fee specified in the transaction.
     "terLAST",//	Used internally only. This code should never be returned.
     "terNO_ACCOUNT",//	The address sending the transaction is not funded in the ledger (yet).

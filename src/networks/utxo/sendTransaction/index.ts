@@ -1,5 +1,5 @@
 import { CannotSendTransaction } from '../../../errors/networks';
-import { RPCTrezorCodes } from '../../../errors/rpc_errors/trezor';
+import { TrezorErrorCodes } from '../../../errors/rpc_errors/trezor';
 import { SendTransactionParams } from './types';
 
 /**
@@ -25,7 +25,7 @@ export const sendTransaction = ({
                 else {
                     if(result.error){
                         const errorCode = parseInt(result.error.split(':')[0])
-                        const rpcErrorCode = RPCTrezorCodes[errorCode];
+                        const rpcErrorCode = TrezorErrorCodes[errorCode];
                         if (rpcErrorCode) {
                             reject(new Error(rpcErrorCode));
                         } else {

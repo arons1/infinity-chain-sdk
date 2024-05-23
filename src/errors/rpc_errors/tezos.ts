@@ -1,4 +1,4 @@
-const TaquitoErrorCodes = [
+export const TezosErrorCodes = [
     "michelson_v1.script_rejected", // Script rejected by the protocol
     "contract.balance_too_low", // Contract balance too low
     "gas_exhausted.operation", // Operation gas limit exhausted
@@ -91,5 +91,4 @@ const TaquitoErrorCodes = [
     "operation.invalid_script_code", // Invalid script code
     "operation.invalid_storage_data", // Invalid storage data
     "operation.invalid_ticket", // Invalid ticket
-
 ];
