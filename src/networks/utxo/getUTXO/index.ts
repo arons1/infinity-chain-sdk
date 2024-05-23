@@ -29,10 +29,8 @@ export const getUTXO = ({
                 resolve(
                     data.map(b => {
                         let protocol = 44;
-                        if(extendedPublicKey.startsWith('zpub'))
-                            protocol = 84;
-                        if(extendedPublicKey.startsWith('ypub'))
-                            protocol = 49;
+                        if (extendedPublicKey.startsWith('zpub')) protocol = 84;
+                        if (extendedPublicKey.startsWith('ypub')) protocol = 49;
                         return {
                             ...b,
                             protocol,

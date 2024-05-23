@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { sendTransactionParamsChecker } from '../parametersChecker';
+import { CannotSendTransaction } from '../../../errors/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 /**
  * Send transaction
@@ -12,7 +15,7 @@ export const sendTransaction = (rawTransaction: string): Promise<string> => {
     sendTransactionParamsChecker(rawTransaction);
     return new Promise((resolve, reject) => {
         axios
-            .post('https://horizon.stellar.org/transactions', {
+            .post(config[Coins.STELLAR].rpc[0] + '/transactions', {
                 body: new URLSearchParams({ tx: rawTransaction }).toString(),
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -20,10 +23,18 @@ export const sendTransaction = (rawTransaction: string): Promise<string> => {
             })
             .then(a => {
                 if (a.data.successful) resolve(a.data.hash);
-                else reject();
+                else if (
+                    a.data.extras?.result_codes?.operations != undefined &&
+                    a.data.extras?.result_codes?.operations.length > 0
+                )
+                    reject(new Error(a.data.extras.result_codes.operations[0]));
+                else if (a.data.extras?.result_codes?.transaction != undefined)
+                    reject(new Error(a.data.extras.result_codes.transaction));
+                else reject(new Error(CannotSendTransaction));
             })
             .catch(e => {
-                reject(e);
+                console.error(e);
+                reject(new Error(CannotSendTransaction));
             });
     });
 };

@@ -1,24 +1,23 @@
-export enum StellarErrorCodes {
-    TRANSACTION_FAILED = 'transaction_failed', // Transaction failed error
-    TRANSACTION_MISSING_OPERATION = 'transaction_missing_operation', // Transaction missing operation error
-    TRANSACTION_BAD_SEQUENCE = 'transaction_bad_sequence', // Transaction bad sequence error
-    TRANSACTION_BAD_AUTH = 'transaction_bad_auth', // Transaction bad auth error
-    TRANSACTION_INSUFFICIENT_BALANCE = 'transaction_insufficient_balance', // Transaction insufficient balance error
-    TRANSACTION_NO_ACCOUNT = 'transaction_no_account', // Transaction no account error
-    TRANSACTION_INSUFFICIENT_FEE = 'transaction_insufficient_fee', // Transaction insufficient fee error
-    TRANSACTION_BAD_AUTH_EXTRA = 'transaction_bad_auth_extra', // Transaction bad auth extra error
-    TRANSACTION_INTERNAL_ERROR = 'transaction_internal_error', // Transaction internal error
-    TRANSACTION_NOT_SUPPORTED = 'transaction_not_supported', // Transaction not supported error
-    TRANSACTION_TOO_EARLY = 'transaction_too_early', // Transaction too early error
-    TRANSACTION_TOO_LATE = 'transaction_too_late', // Transaction too late error
-    TRANSACTION_MISSING_OPERATION_SOURCE = 'transaction_missing_operation_source', // Transaction missing operation source error
-    ACCOUNT_NOT_FOUND = 'account_not_found', // Account not found error
-    SIGNER_NOT_FOUND = 'signer_not_found', // Signer not found error
-    DATA_NOT_FOUND = 'data_not_found', // Data not found error
-    OFFER_NOT_FOUND = 'offer_not_found', // Offer not found error
-    CLAIMABLE_BALANCE_NOT_FOUND = 'claimable_balance_not_found', // Claimable balance not found error
-    CLAIMABLE_BALANCE_CLAIMANT_CONFLICT = 'claimable_balance_claimant_conflict', // Claimable balance claimant conflict error
-    CLAIMABLE_BALANCE_CANNOT_CLAIM = 'claimable_balance_cannot_claim', // Claimable balance cannot claim error
-    CLAIMABLE_BALANCE_LINE_FULL = 'claimable_balance_line_full', // Claimable balance line full error
-    STREAM_EXCEPTION = 'stream_exception' // Stream exception error
-}
+export const StellarErrorCodes = [
+    'tx_success', //The transaction succeeded.
+    'tx_failed', //One of the operations failed (none were applied).
+    'tx_too_early', //The ledger closeTime was before the minTime.
+    'tx_too_late', //The ledger closeTime was after the maxTime.
+    'tx_missing_operation', //No operation was specified
+    'tx_bad_seq', //sequence number does not match source account
+    'tx_bad_auth', //too few valid signatures / wrong network
+    'tx_insufficient_balance', //fee would bring account below reserve
+    'tx_no_source_account', //source account not found
+    'tx_insufficient_fee', //fee is too small
+    'tx_bad_auth_extra', //unused signatures attached to transaction
+    'tx_internal_error', //an unknown error occured
+];
+
+export const StellarOperationErrorCodes = [
+    'op_inner', //The inner object result is valid and the operation was a success.
+    'op_bad_auth', //There are too few valid signatures, or the transaction was submitted to the wrong network.
+    'op_no_source_account', //The source account was not found.
+    'op_not_supported', //The operation is not supported at this time.
+    'op_too_many_subentries', //Max number of subentries (1000) already reached
+    'op_exceeded_work_limit', //Operation did too much work
+];

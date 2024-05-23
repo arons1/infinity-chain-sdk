@@ -5,6 +5,7 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { estimateFeeParametersChecker } from '../parametersChecker';
 import { rawTransaction } from '../builder';
 import { addAssociatedCreation } from '../builder/token';
+import { CannotEstimateTransaction } from '../../../errors/networks';
 
 /**
  * Estimates the fee for a transaction on the Solana blockchain.
@@ -54,21 +55,26 @@ export const estimateTransactionCost = async (props: {
     transaction: VersionedTransaction | Transaction;
     connector: Connection;
 }): Promise<EstimateFeeResult> => {
-    if ('message' in props.transaction)
-        return {
-            fee: (
-                await props.connector.getFeeForMessage(
-                    props.transaction.message,
-                    'confirmed',
-                )
-            ).value?.toString(10),
-        };
-    else
-        return {
-            fee: new BigNumber(
-                (await props.transaction.getEstimatedFee(
-                    props.connector,
-                )) as number,
-            ).toString(10),
-        };
+    try {
+        if ('message' in props.transaction)
+            return {
+                fee: (
+                    await props.connector.getFeeForMessage(
+                        props.transaction.message,
+                        'confirmed',
+                    )
+                ).value?.toString(10),
+            };
+        else
+            return {
+                fee: new BigNumber(
+                    (await props.transaction.getEstimatedFee(
+                        props.connector,
+                    )) as number,
+                ).toString(10),
+            };
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotEstimateTransaction);
+    }
 };

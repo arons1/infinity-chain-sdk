@@ -2,6 +2,7 @@ import { PublicKey } from '@solana/web3.js';
 import { CurrencyBalanceResult } from '../../types';
 import { GetBalanceParams } from './types';
 import { getBalanceParametersChecker } from '../parametersChecker';
+import { CannotGetBalance } from '../../../errors/networks';
 
 /**
  * Returns the balance of the given account.
@@ -14,10 +15,15 @@ export const getBalance = async (
     props: GetBalanceParams,
 ): Promise<CurrencyBalanceResult> => {
     getBalanceParametersChecker(props);
-    return {
-        balance: (
-            await props.connector.getBalance(new PublicKey(props.address))
-        ).toString(10),
-    } as CurrencyBalanceResult;
+    try {
+        return {
+            balance: (
+                await props.connector.getBalance(new PublicKey(props.address))
+            ).toString(10),
+        } as CurrencyBalanceResult;
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotGetBalance);
+    }
 };
 export * from './tokens';

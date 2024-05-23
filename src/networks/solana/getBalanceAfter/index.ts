@@ -12,6 +12,7 @@ import {
 import { AccountLayout } from '@solana/spl-token';
 import { getBalanceAfterParametersChecker } from '../parametersChecker';
 import { getAccounts } from '../utils';
+import { CannotEstimateTransaction } from '../../../errors/networks';
 
 const getBalanceAfterVersioned = async ({
     accounts,
@@ -19,34 +20,39 @@ const getBalanceAfterVersioned = async ({
     signer,
     transaction,
 }: EstimateFeeParams): Promise<Record<string, DataBalance>> => {
-    const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
-        await connector.simulateTransaction(transaction, {
-            accounts: {
-                encoding: 'base64',
-                addresses: accounts,
-            },
+    try {
+        const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
+            await connector.simulateTransaction(transaction, {
+                accounts: {
+                    encoding: 'base64',
+                    addresses: accounts,
+                },
+            });
+        const accounts_after: Record<string, DataBalance> = {};
+        estimate?.value?.accounts?.map((a, i) => {
+            if (a != undefined && a.data[0].length > 0) {
+                try {
+                    const decodedTokenAccountInfo = AccountLayout.decode(
+                        Buffer.from(a.data[0], 'base64'),
+                    );
+                    if (decodedTokenAccountInfo.owner.toString() == signer) {
+                        accounts_after[accounts[i] as string] = {
+                            amount: decodedTokenAccountInfo.amount.toString(),
+                            mint: decodedTokenAccountInfo.mint.toString(),
+                        };
+                    }
+                } catch {}
+            }
+            if (a && accounts[i] == signer)
+                accounts_after[accounts[i]] = {
+                    amount: a.lamports.toString(),
+                };
         });
-    const accounts_after: Record<string, DataBalance> = {};
-    estimate?.value?.accounts?.map((a, i) => {
-        if (a != undefined && a.data[0].length > 0) {
-            try {
-                const decodedTokenAccountInfo = AccountLayout.decode(
-                    Buffer.from(a.data[0], 'base64'),
-                );
-                if (decodedTokenAccountInfo.owner.toString() == signer) {
-                    accounts_after[accounts[i] as string] = {
-                        amount: decodedTokenAccountInfo.amount.toString(),
-                        mint: decodedTokenAccountInfo.mint.toString(),
-                    };
-                }
-            } catch {}
-        }
-        if (a && accounts[i] == signer)
-            accounts_after[accounts[i]] = {
-                amount: a.lamports.toString(),
-            };
-    });
-    return accounts_after;
+        return accounts_after;
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotEstimateTransaction);
+    }
 };
 const getBalanceAfterLegacy = async ({
     accounts,
@@ -54,33 +60,38 @@ const getBalanceAfterLegacy = async ({
     signer,
     transaction,
 }: EstimateLegacyFeeParams): Promise<Record<string, DataBalance>> => {
-    const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
-        await connector.simulateTransaction(
-            transaction,
-            undefined,
-            accounts.map(a => new PublicKey(a)),
-        );
-    const accounts_after: Record<string, DataBalance> = {};
-    estimate?.value?.accounts?.map((a, i) => {
-        if (a != undefined && a?.owner == signer && a.data[0].length > 0) {
-            try {
-                const decodedTokenAccountInfo = AccountLayout.decode(
-                    Buffer.from(a.data[0], 'base64'),
-                );
-                if (decodedTokenAccountInfo.owner.toString() == signer) {
-                    accounts_after[accounts[i] as string] = {
-                        amount: decodedTokenAccountInfo.amount.toString(),
-                        mint: decodedTokenAccountInfo.mint.toString(),
-                    };
-                }
-            } catch {}
-        }
-        if (a && accounts[i] == signer)
-            accounts_after[accounts[i]] = {
-                amount: a.lamports.toString(),
-            };
-    });
-    return accounts_after;
+    try {
+        const estimate: RpcResponseAndContext<SimulatedTransactionResponse> =
+            await connector.simulateTransaction(
+                transaction,
+                undefined,
+                accounts.map(a => new PublicKey(a)),
+            );
+        const accounts_after: Record<string, DataBalance> = {};
+        estimate?.value?.accounts?.map((a, i) => {
+            if (a != undefined && a?.owner == signer && a.data[0].length > 0) {
+                try {
+                    const decodedTokenAccountInfo = AccountLayout.decode(
+                        Buffer.from(a.data[0], 'base64'),
+                    );
+                    if (decodedTokenAccountInfo.owner.toString() == signer) {
+                        accounts_after[accounts[i] as string] = {
+                            amount: decodedTokenAccountInfo.amount.toString(),
+                            mint: decodedTokenAccountInfo.mint.toString(),
+                        };
+                    }
+                } catch {}
+            }
+            if (a && accounts[i] == signer)
+                accounts_after[accounts[i]] = {
+                    amount: a.lamports.toString(),
+                };
+        });
+        return accounts_after;
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotEstimateTransaction);
+    }
 };
 /**
  * getBalanceAfter

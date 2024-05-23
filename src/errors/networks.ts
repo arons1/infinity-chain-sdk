@@ -1,6 +1,6 @@
 export const PriorityFeeError = 'ERR_PRIORITY_FEE';
 export const CannotGetNonce = 'ERR_NONCE';
-export const CannotGetBalance = "ERR_BALANCE";
+export const CannotGetBalance = 'ERR_BALANCE';
 export const InvalidTokenContract = 'ERR_INVALID_TOKEN_CONTRACT';
 export const InvalidContractAddress = 'ERR_INVALID_TOKEN_ADDRESS';
 export const InvalidAmount = 'ERR_INVALID_AMOUNT';
@@ -40,3 +40,5 @@ export const CannotGetSequence = 'ERR_SEQUENCE';
 export const CannotGetAccount = 'ERR_ACCOUNT';
 export const CannotGetContract = 'ERR_CONTRACT';
 export const CannotEstimateTransaction = 'ERR_ESTIMATE_TRANSACTION';
+export const CannotGetTransactions = 'ERR_TRANSACTIONS';
+export const CannotBuildTransaction = 'ERR_BUILDING_TRANSACTION';

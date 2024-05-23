@@ -12,7 +12,10 @@ import {
     readOnlySigner,
 } from '../getBalance/tez';
 import { localForger } from '@taquito/local-forging';
-import { CannotEstimateTransaction, CannotGetAccount } from '../../../errors/networks';
+import {
+    CannotEstimateTransaction,
+    CannotGetAccount,
+} from '../../../errors/networks';
 
 const ADDITIONAL_FEE = 100;
 
@@ -23,18 +26,16 @@ export const getAditionalFee = (fee: number) => {
     return new BigNumber(nm.split('.')[0]);
 };
 export const feeReveal = async (account: string, connector: TezosToolkit) => {
-    try{
+    try {
         const manager = await connector.rpc.getManagerKey(account);
         if (!hasManager(manager)) {
             return DEFAULT_FEE.REVEAL;
         }
         return 0;
-    }
-    catch(e){
+    } catch (e) {
         console.log(e);
         throw new Error(CannotGetAccount);
     }
-    
 };
 /**
  * Returns estimate fee
@@ -124,25 +125,23 @@ export const estimateOperation = async ({
 
     // Initialize the estimated base fee
     let estimatedBaseFee = new BigNumber(0);
-    try{
+    try {
         const transferFeesList = await connector.estimate.batch(
             operations.map(formatOpParamsBeforeSend),
         );
-    
+
         // Calculate the total estimated base fee
         for (let transferFees of transferFeesList) {
             estimatedBaseFee = estimatedBaseFee.plus(
                 transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
             );
         }
-    
+
         // Return the estimated fee
         return { fee: estimatedBaseFee.toString(10) };
-    }
-    catch(e){
-        console.error(e)
-        throw new Error(CannotEstimateTransaction)
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotEstimateTransaction);
     }
     // Estimate the fees for each operation
-    
 };

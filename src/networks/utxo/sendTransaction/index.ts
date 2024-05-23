@@ -23,18 +23,18 @@ export const sendTransaction = ({
             async (result: any) => {
                 if (result?.result != undefined) resolve(result.result);
                 else {
-                    if(result.error){
-                        const errorCode = parseInt(result.error.split(':')[0])
+                    if (result.error) {
+                        const errorCode = parseInt(result.error.split(':')[0]);
                         const rpcErrorCode = TrezorErrorCodes[errorCode];
                         if (rpcErrorCode) {
                             reject(new Error(rpcErrorCode));
                         } else {
-                            reject(new Error(CannotSendTransaction))
+                            reject(new Error(CannotSendTransaction));
                         }
-                    }else{
-                        reject(new Error(CannotSendTransaction))
+                    } else {
+                        reject(new Error(CannotSendTransaction));
                     }
-                };
+                }
             },
         );
     });

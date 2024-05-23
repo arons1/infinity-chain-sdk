@@ -2,6 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 import { AccountExists, AssetExistsRequest } from './types';
 import StellarSdk, { Asset } from 'stellar-sdk';
 import { accountExistsParametersChecker } from '../parametersChecker';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 /**
  * Checks if an asset account exists for the passed account
@@ -15,7 +17,7 @@ export const assetExists = async (code: string, issuer: string) => {
     return new Promise(resolve => {
         axios
             .get(
-                `https://horizon.stellar.org/assets?asset_issuer=${issuer.toUpperCase()}`,
+                `${config[Coins.STELLAR].rpc[0]}/assets?asset_issuer=${issuer.toUpperCase()}`,
             )
             .then((a: AxiosResponse<AssetExistsRequest>) => {
                 if (a.data && a.data._embedded && a.data._embedded.records) {

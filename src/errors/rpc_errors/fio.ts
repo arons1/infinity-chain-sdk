@@ -26,5 +26,5 @@ export enum FioErrorCodes {
     FIO_ADDRESS_NO_DOMAIN = 'FIO_ADDRESS_NO_DOMAIN', // FIO address has no domain error
     FIO_ADDRESS_ALREADY_REGISTERED_DOMAIN = 'FIO_ADDRESS_ALREADY_REGISTERED_DOMAIN', // FIO address already registered under domain error
     FIO_ADDRESS_REGISTERED_DOMAIN = 'FIO_ADDRESS_REGISTERED_DOMAIN', // FIO address registered under domain error
-    FIO_ADDRESS_REGISTERED_DIFFERENT_DOMAIN = 'FIO_ADDRESS_REGISTERED_DIFFERENT_DOMAIN' // FIO address registered under different domain error
+    FIO_ADDRESS_REGISTERED_DIFFERENT_DOMAIN = 'FIO_ADDRESS_REGISTERED_DIFFERENT_DOMAIN', // FIO address registered under different domain error
 }

@@ -11,6 +11,7 @@ import { signTransaction } from '@infinity/core-sdk/lib/commonjs/networks/ed2551
 import * as Web3 from '@solana/web3.js';
 import { builderParametersChecker } from '../parametersChecker';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import { CannotBuildTransaction } from '../../../errors/networks';
 
 /**
  * Builds a signed raw transaction
@@ -28,16 +29,21 @@ export const buildTransaction = async (
     props: TransactionBuilderParams,
 ): Promise<string> => {
     builderParametersChecker(props);
-    const transactionPay = await rawTransaction({
-        ...props,
-        publicKey: new PublicKey(props.keyPair.publicKey),
-    });
+    try {
+        const transactionPay = await rawTransaction({
+            ...props,
+            publicKey: new PublicKey(props.keyPair.publicKey),
+        });
 
-    return signTransaction({
-        transaction: transactionPay,
-        keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
-        coinId: Coins.SOLANA,
-    });
+        return signTransaction({
+            transaction: transactionPay,
+            keyPair: Web3.Keypair.fromSecretKey(props.keyPair.secretKey),
+            coinId: Coins.SOLANA,
+        });
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotBuildTransaction);
+    }
 };
 
 /**

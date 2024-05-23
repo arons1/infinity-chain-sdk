@@ -16,6 +16,7 @@ import { create } from 'superstruct';
 import { GetSignaturesForAddressRpcResult } from './results';
 import { sleep } from '../utils';
 import { getTransactionsParametersChecker } from '../parametersChecker';
+import { CannotGetTransactions } from '../../../errors/networks';
 const LIMIT_CALLS = 1000;
 const LIMIT_BATCH = 20;
 
@@ -248,33 +249,38 @@ const getBatchAddresses = async ({
     pagination,
     limit,
 }: GetBatchAddressesWithPaginationParams): Promise<ResultSignature[][]> => {
-    const batch = accounts.map(({ address }) => {
-        const data: PaginationData = { limit };
-        if (pagination[address]) data.before = pagination[address];
-        if (signatures[address]) data.until = signatures[address];
-        const args = connector._buildArgsAtLeastConfirmed(
-            [address],
-            undefined,
-            undefined,
-            data,
-        );
-        return {
-            methodName: 'getSignaturesForAddress',
-            args,
-        };
-    });
-
-    const unsafeRes = await connector._rpcBatchRequest(batch);
-    const res = unsafeRes.map((unsafeRes: any) => {
-        const res = create(unsafeRes, GetSignaturesForAddressRpcResult);
-        if ('error' in res) {
-            throw new SolanaJSONRPCError(
-                res.error,
-                'failed to get transactions',
+    try {
+        const batch = accounts.map(({ address }) => {
+            const data: PaginationData = { limit };
+            if (pagination[address]) data.before = pagination[address];
+            if (signatures[address]) data.until = signatures[address];
+            const args = connector._buildArgsAtLeastConfirmed(
+                [address],
+                undefined,
+                undefined,
+                data,
             );
-        }
-        return res.result;
-    });
+            return {
+                methodName: 'getSignaturesForAddress',
+                args,
+            };
+        });
 
-    return res;
+        const unsafeRes = await connector._rpcBatchRequest(batch);
+        const res = unsafeRes.map((unsafeRes: any) => {
+            const res = create(unsafeRes, GetSignaturesForAddressRpcResult);
+            if ('error' in res) {
+                throw new SolanaJSONRPCError(
+                    res.error,
+                    'failed to get transactions',
+                );
+            }
+            return res.result;
+        });
+
+        return res;
+    } catch (e) {
+        console.error(e);
+        throw new Error(CannotGetTransactions);
+    }
 };

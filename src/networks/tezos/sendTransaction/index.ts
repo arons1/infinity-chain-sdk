@@ -32,14 +32,20 @@ export const sendTransaction = async (
             })
             .catch((err: any) => {
                 console.error(err);
-                if(err.errors){
+                if (err.errors) {
                     const errorTaquito = err?.errors?.[err.errors?.length - 1];
-                    if(errorTaquito?.id != undefined && errorTaquito.id.split('.').slice(2).join('.') != undefined)
-                        reject(new Error(errorTaquito.id.split('.').slice(2).join('.')));
-                    else
-                        reject(new Error(CannotSendTransaction));
-                }
-                else{
+                    if (
+                        errorTaquito?.id != undefined &&
+                        errorTaquito.id.split('.').slice(2).join('.') !=
+                            undefined
+                    )
+                        reject(
+                            new Error(
+                                errorTaquito.id.split('.').slice(2).join('.'),
+                            ),
+                        );
+                    else reject(new Error(CannotSendTransaction));
+                } else {
                     reject(new Error(CannotSendTransaction));
                 }
             });
@@ -65,14 +71,20 @@ export const sendOperations = async (props: BuildOperationsParams) => {
             })
             .catch((err: any) => {
                 console.error(err);
-                if(err.errors){
+                if (err.errors) {
                     const errorTaquito = err?.errors?.[err.errors?.length - 1];
-                    if(errorTaquito?.id != undefined && errorTaquito.id.split('.').slice(2).join('.') != undefined)
-                        reject(new Error(errorTaquito.id.split('.').slice(2).join('.')));
-                    else
-                        reject(new Error(CannotSendTransaction));
-                }
-                else{
+                    if (
+                        errorTaquito?.id != undefined &&
+                        errorTaquito.id.split('.').slice(2).join('.') !=
+                            undefined
+                    )
+                        reject(
+                            new Error(
+                                errorTaquito.id.split('.').slice(2).join('.'),
+                            ),
+                        );
+                    else reject(new Error(CannotSendTransaction));
+                } else {
                     reject(new Error(CannotSendTransaction));
                 }
             });
