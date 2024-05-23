@@ -5,6 +5,7 @@ import {
     preparePaymentParametersChecker,
 } from '../parametersChecker/builder';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks/registry';
+import { CannotGetSequence } from '../../../errors/networks';
 
 const LEDGER_OFFSET = 20;
 
@@ -23,10 +24,16 @@ export const preparePayment = async (props: PreparePaymentParams) => {
             account: tx.Account,
             ledger_index: 'current',
         };
-        const data = await connector.send(request, {
-            timeoutSeconds: 5,
-        });
-        tx.Sequence = data.account_data.Sequence;
+        try{
+            const data = await connector.send(request, {
+                timeoutSeconds: 5,
+            });
+            tx.Sequence = data.account_data.Sequence;
+        }
+        catch{
+            throw new Error(CannotGetSequence)
+        }
+        
     }
     if (tx.LastLedgerSequence == undefined) {
         tx.LastLedgerSequence =

@@ -14,6 +14,7 @@ import { estimateOperation, getAditionalFee } from '../estimateFee';
 import { ReadOnlySigner, readOnlySigner } from '../getBalance/tez';
 import { ContractMethod, ContractProvider } from '@taquito/taquito';
 import { formatOpParamsBeforeSend } from '../utils';
+import { CannotEstimateTransaction, CannotGetContract } from '../../../errors/networks';
 
 const buildTransferOperations = async ({
     source,
@@ -24,26 +25,32 @@ const buildTransferOperations = async ({
     idToken,
     connector,
 }: BuildTransferOperationsParams) => {
-    const contract = await connector.contract.at(mintToken);
-    let isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
-    if (isFA2) {
-        return contract.methods.transfer([
-            {
-                from_: source,
-                txs: [
-                    {
-                        to_: destination,
-                        token_id: idToken ?? 0,
-                        amount: new BigNumber(value)
-                            .shiftedBy(decimalsToken * -1)
-                            .toNumber(),
-                    },
-                ],
-            },
-        ]);
-    } else {
-        return contract.methods.transfer(source, destination, value);
+    try{
+        const contract = await connector.contract.at(mintToken);
+        let isFA2 = contract.entrypoints?.entrypoints?.transfer?.prim == 'list';
+        if (isFA2) {
+            return contract.methods.transfer([
+                {
+                    from_: source,
+                    txs: [
+                        {
+                            to_: destination,
+                            token_id: idToken ?? 0,
+                            amount: new BigNumber(value)
+                                .shiftedBy(decimalsToken * -1)
+                                .toNumber(),
+                        },
+                    ],
+                },
+            ]);
+        } else {
+            return contract.methods.transfer(source, destination, value);
+        }
     }
+    catch{
+        throw new Error(CannotGetContract)
+    }
+    
 };
 /**
  * Returns prepared transaction of operation
@@ -80,15 +87,22 @@ export const buildOperation = async ({
             decimalsToken,
             connector,
         });
-    const transferFees = await connector.estimate.transfer(
-        operation.toTransferParams(),
-    );
-    let estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
-    estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
-    return {
-        operation,
-        fee: estimatedBaseFee.toString(10),
-    };
+    try{
+        const transferFees = await connector.estimate.transfer(
+            operation.toTransferParams(),
+        );
+        let estimatedBaseFee = new BigNumber(transferFees.suggestedFeeMutez);
+        estimatedBaseFee = estimatedBaseFee.plus(getAditionalFee(feeRatio));
+        return {
+            operation,
+            fee: estimatedBaseFee.toString(10),
+        };
+    }
+    catch(e){
+        console.error(e)
+        throw new Error(CannotEstimateTransaction);
+    }
+    
 };
 export const buildTransfer = async ({
     connector,
@@ -100,13 +114,19 @@ export const buildTransfer = async ({
 }: BuildTransferParams): Promise<string> => {
     connector.setSignerProvider(new ReadOnlySigner(source, pkHash));
     const amount = new BigNumber(value).shiftedBy(-6).toNumber();
-    const transferFees = await connector.estimate.transfer({
-        to: destination,
-        amount,
-    });
-    let estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
-    estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
-    return estimatedBaseFeeb.toString(10);
+    try{
+        const transferFees = await connector.estimate.transfer({
+            to: destination,
+            amount,
+        });
+        let estimatedBaseFeeb = new BigNumber(transferFees.suggestedFeeMutez);
+        estimatedBaseFeeb = estimatedBaseFeeb.plus(getAditionalFee(feeRatio));
+        return estimatedBaseFeeb.toString(10);
+    }
+    catch(e){
+        console.error(e)
+        throw new Error(CannotEstimateTransaction);
+    }
 };
 
 /**
@@ -198,8 +218,8 @@ export const buildOperations = async ({
     pkHash,
     source,
 }: BuildOperationsParams): Promise<BuildOperationResult> => {
-    const batch = await connector.contract.batch(
-        operations.map(formatOpParamsBeforeSend),
+    const batch = connector.contract.batch(
+        operations.map(formatOpParamsBeforeSend)
     );
     const fee = await estimateOperation({
         operations,

@@ -1,6 +1,7 @@
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { GetAccountBalancesParams, GetAccountInfoParams } from './types';
 import { BalanceResult, CurrencyBalanceResult } from '../../types';
+import { CannotGetBalance } from '../../../errors/networks';
 
 /**
  * Retrieves account information from the given connector and address.
@@ -26,7 +27,7 @@ const getAccountInfo = ({
             },
             (data: { balance: string; unconfirmedBalance: string }) => {
                 if (!data || !data.balance) {
-                    reject();
+                    reject(new Error(CannotGetBalance));
                     return;
                 }
                 const balance = new BigNumber(data.balance);

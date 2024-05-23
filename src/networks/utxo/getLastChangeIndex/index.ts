@@ -1,3 +1,4 @@
+import { CannotGetNonce } from '../../../errors/networks';
 import {
     ChangeIndexResult,
     LastChangeIndexParameters,
@@ -25,7 +26,7 @@ export const getLastChangeIndex = async ({
             },
             (data: ChangeIndexResult) => {
                 if (!data) {
-                    reject();
+                    reject(new Error(CannotGetNonce));
                     return;
                 }
                 let changeIndex = 0;

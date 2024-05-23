@@ -1,6 +1,7 @@
 import { AnyJson } from 'xrpl-client';
 import { SendTransactionParams, TransactionResult, TxJson } from './types';
 import { sendTransactionParamsChecker } from '../parametersChecker';
+import { CannotSendTransaction } from '../../../errors/networks';
 
 /**
  * Sends a transaction using the provided parameters.
@@ -33,14 +34,14 @@ export const sendTransaction = (
                 ) {
                     const txHash = transactionResult.tx_json as TxJson;
                     if (txHash.hash) resolve(txHash.hash);
-                    else reject();
+                    else reject(new Error(CannotSendTransaction));
                 } else {
-                    reject();
+                    reject(new Error(transactionResult.engine_result));
                 }
             })
             .catch(e => {
                 console.error(e);
-                reject();
+                reject(new Error(CannotSendTransaction));
             });
     });
 };

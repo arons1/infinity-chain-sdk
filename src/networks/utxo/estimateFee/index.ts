@@ -54,7 +54,7 @@ export const getFeePerByte = ({
                             .toString(10)
                             .split('.')[0],
                     });
-                } else reject();
+                } else reject(new Error(CannotGetFeePerByte));
             },
         );
     });

@@ -1,3 +1,4 @@
+import { CannotGetAccount } from '../../../errors/networks';
 import { accountExistsParamsChecker } from '../parametersChecker';
 import { AccountExists } from './types';
 
@@ -23,6 +24,7 @@ export const accountExists = async (props: AccountExists) => {
         });
         return data.error != 'actNotFound';
     } catch (e) {
-        return false;
+        console.error(e);
+        throw new Error(CannotGetAccount);
     }
 };

@@ -1,3 +1,4 @@
+import { CannotGetUTXO } from '../../../errors/networks';
 import { GetUTXOParams, UTXOResult } from './types';
 
 /**
@@ -22,18 +23,19 @@ export const getUTXO = ({
             },
             (data: UTXOResult[]) => {
                 if (!data) {
-                    reject();
+                    reject(new Error(CannotGetUTXO));
                     return;
                 }
                 resolve(
                     data.map(b => {
+                        let protocol = 44;
+                        if(extendedPublicKey.startsWith('zpub'))
+                            protocol = 84;
+                        if(extendedPublicKey.startsWith('ypub'))
+                            protocol = 49;
                         return {
                             ...b,
-                            protocol: extendedPublicKey.startsWith('zpub')
-                                ? 84
-                                : extendedPublicKey.startsWith('ypub')
-                                  ? 49
-                                  : 44,
+                            protocol,
                             extendedPublicKey,
                         };
                     }),

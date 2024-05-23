@@ -339,9 +339,15 @@ class UTXOWallet extends CoinWallet {
         buysellHistorical,
         walletName,
     }: SetTransactionFormatParams) {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount]
+        ) {
+            throw new Error('Wallet not found');
+        }
         const addresses = [];
         for (let p of Object.keys(
-            this.extendedPublicKeys[walletAccount ?? this.walletSelected],
+            this.extendedPublicKeys[walletName][walletAccount],
         )) {
             addresses.push(
                 this.getReceiveAddress({

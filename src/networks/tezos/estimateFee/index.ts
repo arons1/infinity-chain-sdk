@@ -12,6 +12,7 @@ import {
     readOnlySigner,
 } from '../getBalance/tez';
 import { localForger } from '@taquito/local-forging';
+import { CannotEstimateTransaction, CannotGetAccount } from '../../../errors/networks';
 
 const ADDITIONAL_FEE = 100;
 
@@ -22,11 +23,18 @@ export const getAditionalFee = (fee: number) => {
     return new BigNumber(nm.split('.')[0]);
 };
 export const feeReveal = async (account: string, connector: TezosToolkit) => {
-    const manager = await connector.rpc.getManagerKey(account);
-    if (!hasManager(manager)) {
-        return DEFAULT_FEE.REVEAL;
+    try{
+        const manager = await connector.rpc.getManagerKey(account);
+        if (!hasManager(manager)) {
+            return DEFAULT_FEE.REVEAL;
+        }
+        return 0;
     }
-    return 0;
+    catch(e){
+        console.log(e);
+        throw new Error(CannotGetAccount);
+    }
+    
 };
 /**
  * Returns estimate fee
@@ -116,19 +124,25 @@ export const estimateOperation = async ({
 
     // Initialize the estimated base fee
     let estimatedBaseFee = new BigNumber(0);
-
-    // Estimate the fees for each operation
-    const transferFeesList = await connector.estimate.batch(
-        operations.map(formatOpParamsBeforeSend),
-    );
-
-    // Calculate the total estimated base fee
-    for (let transferFees of transferFeesList) {
-        estimatedBaseFee = estimatedBaseFee.plus(
-            transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
+    try{
+        const transferFeesList = await connector.estimate.batch(
+            operations.map(formatOpParamsBeforeSend),
         );
+    
+        // Calculate the total estimated base fee
+        for (let transferFees of transferFeesList) {
+            estimatedBaseFee = estimatedBaseFee.plus(
+                transferFees.burnFeeMutez + transferFees.suggestedFeeMutez,
+            );
+        }
+    
+        // Return the estimated fee
+        return { fee: estimatedBaseFee.toString(10) };
     }
-
-    // Return the estimated fee
-    return { fee: estimatedBaseFee.toString(10) };
+    catch(e){
+        console.error(e)
+        throw new Error(CannotEstimateTransaction)
+    }
+    // Estimate the fees for each operation
+    
 };

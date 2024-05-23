@@ -2,6 +2,7 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { CurrencyBalanceResult } from '../../types';
 import { GetBalanceParams } from './types';
 import { getBalanceParamsChecker } from '../parametersChecker';
+import { CannotGetBalance } from '../../../errors/networks';
 
 /**
  * Retrieves the balance information for a given address.
@@ -38,8 +39,6 @@ export const getBalance = async (
         };
     } catch (e) {
         console.error(e);
-        return {
-            balance: '0',
-        };
+        throw new Error(CannotGetBalance);
     }
 };
