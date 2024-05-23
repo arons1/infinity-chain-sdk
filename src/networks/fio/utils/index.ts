@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { FIOBalance } from './types';
 import { getAddressFromAccountParametersChecker } from '../parametersChecker';
+import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 /**
  * getAddressFromAccount
@@ -12,7 +14,7 @@ export const getAddressFromAccount = (account: string) => {
     getAddressFromAccountParametersChecker(account);
     return new Promise((resolve, reject) => {
         axios
-            .post('https://fio.blockpane.com/v1/chain/get_account', {
+            .post(config[Coins.FIO].rpc[0] + 'chain/get_account', {
                 account_name: account,
             })
             .then((a: AxiosResponse<FIOBalance>) => {
@@ -31,7 +33,8 @@ export const getAddressFromAccount = (account: string) => {
                 }
             })
 
-            .catch(() => {
+            .catch((error) => {
+                console.error(error);
                 reject();
             });
     });

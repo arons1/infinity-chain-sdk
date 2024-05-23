@@ -9,6 +9,7 @@ import {
     Transaction,
 } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 import { estimateParametersChecker } from '../parametersChecker';
+import { CannotEstimateTransaction } from '../../../errors/networks';
 
 /**
  * estimateFee
@@ -30,35 +31,42 @@ export const estimateFee = async (
     props: EstimateGasParams,
 ): Promise<EstimateFeeResult> => {
     estimateParametersChecker(props);
-    let resultEstimate;
-    if (props.tokenContract && props.tokenContract.length > 0) {
-        resultEstimate = await estimateTokenFee(
-            props as EstimateGasTokenParams,
-        );
-    } else {
-        resultEstimate = await estimateCurrencyFee(props);
-    }
-    let fee = new BigNumber(resultEstimate.estimateGas)
-        .multipliedBy(resultEstimate.gasPrice as string)
-        .toString(10);
-    if (props.chainId == Chains.OP) {
-        const txBuilder = new Transaction(
-            resultEstimate.transaction,
-        ).serialize();
-        fee = new BigNumber(
-            await estimateL1Cost(
-                props.connector,
-                '0x' + txBuilder.toString('hex'),
-            ),
-        )
-            .plus(fee)
+    try{
+        let resultEstimate;
+        if (props.tokenContract && props.tokenContract.length > 0) {
+            resultEstimate = await estimateTokenFee(
+                props as EstimateGasTokenParams,
+            );
+        } else {
+            resultEstimate = await estimateCurrencyFee(props);
+        }
+        let fee = new BigNumber(resultEstimate.estimateGas)
+            .multipliedBy(resultEstimate.gasPrice as string)
             .toString(10);
+        if (props.chainId == Chains.OP) {
+            const txBuilder = new Transaction(
+                resultEstimate.transaction,
+            ).serialize();
+            fee = new BigNumber(
+                await estimateL1Cost(
+                    props.connector,
+                    '0x' + txBuilder.toString('hex'),
+                ),
+            )
+                .plus(fee)
+                .toString(10);
+        }
+    
+        return {
+            fee,
+            transaction: resultEstimate.transaction,
+        };
     }
-
-    return {
-        fee,
-        transaction: resultEstimate.transaction,
-    };
+    catch(error:any){
+        console.error(error);
+        throw new Error(error.code ?? CannotEstimateTransaction);
+    }
+    
 };
 
 export * from './currency';

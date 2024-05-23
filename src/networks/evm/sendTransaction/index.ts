@@ -1,3 +1,4 @@
+import { CannotSendTransaction } from '../../../errors/networks';
 import { sendTransactionParamsChecker } from '../parametersChecker';
 import { SendTransactionParams } from './types';
 
@@ -20,10 +21,10 @@ export const sendTransaction = async (
                 resolve(txid);
             })
             .on('error', (e: any) => {
-                reject(e);
+                reject(new Error(e.code ?? CannotSendTransaction));
             })
             .catch((e: any) => {
-                reject(e);
+                reject(new Error(e.code ?? CannotSendTransaction));
             });
     });
 };

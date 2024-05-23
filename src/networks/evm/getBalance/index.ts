@@ -1,3 +1,4 @@
+import { CannotGetBalance } from '../../../errors/networks';
 import { CurrencyBalanceResult } from '../../types';
 import { getBalanceParamsChecker } from '../parametersChecker';
 import { BalanceParams } from './types';
@@ -13,11 +14,17 @@ export const getBalance = async (
     props: BalanceParams,
 ): Promise<CurrencyBalanceResult> => {
     getBalanceParamsChecker(props);
-    return {
-        balance: (
-            await props.connector.eth.getBalance(props.address, 'latest')
-        ).toString(10),
-    } as CurrencyBalanceResult;
+    try{
+        return {
+            balance: (
+                await props.connector.eth.getBalance(props.address, 'latest')
+            ).toString(10),
+        } as CurrencyBalanceResult;
+    }
+    catch(error:any){
+        throw new Error(error.code ?? CannotGetBalance);
+    }
+
 };
 export * from './tokens';
 export * from './types';

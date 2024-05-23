@@ -4,6 +4,16 @@ import { sendTransactionParametersChecker } from '../parametersChecker';
 import { BuildTransactionFIOResult } from '../builder/types';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
+import {
+    CannotSendTransaction,
+    InvalidRawTransaction,
+} from '../../../errors/networks';
+import { NotEnoughBalance } from '../../../errors/rpc_errors/solana';
+import {
+    AuthorizationError,
+    DuplicatedTransaction,
+    ExpiredTransaction,
+} from '../../../errors/rpc_errors/fio';
 
 /**
  * sendTransaction
@@ -31,9 +41,31 @@ export const sendTransaction = async (
                     reject(result);
                 }
             })
-            .catch(e => {
-                console.error(e);
-                reject(e);
+            .catch(error => {
+                console.error(error);
+                if (
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error
+                ) {
+                    const errorCode = error.response.data.error.what;
+                    switch (errorCode) {
+                        case 'Invalid packed transaction':
+                            throw new Error(InvalidRawTransaction);
+                        case 'expired_tx_exception':
+                            throw new Error(ExpiredTransaction);
+                        case 'tx_duplicate':
+                            throw new Error(DuplicatedTransaction);
+                        case 'tx_not_permitted':
+                            throw new Error(AuthorizationError);
+                        case 'insufficient_resources':
+                            throw new Error(NotEnoughBalance);
+                        default:
+                            throw new Error(CannotSendTransaction);
+                    }
+                } else {
+                    throw new Error(CannotSendTransaction);
+                }
             });
     });
 };

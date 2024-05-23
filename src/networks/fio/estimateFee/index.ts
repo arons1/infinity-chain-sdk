@@ -31,7 +31,8 @@ export const estimateFee = (source: string): Promise<EstimateFeeResult> => {
                     resolve({ fee: DEFAULT_FEE + '' });
                 }
             })
-            .catch(() => {
+            .catch(e => {
+                console.error(e);
                 resolve({ fee: DEFAULT_FEE + '' });
             });
     });
