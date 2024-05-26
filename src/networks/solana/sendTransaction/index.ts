@@ -1,4 +1,3 @@
-import { TransactionError } from '@solana/web3.js';
 import { sendTransactionParametersChecker } from '../parametersChecker';
 import { SendTransactionParams } from './types';
 import { CannotSendTransaction } from '../../../errors/networks';

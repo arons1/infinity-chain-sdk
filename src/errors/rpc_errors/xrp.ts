@@ -19,7 +19,6 @@ export const XRPErrorCodes = [
     'tefTOO_BIG', // "The transaction would affect too many objects in the ledger. For example, this was an AccountDelete transaction but the account to be deleted owns over 1000 objects in the ledger."
     'tefWRONG_PRIOR', // "The transaction contained an AccountTxnID field (or the deprecated PreviousTxnID field), but the transaction specified there does not match the account's previous transaction."
     'tecAMM_ACCOUNT', //	168	The transaction failed because the operation is not allowed on Automated Market Maker (AMM) accounts. (Requires the AMM amendment)
-    'tecAMM_ACCOUNT', //	168	The transaction failed because the operation is not allowed on Automated Market Maker (AMM) accounts. (Requires the AMM amendment)
     'tecAMM_UNFUNDED', //	162	The AMMCreate transaction failed because the sender does not have enough of the specified assets to fund it. (Requires the AMM amendment)
     'tecAMM_BALANCE', //	163	The AMMDeposit or AMMWithdraw transaction failed because either the AMM or the user does not hold enough of one of the specified assets. (For example, you tried to withdraw more than the AMM holds.) (Requires the AMM amendment)
     'tecAMM_EMPTY', //	166	The AMM-related transaction failed because the AMM has no assets in its pool. In this state, you can only delete the AMM or fund it with a new deposit. (Requires the AMM amendment)
