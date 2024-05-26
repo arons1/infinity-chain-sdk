@@ -24,8 +24,11 @@ const mnemonic =
 describe('networksSolana', () => {
     test('build', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await buildTransaction({
             memo: 'test',
             keyPair,
@@ -37,8 +40,11 @@ describe('networksSolana', () => {
     });
     test('buildToken', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await buildTransaction({
             memo: 'test',
             keyPair,
@@ -52,8 +58,11 @@ describe('networksSolana', () => {
     });
     test('estimateFee', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const fee = await estimateFee({
             memo: 'test',
             publicKey: new PublicKey(keyPair.publicKey),
@@ -65,8 +74,11 @@ describe('networksSolana', () => {
     });
     test('getBalanceAfter', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await rawTransaction({
             memo: 'test',
             publicKey: new PublicKey(keyPair.publicKey),
@@ -89,8 +101,11 @@ describe('networksSolana', () => {
 
     test('getBalance', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const balance = await getBalance({
             connector: web3Solana,
             address: new PublicKey(keyPair.publicKey).toString(),
@@ -99,8 +114,11 @@ describe('networksSolana', () => {
     });
     test('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const pubAddress = new PublicKey(keyPair.publicKey).toString();
         const balance = await getAccountBalances({
             connector: web3Solana,
@@ -120,8 +138,11 @@ describe('networksSolana', () => {
     });
     test('getTransactions', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/501'/0'/0'",
-        walletAccount:0 });
+        const keyPair = getKeyPair({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const address = new PublicKey(keyPair.publicKey).toString();
         const accounts = await getAccounts({ address, connector: web3Solana });
         const transactions = await getAccountsTransactions({

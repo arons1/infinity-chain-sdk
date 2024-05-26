@@ -38,7 +38,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
@@ -77,7 +77,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
@@ -102,7 +102,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
@@ -123,7 +123,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
@@ -146,7 +146,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
@@ -167,7 +167,7 @@ describe('networksUTXO', () => {
             rootNode: getRootNode({ mnemonic, network: networks[Coins.LTC] }),
             bipIdCoin: CoinIds.LTC,
             protocol: Protocol.LEGACY,
-            walletAccount:0,
+            walletAccount: 0,
         });
         const xpub = encodeGeneric(
             privateAccountNode.neutered().toBase58(),
