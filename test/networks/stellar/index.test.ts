@@ -19,7 +19,8 @@ const mnemonic =
 describe('networksStellar', () => {
     test('builder', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'",
+        walletAccount:0 });
         const publicAddress = getPublicStellarAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
@@ -36,7 +37,8 @@ describe('networksStellar', () => {
     });
     test('builderToken', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'",
+        walletAccount:0 });
         const publicAddress = getPublicStellarAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
@@ -61,7 +63,8 @@ describe('networksStellar', () => {
     });
     test('getBalance', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'",
+        walletAccount:0 });
         const publicAddress = getPublicStellarAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });
@@ -73,7 +76,8 @@ describe('networksStellar', () => {
     });
     test('getAccountBalances', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/148'/0'",
+        walletAccount:0 });
         const publicAddress = getPublicStellarAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.STELLAR }),
         });

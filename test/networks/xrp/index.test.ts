@@ -19,7 +19,8 @@ const mnemonic =
 describe('networksXRP', () => {
     test('builder', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0",
+        walletAccount:0 });
         const publicAddress = getPublicXRPAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.XRP }),
         });
@@ -46,7 +47,8 @@ describe('networksXRP', () => {
     });
     test('getBalance', async () => {
         const seed = getSeed({ mnemonic });
-        const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0" });
+        const keyPair = getKeyPair({ seed, path: "m/44'/144'/0'/0/0",
+        walletAccount:0 });
         const publicAddress = getPublicXRPAddress({
             publicKey: getPublicKey({ keyPair, bipIdCoin: CoinIds.XRP }),
         });

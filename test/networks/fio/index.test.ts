@@ -22,6 +22,7 @@ describe('networksFIO', () => {
             bipIdCoin: CoinIds.FIO,
             protocol: Protocol.LEGACY,
             rootNode,
+            walletAccount:0
         });
         const privateAddress = getFIOPrivateAddress({
             privateAccountNode,
