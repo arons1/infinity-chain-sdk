@@ -13,7 +13,11 @@ const mnemonic = 'raw green cereal demand genius mansion pistol couple surround 
 (0, globals_1.describe)('networksXRP', () => {
     (0, globals_1.test)('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/144'/0'/0/0" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/144'/0'/0/0",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicXRPAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.XRP }),
         });
@@ -35,7 +39,11 @@ const mnemonic = 'raw green cereal demand genius mansion pistol couple surround 
     });
     (0, globals_1.test)('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/144'/0'/0/0" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/144'/0'/0/0",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicXRPAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.XRP }),
         });

@@ -15,6 +15,7 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
             bipIdCoin: registry_1.CoinIds.FIO,
             protocol: registry_1.Protocol.LEGACY,
             rootNode,
+            walletAccount: 0,
         });
         const privateAddress = (0, address_1.getFIOPrivateAddress)({
             privateAccountNode,

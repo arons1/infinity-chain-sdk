@@ -12,7 +12,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
 (0, globals_1.describe)('networksTezos', () => {
     (0, globals_1.test)('builder', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/1729'/0'/0'",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
@@ -36,7 +40,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('builderToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/1729'/0'/0'",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
@@ -62,7 +70,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/1729'/0'/0'",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
@@ -82,7 +94,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/1729'/0'/0'",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });
@@ -93,7 +109,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/1729'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/1729'/0'/0'",
+            walletAccount: 0,
+        });
         const publicAddress = (0, ed25519_1.getPublicTezosAddress)({
             publicKey: (0, ed25519_1.getPublicKey)({ keyPair, bipIdCoin: registry_1.CoinIds.TEZOS }),
         });

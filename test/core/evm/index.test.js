@@ -9,21 +9,27 @@ const evm_1 = __importDefault(require("../../../lib/commonjs/core/wallets/evm"))
 const mnemonic = 'double enlist lobster also layer face muffin parade direct famous notice kite';
 (0, globals_1.describe)('coreEVM', () => {
     (0, globals_1.test)('init', async () => {
-        const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const address = matic.getReceiveAddress({});
+        const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet', 0);
+        const address = matic.getReceiveAddress({
+            walletName: 'my_wallet',
+            walletAccount: 0,
+        });
         (0, globals_1.expect)(address).toBe('0x294F74Fa3632bC426849B2fD7aCaf5e13142f18f');
     });
     (0, globals_1.test)('getTransactions', async () => {
-        const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
+        const matic = new evm_1.default(registry_1.Coins.MATIC, mnemonic, 'my_wallet', 0);
+        const transactions = await matic.getTransactions({
+            walletName: 'my_wallet',
+            walletAccount: 0,
+        });
         (0, globals_1.expect)(transactions.length > 0).toBe(true);
     });
     (0, globals_1.test)('getTransactionsXDC', async () => {
-        const matic = new evm_1.default(registry_1.Coins.XDC, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
+        const matic = new evm_1.default(registry_1.Coins.XDC, mnemonic, 'my_wallet', 0);
+        const transactions = await matic.getTransactions({
+            walletName: 'my_wallet',
+            walletAccount: 0,
+        });
         (0, globals_1.expect)(transactions.length > 0).toBe(false);
     });
 });

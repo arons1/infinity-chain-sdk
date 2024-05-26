@@ -15,18 +15,22 @@ const getTransactionsRequest = async ({
     lastTransactionHash,
     cursor,
 }: TezosRequestParams): Promise<GeneralTransactionEncode[]> => {
+    const url = general.pull({
+        address,
+        cursor,
+        limit: LIMIT,
+    }).url;
+    console.log(url);
+
     const resultTransactions: any = await request.get({
-        url: general.pull({
-            address,
-            cursor,
-            limit: LIMIT,
-        }).url,
+        url,
         no_wait: false,
         retries: 3,
         timeout: 30000,
     });
+    console.log(resultTransactions);
     const finalResults: GeneralTransactionEncode[] = [];
-    if (resultTransactions != undefined) {
+    if (resultTransactions != undefined && Array.isArray(resultTransactions)) {
         const trs: GeneralTransactionEncode[] = resultTransactions;
         trs.map(a => finalResults.push(a));
         if (
@@ -50,18 +54,20 @@ const getTransactionsTokenRequest = async ({
     lastTransactionHash,
     cursor,
 }: TezosRequestParams): Promise<TokenTransactionEncode[]> => {
+    const url = token.pull({
+        address,
+        cursor,
+        limit: LIMIT,
+    }).url;
+    console.log(url);
     const resultTransactions: any = await request.get({
-        url: general.pull({
-            address,
-            cursor,
-            limit: LIMIT,
-        }).url,
+        url,
         no_wait: false,
         retries: 3,
         timeout: 30000,
     });
     const finalResults: TokenTransactionEncode[] = [];
-    if (resultTransactions != undefined) {
+    if (resultTransactions != undefined && Array.isArray(resultTransactions)) {
         const trs: TokenTransactionEncode[] = resultTransactions;
         trs.map(a => finalResults.push(a));
         if (

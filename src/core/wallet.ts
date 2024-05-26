@@ -38,9 +38,16 @@ class CoinWallet extends BaseWallet {
         this.base = Coin(id);
         this.bipIdCoin = this.base.bipIdCoin;
 
-        if (mnemonic && walletAccount && walletName)
+        if (
+            mnemonic &&
+            mnemonic.length > 0 &&
+            walletAccount != undefined &&
+            walletName &&
+            walletName.length > 0
+        )
             this.addWallet(mnemonic, walletName, walletAccount);
-        else if (mnemonic || walletAccount) throw Error(WalletAndNameNotFound);
+        else if (mnemonic && (walletName || walletAccount))
+            throw Error(WalletAndNameNotFound);
     }
     /**
      * Retrieves the receive address based on the derivation name and protocol.

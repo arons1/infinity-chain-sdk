@@ -9,15 +9,19 @@ const index_1 = __importDefault(require("../../../lib/commonjs/core/wallets/sola
 const mnemonic = 'derive lab over dragon nothing pioneer until deputy inherit help next release';
 (0, globals_1.describe)('coreSolana', () => {
     (0, globals_1.test)('init', async () => {
-        const matic = new index_1.default(registry_1.Coins.SOLANA, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const address = matic.getReceiveAddress({});
+        const matic = new index_1.default(registry_1.Coins.SOLANA, mnemonic, 'my_wallet', 0);
+        const address = matic.getReceiveAddress({
+            walletName: 'my_wallet',
+            walletAccount: 0,
+        });
         (0, globals_1.expect)(address).toBe('HSPjuCaHafg3YUfcQy3iVkLL4g639xHBC9FEiQNzmrWZ');
     });
     (0, globals_1.test)('getTransactions', async () => {
-        const matic = new index_1.default(registry_1.Coins.SOLANA, mnemonic, 'my_wallet');
-        matic.selectWallet('my_wallet');
-        const transactions = await matic.getTransactions({});
+        const matic = new index_1.default(registry_1.Coins.SOLANA, mnemonic, 'my_wallet', 0);
+        const transactions = await matic.getTransactions({
+            walletName: 'my_wallet',
+            walletAccount: 0,
+        });
         (0, globals_1.expect)(transactions.length > 0).toBe(true);
     });
 });

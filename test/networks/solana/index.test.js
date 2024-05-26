@@ -16,7 +16,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
 (0, globals_1.describe)('networksSolana', () => {
     (0, globals_1.test)('build', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await (0, builder_1.buildTransaction)({
             memo: 'test',
             keyPair,
@@ -28,7 +32,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('buildToken', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await (0, builder_1.buildTransaction)({
             memo: 'test',
             keyPair,
@@ -42,7 +50,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('estimateFee', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const fee = await (0, estimateFee_1.estimateFee)({
             memo: 'test',
             publicKey: new web3_js_1.PublicKey(keyPair.publicKey),
@@ -54,7 +66,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getBalanceAfter', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const built = await (0, builder_1.rawTransaction)({
             memo: 'test',
             publicKey: new web3_js_1.PublicKey(keyPair.publicKey),
@@ -74,7 +90,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getBalance', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const balance = await (0, getBalance_1.getBalance)({
             connector: utils_1.web3Solana,
             address: new web3_js_1.PublicKey(keyPair.publicKey).toString(),
@@ -83,7 +103,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getAccountBalances', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const pubAddress = new web3_js_1.PublicKey(keyPair.publicKey).toString();
         const balance = await (0, tokens_1.getAccountBalances)({
             connector: utils_1.web3Solana,
@@ -94,7 +118,11 @@ const mnemonic = 'double enlist lobster also layer face muffin parade direct fam
     });
     (0, globals_1.test)('getTransactions', async () => {
         const seed = (0, ed25519_1.getSeed)({ mnemonic });
-        const keyPair = (0, ed25519_1.getKeyPair)({ seed, path: "m/44'/501'/0'/0'" });
+        const keyPair = (0, ed25519_1.getKeyPair)({
+            seed,
+            path: "m/44'/501'/0'/0'",
+            walletAccount: 0,
+        });
         const address = new web3_js_1.PublicKey(keyPair.publicKey).toString();
         const accounts = await (0, utils_2.getAccounts)({ address, connector: utils_1.web3Solana });
         const transactions = await (0, getTransactions_1.getAccountsTransactions)({

@@ -3,7 +3,7 @@ import { GeneralApiParams } from '../../types';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 
 export const pull = ({ address, limit, cursor }: GeneralApiParams) => {
-    const coinConfig = config[Coins.STELLAR];
+    const coinConfig = config[Coins.TEZOS];
 
     return {
         method: 'GET',
