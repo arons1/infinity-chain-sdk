@@ -282,28 +282,7 @@ class CoinWallet extends BaseWallet {
     async getMinimumAmountSend(_props: any): Promise<number> {
         return 0;
     }
-    getAccountBalances(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    loadConnector() {
-        throw new Error(NotImplemented);
-    }
-    estimateFee(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    buildTransaction(_props: any) {
-        throw new Error(NotImplemented);
-    }
-
-    getBalance(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    sendTransaction(_props: any) {
-        throw new Error(NotImplemented);
-    }
-    getTransactions(_props: any) {
-        throw new Error(NotImplemented);
-    }
+    
     /**
      * Sets the transaction format for the given transactions based on the provided parameters.
      *
@@ -359,6 +338,28 @@ class CoinWallet extends BaseWallet {
         return tr.from?.toLowerCase() === address.toLowerCase()
             ? TransactionType.SEND
             : TransactionType.RECEIVE;
+    }
+    getAccountBalances(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    loadConnector() {
+        throw new Error(NotImplemented);
+    }
+    estimateFee(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    buildTransaction(_props: any) {
+        throw new Error(NotImplemented);
+    }
+
+    getBalance(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    sendTransaction(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getTransactions(_props: any) {
+        throw new Error(NotImplemented);
     }
 }
 
