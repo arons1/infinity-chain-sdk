@@ -50,6 +50,12 @@ class EVMWallet extends CoinWallet {
         this.loadConnector();
     }
 
+    /**
+     * Estimates the fee for a transaction based on the provided parameters.
+     *
+     * @param {EstimateGasParams} _props - The parameters for estimating the fee.
+     * @return {Promise<EstimateFeeResult>} A promise that resolves to the estimated fee result.
+     */
     estimateFee(_props: EstimateGasParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ..._props,
@@ -62,6 +68,12 @@ class EVMWallet extends CoinWallet {
         });
     }
 
+    /**
+     * Builds a transaction using the provided properties.
+     *
+     * @param {BuildTransaction} _props - The properties for building the transaction.
+     * @return {Promise<string>} A promise that resolves to the built transaction.
+     */
     buildTransaction(_props: BuildTransaction): Promise<string> {
         return buildTransaction({
             ..._props,
@@ -74,6 +86,15 @@ class EVMWallet extends CoinWallet {
         });
     }
 
+    /**
+     * Asynchronously signs a transaction using the provided private key and transaction object.
+     *
+     * @param {SignTransactionParams} params - The parameters for signing the transaction.
+     * @param {string} params.privateKey - The private key used to sign the transaction.
+     * @param {Transaction} params.transaction - The transaction object to sign.
+     * @return {Promise<string>} A promise that resolves to the signed transaction's raw transaction.
+     * @throws {Error} If there was an error signing the transaction.
+     */
     async signTransaction({
         transaction,
         privateKey,
@@ -91,10 +112,24 @@ class EVMWallet extends CoinWallet {
         }
     }
 
+    /**
+     * Signs a message using the provided private key and message.
+     *
+     * @param {SignMessageParams} params - The parameters for signing the message.
+     * @param {string} params.privateKey - The private key used to sign the message.
+     * @param {string} params.message - The message to be signed.
+     * @return {string} The signature of the signed message.
+     */
     signMessage({ privateKey, message }: SignMessageParams): string {
         return this.connector.eth.accounts.sign(message, privateKey).signature;
     }
 
+    /**
+     * Retrieves the balances for a given set of accounts or all wallets added using the RPCBalancesParams.
+     *
+     * @param {RPCBalancesParams} _props - The parameters for retrieving account balances.
+     * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
+     */
     getAccountBalances(
         _props: RPCBalancesParams,
     ): Promise<Record<string, BalanceResult[]>> {
@@ -109,6 +144,14 @@ class EVMWallet extends CoinWallet {
         });
     }
 
+    /**
+     * Retrieves the balance for a wallet account.
+     *
+     * @param {Object} options - The options for retrieving the balance.
+     * @param {number} options.walletAccount - The account number of the wallet.
+     * @param {string} options.walletName - The name of the wallet.
+     * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet account.
+     */
     getBalance({
         walletAccount,
         walletName,
@@ -122,10 +165,27 @@ class EVMWallet extends CoinWallet {
         });
     }
 
+    /**
+     * Sends a raw Ethereum transaction using the provided raw transaction string.
+     *
+     * @param {string} rawTransaction - The raw transaction string to be sent.
+     * @return {Promise<string>} A promise that resolves with the transaction hash if successful.
+     */
     sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction({ rawTransaction, connector: this.connector });
     }
 
+    /**
+     * Retrieves transactions based on the specified parameters.
+     *
+     * @param {GetTransactionParams} params - The parameters for retrieving transactions.
+     * @param {number} params.walletAccount - The account number of the wallet to retrieve transactions for.
+     * @param {string} params.lastTransactionHash - The hash of the last transaction.
+     * @param {number} params.startblock - The start block number for retrieving transactions.
+     * @param {boolean} params.swapHistorical - Indicates whether to retrieve historical swaps.
+     * @param {string} params.walletName - The name of the wallet to retrieve transactions for.
+     * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
+     */
     async getTransactions({
         walletAccount,
         lastTransactionHash,
@@ -152,10 +212,28 @@ class EVMWallet extends CoinWallet {
         return transactions;
     }
 
+    /**
+     * Loads the connector for the EVM wallet.
+     *
+     * This function initializes a new instance of the Web3 class with the first RPC URL from the config object,
+     * using the current wallet's ID as the key. The initialized Web3 instance is then assigned to the `connector` property
+     * of the EVM wallet.
+     *
+     * @return {void} This function does not return a value.
+     */
     loadConnector(): void {
         this.connector = new Web3(config[this.id].rpc[0]);
     }
 
+    /**
+     * Determines the transaction type based on the provided transaction, address, swap historical, and buy/sell historical.
+     *
+     * @param {Transaction} tr - The transaction object.
+     * @param {string} address - The address to compare with the transaction's "from" address.
+     * @param {SwapHistoricalTransaction[]} [swapHistorical] - Optional array of swap historical transactions.
+     * @param {BuySellHistoricalTransaction[]} [buysellHistorical] - Optional array of buy/sell historical transactions.
+     * @return {TransactionType} The determined transaction type.
+     */
     protected determineTransactionType(
         tr: Transaction,
         address: string,
@@ -184,6 +262,12 @@ class EVMWallet extends CoinWallet {
             : TransactionType.RECEIVE;
     }
 
+    /**
+     * Determines the transaction type based on the given method ID.
+     *
+     * @param {string} [methodId] - The method ID to determine the transaction type from.
+     * @return {TransactionType} The transaction type corresponding to the method ID. If the method ID is falsy, returns TransactionType.UNKNOWN.
+     */
     private getTransactionTypeFromMethodId(methodId?: string): TransactionType {
         if (!methodId) return TransactionType.UNKNOWN;
         const methodIdLower = methodId.toLowerCase();
@@ -202,6 +286,13 @@ class EVMWallet extends CoinWallet {
         return TransactionType.TRADE;
     }
 
+    /**
+     * Retrieves the addresses associated with the given wallet account and name, or all addresses if no parameters are provided.
+     *
+     * @param {number} [walletAccount] - The wallet account number.
+     * @param {string} [walletName] - The name of the wallet.
+     * @return {string[]} An array of addresses.
+     */
     private getAddresses(
         walletAccount?: number,
         walletName?: string,

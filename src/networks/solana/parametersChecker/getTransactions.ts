@@ -18,7 +18,5 @@ export const getTransactionsParametersChecker = (
     if (!props.connector || !(props.connector instanceof Connection))
         throw new Error(MissingOrInvalidConnector);
     if (!isValidAddress(props.address)) throw new Error(InvalidAddress);
-    if (!props.connector || !(props.connector instanceof Connection))
-        throw new Error(MissingOrInvalidConnector);
     if (props.limit && props.limit > 100) throw new Error(ExceededLimit);
 };

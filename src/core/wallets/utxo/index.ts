@@ -320,10 +320,25 @@ class UTXOWallet extends CoinWallet {
     async getMinimumAmountLeft(): Promise<number> {
         return config[this.id].dust as number;
     }
+
+    /**
+     * Retrieves the minimum amount required to send a transaction from the configuration for the current wallet.
+     *
+     * @param {any} _props - Unused parameter.
+     * @return {Promise<number>} The minimum amount required to send a transaction as specified in the configuration.
+     */
     async getMinimumAmountSend(_props: any): Promise<number> {
         return config[this.id].dust as number;
     }
 
+    /**
+     * Retrieves the addresses associated with the given wallet account and name.
+     *
+     * @param {Object} params - The parameters for retrieving the addresses.
+     * @param {number} params.walletAccount - The wallet account number.
+     * @param {string} params.walletName - The name of the wallet.
+     * @return {string[]} An array of addresses.
+     */
     private getAddresses({
         walletAccount,
         walletName,
