@@ -272,13 +272,15 @@ class EVMWallet extends CoinWallet {
             const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
             );
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
-
             if (swapTransaction) {
                 tr.transactionType = TransactionType.SWAP;
                 tr.swapDetails = formatSwap(swapTransaction);
-            } else if (buySellTransaction) {
+                continue;
+            }
+            const buySellTransaction: BuySellDetails | undefined =
+                buysellHistorical?.find(b => b.txid == tr.hash);
+
+            if (buySellTransaction) {
                 tr.transactionType = TransactionType.BUYSELL;
                 tr.buySellDetails = buySellTransaction;
             } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
