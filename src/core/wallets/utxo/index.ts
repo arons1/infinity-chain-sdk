@@ -1,8 +1,10 @@
 import {
     BalanceResult,
+    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
     Transaction as TransactionNetwork,
+    TransactionType,
 } from '../../../networks/types';
 import {
     TrezorWebsocket,
@@ -24,6 +26,7 @@ import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/in
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
 import {
     GetChangeAddressParams,
+    SetTransactionFormatParams,
 } from '../../types';
 import {
     BuildParameters,
@@ -35,6 +38,7 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
 import { WalletNotFound } from '../../../errors/networks';
 import { getTransactions } from '../../../transactionParsers/trezor/get';
+import { formatSwap } from '../../utils';
 
 class UTXOWallet extends CoinWallet {
     connector!: TrezorWebsocket;
@@ -319,7 +323,64 @@ class UTXOWallet extends CoinWallet {
     async getMinimumAmountSend(_props: any): Promise<number> {
         return config[this.id].dust as number;
     }
- 
+    /**
+     * Sets the transaction format for a given set of transactions.
+     *
+     * @param {SetTransactionFormatParams} swapHistorical - An array of historical swaps.
+     * @param {Transaction[]} transactions - An array of transactions to format.
+     * @param {string} walletAccount - The name of the wallet.
+     * @param {BuySellHistorical[]} buysellHistorical - An array of historical buys and sells.
+     * @return {void} This function does not return anything.
+     */
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletAccount,
+        buysellHistorical,
+        walletName,
+    }: SetTransactionFormatParams) {
+        if (
+            !this.extendedPublicKeys[walletName] ||
+            !this.extendedPublicKeys[walletName][walletAccount]
+        ) {
+            throw new Error('Wallet not found');
+        }
+        const addresses = [];
+        for (let p of Object.keys(
+            this.extendedPublicKeys[walletName][walletAccount],
+        )) {
+            addresses.push(
+                this.getReceiveAddress({
+                    walletAccount,
+                    walletName,
+                    protocol: p as unknown as Protocol,
+                }),
+            );
+        }
+        for (let tr of transactions) {
+            const swapTransaction = swapHistorical?.find(
+                b => b.hash == tr.hash || b.hash_to == tr.hash,
+            );
+            if (swapTransaction) {
+                tr.transactionType = TransactionType.SWAP;
+                tr.swapDetails = formatSwap(swapTransaction);
+                continue;
+            } 
+            const buySellTransaction: BuySellDetails | undefined =
+                buysellHistorical?.find(b => b.txid == tr.hash);
+
+            if (buySellTransaction) {
+                tr.transactionType = TransactionType.BUYSELL;
+                tr.buySellDetails = buySellTransaction;
+            } else {
+                const voutReceive = addresses.find(a =>
+                    tr.vOut?.find(b => b.address == a),
+                );
+                if (voutReceive) tr.transactionType = TransactionType.RECEIVE;
+                else tr.transactionType = TransactionType.SEND;
+            }
+        }
+    }
 }
 
 export default UTXOWallet;
