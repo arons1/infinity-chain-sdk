@@ -45,19 +45,16 @@ import { formatSwap } from '../../utils';
 class SolanaWallet extends CoinWallet {
     connector!: Connection;
     base!: ED25519Coin;
+
     /**
      * Constructs a new instance of the SolanaWallet class.
      *
      * @param {Coins} id - The ID of the wallet.
      * @param {string} [mnemonic] - The mnemonic phrase for the wallet.
-     * @param {string} [walletAccount] - The name of the wallet.
+     * @param {string} [walletName] - The name of the wallet.
+     * @param {number} [walletAccount] - The account number of the wallet.
      */
-    constructor(
-        id: Coins,
-        mnemonic?: string,
-        walletName?: string,
-        walletAccount?: number,
-    ) {
+    constructor(id: Coins, mnemonic?: string, walletName?: string, walletAccount?: number) {
         super(id, mnemonic, walletName, walletAccount);
         this.loadConnector();
     }
@@ -65,43 +62,36 @@ class SolanaWallet extends CoinWallet {
     /**
      * Estimates the fee for a transaction.
      *
-     * @param {VersionedTransaction | Transaction} transaction - The transaction object.
+     * @param {EstimateFeeParams} props - The transaction details for fee estimation.
      * @return {Promise<EstimateFeeResult>} A promise that resolves to the estimated fee.
      */
     estimateFee(props: EstimateFeeParams): Promise<EstimateFeeResult> {
         return estimateFee({
             ...props,
             connector: this.connector,
-            publicKey: new PublicKey(
-                this.addresses[props.walletAccount][Protocol.LEGACY],
-            ),
+            publicKey: new PublicKey(this.addresses[props.walletAccount][Protocol.LEGACY]),
         });
     }
+
     /**
      * Builds a transaction using the provided parameters.
      *
-     * @param {string} _props.memo - The transaction's memo.
-     * @param {PublicKey} _props.publicKey - The sender's public key.
-     * @param {string} _props.destination - The transaction's destination address.
-     * @param {string} _props.value - The transaction's value.
-     * @param {string} [_props.fee] - The transaction's fee.
-     * @param {string} [_props.gasPrice] - The transaction's gas price.
-     * @param {string} [_props.gasLimit] - The transaction's gas limit.
-     * @param {string} [_props.nonce] - The transaction's nonce.
-     * @param {string} [_props.data] - The transaction's data.
-     * @param {KeyPair} _props.keyPair - The key pair of the sender.
+     * @param {TransactionBuilderParams} props - The transaction parameters.
      * @return {Promise<string>} A promise that resolves to the transaction ID.
      */
-    buildTransaction(_props: TransactionBuilderParams): Promise<string> {
+    buildTransaction(props: TransactionBuilderParams): Promise<string> {
         return buildTransaction({
-            ..._props,
+            ...props,
             connector: this.connector,
         });
     }
+
     /**
      * Retrieves the balance for the wallet.
      *
-     * @param {string} walletAccount - The name of the wallet for which to retrieve the balance.
+     * @param {Object} params - The parameters for retrieving the balance.
+     * @param {number} params.walletAccount - The account number of the wallet.
+     * @param {string} params.walletName - The name of the wallet.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
     getBalance({
@@ -135,8 +125,8 @@ class SolanaWallet extends CoinWallet {
         walletName: string;
         walletAccount: number;
     }): Promise<Record<string, BalanceResult[]>> {
-        var addresses: string[] = [];
-        if (walletAccount != undefined && walletName != undefined) {
+        let addresses: string[] = [];
+        if (walletAccount !== undefined && walletName !== undefined) {
             addresses = [
                 this.getReceiveAddress({
                     walletAccount,
@@ -144,8 +134,8 @@ class SolanaWallet extends CoinWallet {
                 }),
             ];
         } else {
-            Object.keys(this.addresses).map(walletName => {
-                Object.keys(this.addresses[walletName]).map(walletAccount => {
+            Object.keys(this.addresses).forEach(walletName => {
+                Object.keys(this.addresses[walletName]).forEach(walletAccount => {
                     addresses.push(
                         this.getReceiveAddress({
                             walletAccount: parseInt(walletAccount),
@@ -160,6 +150,7 @@ class SolanaWallet extends CoinWallet {
             accounts: addresses,
         });
     }
+
     /**
      * Sends a transaction with a raw buffer to the connected wallet.
      *
@@ -172,13 +163,11 @@ class SolanaWallet extends CoinWallet {
             connector: this.connector,
         });
     }
+
     /**
      * Retrieves transactions based on the specified parameters.
      *
      * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
-     * @param {string} [params.walletAccount] - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
-     * @param {string[]} [params.signatures] - (Optional) An array of transaction signatures.
-     * @param {string[]} [params.accounts] - (Optional) An array of account addresses.
      * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
      */
     async getTransactions({
@@ -205,12 +194,11 @@ class SolanaWallet extends CoinWallet {
         });
         return transactions;
     }
+
     /**
      * Signs a transaction using the provided transaction and keyPair.
      *
      * @param {SignTransactionParams} params - The parameters for signing the transaction.
-     * @param {Transaction} params.transaction - The transaction to sign.
-     * @param {string} params.keyPair - The keyPair used for signing.
      * @return {Promise<VersionedTransaction | Transaction>} A promise that resolves to the signed transaction.
      */
     signTransaction({
@@ -223,43 +211,53 @@ class SolanaWallet extends CoinWallet {
             coinId: this.id,
         });
     }
+
     /**
      * Signs a message using the provided keyPair and message.
      *
-     * @param {string} message - The message to sign.
-     * @param {string} secretKey - The secretKey used for signing.
+     * @param {SignMessageParams} params - The parameters for signing the message.
      * @return {Uint8Array} The signed message.
      */
-    signMessage(props: SignMessageParams): Uint8Array {
+    signMessage({
+        message,
+        keyPair,
+    }: SignMessageParams): Uint8Array {
         return sign({
-            message: props.message,
-            secretKey: props.keyPair.secretKey,
+            message,
+            secretKey: keyPair.secretKey,
         });
     }
 
     /**
      * Retrieves the balance after a transaction.
      *
-     * @param {transaction} _props.transaction - The transaction to be confirmed.
-     * @param {string} _props.walletAccount - The name of the wallet to use for retrieving the balance after the transaction. If not specified, the wallet currently selected in the wallet store will be used.
-     * @return {Promise<Record<string, DataBalance>>} A promise that resolves to a record of string keys and DataBalance values representing the balance after the transaction.
+     * @param {Object} props - The parameters for retrieving the balance after the transaction.
+     * @param {Transaction} props.transaction - The transaction to be confirmed.
+     * @param {number} props.walletAccount - The account number of the wallet.
+     * @param {string} props.walletName - The name of the wallet.
+     * @return {Promise<Record<string, DataBalance>>} A promise that resolves to a record of balances after the transaction.
      */
-    getBalanceAfter(_props: {
+    getBalanceAfter({
+        transaction,
+        walletAccount,
+        walletName,
+    }: {
         transaction: Transaction;
         walletAccount: number;
         walletName: string;
     }): Promise<Record<string, DataBalance>> {
         return getBalanceAfter({
-            transaction: _props.transaction,
+            transaction,
             connector: this.connector,
             signer: this.getReceiveAddress({
-                walletAccount: _props.walletAccount,
-                walletName: _props.walletName,
+                walletAccount,
+                walletName,
             }),
         });
     }
+
     /**
-     * Checks if the API RPC for the specified bipIdCoin is defined, throws an error if not, and initializes the connector with the corresponding connection.
+     * Initializes the connector with the corresponding connection.
      *
      * @return {void} This function does not return anything.
      */
@@ -270,39 +268,51 @@ class SolanaWallet extends CoinWallet {
     async getMinimumAmountLeftCall(): Promise<number> {
         try {
             return await this.connector.getMinimumBalanceForRentExemption(0);
-        } catch (e) {}
-        return 890880;
+        } catch (e) {
+            console.error(e);
+        }
+        return 890880; // default value if RPC call fails
     }
+
     getMinimumAmountLeft = pMemoize(
         async () => await this.getMinimumAmountLeftCall(),
         {
-            maxAge: 600_000,
+            maxAge: 600_000, // cache result for 10 minutes
         },
     );
-    protected determineTransactionType(tr: TransactionNetwork, address: string, swapHistorical?: SwapHistoricalTransaction[], buysellHistorical?: BuySellHistoricalTransaction[]): TransactionType {
-        const swapTransaction = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+
+    /**
+     * Determines the transaction type based on transaction details.
+     *
+     * @param {TransactionNetwork} tr - The transaction object.
+     * @param {string} address - The address to check against.
+     * @param {SwapHistoricalTransaction[]} [swapHistorical] - The historical swap transactions.
+     * @param {BuySellHistoricalTransaction[]} [buysellHistorical] - The historical buy/sell transactions.
+     * @return {TransactionType} The determined transaction type.
+     */
+    protected determineTransactionType(
+        tr: TransactionNetwork,
+        address: string,
+        swapHistorical?: SwapHistoricalTransaction[],
+        buysellHistorical?: BuySellHistoricalTransaction[]
+    ): TransactionType {
+        const swapTransaction = swapHistorical?.find(b => b.hash === tr.hash || b.hash_to === tr.hash);
         if (swapTransaction) {
             tr.swapDetails = formatSwap(swapTransaction);
             return TransactionType.SWAP;
         }
-        const buySellTransaction = buysellHistorical?.find(b => b.txid == tr.hash);
+        const buySellTransaction = buysellHistorical?.find(b => b.txid === tr.hash);
         if (buySellTransaction) {
             tr.buySellDetails = buySellTransaction;
             return TransactionType.BUYSELL;
         }
         if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
-            const outAmount =
-                tr.tokenTransfers.find(
-                    a =>
-                        a.from == address &&
-                        new BigNumber(a.value).isGreaterThan(0),
-                ) != undefined;
-            const inAmount =
-                tr.tokenTransfers.find(
-                    a =>
-                        a.to == address &&
-                        new BigNumber(a.value).isGreaterThan(0),
-                ) != undefined;
+            const outAmount = tr.tokenTransfers.some(
+                a => a.from === address && new BigNumber(a.value).isGreaterThan(0)
+            );
+            const inAmount = tr.tokenTransfers.some(
+                a => a.to === address && new BigNumber(a.value).isGreaterThan(0)
+            );
             if (outAmount && inAmount) {
                 return TransactionType.TRADE;
             } else if (outAmount) {
@@ -311,9 +321,8 @@ class SolanaWallet extends CoinWallet {
                 return TransactionType.WITHDRAW;
             }
         }
-        return tr.from?.toLowerCase() == address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
     }
-
 }
 
 export default SolanaWallet;
