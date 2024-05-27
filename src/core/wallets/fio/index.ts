@@ -22,7 +22,12 @@ import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
 
-    constructor(id: Coins, mnemonic?: string, walletName?: string, walletAccount?: number) {
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
         super(id, mnemonic, walletName, walletAccount);
     }
 
@@ -54,7 +59,10 @@ class FIOWallet extends CoinWallet {
     buildTransaction(
         _props: BuildTransactionParams,
     ): Promise<BuildTransactionFIOResult> {
-        const address = this.getReceiveAddress({ walletAccount: _props.walletAccount, walletName: _props.walletName });
+        const address = this.getReceiveAddress({
+            walletAccount: _props.walletAccount,
+            walletName: _props.walletName,
+        });
         return buildTransaction({ ..._props, source: address });
     }
 
@@ -101,7 +109,12 @@ class FIOWallet extends CoinWallet {
     }: GetTransactionsParams): Promise<Transaction[]> {
         const address = this.getReceiveAddress({ walletAccount, walletName });
         const transactions = await getTransactions({ address, endBlock });
-        this.setTransactionFormat({ swapHistorical, transactions, walletAccount, walletName });
+        this.setTransactionFormat({
+            swapHistorical,
+            transactions,
+            walletAccount,
+            walletName,
+        });
         return transactions;
     }
 
@@ -135,8 +148,6 @@ class FIOWallet extends CoinWallet {
     async getMinimumAmountLeft(): Promise<number> {
         return config[this.id].dust as number;
     }
-
-    
 }
 
 export default FIOWallet;

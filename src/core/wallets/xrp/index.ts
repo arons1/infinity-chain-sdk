@@ -21,7 +21,6 @@ import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/xrp/get';
 
-
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
     base!: ED25519Coin;
@@ -150,7 +149,6 @@ class XRPWallet extends CoinWallet {
             .shiftedBy(6)
             .toNumber();
     }
-    
 }
 
 export default XRPWallet;

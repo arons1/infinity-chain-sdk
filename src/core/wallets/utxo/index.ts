@@ -323,6 +323,28 @@ class UTXOWallet extends CoinWallet {
     async getMinimumAmountSend(_props: any): Promise<number> {
         return config[this.id].dust as number;
     }
+
+    private getAddresses({
+        walletAccount,
+        walletName,
+    }: {
+        walletAccount: number;
+        walletName: string;
+    }) {
+        const addresses = [];
+        for (let p of Object.keys(
+            this.extendedPublicKeys[walletName][walletAccount],
+        )) {
+            addresses.push(
+                this.getReceiveAddress({
+                    walletAccount,
+                    walletName,
+                    protocol: p as unknown as Protocol,
+                }),
+            );
+        }
+        return addresses;
+    }
     /**
      * Sets the transaction format for a given set of transactions.
      *
@@ -345,18 +367,7 @@ class UTXOWallet extends CoinWallet {
         ) {
             throw new Error('Wallet not found');
         }
-        const addresses = [];
-        for (let p of Object.keys(
-            this.extendedPublicKeys[walletName][walletAccount],
-        )) {
-            addresses.push(
-                this.getReceiveAddress({
-                    walletAccount,
-                    walletName,
-                    protocol: p as unknown as Protocol,
-                }),
-            );
-        }
+        const addresses = this.getAddresses({ walletAccount, walletName });
         for (let tr of transactions) {
             const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
@@ -365,7 +376,7 @@ class UTXOWallet extends CoinWallet {
                 tr.transactionType = TransactionType.SWAP;
                 tr.swapDetails = formatSwap(swapTransaction);
                 continue;
-            } 
+            }
             const buySellTransaction: BuySellDetails | undefined =
                 buysellHistorical?.find(b => b.txid == tr.hash);
 

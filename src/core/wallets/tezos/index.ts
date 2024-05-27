@@ -33,7 +33,10 @@ import {
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/tezos/get';
-import { BuySellHistoricalTransaction, SwapHistoricalTransaction } from '../../types';
+import {
+    BuySellHistoricalTransaction,
+    SwapHistoricalTransaction,
+} from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { formatSwap } from '../../utils';
 
@@ -80,7 +83,9 @@ class TezosWallet extends CoinWallet {
      * @param {BuildTransactionParams} _props - The parameters for building the transaction.
      * @return {Promise<BuildTransactionResult>} - A promise that resolves to the built transaction.
      */
-    buildTransaction(_props: BuildTransactionParams): Promise<BuildTransactionResult> {
+    buildTransaction(
+        _props: BuildTransactionParams,
+    ): Promise<BuildTransactionResult> {
         const privateKey = getPrivateKey({ keyPair: _props.keyPair });
         const pkHash = getTezosPublicKeyHash({ keyPair: _props.keyPair });
         const source = this.base.getPublicAddress({ keyPair: _props.keyPair });
@@ -101,7 +106,13 @@ class TezosWallet extends CoinWallet {
      * @param {number} params.walletAccount - The account number of the wallet.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
-    getBalance({ walletAccount, walletName }: { walletName: string; walletAccount: number; }): Promise<CurrencyBalanceResult> {
+    getBalance({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): Promise<CurrencyBalanceResult> {
         return getBalance({
             address: this.getReceiveAddress({ walletAccount, walletName }),
         });
@@ -113,21 +124,25 @@ class TezosWallet extends CoinWallet {
      * @param {GetAccountBalancesParams} _props - The parameters for retrieving account balances.
      * @return {Promise<Record<string, BalanceResult[]>>} A promise that resolves to a record of account balances.
      */
-    getAccountBalances(_props: GetAccountBalancesParams): Promise<Record<string, BalanceResult[]>> {
+    getAccountBalances(
+        _props: GetAccountBalancesParams,
+    ): Promise<Record<string, BalanceResult[]>> {
         const { walletAccount, walletName } = _props;
         let addresses: string[] = [];
         if (walletAccount !== undefined && walletName !== undefined) {
             addresses = [this.getReceiveAddress({ walletAccount, walletName })];
         } else {
             Object.keys(this.addresses).forEach(walletName => {
-                Object.keys(this.addresses[walletName]).forEach(walletAccount => {
-                    addresses.push(
-                        this.getReceiveAddress({
-                            walletAccount: parseInt(walletAccount),
-                            walletName,
-                        }),
-                    );
-                });
+                Object.keys(this.addresses[walletName]).forEach(
+                    walletAccount => {
+                        addresses.push(
+                            this.getReceiveAddress({
+                                walletAccount: parseInt(walletAccount),
+                                walletName,
+                            }),
+                        );
+                    },
+                );
             });
         }
         return getAccountBalances({
@@ -197,7 +212,13 @@ class TezosWallet extends CoinWallet {
      * @param {number} options.walletAccount - The account number of the wallet.
      * @return {string} The public key hash associated with the wallet account and wallet name.
      */
-    getPublickeyHash({ walletAccount, walletName }: { walletName: string; walletAccount: number; }): string {
+    getPublickeyHash({
+        walletAccount,
+        walletName,
+    }: {
+        walletName: string;
+        walletAccount: number;
+    }): string {
         return this.account[walletName][walletAccount];
     }
 
@@ -236,20 +257,36 @@ class TezosWallet extends CoinWallet {
      * @param {BuySellHistoricalTransaction[]} [buysellHistorical] - Optional array of buy/sell historical transactions.
      * @return {TransactionType} The determined transaction type.
      */
-    protected determineTransactionType(tr: Transaction, address: string, swapHistorical?: SwapHistoricalTransaction[], buysellHistorical?: BuySellHistoricalTransaction[]): TransactionType {
-        const swapTransaction = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+    protected determineTransactionType(
+        tr: Transaction,
+        address: string,
+        swapHistorical?: SwapHistoricalTransaction[],
+        buysellHistorical?: BuySellHistoricalTransaction[],
+    ): TransactionType {
+        const swapTransaction = swapHistorical?.find(
+            b => b.hash == tr.hash || b.hash_to == tr.hash,
+        );
         if (swapTransaction) {
             tr.swapDetails = formatSwap(swapTransaction);
             return TransactionType.SWAP;
         }
-        const buySellTransaction = buysellHistorical?.find(b => b.txid == tr.hash);
+        const buySellTransaction = buysellHistorical?.find(
+            b => b.txid == tr.hash,
+        );
         if (buySellTransaction) {
             tr.buySellDetails = buySellTransaction;
             return TransactionType.BUYSELL;
         }
         if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
-            const outAmount = tr.tokenTransfers.some(a => a.from === address && new BigNumber(a.value).isGreaterThan(0));
-            const inAmount = tr.tokenTransfers.some(a => a.to === address && new BigNumber(a.value).isGreaterThan(0));
+            const outAmount = tr.tokenTransfers.some(
+                a =>
+                    a.from === address &&
+                    new BigNumber(a.value).isGreaterThan(0),
+            );
+            const inAmount = tr.tokenTransfers.some(
+                a =>
+                    a.to === address && new BigNumber(a.value).isGreaterThan(0),
+            );
             if (outAmount && inAmount) {
                 return TransactionType.TRADE;
             } else if (outAmount) {
@@ -258,7 +295,9 @@ class TezosWallet extends CoinWallet {
                 return TransactionType.WITHDRAW;
             }
         }
-        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+        return tr.from?.toLowerCase() === address.toLowerCase()
+            ? TransactionType.SEND
+            : TransactionType.RECEIVE;
     }
 }
 

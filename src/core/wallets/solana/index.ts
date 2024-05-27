@@ -38,7 +38,11 @@ import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 import pMemoize from 'p-memoize';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/solana/get';
-import { BuySellHistoricalTransaction, SetTransactionFormatParams, SwapHistoricalTransaction } from '../../types';
+import {
+    BuySellHistoricalTransaction,
+    SetTransactionFormatParams,
+    SwapHistoricalTransaction,
+} from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { formatSwap } from '../../utils';
 
@@ -54,7 +58,12 @@ class SolanaWallet extends CoinWallet {
      * @param {string} [walletName] - The name of the wallet.
      * @param {number} [walletAccount] - The account number of the wallet.
      */
-    constructor(id: Coins, mnemonic?: string, walletName?: string, walletAccount?: number) {
+    constructor(
+        id: Coins,
+        mnemonic?: string,
+        walletName?: string,
+        walletAccount?: number,
+    ) {
         super(id, mnemonic, walletName, walletAccount);
         this.loadConnector();
     }
@@ -69,7 +78,9 @@ class SolanaWallet extends CoinWallet {
         return estimateFee({
             ...props,
             connector: this.connector,
-            publicKey: new PublicKey(this.addresses[props.walletAccount][Protocol.LEGACY]),
+            publicKey: new PublicKey(
+                this.addresses[props.walletAccount][Protocol.LEGACY],
+            ),
         });
     }
 
@@ -135,14 +146,16 @@ class SolanaWallet extends CoinWallet {
             ];
         } else {
             Object.keys(this.addresses).forEach(walletName => {
-                Object.keys(this.addresses[walletName]).forEach(walletAccount => {
-                    addresses.push(
-                        this.getReceiveAddress({
-                            walletAccount: parseInt(walletAccount),
-                            walletName,
-                        }),
-                    );
-                });
+                Object.keys(this.addresses[walletName]).forEach(
+                    walletAccount => {
+                        addresses.push(
+                            this.getReceiveAddress({
+                                walletAccount: parseInt(walletAccount),
+                                walletName,
+                            }),
+                        );
+                    },
+                );
             });
         }
         return getAccountBalances({
@@ -218,10 +231,7 @@ class SolanaWallet extends CoinWallet {
      * @param {SignMessageParams} params - The parameters for signing the message.
      * @return {Uint8Array} The signed message.
      */
-    signMessage({
-        message,
-        keyPair,
-    }: SignMessageParams): Uint8Array {
+    signMessage({ message, keyPair }: SignMessageParams): Uint8Array {
         return sign({
             message,
             secretKey: keyPair.secretKey,
@@ -294,24 +304,31 @@ class SolanaWallet extends CoinWallet {
         tr: TransactionNetwork,
         address: string,
         swapHistorical?: SwapHistoricalTransaction[],
-        buysellHistorical?: BuySellHistoricalTransaction[]
+        buysellHistorical?: BuySellHistoricalTransaction[],
     ): TransactionType {
-        const swapTransaction = swapHistorical?.find(b => b.hash === tr.hash || b.hash_to === tr.hash);
+        const swapTransaction = swapHistorical?.find(
+            b => b.hash === tr.hash || b.hash_to === tr.hash,
+        );
         if (swapTransaction) {
             tr.swapDetails = formatSwap(swapTransaction);
             return TransactionType.SWAP;
         }
-        const buySellTransaction = buysellHistorical?.find(b => b.txid === tr.hash);
+        const buySellTransaction = buysellHistorical?.find(
+            b => b.txid === tr.hash,
+        );
         if (buySellTransaction) {
             tr.buySellDetails = buySellTransaction;
             return TransactionType.BUYSELL;
         }
         if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
             const outAmount = tr.tokenTransfers.some(
-                a => a.from === address && new BigNumber(a.value).isGreaterThan(0)
+                a =>
+                    a.from === address &&
+                    new BigNumber(a.value).isGreaterThan(0),
             );
             const inAmount = tr.tokenTransfers.some(
-                a => a.to === address && new BigNumber(a.value).isGreaterThan(0)
+                a =>
+                    a.to === address && new BigNumber(a.value).isGreaterThan(0),
             );
             if (outAmount && inAmount) {
                 return TransactionType.TRADE;
@@ -321,7 +338,9 @@ class SolanaWallet extends CoinWallet {
                 return TransactionType.WITHDRAW;
             }
         }
-        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+        return tr.from?.toLowerCase() === address.toLowerCase()
+            ? TransactionType.SEND
+            : TransactionType.RECEIVE;
     }
 }
 

@@ -318,7 +318,12 @@ class CoinWallet extends BaseWallet {
     }: SetTransactionFormatParams): void {
         const address = this.getReceiveAddress({ walletAccount, walletName });
         transactions.forEach(tr => {
-            tr.transactionType = this.determineTransactionType(tr, address, swapHistorical, buysellHistorical);
+            tr.transactionType = this.determineTransactionType(
+                tr,
+                address,
+                swapHistorical,
+                buysellHistorical,
+            );
         });
     }
 
@@ -337,19 +342,24 @@ class CoinWallet extends BaseWallet {
         swapHistorical?: SwapHistoricalTransaction[],
         buysellHistorical?: BuySellHistoricalTransaction[],
     ): TransactionType {
-        const swapTransaction = swapHistorical?.find(b => b.hash === tr.hash || b.hash_to === tr.hash);
+        const swapTransaction = swapHistorical?.find(
+            b => b.hash === tr.hash || b.hash_to === tr.hash,
+        );
         if (swapTransaction) {
             tr.swapDetails = formatSwap(swapTransaction);
             return TransactionType.SWAP;
         }
-        const buySellTransaction = buysellHistorical?.find(b => b.txid === tr.hash);
+        const buySellTransaction = buysellHistorical?.find(
+            b => b.txid === tr.hash,
+        );
         if (buySellTransaction) {
             tr.buySellDetails = buySellTransaction;
             return TransactionType.BUYSELL;
         }
-        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+        return tr.from?.toLowerCase() === address.toLowerCase()
+            ? TransactionType.SEND
+            : TransactionType.RECEIVE;
     }
-    
 }
 
 export default CoinWallet;

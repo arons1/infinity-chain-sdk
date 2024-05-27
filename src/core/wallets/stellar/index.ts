@@ -14,17 +14,17 @@ import {
     TransactionType,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
-import {
-    BuildTransactionParams,
-    SignTransactionParams,
-} from './types';
+import { BuildTransactionParams, SignTransactionParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import { Keypair, Server, Transaction } from 'stellar-sdk';
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { BuySellHistoricalTransaction, SwapHistoricalTransaction } from '../../types';
+import {
+    BuySellHistoricalTransaction,
+    SwapHistoricalTransaction,
+} from '../../types';
 import { formatSwap } from '../../utils';
 
 class StellarWallet extends CoinWallet {
@@ -119,14 +119,16 @@ class StellarWallet extends CoinWallet {
             ];
         } else {
             Object.keys(this.addresses).forEach(walletName => {
-                Object.keys(this.addresses[walletName]).forEach(walletAccount => {
-                    addresses.push(
-                        this.getReceiveAddress({
-                            walletAccount: parseInt(walletAccount),
-                            walletName,
-                        }),
-                    );
-                });
+                Object.keys(this.addresses[walletName]).forEach(
+                    walletAccount => {
+                        addresses.push(
+                            this.getReceiveAddress({
+                                walletAccount: parseInt(walletAccount),
+                                walletName,
+                            }),
+                        );
+                    },
+                );
             });
         }
         return getAccountBalances({
@@ -144,7 +146,7 @@ class StellarWallet extends CoinWallet {
     sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction(rawTransaction);
     }
-    
+
     /**
      * Signs a transaction using the provided transaction and keyPair.
      *
@@ -190,24 +192,31 @@ class StellarWallet extends CoinWallet {
         tr: TransactionNetwork,
         address: string,
         swapHistorical?: SwapHistoricalTransaction[],
-        buysellHistorical?: BuySellHistoricalTransaction[]
+        buysellHistorical?: BuySellHistoricalTransaction[],
     ): TransactionType {
-        const swapTransaction = swapHistorical?.find(b => b.hash === tr.hash || b.hash_to === tr.hash);
+        const swapTransaction = swapHistorical?.find(
+            b => b.hash === tr.hash || b.hash_to === tr.hash,
+        );
         if (swapTransaction) {
             tr.swapDetails = formatSwap(swapTransaction);
             return TransactionType.SWAP;
         }
-        const buySellTransaction = buysellHistorical?.find(b => b.txid === tr.hash);
+        const buySellTransaction = buysellHistorical?.find(
+            b => b.txid === tr.hash,
+        );
         if (buySellTransaction) {
             tr.buySellDetails = buySellTransaction;
             return TransactionType.BUYSELL;
         }
         if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
             const outAmount = tr.tokenTransfers.some(
-                a => a.from === address && new BigNumber(a.value).isGreaterThan(0)
+                a =>
+                    a.from === address &&
+                    new BigNumber(a.value).isGreaterThan(0),
             );
             const inAmount = tr.tokenTransfers.some(
-                a => a.to === address && new BigNumber(a.value).isGreaterThan(0)
+                a =>
+                    a.to === address && new BigNumber(a.value).isGreaterThan(0),
             );
             if (outAmount && inAmount) {
                 return TransactionType.TRADE;
@@ -217,7 +226,9 @@ class StellarWallet extends CoinWallet {
                 return TransactionType.WITHDRAW;
             }
         }
-        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+        return tr.from?.toLowerCase() === address.toLowerCase()
+            ? TransactionType.SEND
+            : TransactionType.RECEIVE;
     }
 }
 
