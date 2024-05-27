@@ -20,6 +20,7 @@ import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/fio/get';
 import { SetTransactionFormatParams } from '../../types';
+import { formatSwap } from '../../utils';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
@@ -170,27 +171,17 @@ class FIOWallet extends CoinWallet {
             walletName,
         });
         for (let tr of transactions) {
-            const isSwap = swapHistorical?.find(
+            const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
             );
-            const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
+            const buySellTransaction:BuySellDetails | undefined = buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if (isSwap) {
+            if (swapTransaction) {
                 tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = {
-                    exchange: isSwap.exchange,
-                    fromAmount: isSwap.amount,
-                    toAmount: isSwap.amount_des,
-                    fromCoin: isSwap.from,
-                    toCoin: isSwap.to,
-                    fromAddress: isSwap.sender_address,
-                    toAddress: isSwap.receive_address,
-                    hashTo: isSwap.hash_to,
-                    hash: isSwap.hash,
-                } as SwapDetails;
-            } else if (isBuySell) {
+                tr.swapDetails = formatSwap(swapTransaction);
+            } else if (buySellTransaction) {
                 tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+                tr.buySellDetails = buySellTransaction;
             } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
                 tr.transactionType = TransactionType.SEND;
             }

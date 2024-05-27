@@ -31,6 +31,7 @@ import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import { getTransactions as getTransactionsXDC } from '../../../transactionParsers/xdc/get';
 import { getTransactions } from '../../../transactionParsers/etherscan/get';
 import { SetTransactionFormatParams } from '../../types';
+import { formatSwap } from '../../utils';
 class EVMWallet extends CoinWallet {
     connector!: Web3;
     chain: Chains;
@@ -268,26 +269,17 @@ class EVMWallet extends CoinWallet {
             walletName,
         });
         for (let tr of transactions) {
-            const isSwap = swapHistorical?.find(
+            const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
             );
-            const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
-            if (isSwap) {
+            const buySellTransaction:BuySellDetails | undefined = buysellHistorical?.find(b => b.txid == tr.hash);
+
+            if (swapTransaction) {
                 tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = {
-                    exchange: isSwap.exchange,
-                    fromAmount: isSwap.amount,
-                    toAmount: isSwap.amount_des,
-                    fromCoin: isSwap.from,
-                    toCoin: isSwap.to,
-                    fromAddress: isSwap.sender_address,
-                    toAddress: isSwap.receive_address,
-                    hashTo: isSwap.hash_to,
-                    hash: isSwap.hash,
-                } as SwapDetails;
-            } else if (isBuySell) {
+                tr.swapDetails = formatSwap(swapTransaction);
+            } else if (buySellTransaction) {
                 tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+                tr.buySellDetails = buySellTransaction;
             } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
                 if (tr.methodId?.toLowerCase()?.includes('withdraw')) {
                     tr.transactionType = TransactionType.WITHDRAW;

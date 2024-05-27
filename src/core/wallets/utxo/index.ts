@@ -39,6 +39,7 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
 import { WalletNotFound } from '../../../errors/networks';
 import { getTransactions } from '../../../transactionParsers/trezor/get';
+import { formatSwap } from '../../utils';
 
 class UTXOWallet extends CoinWallet {
     connector!: TrezorWebsocket;
@@ -358,27 +359,17 @@ class UTXOWallet extends CoinWallet {
             );
         }
         for (let tr of transactions) {
-            const isSwap = swapHistorical?.find(
+            const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
             );
-            const isBuySell = buysellHistorical?.find(b => b.txid == tr.hash);
+            const buySellTransaction:BuySellDetails | undefined = buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if (isSwap) {
+            if (swapTransaction) {
                 tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = {
-                    exchange: isSwap.exchange,
-                    fromAmount: isSwap.amount,
-                    toAmount: isSwap.amount_des,
-                    fromCoin: isSwap.from,
-                    toCoin: isSwap.to,
-                    fromAddress: isSwap.sender_address,
-                    toAddress: isSwap.receive_address,
-                    hashTo: isSwap.hash_to,
-                    hash: isSwap.hash,
-                } as SwapDetails;
-            } else if (isBuySell) {
+                tr.swapDetails = formatSwap(swapTransaction);
+            } else if (buySellTransaction) {
                 tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = { ...isBuySell } as BuySellDetails;
+                tr.buySellDetails = buySellTransaction;
             } else {
                 const voutReceive = addresses.find(a =>
                     tr.vOut?.find(b => b.address == a),
