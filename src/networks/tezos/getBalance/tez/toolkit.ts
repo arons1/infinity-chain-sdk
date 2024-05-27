@@ -27,5 +27,5 @@ export function createTezos() {
 }
 
 export function fetchContract(address: string) {
-    return retry(() => Tezos.contract.at(address), { retries: 3 });
+    return retry(() => Tezos.contract.at(address), { retries: MAX_RETRIES });
 }

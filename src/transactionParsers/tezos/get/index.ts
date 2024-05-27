@@ -7,6 +7,7 @@ import { TezosParams, TezosRequestParams } from './types';
 import general from '../general';
 import { Transaction } from '../../../networks/types';
 import token from '../token';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
 
 const LIMIT = 100;
 
@@ -20,13 +21,12 @@ const getTransactionsRequest = async ({
         cursor,
         limit: LIMIT,
     }).url;
-    console.log(url);
 
     const resultTransactions: any = await request.get({
         url,
         no_wait: false,
-        retries: 3,
-        timeout: 30000,
+        retries: MAX_RETRIES,
+        timeout: TIMEOUT,
     });
     console.log(resultTransactions);
     const finalResults: GeneralTransactionEncode[] = [];
@@ -59,12 +59,11 @@ const getTransactionsTokenRequest = async ({
         cursor,
         limit: LIMIT,
     }).url;
-    console.log(url);
     const resultTransactions: any = await request.get({
         url,
         no_wait: false,
-        retries: 3,
-        timeout: 30000,
+        retries: MAX_RETRIES,
+        timeout: TIMEOUT,
     });
     const finalResults: TokenTransactionEncode[] = [];
     if (resultTransactions != undefined && Array.isArray(resultTransactions)) {

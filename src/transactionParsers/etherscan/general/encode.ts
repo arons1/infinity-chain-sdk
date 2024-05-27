@@ -2,6 +2,13 @@ import { Transaction } from '../../../networks/types';
 import { GeneralTransactionEncode } from './types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 
+/**
+ * Encodes a general transaction from Etherscan to the Infinity Chain SDK's Transaction format.
+ *
+ * @param {Object} params - The parameters for the encoding function.
+ * @param {GeneralTransactionEncode} params.transaction - The transaction object to encode.
+ * @return {Transaction} The encoded transaction object.
+ */
 export const encode = ({
     transaction,
 }: {

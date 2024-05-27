@@ -2,6 +2,8 @@ import { request } from '@infinity/core-sdk/lib/commonjs/utils';
 import { TokenTransfer, Transaction } from '../../../networks/types';
 import { VechainParams } from './types';
 import general from '../general';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
+
 import token from '../token';
 const LIMIT = 50;
 const getTransactionsGlobal = async ({
@@ -19,8 +21,8 @@ const getTransactionsGlobal = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);
@@ -75,8 +77,8 @@ const getTransactionsToken = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);

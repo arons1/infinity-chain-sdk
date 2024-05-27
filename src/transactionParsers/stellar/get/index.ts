@@ -3,23 +3,24 @@ import { EffectsEncode, GeneralTransactionEncode } from '../general/types';
 import { StellarParams, StellarRequestParams } from './types';
 import general from '../general';
 import { Transaction } from '../../../networks/types';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
 
 const LIMIT = 100;
-
 const getTransactionsRequest = async ({
     address,
     lastTransactionHash,
     cursor,
 }: StellarRequestParams): Promise<GeneralTransactionEncode[]> => {
+    const url = general.pull({
+        address,
+        cursor,
+        limit: LIMIT,
+    }).url
     const resultTransactions: any = await request.get({
-        url: general.pull({
-            address,
-            cursor,
-            limit: LIMIT,
-        }).url,
+        url,
         no_wait: false,
-        retries: 3,
-        timeout: 30000,
+        retries: MAX_RETRIES,
+        timeout: TIMEOUT,
     });
     const finalResults: GeneralTransactionEncode[] = [];
     if (resultTransactions?._embedded?.records != undefined) {
@@ -46,15 +47,16 @@ const getEffectsRequest = async ({
     lastTransactionHash,
     cursor,
 }: StellarRequestParams): Promise<EffectsEncode[]> => {
+    const url = general.pullEffects({
+        address,
+        cursor,
+        limit: LIMIT,
+    }).url 
     const resultTransactions: any = await request.get({
-        url: general.pullEffects({
-            address,
-            cursor,
-            limit: LIMIT,
-        }).url,
+        url,
         no_wait: false,
-        retries: 3,
-        timeout: 30000,
+        retries: MAX_RETRIES,
+        timeout: TIMEOUT,
     });
     const finalResults: EffectsEncode[] = [];
     if (resultTransactions?._embedded?.records != undefined) {

@@ -2,6 +2,7 @@ import { request } from '@infinity/core-sdk/lib/commonjs/utils';
 import { FioParams, FioParamsPagination } from './types';
 import general from '../general';
 import { Transaction } from '../../../networks/types';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
 
 const getOffset = (position: number) => {
     const offset = position > 99 ? 99 : position;
@@ -16,8 +17,8 @@ const initPositionCall = async (address: string) => {
         const result: any = await request.post({
             url: general.initPosition({ address }).url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
             params: general.initPosition({ address }).body,
         });
         if (result.data.actions == undefined || result.data.actions.length == 0)
@@ -37,8 +38,8 @@ const getTransactionsFio = async ({
     const result: any = await request.post({
         url: general.pull({ address }).url,
         no_wait: false,
-        retries: 3,
-        timeout: 30000,
+        retries: MAX_RETRIES,
+        timeout: TIMEOUT,
         params: {
             account_name: address,
             pos: position,

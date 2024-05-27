@@ -4,6 +4,7 @@ import general from '../general';
 import token from '../token';
 import internal from '../internal';
 import { request } from '@infinity/core-sdk/lib/commonjs/utils';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
 
 const LIMIT = 100;
 const getTransactionsGlobal = async ({
@@ -24,8 +25,8 @@ const getTransactionsGlobal = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);
@@ -76,8 +77,8 @@ const getTransactionsToken = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);
@@ -125,8 +126,8 @@ const getTransactionsInternal = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);

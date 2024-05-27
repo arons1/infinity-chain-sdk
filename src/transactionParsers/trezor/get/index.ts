@@ -2,6 +2,7 @@ import { request } from '@infinity/core-sdk/lib/commonjs/utils';
 import { Transaction } from '../../../networks/types';
 import general from '../general';
 import { TrezorParams } from './types';
+import { MAX_RETRIES, TIMEOUT } from '../../../constants';
 
 const LIMIT = 100;
 /**
@@ -31,8 +32,8 @@ export const getTransactions = async ({
         const result: any = await request.get({
             url,
             no_wait: false,
-            retries: 3,
-            timeout: 30000,
+            retries: MAX_RETRIES,
+            timeout: TIMEOUT,
         });
         if (result.error) {
             console.error(result);
