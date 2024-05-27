@@ -57,6 +57,7 @@ export enum TransactionType {
     REMOVE_LIQUIDY = 'REMOVE_LIQUIDY',
     BUYSELL = 'BUYSELL',
     APPROVE = 'APPROVE',
+    UNKNOWN = 'UNKNOWN',
 }
 export enum StatusSwap {
     WAITING = 'Waiting',

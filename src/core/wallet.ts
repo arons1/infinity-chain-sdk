@@ -6,9 +6,12 @@ import {
 } from '@infinity/core-sdk/lib/commonjs/networks';
 import Coin from '@infinity/core-sdk/lib/commonjs/networks/coin';
 import {
+    BuySellHistoricalTransaction,
     GetReceiveAddressParams,
     LoadPublicNodesParams,
     LoadStorageParams,
+    SetTransactionFormatParams,
+    SwapHistoricalTransaction,
 } from './types';
 import {
     CannotGeneratePublicAddress,
@@ -17,7 +20,8 @@ import {
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { NotImplemented } from '@infinity/core-sdk/lib/commonjs/errors';
 import BaseWallet from './base';
-import { initProtocols } from './utils';
+import { formatSwap, initProtocols } from './utils';
+import { Transaction, TransactionType } from '../networks/types';
 
 class CoinWallet extends BaseWallet {
     /**
@@ -300,9 +304,52 @@ class CoinWallet extends BaseWallet {
     getTransactions(_props: any) {
         throw new Error(NotImplemented);
     }
-    setTransactionFormat(_props: any) {
-        throw new Error(NotImplemented);
+    /**
+     * Sets the transaction format for the given transactions based on the provided parameters.
+     *
+     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
+     */
+    setTransactionFormat({
+        swapHistorical,
+        transactions,
+        walletAccount,
+        buysellHistorical,
+        walletName,
+    }: SetTransactionFormatParams): void {
+        const address = this.getReceiveAddress({ walletAccount, walletName });
+        transactions.forEach(tr => {
+            tr.transactionType = this.determineTransactionType(tr, address, swapHistorical, buysellHistorical);
+        });
     }
+
+    /**
+     * Determines the transaction type based on the provided transaction, address, swap historical, and buy/sell historical.
+     *
+     * @param {Transaction} tr - The transaction object.
+     * @param {string} address - The address to compare with the transaction's "from" address.
+     * @param {SwapHistoricalTransaction[]} [swapHistorical] - Optional array of swap historical transactions.
+     * @param {BuySellHistoricalTransaction[]} [buysellHistorical] - Optional array of buy/sell historical transactions.
+     * @return {TransactionType} The determined transaction type.
+     */
+    protected determineTransactionType(
+        tr: Transaction,
+        address: string,
+        swapHistorical?: SwapHistoricalTransaction[],
+        buysellHistorical?: BuySellHistoricalTransaction[],
+    ): TransactionType {
+        const swapTransaction = swapHistorical?.find(b => b.hash === tr.hash || b.hash_to === tr.hash);
+        if (swapTransaction) {
+            tr.swapDetails = formatSwap(swapTransaction);
+            return TransactionType.SWAP;
+        }
+        const buySellTransaction = buysellHistorical?.find(b => b.txid === tr.hash);
+        if (buySellTransaction) {
+            tr.buySellDetails = buySellTransaction;
+            return TransactionType.BUYSELL;
+        }
+        return tr.from?.toLowerCase() === address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
+    }
+    
 }
 
 export default CoinWallet;

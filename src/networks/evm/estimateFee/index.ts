@@ -32,20 +32,20 @@ export const estimateFee = async (
 ): Promise<EstimateFeeResult> => {
     estimateParametersChecker(props);
     try {
-        let resultEstimate;
+        let estimateRes;
         if (props.tokenContract && props.tokenContract.length > 0) {
-            resultEstimate = await estimateTokenFee(
+            estimateRes = await estimateTokenFee(
                 props as EstimateGasTokenParams,
             );
         } else {
-            resultEstimate = await estimateCurrencyFee(props);
+            estimateRes = await estimateCurrencyFee(props);
         }
-        let fee = new BigNumber(resultEstimate.estimateGas)
-            .multipliedBy(resultEstimate.gasPrice as string)
+        let fee = new BigNumber(estimateRes.estimateGas)
+            .multipliedBy(estimateRes.gasPrice as string)
             .toString(10);
         if (props.chainId == Chains.OP) {
             const txBuilder = new Transaction(
-                resultEstimate.transaction,
+                estimateRes.transaction,
             ).serialize();
             fee = new BigNumber(
                 await estimateL1Cost(
@@ -59,7 +59,7 @@ export const estimateFee = async (
 
         return {
             fee,
-            transaction: resultEstimate.transaction,
+            transaction: estimateRes.transaction,
         };
     } catch (error: any) {
         console.error(error);

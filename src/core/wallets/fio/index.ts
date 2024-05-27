@@ -7,23 +7,24 @@ import {
 } from '../../../networks/fio';
 import { BuildTransactionFIOResult } from '../../../networks/fio/builder/types';
 import {
-    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
-    SwapDetails,
     Transaction,
-    TransactionType,
 } from '../../../networks/types';
 import CoinWallet from '../../wallet';
 import { BuildTransactionParams, GetTransactionsParams } from './types';
 import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/fio/get';
-import { SetTransactionFormatParams } from '../../types';
-import { formatSwap } from '../../utils';
+
+import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
+
+    constructor(id: Coins, mnemonic?: string, walletName?: string, walletAccount?: number) {
+        super(id, mnemonic, walletName, walletAccount);
+    }
 
     /**
      * Estimates the fee for a transaction using the provided parameters.
@@ -40,13 +41,10 @@ class FIOWallet extends CoinWallet {
         walletAccount: number;
         walletName: string;
     }): Promise<EstimateFeeResult> {
-        return estimateFee(
-            this.getReceiveAddress({
-                walletAccount,
-                walletName,
-            }),
-        );
+        const address = this.getReceiveAddress({ walletAccount, walletName });
+        return estimateFee(address);
     }
+
     /**
      * Builds a transaction using the provided transaction parameters.
      *
@@ -56,18 +54,16 @@ class FIOWallet extends CoinWallet {
     buildTransaction(
         _props: BuildTransactionParams,
     ): Promise<BuildTransactionFIOResult> {
-        return buildTransaction({
-            ..._props,
-            source: this.getReceiveAddress({
-                walletAccount: _props.walletAccount,
-                walletName: _props.walletName,
-            }),
-        });
+        const address = this.getReceiveAddress({ walletAccount: _props.walletAccount, walletName: _props.walletName });
+        return buildTransaction({ ..._props, source: address });
     }
+
     /**
      * Retrieves the balance for the wallet.
      *
-     * @param {string} walletAccount - The name of the wallet for which to retrieve the balance.
+     * @param {Object} options - The options for retrieving the balance.
+     * @param {number} options.walletAccount - The account number of the wallet.
+     * @param {string} options.walletName - The name of the wallet.
      * @return {Promise<CurrencyBalanceResult>} A promise that resolves to the balance of the wallet.
      */
     getBalance({
@@ -77,13 +73,10 @@ class FIOWallet extends CoinWallet {
         walletAccount: number;
         walletName: string;
     }): Promise<CurrencyBalanceResult> {
-        return getBalance(
-            this.getReceiveAddress({
-                walletAccount,
-                walletName,
-            }),
-        );
+        const address = this.getReceiveAddress({ walletAccount, walletName });
+        return getBalance(address);
     }
+
     /**
      * Sends a transaction using the provided transaction result.
      *
@@ -93,12 +86,11 @@ class FIOWallet extends CoinWallet {
     sendTransaction(_props: BuildTransactionFIOResult): Promise<string> {
         return sendTransaction(_props);
     }
+
     /**
      * Retrieves transactions based on the specified parameters.
      *
      * @param {GetTransactionsParams} params - The parameters for retrieving transactions.
-     * @param {string} params.walletAccount - (Optional) The name of the wallet to retrieve transactions for. If not provided, the transactions of the currently selected wallet will be retrieved.
-     * @param {string} params.endBlock - The end block to retrieve transactions until.
      * @return {Promise<Transaction[]>} A promise that resolves to an array of transactions.
      */
     async getTransactions({
@@ -107,91 +99,44 @@ class FIOWallet extends CoinWallet {
         swapHistorical,
         walletName,
     }: GetTransactionsParams): Promise<Transaction[]> {
-        const transactions = await getTransactions({
-            address: this.getReceiveAddress({
-                walletAccount,
-                walletName,
-            }),
-            endBlock,
-        });
-        this.setTransactionFormat({
-            swapHistorical,
-            transactions,
-            walletAccount,
-            walletName,
-        });
-
+        const address = this.getReceiveAddress({ walletAccount, walletName });
+        const transactions = await getTransactions({ address, endBlock });
+        this.setTransactionFormat({ swapHistorical, transactions, walletAccount, walletName });
         return transactions;
     }
-    loadConnector() {
+
+    loadConnector(): void {
         throw new Error(NotImplemented);
     }
 
     /**
      * Retrieves the account associated with the given wallet name.
      *
-     * @param {string} [walletAccount] - The name of the wallet. If not provided, the currently selected wallet will be used.
+     * @param {Object} options - The options for retrieving the account.
+     * @param {string} options.walletName - The name of the wallet.
+     * @param {number} options.walletAccount - The account number of the wallet.
      * @return {string} The account associated with the given wallet name.
      */
     getAccount({
         walletAccount,
         walletName,
     }: {
-        walletName: string;
         walletAccount: number;
-    }) {
+        walletName: string;
+    }): string {
         return this.account[walletName][walletAccount];
     }
+
     /**
      * Retrieves the minimum amount left from the configuration for the current wallet.
      *
-     * @return {number} The minimum amount left as specified in the configuration.
+     * @return {Promise<number>} The minimum amount left as specified in the configuration.
      */
     async getMinimumAmountLeft(): Promise<number> {
         return config[this.id].dust as number;
     }
-    /**
-     * Sets the transaction format for the given transactions based on the provided parameters.
-     *
-     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
-     * @param {SwapHistoricalTransaction[]} params.swapHistorical - The historical swap transactions.
-     * @param {Transaction[]} params.transactions - The transactions to set the format for.
-     * @param {string} [params.walletAccount] - The name of the wallet. If not provided, the currently selected wallet will be used.
-     * @param {BuySellHistoricalTransaction[]} [params.buysellHistorical] - The historical buy/sell transactions.
-     */
-    setTransactionFormat({
-        swapHistorical,
-        transactions,
-        walletAccount,
-        buysellHistorical,
-        walletName,
-    }: SetTransactionFormatParams) {
-        const address = this.getReceiveAddress({
-            walletAccount,
-            walletName,
-        });
-        for (let tr of transactions) {
-            const swapTransaction = swapHistorical?.find(
-                b => b.hash == tr.hash || b.hash_to == tr.hash,
-            );
-            if (swapTransaction) {
-                tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = formatSwap(swapTransaction);
-                continue;
-            } 
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
 
-            if (buySellTransaction) {
-                tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = buySellTransaction;
-            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                tr.transactionType = TransactionType.SEND;
-            } else {
-                tr.transactionType = TransactionType.RECEIVE;
-            }
-        }
-    }
+    
 }
 
 export default FIOWallet;

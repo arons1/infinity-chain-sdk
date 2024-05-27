@@ -20,8 +20,7 @@ import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/xrp/get';
-import { SetTransactionFormatParams } from '../../types';
-import { formatSwap } from '../../utils';
+
 
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
@@ -151,48 +150,7 @@ class XRPWallet extends CoinWallet {
             .shiftedBy(6)
             .toNumber();
     }
-    /**
-     * Sets the transaction format for the given transactions based on the provided parameters.
-     *
-     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
-     * @param {SwapHistoricalTransaction[]} params.swapHistorical - The historical swap transactions.
-     * @param {Transaction[]} params.transactions - The transactions to set the format for.
-     * @param {string} [params.walletAccount] - The name of the wallet. If not provided, the currently selected wallet will be used.
-     * @param {BuySellHistoricalTransaction[]} [params.buysellHistorical] - The historical buy/sell transactions.
-     */
-    setTransactionFormat({
-        swapHistorical,
-        transactions,
-        walletAccount,
-        buysellHistorical,
-        walletName,
-    }: SetTransactionFormatParams) {
-        const address = this.getReceiveAddress({
-            walletAccount,
-            walletName,
-        });
-        for (let tr of transactions) {
-            const swapTransaction = swapHistorical?.find(
-                b => b.hash == tr.hash || b.hash_to == tr.hash,
-            );
-            if (swapTransaction) {
-                tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = formatSwap(swapTransaction);
-                continue;
-            }
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
-
-            if (buySellTransaction) {
-                tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = buySellTransaction;
-            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                tr.transactionType = TransactionType.SEND;
-            } else {
-                tr.transactionType = TransactionType.RECEIVE;
-            }
-        }
-    }
+    
 }
 
 export default XRPWallet;

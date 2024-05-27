@@ -28,7 +28,7 @@ import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/stellar/get';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { SetTransactionFormatParams } from '../../types';
+import { BuySellHistoricalTransaction, SetTransactionFormatParams, SwapHistoricalTransaction } from '../../types';
 import { formatSwap } from '../../utils';
 
 class StellarWallet extends CoinWallet {
@@ -145,34 +145,7 @@ class StellarWallet extends CoinWallet {
     sendTransaction(rawTransaction: string): Promise<string> {
         return sendTransaction(rawTransaction);
     }
-    /**
-     * Retrieves transactions based on the specified parameters.
-     *
-     * @param {string} lastTransactionHash - The hash of the last transaction.
-     * @param {string} walletAccount - The name of the wallet.
-     * @return {Promise<TransactionNetwork[]>} A promise that resolves to an array of transactions.
-     */
-    async getTransactions({
-        lastTransactionHash,
-        walletAccount,
-        swapHistorical,
-        walletName,
-    }: GetTransactionsParams): Promise<TransactionNetwork[]> {
-        const transactions = await getTransactions({
-            address: this.getReceiveAddress({
-                walletAccount,
-                walletName,
-            }),
-            lastTransactionHash,
-        });
-        this.setTransactionFormat({
-            swapHistorical,
-            transactions,
-            walletAccount,
-            walletName,
-        });
-        return transactions;
-    }
+    
     /**
      * Signs a transaction using the provided transaction and keyPair.
      *
@@ -206,67 +179,39 @@ class StellarWallet extends CoinWallet {
         return config[this.id].dust as number;
     }
 
-    /**
-     * Sets the transaction format for the given transactions based on the provided parameters.
-     *
-     * @param {SetTransactionFormatParams} params - The parameters for setting the transaction format.
-     * @param {SwapHistoricalTransaction[]} params.swapHistorical - The historical swap transactions.
-     * @param {Transaction[]} params.transactions - The transactions to set the format for.
-     * @param {string} [params.walletAccount] - The name of the wallet. If not provided, the currently selected wallet will be used.
-     * @param {BuySellHistoricalTransaction[]} [params.buysellHistorical] - The historical buy/sell transactions.
-     */
-    setTransactionFormat({
-        swapHistorical,
-        transactions,
-        walletAccount,
-        buysellHistorical,
-        walletName,
-    }: SetTransactionFormatParams) {
-        const address = this.getReceiveAddress({
-            walletAccount,
-            walletName,
-        });
-        for (let tr of transactions) {
-            const swapTransaction = swapHistorical?.find(
-                b => b.hash == tr.hash || b.hash_to == tr.hash,
-            );
-            if (swapTransaction) {
-                tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = formatSwap(swapTransaction);
-                continue;
-            }
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
-
-            if (buySellTransaction) {
-                tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = buySellTransaction;
-            } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
-                const outAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.from == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                const inAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.to == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                if (outAmount && inAmount) {
-                    tr.transactionType = TransactionType.TRADE;
-                } else if (outAmount) {
-                    tr.transactionType = TransactionType.DEPOSIT;
-                } else {
-                    tr.transactionType = TransactionType.WITHDRAW;
-                }
-            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                tr.transactionType = TransactionType.SEND;
+    protected determineTransactionType(tr: TransactionNetwork, address: string, swapHistorical?: SwapHistoricalTransaction[], buysellHistorical?: BuySellHistoricalTransaction[]): TransactionType {
+        const swapTransaction = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        if (swapTransaction) {
+            tr.swapDetails = formatSwap(swapTransaction);
+            return TransactionType.SWAP;
+        }
+        const buySellTransaction = buysellHistorical?.find(b => b.txid == tr.hash);
+        if (buySellTransaction) {
+            tr.buySellDetails = buySellTransaction;
+            return TransactionType.BUYSELL;
+        }
+        if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
+            const outAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.from == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            const inAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.to == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            if (outAmount && inAmount) {
+                return TransactionType.TRADE;
+            } else if (outAmount) {
+                return TransactionType.DEPOSIT;
             } else {
-                tr.transactionType = TransactionType.RECEIVE;
+                return TransactionType.WITHDRAW;
             }
         }
+        return tr.from?.toLowerCase() == address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
     }
 }
 

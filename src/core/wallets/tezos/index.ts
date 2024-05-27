@@ -9,10 +9,8 @@ import { BuildTransactionResult } from '../../../networks/tezos/builder/types';
 
 import {
     BalanceResult,
-    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
-    SwapDetails,
     Transaction,
     TransactionType,
 } from '../../../networks/types';
@@ -37,7 +35,7 @@ import {
 import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/tezos/get';
-import { SetTransactionFormatParams } from '../../types';
+import { BuySellHistoricalTransaction, SwapHistoricalTransaction } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { formatSwap } from '../../utils';
 
@@ -265,66 +263,39 @@ class TezosWallet extends CoinWallet {
             message: _props.message,
         });
     }
-    /**
-     * Sets the transaction format based on historical swap, buy/sell data, and token transfers.
-     *
-     * @param {Transaction[]} transactions - The array of transactions to set the format for.
-     * @param {string} walletAccount - The name of the wallet used for the transactions.
-     * @param {Transaction[]} swapHistorical - The historical swap transactions.
-     * @param {Transaction[]} buysellHistorical - The historical buy/sell transactions.
-     */
-    setTransactionFormat({
-        swapHistorical,
-        transactions,
-        walletAccount,
-        buysellHistorical,
-        walletName,
-    }: SetTransactionFormatParams) {
-        const address = this.getReceiveAddress({
-            walletAccount,
-            walletName,
-        });
-        for (let tr of transactions) {
-            const swapTransaction = swapHistorical?.find(
-                b => b.hash == tr.hash || b.hash_to == tr.hash,
-            );
-            if (swapTransaction) {
-                tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = formatSwap(swapTransaction);
-                continue;
-            }
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
-
-            if (buySellTransaction) {
-                tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = buySellTransaction;
-            } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
-                const outAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.from == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                const inAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.to == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                if (outAmount && inAmount) {
-                    tr.transactionType = TransactionType.TRADE;
-                } else if (outAmount) {
-                    tr.transactionType = TransactionType.DEPOSIT;
-                } else {
-                    tr.transactionType = TransactionType.WITHDRAW;
-                }
-            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                tr.transactionType = TransactionType.SEND;
+    protected determineTransactionType(tr: Transaction, address: string, swapHistorical?: SwapHistoricalTransaction[], buysellHistorical?: BuySellHistoricalTransaction[]): TransactionType {
+        const swapTransaction = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        if (swapTransaction) {
+            tr.swapDetails = formatSwap(swapTransaction);
+            return TransactionType.SWAP;
+        }
+        const buySellTransaction = buysellHistorical?.find(b => b.txid == tr.hash);
+        if (buySellTransaction) {
+            tr.buySellDetails = buySellTransaction;
+            return TransactionType.BUYSELL;
+        }
+        if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
+            const outAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.from == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            const inAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.to == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            if (outAmount && inAmount) {
+                return TransactionType.TRADE;
+            } else if (outAmount) {
+                return TransactionType.DEPOSIT;
             } else {
-                tr.transactionType = TransactionType.RECEIVE;
+                return TransactionType.WITHDRAW;
             }
         }
+        return tr.from?.toLowerCase() == address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
     }
 }
 

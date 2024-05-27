@@ -9,10 +9,8 @@ import {
 
 import {
     BalanceResult,
-    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
-    SwapDetails,
     Transaction as TransactionNetwork,
     TransactionType,
 } from '../../../networks/types';
@@ -40,7 +38,7 @@ import { DataBalance } from '../../../networks/solana/getBalanceAfter/types';
 import pMemoize from 'p-memoize';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/solana/get';
-import { SetTransactionFormatParams } from '../../types';
+import { BuySellHistoricalTransaction, SetTransactionFormatParams, SwapHistoricalTransaction } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { formatSwap } from '../../utils';
 
@@ -281,67 +279,41 @@ class SolanaWallet extends CoinWallet {
             maxAge: 600_000,
         },
     );
-    /**
-     * Sets the transaction format based on historical swap and buy/sell data.
-     *
-     * @param {Array<SwapHistorical>} swapHistorical - The historical swap data.
-     * @param {Array<Transaction>} transactions - The list of transactions to format.
-     * @param {string} walletAccount - The name of the wallet.
-     * @param {Array<BuySellHistorical>} buysellHistorical - The historical buy/sell data.
-     */
-    setTransactionFormat({
-        swapHistorical,
-        transactions,
-        walletAccount,
-        walletName,
-        buysellHistorical,
-    }: SetTransactionFormatParams) {
-        const address = this.getReceiveAddress({
-            walletAccount,
-            walletName,
-        });
-        for (let tr of transactions) {
-            const swapTransaction = swapHistorical?.find(
-                b => b.hash == tr.hash || b.hash_to == tr.hash,
-            );
-            if (swapTransaction) {
-                tr.transactionType = TransactionType.SWAP;
-                tr.swapDetails = formatSwap(swapTransaction);
-                continue;
-            }
-            const buySellTransaction: BuySellDetails | undefined =
-                buysellHistorical?.find(b => b.txid == tr.hash);
-
-            if (buySellTransaction) {
-                tr.transactionType = TransactionType.BUYSELL;
-                tr.buySellDetails = buySellTransaction;
-            } else if (tr.tokenTransfers && tr.tokenTransfers?.length > 1) {
-                const outAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.from == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                const inAmount =
-                    tr.tokenTransfers.find(
-                        a =>
-                            a.to == address &&
-                            new BigNumber(a.value).isGreaterThan(0),
-                    ) != undefined;
-                if (outAmount && inAmount) {
-                    tr.transactionType = TransactionType.TRADE;
-                } else if (outAmount) {
-                    tr.transactionType = TransactionType.DEPOSIT;
-                } else {
-                    tr.transactionType = TransactionType.WITHDRAW;
-                }
-            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                tr.transactionType = TransactionType.SEND;
+    protected determineTransactionType(tr: TransactionNetwork, address: string, swapHistorical?: SwapHistoricalTransaction[], buysellHistorical?: BuySellHistoricalTransaction[]): TransactionType {
+        const swapTransaction = swapHistorical?.find(b => b.hash == tr.hash || b.hash_to == tr.hash);
+        if (swapTransaction) {
+            tr.swapDetails = formatSwap(swapTransaction);
+            return TransactionType.SWAP;
+        }
+        const buySellTransaction = buysellHistorical?.find(b => b.txid == tr.hash);
+        if (buySellTransaction) {
+            tr.buySellDetails = buySellTransaction;
+            return TransactionType.BUYSELL;
+        }
+        if (tr.tokenTransfers && tr.tokenTransfers.length > 1) {
+            const outAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.from == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            const inAmount =
+                tr.tokenTransfers.find(
+                    a =>
+                        a.to == address &&
+                        new BigNumber(a.value).isGreaterThan(0),
+                ) != undefined;
+            if (outAmount && inAmount) {
+                return TransactionType.TRADE;
+            } else if (outAmount) {
+                return TransactionType.DEPOSIT;
             } else {
-                tr.transactionType = TransactionType.RECEIVE;
+                return TransactionType.WITHDRAW;
             }
         }
+        return tr.from?.toLowerCase() == address.toLowerCase() ? TransactionType.SEND : TransactionType.RECEIVE;
     }
+
 }
 
 export default SolanaWallet;
