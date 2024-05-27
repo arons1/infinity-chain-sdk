@@ -7,7 +7,9 @@ export const initProtocols: Record<Protocol, any> = {
     [Protocol.WRAPPED_SEGWIT]: {},
     [Protocol.SEGWIT]: {},
 };
-export const formatSwap = (swapTransaction: SwapHistoricalTransaction) : SwapDetails => {
+export const formatSwap = (
+    swapTransaction: SwapHistoricalTransaction,
+): SwapDetails => {
     return {
         exchange: swapTransaction.exchange,
         fromAmount: swapTransaction.amount,
@@ -19,4 +21,4 @@ export const formatSwap = (swapTransaction: SwapHistoricalTransaction) : SwapDet
         hashTo: swapTransaction.hash_to,
         hash: swapTransaction.hash,
     } as SwapDetails;
-} 
+};

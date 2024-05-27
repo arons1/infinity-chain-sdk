@@ -174,7 +174,8 @@ class FIOWallet extends CoinWallet {
             const swapTransaction = swapHistorical?.find(
                 b => b.hash == tr.hash || b.hash_to == tr.hash,
             );
-            const buySellTransaction:BuySellDetails | undefined = buysellHistorical?.find(b => b.txid == tr.hash);
+            const buySellTransaction: BuySellDetails | undefined =
+                buysellHistorical?.find(b => b.txid == tr.hash);
 
             if (swapTransaction) {
                 tr.transactionType = TransactionType.SWAP;
@@ -184,11 +185,9 @@ class FIOWallet extends CoinWallet {
                 tr.buySellDetails = buySellTransaction;
             } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
                 tr.transactionType = TransactionType.SEND;
-            }
-            else {
+            } else {
                 tr.transactionType = TransactionType.RECEIVE;
             }
-         
         }
     }
 }

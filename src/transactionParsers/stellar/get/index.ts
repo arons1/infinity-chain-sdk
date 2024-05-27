@@ -15,7 +15,7 @@ const getTransactionsRequest = async ({
         address,
         cursor,
         limit: LIMIT,
-    }).url
+    }).url;
     const resultTransactions: any = await request.get({
         url,
         no_wait: false,
@@ -51,7 +51,7 @@ const getEffectsRequest = async ({
         address,
         cursor,
         limit: LIMIT,
-    }).url 
+    }).url;
     const resultTransactions: any = await request.get({
         url,
         no_wait: false,
