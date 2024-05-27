@@ -325,12 +325,10 @@ class TezosWallet extends CoinWallet {
                 } else {
                     tr.transactionType = TransactionType.WITHDRAW;
                 }
+            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
+                tr.transactionType = TransactionType.SEND;
             } else {
-                if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                    tr.transactionType = TransactionType.SEND;
-                } else {
-                    tr.transactionType = TransactionType.RECEIVE;
-                }
+                tr.transactionType = TransactionType.RECEIVE;
             }
         }
     }

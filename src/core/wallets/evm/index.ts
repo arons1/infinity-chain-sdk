@@ -129,7 +129,7 @@ class EVMWallet extends CoinWallet {
     getAccountBalances(
         _props: RPCBalancesParams,
     ): Promise<Record<string, BalanceResult[]>> {
-        var addresses: string[] = [];
+        let addresses: string[] = [];
         if (
             _props.walletAccount != undefined &&
             _props.walletName != undefined
@@ -309,13 +309,13 @@ class EVMWallet extends CoinWallet {
                 } else {
                     tr.transactionType = TransactionType.TRADE;
                 }
-            } else {
-                if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                    tr.transactionType = TransactionType.SEND;
-                } else {
-                    tr.transactionType = TransactionType.RECEIVE;
-                }
+            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
+                tr.transactionType = TransactionType.SEND;
             }
+            else {
+                tr.transactionType = TransactionType.RECEIVE;
+            }
+            
         }
     }
 }

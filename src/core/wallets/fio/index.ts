@@ -191,13 +191,13 @@ class FIOWallet extends CoinWallet {
             } else if (isBuySell) {
                 tr.transactionType = TransactionType.BUYSELL;
                 tr.buySellDetails = { ...isBuySell } as BuySellDetails;
-            } else {
-                if (tr.from?.toLowerCase() == address.toLowerCase()) {
-                    tr.transactionType = TransactionType.SEND;
-                } else {
-                    tr.transactionType = TransactionType.RECEIVE;
-                }
+            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
+                tr.transactionType = TransactionType.SEND;
             }
+            else {
+                tr.transactionType = TransactionType.RECEIVE;
+            }
+         
         }
     }
 }

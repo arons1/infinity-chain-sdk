@@ -341,13 +341,12 @@ class SolanaWallet extends CoinWallet {
                 } else {
                     tr.transactionType = TransactionType.WITHDRAW;
                 }
-            } else {
-                if (tr.from?.toLowerCase() == address.toLowerCase()) {
+            } else if (tr.from?.toLowerCase() == address.toLowerCase()) {
                     tr.transactionType = TransactionType.SEND;
-                } else {
-                    tr.transactionType = TransactionType.RECEIVE;
-                }
+            } else {
+                tr.transactionType = TransactionType.RECEIVE;
             }
+          
         }
     }
 }
