@@ -9,6 +9,7 @@ import {
     READ_ONLY_SIGNER_PK,
     READ_ONLY_SIGNER_PK_HASH,
 } from '../../constants';
+import { MAX_RETRIES } from '../../../../constants';
 
 export const readOnlySigner = new ReadOnlySigner(
     READ_ONLY_SIGNER_PK_HASH,

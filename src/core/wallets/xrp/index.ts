@@ -1,10 +1,7 @@
 import {
-    BuySellDetails,
     CurrencyBalanceResult,
     EstimateFeeResult,
-    SwapDetails,
     Transaction,
-    TransactionType,
 } from '../../../networks/types';
 import {
     buildTransaction,

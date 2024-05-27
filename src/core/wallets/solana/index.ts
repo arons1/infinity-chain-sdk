@@ -40,7 +40,6 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/solana/get';
 import {
     BuySellHistoricalTransaction,
-    SetTransactionFormatParams,
     SwapHistoricalTransaction,
 } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
