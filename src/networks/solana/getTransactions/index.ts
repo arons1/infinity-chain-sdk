@@ -227,15 +227,15 @@ const getBatchAddressesWithPagination = async ({
             pagination,
             limit,
         });
-        for (const element of resultBatchsAux) {
-            for (let j = 0; j < resultBatchs.length; j++) {
-                if (resultBatchs[j].address == element.address) {
-                    resultBatchs[j].result = [
-                        ...resultBatchs[j].result,
-                        ...element.result,
-                    ];
-                    break;
-                }
+        for (const { address, result: resultAux } of resultBatchsAux) {
+            const index = resultBatchs.findIndex(
+                ({ address: addressAux }) => addressAux === address
+            );
+            if (index !== -1) {
+                resultBatchs[index].result = [
+                    ...resultBatchs[index].result,
+                    ...resultAux,
+                ];
             }
         }
     }
