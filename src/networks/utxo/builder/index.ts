@@ -23,7 +23,6 @@ import { builderParametersChecker } from '../parametersChecker';
 import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { TrezorWebsocket } from '../trezorWebsocket';
-import { getUTXO } from '../getUTXO/index';
 
 
 /**
