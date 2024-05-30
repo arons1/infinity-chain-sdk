@@ -8,7 +8,13 @@ import { getFeePerByte } from '../estimateFee';
 import { getUTXO } from '../getUTXO';
 import { UTXOResult } from '../getUTXO/types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
-import { Account, AddChangeAmountParameters, BuildParameters, BuildTransactionResult, SignTransactionUTXO } from './types';
+import {
+    Account,
+    AddChangeAmountParameters,
+    BuildParameters,
+    BuildTransactionResult,
+    SignTransactionUTXO,
+} from './types';
 import { networks } from '@infinity/core-sdk';
 import { getLastChangeIndex } from '../getLastChangeIndex';
 import {
@@ -24,7 +30,6 @@ import { Protocol } from '@infinity/core-sdk/lib/commonjs/networks/registry';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { TrezorWebsocket } from '../trezorWebsocket';
 
-
 /**
  * Signs a transaction using the provided UTXOs, accounts, network, and transaction.
  *
@@ -39,8 +44,8 @@ const signTransaction = ({
     utxosUsed,
     accounts,
     network,
-    tx
-}:SignTransactionUTXO) => {
+    tx,
+}: SignTransactionUTXO) => {
     for (let k = 0; k < utxosUsed.length; k++) {
         const unspent = utxosUsed[k];
         const [change, index] = unspent.path.split('/').slice(4);
@@ -78,7 +83,7 @@ const signTransaction = ({
             throw new Error(ProtocolNotSupported);
         }
     }
-}
+};
 
 /**
  * Adds a change amount to the transaction if the amount left plus the fee is less than zero.
@@ -105,7 +110,7 @@ const addChangeAmount = async ({
     connector,
     network,
     tx,
-    dust
+    dust,
 }: AddChangeAmountParameters) => {
     if (
         !amountLeft.plus(feeAcc.multipliedBy(feeByte)).isGreaterThanOrEqualTo(0)
@@ -124,26 +129,29 @@ const addChangeAmount = async ({
             changeProtocol = protocol;
             let lastChangeIndex = index;
             let addressChange;
-            const propsAddress= {
+            const propsAddress = {
                 publicAccountNode: accounts.find(a => a.useAsChange)
                     ?.node as BIP32Interface,
                 change: 1,
                 index: lastChangeIndex,
                 network,
-            }
+            };
             if (changeProtocol == Protocol.WRAPPED_SEGWIT) {
-                addressChange = networks.utxo.getPublicAddressP2WPKHP2S(propsAddress);
+                addressChange =
+                    networks.utxo.getPublicAddressP2WPKHP2S(propsAddress);
             } else if (changeProtocol == Protocol.LEGACY) {
-                addressChange = networks.utxo.getPublicAddressP2PKH(propsAddress);
+                addressChange =
+                    networks.utxo.getPublicAddressP2PKH(propsAddress);
             } else if (changeProtocol == Protocol.SEGWIT) {
-                addressChange = networks.utxo.getPublicAddressSegwit(propsAddress);
+                addressChange =
+                    networks.utxo.getPublicAddressSegwit(propsAddress);
             } else {
                 throw new Error(ProtocolNotSupported);
             }
             tx.addOutput(addressChange as string, changeAmount.toNumber());
         }
     }
-}
+};
 /**
  * Retrieves the fee per byte based on the given connector and fee ratio.
  *
@@ -163,30 +171,37 @@ const getFeeByte = async (connector: TrezorWebsocket, feeRatio: number) => {
     }
 
     return {
-        feeByte:new BigNumber(feePerByte.low)
-        .plus(feePerByte.high)
-        .multipliedBy(feeRatio),
-        feePerByte
-        
-    }
-}
+        feeByte: new BigNumber(feePerByte.low)
+            .plus(feePerByte.high)
+            .multipliedBy(feeRatio),
+        feePerByte,
+    };
+};
 
-const addMemo = (tx: TransactionBuilder, memo: string,feeOutput:BigNumber) => {
+const addMemo = (
+    tx: TransactionBuilder,
+    memo: string,
+    feeOutput: BigNumber,
+) => {
     if (memo && memo.length > 0) {
         feeOutput = feeOutput.plus(memo.length);
         tx.addOutput(script.compile([opcodes.OP_RETURN, Buffer.from(memo)]), 0);
     }
-}
+};
 
 const calculateFeeInput = (utxosUsed: UTXOResult[]) => {
     return utxosUsed.reduce((p, v) => {
         if (v.protocol) return new BigNumber(68).plus(p);
         return new BigNumber(148).plus(p);
     }, new BigNumber(0));
-}
+};
 
-const getUTXOs = async (accounts: Account[], connector: TrezorWebsocket,utxos:UTXOResult[]) => {
-    if(utxos.length == 0){
+const getUTXOs = async (
+    accounts: Account[],
+    connector: TrezorWebsocket,
+    utxos: UTXOResult[],
+) => {
+    if (utxos.length == 0) {
         const extendedPublicKeys = accounts.map(a => a.extendedPublicKey);
         for (let extendedPublicKey of extendedPublicKeys)
             try {
@@ -202,9 +217,8 @@ const getUTXOs = async (accounts: Account[], connector: TrezorWebsocket,utxos:UT
     }
     utxos = utxos.sort((a, b) => (a.path > b.path ? -1 : 1));
 
-    
-    return utxos
-}
+    return utxos;
+};
 
 /**
  * Selects input UTXOs to cover the given amount and adds them to the transaction builder.
@@ -216,7 +230,13 @@ const getUTXOs = async (accounts: Account[], connector: TrezorWebsocket,utxos:UT
  * @param {TransactionBuilder} tx - The transaction builder.
  * @param {UTXOResult[]} utxosUsed - The array to store the selected UTXOs.
  */
-const selectInputUtxos = ( utxos: UTXOResult[], amountLeft: BigNumber, feeAcc: BigNumber, feeByte: BigNumber, tx: TransactionBuilder) => {
+const selectInputUtxos = (
+    utxos: UTXOResult[],
+    amountLeft: BigNumber,
+    feeAcc: BigNumber,
+    feeByte: BigNumber,
+    tx: TransactionBuilder,
+) => {
     const utxosUsed: UTXOResult[] = [];
     for (let utxo of utxos) {
         amountLeft = amountLeft.minus(utxo.value);
@@ -232,8 +252,8 @@ const selectInputUtxos = ( utxos: UTXOResult[], amountLeft: BigNumber, feeAcc: B
             break;
         }
     }
-    return utxosUsed
-}
+    return utxosUsed;
+};
 /**
  * Builds a transaction for a given set of parameters.
  *
@@ -268,12 +288,12 @@ export const buildTransaction = async (
     builderParametersChecker(props);
     const network = config[coinId].network;
     // 1º Get UTXOs
-    utxos = await getUTXOs(accounts, connector,utxos);
+    utxos = await getUTXOs(accounts, connector, utxos);
     let amountLeft = new BigNumber(amount);
     // 2º Select all UTXO necesary to fill the amount
     let feeAcc = new BigNumber(78);
     if (memo.length > 0) feeAcc = feeAcc.plus(memo.length);
-    const {feeByte,feePerByte} = await getFeeByte(connector, feeRatio);
+    const { feeByte, feePerByte } = await getFeeByte(connector, feeRatio);
     let tx = new TransactionBuilder(network as Network);
     const utxosUsed = selectInputUtxos(utxos, amountLeft, feeAcc, feeByte, tx);
     // 3º Get the fee of inputs
@@ -291,17 +311,17 @@ export const buildTransaction = async (
         connector,
         network,
         tx,
-        dust:config[coinId].dust as number
-    })
+        dust: config[coinId].dust as number,
+    });
     // add memo
-    addMemo(tx, memo,feeOutput);
+    addMemo(tx, memo, feeOutput);
     // 5º Sign the transaction
     signTransaction({
         utxosUsed,
         accounts,
         network,
         tx,
-    })
+    });
     let hex;
     try {
         hex = tx.build().toHex();

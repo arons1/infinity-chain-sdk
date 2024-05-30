@@ -23,9 +23,16 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import {
     BuySellHistoricalTransaction,
+    GetPrivateKeyParams,
     SwapHistoricalTransaction,
 } from '../../types';
 import { formatSwap } from '../../utils';
+import {
+    getKeyPair,
+    getPrivateKey,
+    getSecretAddress,
+    getSeed,
+} from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 
 class StellarWallet extends CoinWallet {
     connector!: Server;
@@ -229,6 +236,33 @@ class StellarWallet extends CoinWallet {
         return tr.from?.toLowerCase() === address.toLowerCase()
             ? TransactionType.SEND
             : TransactionType.RECEIVE;
+    }
+    getPrivateKey({ mnemonic, walletAccount }: GetPrivateKeyParams) {
+        const seed = getSeed({
+            mnemonic,
+        });
+        const path = config[this.id].derivations[0].path.replace(
+            'ACCOUNT',
+            walletAccount.toString(),
+        );
+        const keyPair = getKeyPair({ path, seed, walletAccount });
+        return getPrivateKey({ keyPair });
+    }
+    getKeyPair({ mnemonic, walletAccount }: GetPrivateKeyParams): void {
+        const seed = getSeed({
+            mnemonic,
+        });
+        const path = config[this.id].derivations[0].path.replace(
+            'ACCOUNT',
+            walletAccount.toString(),
+        );
+        return getKeyPair({ path, seed, walletAccount });
+    }
+    getPrivateAddress(privateKey: Buffer): string {
+        return getSecretAddress({
+            bipIdCoin: this.bipIdCoin,
+            secretKey: privateKey,
+        });
     }
 }
 

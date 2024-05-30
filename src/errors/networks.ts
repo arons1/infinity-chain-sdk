@@ -32,6 +32,7 @@ export const UnsupportedTrezorWebsocket = 'ERR_TW_NOT_SUPPORTED';
 export const CannotGeneratePublicAddress = 'CANNOT_GENERATE_PUBLIC_ADDRESS';
 export const NotInitizated = 'NOT_INITALIZATED';
 export const MissingParams = 'MISSING_PARAMS';
+export const MissingWallet = 'ERR_MISSING_WALLET';
 export const MissingDerivationName = 'MISSING_DERIVATION_NAME';
 export const MissingProtocol = 'MISSING_PROTOCOL';
 export const WalletNotFound = 'WALLET_NOT_FOUND';

@@ -25,7 +25,10 @@ import {
 import { TezosToolkit } from '@taquito/taquito';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
 import {
+    getKeyPair,
     getPrivateKey,
+    getSecretAddress,
+    getSeed,
     getTezosPublicKeyHash,
     sign,
     signTransaction,
@@ -35,6 +38,7 @@ import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/tezos/get';
 import {
     BuySellHistoricalTransaction,
+    GetPrivateKeyParams,
     SwapHistoricalTransaction,
 } from '../../types';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
@@ -298,6 +302,33 @@ class TezosWallet extends CoinWallet {
         return tr.from?.toLowerCase() === address.toLowerCase()
             ? TransactionType.SEND
             : TransactionType.RECEIVE;
+    }
+    getPrivateKey({ mnemonic, walletAccount }: GetPrivateKeyParams) {
+        const seed = getSeed({
+            mnemonic,
+        });
+        const path = config[this.id].derivations[0].path.replace(
+            'ACCOUNT',
+            walletAccount.toString(),
+        );
+        const keyPair = getKeyPair({ path, seed, walletAccount });
+        return getPrivateKey({ keyPair });
+    }
+    getKeyPair({ mnemonic, walletAccount }: GetPrivateKeyParams): void {
+        const seed = getSeed({
+            mnemonic,
+        });
+        const path = config[this.id].derivations[0].path.replace(
+            'ACCOUNT',
+            walletAccount.toString(),
+        );
+        return getKeyPair({ path, seed, walletAccount });
+    }
+    getPrivateAddress(privateKey: Buffer): string {
+        return getSecretAddress({
+            bipIdCoin: this.bipIdCoin,
+            secretKey: privateKey,
+        });
     }
 }
 

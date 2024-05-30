@@ -15,6 +15,8 @@ import {
 } from './types';
 import {
     CannotGeneratePublicAddress,
+    MissingParams,
+    MissingWallet,
     WalletAndNameNotFound,
 } from '../errors/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
@@ -68,6 +70,8 @@ class CoinWallet extends BaseWallet {
         walletAccount,
         walletName,
     }: GetReceiveAddressParams): string {
+        if (!walletAccount || !walletName) throw new Error(MissingParams);
+        if (!this.addresses[walletName]) throw new Error(MissingWallet);
         let derivation;
         if (config[this.id].derivations.length > 1) {
             derivation = config[this.id].derivations.find(
@@ -89,6 +93,8 @@ class CoinWallet extends BaseWallet {
      * @param {string} walletAccount - The name of the wallet to remove.
      */
     removeWallet(walletAccount: number) {
+        if (!walletAccount) throw new Error(MissingParams);
+
         delete this.addresses[walletAccount];
         delete this.publicNode[walletAccount];
         delete this.extendedPublicKeys[walletAccount];
@@ -108,6 +114,9 @@ class CoinWallet extends BaseWallet {
         walletAccount,
         walletName,
     }: LoadStorageParams) {
+        if (!walletName || walletAccount == undefined)
+            throw new Error(MissingParams);
+
         if (!this.addresses[walletName]) this.addresses[walletName] = {};
         this.addresses[walletName][walletAccount] = { ...initProtocols };
         if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
@@ -147,6 +156,8 @@ class CoinWallet extends BaseWallet {
      * @return {void} This function does not return anything.
      */
     addWallet(mnemonic: string, walletName: string, walletAccount: number) {
+        if (!walletName || walletAccount == undefined || !mnemonic)
+            throw new Error(MissingParams);
         if (!this.addresses[walletName]) this.addresses[walletName] = {};
         this.addresses[walletName][walletAccount] = { ...initProtocols };
         if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
@@ -214,6 +225,9 @@ class CoinWallet extends BaseWallet {
         walletAccount,
         walletName,
     }: LoadPublicNodesParams) {
+        if (!walletName || walletAccount == undefined)
+            throw new Error(MissingParams);
+
         if (!this.addresses[walletName]) this.addresses[walletName] = {};
         this.addresses[walletName][walletAccount] = { ...initProtocols };
         if (!this.publicNode[walletName]) this.publicNode[walletName] = {};
@@ -282,7 +296,7 @@ class CoinWallet extends BaseWallet {
     async getMinimumAmountSend(_props: any): Promise<number> {
         return 0;
     }
-    
+
     /**
      * Sets the transaction format for the given transactions based on the provided parameters.
      *
@@ -359,6 +373,15 @@ class CoinWallet extends BaseWallet {
         throw new Error(NotImplemented);
     }
     getTransactions(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getPrivateKey(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getKeyPair(_props: any) {
+        throw new Error(NotImplemented);
+    }
+    getPrivateAddress(_props: any) {
         throw new Error(NotImplemented);
     }
 }

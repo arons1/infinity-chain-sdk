@@ -26,6 +26,7 @@ import { getLastChangeIndex } from '../../../networks/utxo/getLastChangeIndex/in
 import { ChangeIndexResolve } from '../../../networks/utxo/getLastChangeIndex/types';
 import {
     GetChangeAddressParams,
+    GetPrivateKeyParams,
     SetTransactionFormatParams,
 } from '../../types';
 import {
@@ -36,9 +37,17 @@ import {
 import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import SECP256K1Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/secp256k1';
-import { WalletNotFound } from '../../../errors/networks';
+import { MissingParams, WalletNotFound } from '../../../errors/networks';
 import { getTransactions } from '../../../transactionParsers/trezor/get';
 import { formatSwap } from '../../utils';
+import {
+    getPrivateKey,
+    getPrivateMasterKey,
+    getRootNode,
+} from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
+import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
+import { getPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/utxo';
+import { BIP32Interface } from 'bitcoinjs-lib';
 
 class UTXOWallet extends CoinWallet {
     connector!: TrezorWebsocket;
@@ -406,6 +415,32 @@ class UTXOWallet extends CoinWallet {
                 else tr.transactionType = TransactionType.SEND;
             }
         }
+    }
+    getPrivateKey({
+        mnemonic,
+        walletAccount,
+        change,
+        index,
+        protocol,
+    }: GetPrivateKeyParams) {
+        if (!protocol) throw new Error(MissingParams);
+        const rootNode = getRootNode({
+            mnemonic,
+            network: networks[this.id],
+        });
+        const privateAccountNode = getPrivateMasterKey({
+            bipIdCoin: this.bipIdCoin,
+            protocol,
+            rootNode,
+            walletAccount,
+        });
+        return getPrivateKey({ privateAccountNode, change, index })?.privateKey;
+    }
+
+    getPrivateAddress(privateKey: BIP32Interface): string {
+        return getPrivateAddress({
+            privateKey,
+        });
     }
 }
 

@@ -13,10 +13,22 @@ import CoinWallet from '../../wallet';
 import { XrplClient } from 'xrpl-client';
 import { BuildTransactionParams, GetTransactionsParams } from './types';
 import ED25519Coin from '@infinity/core-sdk/lib/commonjs/networks/coin/ed25519';
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/xrp/get';
+import {
+    getPrivateKey,
+    getPrivateMasterKey,
+    getRootNode,
+} from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
+import { GetPrivateKeyParams } from '../../types';
+import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
+import {
+    getKeyPair,
+    getSeed,
+    getSecretAddress,
+} from '@infinity/core-sdk/lib/commonjs/networks/ed25519';
 
 class XRPWallet extends CoinWallet {
     connector!: XrplClient;
@@ -145,6 +157,35 @@ class XRPWallet extends CoinWallet {
             .plus(this.connector.getState().reserve.owner as number)
             .shiftedBy(6)
             .toNumber();
+    }
+    getPrivateKey({ mnemonic, walletAccount }: GetPrivateKeyParams) {
+        const rootNode = getRootNode({
+            mnemonic,
+            network: networks[Coins.ETH],
+        });
+        const privateAccountNode = getPrivateMasterKey({
+            bipIdCoin: this.bipIdCoin,
+            protocol: Protocol.LEGACY,
+            rootNode,
+            walletAccount,
+        });
+        return getPrivateKey({ privateAccountNode })?.privateKey;
+    }
+    getKeyPair({ mnemonic, walletAccount }: GetPrivateKeyParams): void {
+        const seed = getSeed({
+            mnemonic,
+        });
+        const path = config[this.id].derivations[0].path.replace(
+            'ACCOUNT',
+            walletAccount.toString(),
+        );
+        return getKeyPair({ path, seed, walletAccount });
+    }
+    getPrivateAddress(privateKey: Buffer): string {
+        return getSecretAddress({
+            bipIdCoin: this.bipIdCoin,
+            secretKey: privateKey,
+        });
     }
 }
 

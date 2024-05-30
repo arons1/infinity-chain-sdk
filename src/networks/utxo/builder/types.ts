@@ -1,4 +1,7 @@
-import { BIP32Interface, Network } from '@infinity/core-sdk/lib/commonjs/core/bip32';
+import {
+    BIP32Interface,
+    Network,
+} from '@infinity/core-sdk/lib/commonjs/core/bip32';
 import { UTXOResult } from '../getUTXO/types';
 import { TrezorWebsocket } from '../trezorWebsocket';
 import { FeeResult } from '../estimateFee/types';
@@ -30,19 +33,19 @@ export type BuildTransactionResult = {
 };
 export type SignTransactionUTXO = {
     utxosUsed: UTXOResult[];
-    accounts:Account[],
-    network:Network,
-    tx:TransactionBuilder
-}
+    accounts: Account[];
+    network: Network;
+    tx: TransactionBuilder;
+};
 
 export type AddChangeAmountParameters = {
-    amountLeft:BigNumber,
-    feeAcc:BigNumber,
-    accounts:Account[],
-    feeByte:BigNumber,
-    feeOutput:BigNumber,
-    connector:TrezorWebsocket,
-    network:Network,
-    tx:TransactionBuilder,
-    dust:number
-}
+    amountLeft: BigNumber;
+    feeAcc: BigNumber;
+    accounts: Account[];
+    feeByte: BigNumber;
+    feeOutput: BigNumber;
+    connector: TrezorWebsocket;
+    network: Network;
+    tx: TransactionBuilder;
+    dust: number;
+};

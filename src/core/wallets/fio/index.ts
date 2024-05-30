@@ -17,7 +17,15 @@ import ECDSACoin from '@infinity/core-sdk/lib/commonjs/networks/coin/ecdsa';
 import config from '@infinity/core-sdk/lib/commonjs/networks/config';
 import { getTransactions } from '../../../transactionParsers/fio/get';
 
-import { Coins } from '@infinity/core-sdk/lib/commonjs/networks';
+import { Coins, Protocol } from '@infinity/core-sdk/lib/commonjs/networks';
+import {
+    getPrivateKey,
+    getPrivateMasterKey,
+    getRootNode,
+} from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
+import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
+import { GetPrivateKeyParams } from '../../types';
+import { getFIOPrivateAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm';
 
 class FIOWallet extends CoinWallet {
     base!: ECDSACoin;
@@ -147,6 +155,42 @@ class FIOWallet extends CoinWallet {
      */
     async getMinimumAmountLeft(): Promise<number> {
         return config[this.id].dust as number;
+    }
+
+    /**
+     * Retrieves the private key associated with the given mnemonic and wallet account.
+     *
+     * @param {GetPrivateKeyParams} mnemonic - The mnemonic phrase used to generate the private key.
+     * @param {number} walletAccount - The wallet account number.
+     * @return {string | undefined} The private key associated with the given mnemonic and wallet account, or undefined if it does not exist.
+     */
+    getPrivateKey({ mnemonic, walletAccount }: GetPrivateKeyParams) {
+        const rootNode = getRootNode({
+            mnemonic,
+            network: networks[Coins.ETH],
+        });
+        const privateAccountNode = getPrivateMasterKey({
+            bipIdCoin: this.bipIdCoin,
+            protocol: Protocol.LEGACY,
+            rootNode,
+            walletAccount,
+        });
+        return getPrivateKey({
+            privateAccountNode,
+            network: networks[Coins.FIO],
+        })?.privateKey;
+    }
+
+    /**
+     * Retrieves the private address associated with the given private key.
+     *
+     * @param {Buffer} privateKey - The private key used to generate the private address.
+     * @return {string} The private address generated from the private key.
+     */
+    getPrivateAddress(privateKey: Buffer): string {
+        return getFIOPrivateAddress({
+            privateKey,
+        });
     }
 }
 

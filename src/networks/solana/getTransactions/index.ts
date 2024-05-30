@@ -229,7 +229,7 @@ const getBatchAddressesWithPagination = async ({
         });
         for (const { address, result: resultAux } of resultBatchsAux) {
             const index = resultBatchs.findIndex(
-                ({ address: addressAux }) => addressAux === address
+                ({ address: addressAux }) => addressAux === address,
             );
             if (index !== -1) {
                 resultBatchs[index].result = [

@@ -14,6 +14,13 @@ export type LoadStorageParams = {
     walletAccount: number;
     walletName: string;
 };
+export type GetPrivateKeyParams = {
+    mnemonic: string;
+    walletAccount: number;
+    change?: number;
+    index?: number;
+    protocol?: Protocol;
+};
 export type LoadPublicNodesParams = {
     protocol: Protocol;
     publicMasterAddress: string;
