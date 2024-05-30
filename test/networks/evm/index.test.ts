@@ -14,6 +14,7 @@ import {
 import {
     getRootNode,
     getPrivateMasterKey,
+    getPrivateKey,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
 import networks from '@infinity/core-sdk/lib/commonjs/networks/networks';
 import {
@@ -45,9 +46,7 @@ describe('networksEVM', () => {
             publicAccountNode: privateAccountNode,
         });
         const privateKey = getPrivateAddress({
-            change: 0,
-            index: 0,
-            privateAccountNode,
+            privateKey:getPrivateKey({privateAccountNode})?.privateKey as Buffer
         });
         const built = await buildTransaction({
             connector: web3Matic,

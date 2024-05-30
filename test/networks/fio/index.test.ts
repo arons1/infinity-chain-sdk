@@ -2,8 +2,8 @@ import { describe, expect, test } from '@jest/globals';
 import { buildTransaction } from '../../../lib/commonjs/networks/fio/builder';
 import { estimateFee } from '../../../lib/commonjs/networks/fio/estimateFee';
 import { getBalance } from '../../../lib/commonjs/networks/fio/getBalance';
-
 import {
+    getPrivateKey,
     getPrivateMasterKey,
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
@@ -24,15 +24,15 @@ describe('networksFIO', () => {
             rootNode,
             walletAccount: 0,
         });
-        const privateAddress = getFIOPrivateAddress({
-            privateAccountNode,
+        const privateKey = getFIOPrivateAddress({
+            privateKey:getPrivateKey({privateAccountNode})?.privateKey as Buffer
         });
         const built = await buildTransaction({
             value: '100',
             source: 'FIO5isJA4r93w5SroiiTvsba3tdpsi49Eb3ArGCFMbo3XhrKqFVHR',
             destination:
                 'FIO5Y3irLYwTmCA8LZiG25QvXN7g2sRz9RdHVR6RnNNb8Tr7KVXQp',
-            privateKey: privateAddress,
+            privateKey,
         });
         expect(built.signatures.length).toBe(1);
     });

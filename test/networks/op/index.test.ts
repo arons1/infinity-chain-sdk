@@ -5,6 +5,7 @@ import { web3Op } from '../../utils';
 import { BigNumber } from '@infinity/core-sdk/lib/commonjs/core';
 import { getPublicAddress } from '@infinity/core-sdk/lib/commonjs/networks/evm/address';
 import {
+    getPrivateKey,
     getPrivateMasterKey,
     getRootNode,
 } from '@infinity/core-sdk/lib/commonjs/networks/utils/secp256k1';
@@ -35,7 +36,7 @@ describe('networksOP', () => {
             publicAccountNode: privateAccountNode,
         });
         const privateKey = getPrivateAddress({
-            privateAccountNode,
+            privateKey:getPrivateKey({privateAccountNode})?.privateKey as Buffer
         });
         const built = await buildTransaction({
             connector: web3Op,
